@@ -148,9 +148,11 @@ function generateView($conn, $board, $threadno = 0)
 	
 	for ($pg = 0; $pg <= $pages; $pg++)
 	{
+		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 		if ($threadno != 0)
 		{
-			$file = "<html><head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title><link rel='stylesheet' href='../../styles/stylesheet.css'>";
+			$file .= "<html><head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title><link rel='stylesheet' href='../../styles/stylesheet.css'>";
 			$file .= "<script type='text/javascript' src='../../js/jquery.js'></script>";
 			$file .= "<script type='text/javascript' src='../../js/common.js'></script>";
 			$file .= "<script type='text/javascript' src='../../js/jquery.cookie.js'></script>";
@@ -159,7 +161,7 @@ function generateView($conn, $board, $threadno = 0)
 			$file .= "</head><body>";
 			$file .= getBoardLinks($conn, 1);
 		} else {
-			$file = "<html><head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title><link rel='stylesheet' href='../styles/stylesheet.css'>";
+			$file .= "<html><head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title><link rel='stylesheet' href='../styles/stylesheet.css'>";
 			$file .= "<script type='text/javascript' src='../js/jquery.js'></script>";
 			$file .= "<script type='text/javascript' src='../js/common.js'></script>";
 			$file .= "<script type='text/javascript' src='../js/jquery.cookie.js'></script>";
@@ -654,7 +656,10 @@ function generateFrontpage($conn)
 	$config = getConfig($conn);
 	if ($config['frontpage_style'] == 0) //Kusaba X style
 	{
-		$file = '<html>
+	
+		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+		$file .= '<html>
 			<head>
 			<title>'.$config['sitename'].'</title>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -713,7 +718,10 @@ function generateFrontpage($conn)
 		fclose($handle);
 	} elseif ($config['frontpage_style'] == 1) //2chan.tk style
 	{
-		$file = '<html>
+		
+		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+		$file .= '<html>
 			<head>
 			<title>'.$config['sitename'].'</title>
 			<link rel="stylesheet" href="./index.css" />
@@ -750,7 +758,10 @@ function generateFrontpage($conn)
 function generateNews($conn)
 {
 	$config = getConfig($conn);
-	$file = '<html>
+	
+	$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+	$file .= '<html>
 		<head>
 		<title>'.$config['sitename'].'</title>
 		<link rel="stylesheet" href="./styles/index.css" />
