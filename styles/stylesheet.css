@@ -1,0 +1,627 @@
+body {
+    background: #FFFFEE;
+    color: #800000;
+    font-family: arial,helvetica,sans-serif;
+    font-size: 10pt;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+a,a:visited {
+    color: #00E;
+}
+
+a.replylink {
+    text-decoration: underline!important;
+}
+
+a.replylink:not(:hover) {
+    color: #00E!important;
+}
+
+a:hover {
+    color: red!important;
+}
+
+div.board>hr {
+    clear: both;
+}
+
+img {
+    border: none;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #D9BFB7;
+    height: 0;
+}
+
+span.x-small {
+    font-size: x-small;
+}
+
+div.boardBanner {
+    text-align: center;
+    clear: both;
+}
+
+div.boardBanner>img {
+    border: 1px solid #800;
+    margin: 5px 0px 5px 0px;
+    width: 300px;
+    height: 100px;
+    max-width: 100%;
+}
+
+div.boardBanner>div.boardTitle {
+    font-family: Tahoma,sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: -2px;
+    margin-top: 0px;
+}
+
+div.boardBanner>div.boardSubtitle {
+    font-size: x-small;
+}
+
+div#boardLinks {
+    font-size: 9pt;
+    color: #B86;
+    display: block;
+}
+
+div#boardLinks a {
+    font-weight: normal;
+    padding: 1px;
+    text-decoration: none;
+    color: #800000;
+}
+
+div.opContainer {
+    display: inline;
+}
+
+div.sideArrows {
+    color: #e0bfb7;
+    float: left;
+    margin-right: 2px;
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+div.thread {
+    margin: 0px;
+    clear: both;
+}
+
+div.post {
+    margin: 4px 0;
+    overflow: hidden;
+}
+
+div.thread>div:nth-of-type(2)>div.reply {
+    margin-top: 2px!important;
+}
+
+div.op {
+    display: inline;
+}
+
+div.reply {
+    background-color: #f0e0d6;
+    border: 1px solid #D9BFB7;
+    border-left: none;
+    border-top: none;
+    display: table;
+    padding: 2px;
+}
+
+div.reply input {
+    float: none;
+}
+
+div.post div.postInfo {
+    display: block;
+    width: 100%;
+}
+
+div.post div.postInfo span.postNum a {
+    text-decoration: none;
+    color: #800000;
+}
+
+div.post div.postInfo span.postNum a:hover,.posteruid .hand:hover {
+    color: red!important;
+}
+
+div.post div.postInfo span.nameBlock {
+    display: inline-block;
+}
+
+div.post div.postInfo span.nameBlock span.name {
+    color: #117743;
+    font-weight: bold;
+}
+
+div.post div.postInfo span.nameBlock span.postertrip {
+    color: #117743;
+    font-weight: normal!important;
+}
+
+div.post div.postInfo span.subject {
+    color: #cc1105;
+    font-weight: bold;
+}
+
+div.post blockquote.postMessage {
+    display: block;
+}
+
+blockquote>span.quote {
+    color: #789922;
+}
+
+.quoteLink,.quotelink,.deadlink {
+    color: #000080!important;
+}
+
+div.post div.file {
+    display: block;
+}
+
+div.post div.file div.fileInfo {
+    margin-right: 10px;
+}
+
+div.replyContainer div.post div.file div.fileInfo {
+    margin-left: 20px;
+}
+
+div.post div.file .fileThumb {
+    float: left;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
+
+span.fileThumb {
+    margin-left: 0px!important;
+    margin-right: 5px!important;
+}
+
+div.reply span.fileThumb,div.reply span.fileThumb img {
+    float: none!important;
+    margin-top: 0px!important;
+    margin-bottom: 0px!important;
+}
+
+div.post div.file .fileThumb img {
+    border: none;
+    float: left;
+}
+
+span.summary {
+    color: #707070;
+    margin-top: 10px;
+}
+
+div.postingMode {
+    background-color: #e04000;
+    padding: 1px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: larger;
+    margin-top: 8px;
+}
+
+div.navLinks {
+    margin-bottom: 10px;
+}
+
+div.navLinksBot {
+    margin-bottom: 0px;
+}
+
+div.thread:last-child {
+    padding-bottom: 21px;
+    margin-bottom: 6px;
+}
+
+div.pagelist {
+    font-size: 13px!important;
+    margin: 0;
+    padding: 3px 7px;
+    float: left;
+    border: none;
+    background: #F0E0D6;
+    border-right: 1px solid #D9BFB7;
+    border-bottom: 1px solid #D9BFB7;
+    list-style: none;
+    overflow: hidden;
+    color: #B86;
+}
+
+div.pagelist>div {
+    float: left;
+}
+
+div.pagelist>div span {
+    padding: 4px;
+    display: inline-block;
+}
+
+div.pagelist div.pages {
+    padding: 4px;
+}
+
+div.pagelist div.pages a {
+    text-decoration: none!important;
+}
+
+div.pagelist form {
+    display: inline;
+}
+
+div.pagelist strong {
+    color: #800000;
+}
+
+div.pagelist div.cataloglink {
+    border-left: 1px solid #D9BFB7;
+    padding-left: 12px;
+    margin-left: 7px;
+}
+
+div.deleteform {
+    float: right;
+    margin-top: 2px;
+}
+
+input[type=password] {
+    width: 50px;
+    text-align: center;
+}
+
+div.deleteform input[type=checkbox] {
+    margin: 1px 2px 1px 2px;
+}
+
+div.stylechanger {
+    float: right;
+    font-size: 10pt;
+    clear: both;
+}
+
+div.stylechanger select {
+    display: inline;
+}
+
+div.homelink {
+    float: right;
+}
+
+div#absbot {
+    text-align: center;
+    font-size: x-small!important;
+    padding-bottom: 4px;
+    padding-top: 10px;
+    color: #800;
+}
+
+table {
+    border-spacing: 1px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table.postForm>tbody>tr>td:first-child {
+    background-color: #EA8;
+    color: #800;
+    font-weight: bold;
+    border: 1px solid #800;
+    padding: 0 5px;
+    font-size: 10pt;
+}
+
+tr.rules td {
+    border: 0px!important;
+    background-color: transparent!important;
+    font-weight: normal!important;
+}
+
+ul.rules {
+    margin: 0px;
+    padding: 0px;
+    margin-top: 1px;
+}
+
+ul.rules>li {
+    list-style: none;
+    font-size: 10px;
+}
+
+.rules>li:before {
+    content: "\2022 \20";
+}
+
+td {
+    margin: 0px;
+    padding: 0px;
+    font-size: 10pt;
+}
+
+input[type=text],input[type=password] {
+    margin: 0px;
+    margin-right: 2px;
+    padding: 2px 4px 3px 4px;
+    border: 1px solid #AAA;
+    outline: none;
+    font-family: arial,helvetica,sans-serif;
+    font-size: 10pt;
+}
+
+input[type=text]:focus,input[type=password]:focus,input:not([type]):focus,textarea:focus {
+    border: 1px solid #ea8!important;
+}
+
+table.postForm>tbody>tr>td>input[type=text] {
+    width: 232px;
+}
+
+table.postForm>tbody>tr>td>input[name="subject"] {
+    width: 300px;
+}
+
+.postblock {
+    background-color: #EA8;
+    color: #800;
+    font-weight: bold;
+    border: 1px solid #800;
+    padding: 0 5px;
+    font-size: 10pt;
+}
+
+div.closed {
+    font-size: x-large;
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.commentpostername {
+    font-weight: bold;
+}
+
+.identityIcon {
+    margin-bottom: -3px;
+    height: 16px;
+    width: 16px;
+}
+
+.stickyIcon {
+    margin-bottom: -1px;
+    padding-left: 2px;
+    height: 16px;
+    width: 16px;
+}
+
+.closedIcon {
+    margin-bottom: -1px;
+    margin-left: -1px;
+    height: 16px;
+    width: 16px;
+}
+
+.trashIcon {
+    width: 16px;
+    height: 16px;
+    margin-bottom: -2px;
+}
+
+.center {
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.smaller {
+    font-size: smaller;
+}
+
+.password {
+    font-size: smaller;
+}
+
+.qcDiv {
+    display: none;
+}
+
+.qcImg {
+    height: 1px;
+    width: 1px;
+    border: 0px;
+}
+
+.jpnFlag {
+    height: 11px;
+    width: 17px;
+}
+
+.globalMessage {
+    color: red;
+    text-align: center;
+}
+
+.highlightPost {
+    background: #f0d6d6!important;
+    border-color: #d69595!important;
+}
+
+.reply:target,.reply.highlight {
+    background: #F0C0B0!important;
+    border: 1px solid #D99F91!important;
+    border-left: none!important;
+    border-top: none!important;
+    padding: 2px;
+}
+
+.hand {
+    cursor: pointer;
+}
+
+span.capcodeAdmin span.name,span.capcodeAdmin span.name a,span.capcodeAdmin span.postertrip,span.capcodeAdmin 
+strong.capcode {
+    color: #F00!important;
+}
+
+span.capcodeMod span.name,span.capcodeMod span.name a,span.capcodeMod span.postertrip,span.capcodeMod strong.capcode {
+    color: #800080!important;
+}
+
+span.capcodeDeveloper span.name,span.capcodeDeveloper span.name a,span.capcodeDeveloper span.postertrip,span.capcodeDeveloper strong.capcode {
+    color: #0000F0!important;
+}
+
+.omittedposts,.abbr {
+    color: #707070;
+}
+
+span.spoiler {
+    color: #000!important;
+    background: #000!important;
+}
+
+span.spoiler:hover,span.spoiler:focus {
+    color: #fff!important;
+}
+
+s,s a:not(:hover) {
+    color: #000!important;
+    background: #000!important;
+    text-decoration: none;
+}
+
+s:hover,s:focus,s:hover a {
+    color: #fff!important;
+}
+
+s:hover a {
+    text-decoration: underline;
+}
+
+div.boardSelect {
+    float: left;
+}
+
+div.boardSelect>strong {
+    padding-right: 5px;
+}
+
+div.pageJump {
+    float: right;
+    padding-right: 5px;
+    padding-top: 3px;
+}
+
+.pageJump a {
+    text-decoration: none;
+    padding-right: 5px;
+}
+
+.extButton img {
+    margin-top: 3px;
+    margin-bottom: -3px;
+    margin-left: 4px;
+}
+
+.op .backlinkHr {
+    width: 55%;
+}
+
+.useremail:not(:hover) .name,.useremail:not(:hover) .postertrip {
+    color: #0000EE!important;
+}
+
+.useremail:hover * {
+    color: red!important;
+}
+
+img.expandedImg {
+    max-width: none!important;
+    max-height: none!important;
+}
+
+input[type="text"],input[type="password"],textarea {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+}
+
+iframe[src="about:blank"] {
+    display: none;
+}
+
+.deadlink {
+    text-decoration: line-through;
+}
+
+.oldpost {
+    background: inherit;
+    color: #f00000;
+    font-weight: 800;
+}
+
+.mFileInfo {
+    padding-top: 5px;
+    text-align: center;
+    color: #707070!important;
+    font-size: 9pt!important;
+    text-decoration: none!important;
+}
+
+#quote-preview iframe,#quote-preview .filter-preview {
+    display: none;
+}
+
+#quote-preview .linkfade {
+    opacity: 1.0;
+}
+
+#quote-preview {
+    display: block;
+    position: absolute;
+    padding: 3px 6px 6px 3px;
+    margin: 0;
+    background: #F0E0D6;
+    border: outset;
+    border-width: 2px;
+    border-color: #D99F91 !important;
+    max-width: 700px;
+}
+
+#quote-preview .dateTime {
+    white-space: nowrap;
+}
+.post-hidden:not(#quote-preview) input,
+.post-hidden:not(#quote-preview) .replyContainer,
+.post-hidden:not(#quote-preview) .summary,
+.post-hidden:not(#quote-preview) .op .file,
+.post-hidden:not(#quote-preview) .file,
+.post-hidden .wbtn,
+.post-hidden .postNum span,
+.post-hidden:not(#quote-preview) .backlink,
+div.post-hidden:not(#quote-preview) div.file,
+div.post-hidden:not(#quote-preview) blockquote.postMessage {
+  display: none;
+}
+

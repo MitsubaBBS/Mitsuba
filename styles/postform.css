@@ -1,0 +1,47 @@
+table {
+    border-spacing: 1px;
+border-collapse:separate;
+}
+
+
+
+
+input[type=text],input[type=password],table.postForm>tbody textarea,#recaptcha_response_field {
+    margin: 0px;
+    margin-right: 2px;
+    padding: 2px 4px 3px 4px;
+    border: 1px solid #AAA;
+    outline: none;
+    font-family: arial,helvetica,sans-serif;
+    font-size: 10pt;
+}
+
+#recaptcha_response_field:not(:focus) {
+    border: 1px solid #AAA!important;
+}
+
+input[type=text]:focus,input[type=password]:focus,input:not([type]):focus,textarea:focus {
+    border: 1px solid #ea8!important;
+}
+
+table.postForm>tbody>tr>td>input[type=text] {
+    width: 232px;
+}
+
+table.postForm>tbody>tr>td>input[name="subject"] {
+    width: 300px;
+}
+
+.postblock {
+    background-color: #EA8;
+    color: #800;
+    font-weight: bold;
+    border: 1px solid #800;
+    padding: 0 5px;
+    font-size: 10pt;
+}
+td {
+    margin: 0px;
+    padding: 0px;
+    font-size: 10pt;
+}
