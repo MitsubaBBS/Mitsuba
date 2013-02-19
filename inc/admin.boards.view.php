@@ -250,9 +250,9 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		{
 			if ($row['raw'] == 2)
 			{
-				$file .= processComment($board, $conn, $row['comment'], $threadno != 0, 0);
+				$file .= processComment($board, $conn, $row['comment'], 2, 0);
 			} else {
-				$file .= processComment($board, $conn, $row['comment'], $threadno != 0);
+				$file .= processComment($board, $conn, $row['comment'], 2);
 			}
 		} else {
 			$file .= $row['comment'];
