@@ -28,14 +28,16 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	{
 		$pages = 0;
 	}
-	
-	$file = "<html><head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title><link rel='stylesheet' href='./styles/stylesheet.css'>";
+	$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml">';
+	$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title><link rel='stylesheet' href='./styles/stylesheet.css' />";
 	$file .= "<script type='text/javascript' src='./js/jquery.js'></script>";
 	$file .= "<script type='text/javascript' src='./js/common.js'></script>";
 	$file .= "<script type='text/javascript' src='./js/jquery.cookie.js'></script>";
-	$file .= '<meta http-equiv="expires" content="-1">';
-	$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
+	$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 	$file .= "</head><body>";
+	$file .= getBoardLinks($conn, 2);
 	$file .= '<div class="boardBanner">';
 	$imagesDir = './rnd/';
 	$images = glob($imagesDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
@@ -54,17 +56,17 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	{
 			$file .= '<div class="postingMode">Posting mode: Reply</div>';
 			$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">Return</a>]</div>';
-			$file .= '<center><form name="post" action="?/board/action" method="post" enctype="multipart/form-data">';
+			$file .= '<form action="?/board/action" method="post" enctype="multipart/form-data">';
 		} else {
-			$file .= '<center><form name="post" action="?/board/action" method="post" enctype="multipart/form-data">';
+			$file .= '<form action="?/board/action" method="post" enctype="multipart/form-data">';
 		}
-		$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="2097152">
-			<input type="hidden" name="mode" value="regist">
+		$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
+			<input type="hidden" value="regist" />
 			<table class="postForm" id="postForm">
 			<tbody>
 			<tr>
 			<td>Name</td>
-			<td><input name="name" type="text"></td>
+			<td><input name="name" type="text" /></td>
 			</tr>
 			<tr>
 			<td>E-mail</td>
@@ -78,23 +80,23 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		{
 			$file .= '<input type="hidden" name="resto" value="'.$threadno.'" />';
 		}
-		$file .= '<input type="submit" value="Submit"></td>
-			</td>
+		$file .= '<input type="submit" value="Submit" /></td>
+			</tr>
 			<tr>
 			<td>Comment</td>
 			<td><textarea name="com" cols="48" rows="4" wrap="soft"></textarea></td>
 			</tr>
 			<tr>
 			<td>File</td>
-			<td><input id="postFile" name="upfile" type="file"><div id="fileError"></div></td>
+			<td><input id="postFile" name="upfile" type="file" /><div id="fileError"></div></td>
 			</tr>
 			<tr>
 			<td>Password</td>
-			<td><input id="postPassword" name="pwd" type="password" maxlength="8"> <span class="password">(Password used for deletion)</span></td>
+			<td><input id="postPassword" name="pwd" type="password" maxlength="8" /> <span class="password">(Password used for deletion)</span></td>
 			</tr>
 			<tr>
 			<td>Mod</td>
-			<td><input type="checkbox" name="capcode" value=1">Capcode</input><input type="checkbox" name="raw" value=1">Raw HTML</input><input type="checkbox" name="sticky" value=1">Sticky</input><input type="checkbox" name="lock" value=1">Lock</input></td>
+			<td><input type="checkbox" name="capcode" value=1" />Capcode</input><input type="checkbox" name="raw" value=1" />Raw HTML</input><input type="checkbox" name="sticky" value=1" />Sticky</input><input type="checkbox" name="lock" value=1" />Lock</input></td>
 			</tr>
 			<tr class="rules">
 			<td colspan="2">
@@ -107,7 +109,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			</tr>
 			</tbody>
 			</table>
-			</form></center>';
+			</form>';
 	}
 	
 	$file .= "<hr />";
@@ -128,9 +130,9 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	$file .= '<hr />';
 	if ($threadno != 0)
 	{
-		$file .= '<form name="delform" id="delform" action="?/board/action" method="post"><div class="board">';
+		$file .= '<form id="delform" action="?/board/action" method="post"><div class="board">';
 	} else {
-		$file .= '<form name="delform" id="delform" action="?/board/action" method="post"><div class="board">';
+		$file .= '<form id="delform" action="?/board/action" method="post"><div class="board">';
 	}
 
 	if ($threadno != 0)
@@ -158,9 +160,9 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			$file .= '</div>';
 			if ($threadno != 0)
 			{
-				$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif"></a>';
+				$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted" /></a>';
 			} else {
-				$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif"></a>';
+				$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted" /></a>';
 			}
 			$file .= '</div>';
 		} else {
@@ -172,7 +174,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			$file .= '</div>';
 			$fileparts = explode('.',$row['filename']);
 			
-			$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileparts[0].'.jpg"></a>';
+			$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileparts[0].'.jpg" alt="Thumbnail" /></a>';
 			
 			
 			$file .= '</div>';
@@ -209,28 +211,28 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'#q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a>';
 			if ($row['locked']==1)
 			{
-				$file .= '<img src="./img/closed.gif" alt="Closed" title="Closed" class="stickyIcon">';
+				$file .= '<img src="./img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
 			}
 			if ($row['sticky']==1)
 			{
-				$file .= '<img src="./img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon">';
+				$file .= '<img src="./img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
 			}
 			$file .= '</span>';
 		} else {
 			$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'#q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a> ';
 			if ($row['locked']==1)
 			{
-				$file .= '<img src="./img/closed.gif" alt="Closed" title="Closed" class="stickyIcon">';
+				$file .= '<img src="./img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
 			}
 			if ($row['sticky']==1)
 			{
-				$file .= '<img src="./img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon">';
+				$file .= '<img src="./img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
 			}
 			$file .= ' <span>[<a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" class="replylink">Reply</a>]</span></span>';
 		}
 		if ($row['sage']==1)
 		{
-			$file .= ' [A] ';
+			$file .= ' <span style="color: red;">[A]</a> ';
 		}
 		$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'">D</a> / ';
 		if (!empty($row['filename']))
@@ -250,9 +252,9 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		{
 			if ($row['raw'] == 2)
 			{
-				$file .= processComment($board, $conn, $row['comment'], 2, 0);
+				$file .= processComment($board, $conn, $row['comment'], $threadno != 0, 0);
 			} else {
-				$file .= processComment($board, $conn, $row['comment'], 2);
+				$file .= processComment($board, $conn, $row['comment'], $threadno != 0);
 			}
 		} else {
 			$file .= $row['comment'];
@@ -322,7 +324,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			{
 				$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span></span>';
 			} else {
-				$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span></span>';
+				$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span>';
 			}
 			$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row2['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row2['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'">D</a> / ';
 			if (!empty($row2['filename']))
@@ -346,9 +348,9 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 					$file .= '</div>';
 					if ($threadno != 0)
 					{
-						$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif"></a>';
+						$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted" /></a>';
 					} else {
-						$file .= '<a class="fileThumb" target="_blank"><img src="./imgdeleted.gif"></a>';
+						$file .= '<a class="fileThumb" target="_blank"><img src="./imgdeleted.gif" alt="Deleted" /></a>';
 					}
 				
 					$file .= '</div>';
@@ -361,7 +363,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 					$file .= '</div>';
 					$fileparts = explode('.',$row2['filename']);
 					
-					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row2['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileparts[0].'.jpg"></a>';
+					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row2['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileparts[0].'.jpg" alt="Thumbnail" /></a>';
 					
 				
 					$file .= '</div>';
@@ -394,9 +396,9 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	}
 	$file .= "</div>";
 	$file .= '<div class="deleteform">
-		<input type="hidden" name="board" value="'.$board.'">
-		<input type="hidden" name="mode" value="usrform" />Delete Post [<input type="checkbox" name="onlyimgdel" value="on">File Only]
-		<input type="submit" name="delete" value="Delete"><br />
+		<input type="hidden" name="board" value="'.$board.'" />
+		<input type="hidden" name="mode" value="usrform" />Delete Post [<input type="checkbox" name="onlyimgdel" value="on" />File Only]
+		<input type="submit" name="delete" value="Delete" /><br />
 	</div>';
 	$file .= "</form>";
 	if ($threadno == 0)
@@ -406,7 +408,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		if ($page != 0)
 		{
 			
-			$file .= '<form action="?/board&b='.$board.'&p='.($page-1).'" onsubmit="location=this.action; return false;"><input type="submit" value="Previous"></form>';
+			$file .= '<form action="?/board&b='.$board.'&p='.($page-1).'" onsubmit="location=this.action; return false;"><input type="submit" value="Previous" /></form>';
 			
 		} else {
 			$file .= '<span>Next</span>';
@@ -426,7 +428,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		$file .= ' <div class="next">';
 		if ($page != $pages)
 		{
-			$file .= '<form action="?/board&b='.$board.'&p='.($page+1).'" onsubmit="location=this.action; return false;"><input type="submit" value="Next"></form>';
+			$file .= '<form action="?/board&b='.$board.'&p='.($page+1).'" onsubmit="location=this.action; return false;"><input type="submit" value="Next" /></form>';
 		} else {
 			$file .= '<span>Previous</span>';
 		}
