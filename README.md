@@ -31,3 +31,4 @@ Planned features
 * file hash match
 * plugin support
 * catalog feature (like 4chan)
+* floodlimits/spam detector
