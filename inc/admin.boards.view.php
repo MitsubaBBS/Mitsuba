@@ -61,7 +61,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			$file .= '<form action="?/board/action" method="post" enctype="multipart/form-data">';
 		}
 		$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
-			<input type="hidden" value="regist" />
+			<input type="hidden" name="mode" value="regist" />
 			<table class="postForm" id="postForm">
 			<tbody>
 			<tr>
