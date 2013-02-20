@@ -1918,7 +1918,7 @@ echo '</div>';
 		{
 			case "regist":
 				$filename = null;
-				if ((empty($_POST['board'])) || (!isBoard($_POST['board'])))
+				if ((empty($_POST['board'])) || (!isBoard($conn, $_POST['board'])))
 				{
 				?>
 				
