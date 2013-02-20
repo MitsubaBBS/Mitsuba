@@ -381,3 +381,26 @@ hr {
     margin-top: 0;
     margin-bottom: 1.5em;
 }
+
+textarea {
+	white-space: pre-wrap;
+}
+
+
+.commentpostername {
+    font-weight: bold;
+}
+
+span.nameBlock {
+    display: inline-block;
+}
+
+span.name {
+    color: #117743;
+    font-weight: bold;
+}
+
+span.postertrip {
+    color: #117743;
+    font-weight: normal!important;
+}

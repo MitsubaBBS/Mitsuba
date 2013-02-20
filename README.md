@@ -27,7 +27,7 @@ Planned features
 * autosage/bumplimit
 * captcha support
 * automatic post deletion
-* post search/delete by ip
+* post delete by ip
 * file hash match
 * plugin support
 * catalog feature (like 4chan)

@@ -204,6 +204,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			}
 		}
 		$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row['ip'].'" target="_blank">'.$row['ip'].'</a>)</span>';
+		$file .= ' [<a href="?/info&ip='.$row['ip'].'">N</a>]';
 		$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row['date']).'</span> ';
 	
 		if ($threadno != 0)
@@ -234,12 +235,14 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		{
 			$file .= ' <span style="color: red;">[A]</a> ';
 		}
-		$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'">D</a> / ';
+		$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'">D</a>';
 		if (!empty($row['filename']))
 		{
-			$file .= '<a href="?/delete_post&b='.$board.'&p='.$row['id'].'&f=1">F</a> / ';
+			$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'&f=1">F</a>]';
+		} else {
+			$file .= ']';
 		}
-		$file .= '<a href="?/info&ip='.$row['ip'].'">I</a>]';
+		
 		$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
 	
 		$file .= '</span>';
@@ -318,7 +321,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 					$file .= '<span class="nameBlock"><span class="name">'.$row2['name'].'</span>'.$trip.'</span>';
 				}
 			}
-			$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row2['ip'].'" target="_blank">'.$row2['ip'].'</a>)</span>';
+			$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row2['ip'].'" target="_blank">'.$row2['ip'].'</a>) [<a href="?/info&ip='.$row2['ip'].'">N</a>]</span>';
 			$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row2['date']).'</span> ' ;
 			if ($threadno != 0)
 			{
@@ -326,12 +329,14 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			} else {
 				$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span>';
 			}
-			$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row2['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row2['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'">D</a> / ';
+			$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row2['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row2['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'">D</a>';
 			if (!empty($row2['filename']))
 			{
-				$file .= '<a href="?/delete_post&b='.$board.'&p='.$row['id'].'&f=1">F</a> / ';
+				$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'&f=1">F</a>] ';
+			} else {
+				$file .= ']';
 			}
-			$file .= '<a href="?/info&ip='.$row2['ip'].'">I</a>]</span> ';
+			$file .= '</span> ';
 			$file .= '</div>';
 			if (!empty($row2['filename']))
 			{

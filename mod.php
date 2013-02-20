@@ -111,7 +111,8 @@ if ( ( (!isset($_SESSION['logged'])) || ($_SESSION['logged']==0) ) && (!( ($path
 if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))))
 {
 ?>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Mitsuba</title>
 <link rel="stylesheet" href="./styles/index.css" />
@@ -131,7 +132,8 @@ switch ($path)
 		if ((isset($_SESSION['logged'])) && ($_SESSION['logged']==1))
 		{
 		?>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Mitsuba</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -201,6 +203,7 @@ switch ($path)
 	$pms = mysqli_query($conn, "SELECT * FROM pm WHERE to_user=".$_SESSION['id']." AND read_msg=0");
 	$pms = mysqli_num_rows($pms);
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -2107,7 +2110,8 @@ if ($_SESSION['type'] >= 1)
 				{
 					echo "<td><img src='./img/deleted.gif' /></td>";
 				} else {
-					echo "<td><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></td>";
+					$fileparts = explode('.',$pdata['filename']);
+					echo "<td><img src='./".$row['board']."/src/thumb/".$fileparts[0].".jpg' /></td>";
 				}
 			} else {
 				echo "<td></td>";
@@ -2123,7 +2127,7 @@ if ($_SESSION['type'] >= 1)
 			}
 			echo "<td>".$row['reason']."</td>";
 			echo "<td>".$row['reporter_ip']."</td>";
-			echo "<td>[ <a href='?/reports/clear&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> / <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."&d=1'>&</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."'>D</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."&f=1'>F</a> ] [ <a href='?/info&ip=".$pdata['ip']."'>I</a> ]</td>";
+			echo "<td>[ <a href='?/reports/clear&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> / <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."&d=1'>&</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."'>D</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."&f=1'>F</a> ] [ <a href='?/info&ip=".$pdata['ip']."'>N</a> ]</td>";
 			echo "</tr>";
 		}
 		?>
@@ -2192,6 +2196,7 @@ if ($_SESSION['type'] >= 1)
 <div class="box-inner">
 <div class="boxbar"><h2>Information about <?php echo $_GET['ip']; ?></h2></div>
 <div class="boxcontent">
+<a href="?/search/ip&ip=<?php echo $_GET['ip']; ?>">Search for posts by this IP</a><br />
 <b>Recent 15 bans for this IP:</b>
 <table>
 <thead>
@@ -2857,6 +2862,91 @@ Text:<br />
 	case "/log":
 		break;
 	case "/log/all":
+		break;
+	case "/search/ip":
+		if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
+		{
+			?>
+			<div class="box-outer top-box">
+			<div class="box-inner">
+			<div class="boxbar"><h2>Showing posts by IP <?php echo $_GET['ip']; ?></h2></div>
+			<div class="boxcontent">
+			<table>
+			<thead>
+			<tr>
+			<td>Name</td>
+			<td>Email</td>
+			<td>Date</td>
+			<td>Comment</td>
+			<td>Subject</td>
+			<td>File</td>
+			</tr>
+			</thead>
+			<tbody>
+			<?php
+			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
+			while ($board = mysqli_fetch_assoc($boards))
+			{
+				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."'");
+				while ($row = mysqli_fetch_assoc($posts))
+				{
+					echo "<tr><td>";
+					
+					$trip = "";
+					if (!empty($row['trip']))
+					{
+						$trip = "<span class='postertrip'>!".$row['trip']."</span>";
+					}
+					if ($row['capcode'] == 1)
+					{
+						echo '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span></span>';
+					} elseif ($row['capcode'] == 2)
+					{
+						echo '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span></span>';
+					} elseif ($row['capcode'] == 3)
+					{
+						echo '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span></span>';
+					} else {
+						echo '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.'</span>';
+					}
+				
+					echo "</td>";
+					echo "<td>".$row['email']."</td>";
+					echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
+					if ($row['raw'] != 1)
+					{
+						if ($row['raw'] == 2)
+						{
+							$comment = processComment($board['short'], $conn, $row['comment'], 2, 0);
+						} else {
+							$comment = processComment($board['short'], $conn, $row['comment'], 2);
+						}
+					} else {
+						$comment = $row['comment'];
+					}
+					echo "<td>".$comment."</td>";
+					echo "<td>".$row['subject']."</td>";
+					if (!empty($row['filename']))
+					{
+						if ($row['filename'] == "deleted")
+						{
+							echo "<td><img src='./img/deleted.gif' /></td>";
+						} else {
+							$fileparts = explode('.',$row['filename']);
+							echo "<td><img src='./".$board['short']."/src/thumb/".$fileparts[0].".jpg' /></td>";
+						}
+					} else {
+						echo "<td></td>";
+					}
+				}
+			}
+			?>
+			</tbody>
+			</table>
+			</div>
+			</div></div>
+			<?php
+		}
 		break;
 }
 if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))))
