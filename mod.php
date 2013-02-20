@@ -3128,7 +3128,7 @@ Text:<br />
 						echo "<td><img src='./img/deleted.gif' /></td>";
 					} else {
 						$fileparts = explode('.',$row['filename']);
-						echo "<td><img src='./".$row['board']."/src/thumb/".$fileparts[0].".jpg' /></td>";
+						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$fileparts[0].".jpg' /></a></td>";
 					}
 				} else {
 					echo "<td></td>";
@@ -3160,6 +3160,7 @@ Text:<br />
 			<table>
 			<thead>
 			<tr>
+			<td>Post</td>
 			<td>Name</td>
 			<td>Email</td>
 			<td>Date</td>
@@ -3246,7 +3247,7 @@ Text:<br />
 						echo "<td><img src='./img/deleted.gif' /></td>";
 					} else {
 						$fileparts = explode('.',$row['filename']);
-						echo "<td><img src='./".$row['board']."/src/thumb/".$fileparts[0].".jpg' /></td>";
+						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$fileparts[0].".jpg' /></a></td>";
 					}
 				} else {
 					echo "<td></td>";
