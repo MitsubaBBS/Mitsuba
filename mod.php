@@ -2880,6 +2880,7 @@ Text:<br />
 			<td>Comment</td>
 			<td>Subject</td>
 			<td>File</td>
+			<td>Delete</td>
 			</tr>
 			</thead>
 			<tbody>
@@ -2938,6 +2939,7 @@ Text:<br />
 					} else {
 						echo "<td></td>";
 					}
+					echo '<td>[<a href="?/delete_post&b='.$board['short'].'&p='.$row['id'].'">D</a>] [<a href="?/delete_post&b='.$board['short'].'&p='.$row['id'].'&f=1">F</a>] [<a href="?/bans/add&b='.$board['short'].'&p='.$row['id'].'">B</a>]</td>';
 				}
 			}
 			?>
