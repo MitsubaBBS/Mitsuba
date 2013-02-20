@@ -2196,6 +2196,17 @@ if ($_SESSION['type'] >= 1)
 				$imageonly = 1;
 			}
 			deletePostMod($conn, $_GET['b'], $_GET['p'], $imageonly);
+			if ($imageonly == 1)
+			{
+			?>
+	
+								<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>File deleted</h2></div>
+</div>
+</div>
+		<?php
+			} else {
 			?>
 	
 								<div class="box-outer top-box">
@@ -2204,6 +2215,7 @@ if ($_SESSION['type'] >= 1)
 </div>
 </div>
 		<?php
+		}
 		} else {
 		
 		}
@@ -3028,6 +3040,7 @@ Text:<br />
 <table>
 			<thead>
 			<tr>
+			<td>Post</td>
 			<td>Name</td>
 			<td>Email</td>
 			<td>Date</td>
@@ -3068,7 +3081,12 @@ Text:<br />
 			{
 				$row = $post_array[$i];
 				echo "<tr><td>";
-				
+				$resto = $row['resto'];
+				$op = 0;
+				if ($row['resto'] == 0) { $resto = $row['id']; $op = 1; }
+				echo "<a href='?/board&b=".$row['board']."&t=".$resto."'>/".$row['board']."/".$row['id']."</a> ";
+				if ($op == 1) { echo "<b>OP</b>"; }
+				echo "</td><td>";
 				$trip = "";
 				if (!empty($row['trip']))
 				{
@@ -3181,7 +3199,12 @@ Text:<br />
 			{
 				$row = $post_array[$i];
 				echo "<tr><td>";
-				
+				$resto = $row['resto'];
+				$op = 0;
+				if ($row['resto'] == 0) { $resto = $row['id']; $op = 1; }
+				echo "<a href='?/board&b=".$row['board']."&t=".$resto."'>/".$row['board']."/".$row['id']."</a> ";
+				if ($op == 1) { echo "<b>OP</b>"; }
+				echo "</td><td>";
 				$trip = "";
 				if (!empty($row['trip']))
 				{
