@@ -33,22 +33,42 @@ $(document).ready(function () {
 
 function showPostPreview( el )
 {
-	$.ajax({
-		type: 'get',
-		url: $(el).attr("href"),
-		success: function(data, textStatus, xhr){
-			var html = xhr.responseText;
-			var nodes = $.parseHTML( html );
-			var hr = $(el).attr("href");
-			var postid = hr.substr(hr.indexOf('#'));
-			$("#quote-preview").html($(postid, nodes).html());
-			var off = $( el ).offset();
-			off.left = off.left + $(el).width();
-			off.top = off.top - $("#quote-preview").height()/2
-			$("#quote-preview").css("display", "block");
-			$("#quote-preview").offset(off);
-		}
-	});
+	var href = $(el).attr("href").split("#");
+	var curl = window.location.href.split("#");
+	curl = curl[0];
+	href = absolutizeURI(curl, href[0]);
+	if (href == curl)
+	{
+		var hr = $(el).attr("href");
+		var postid = hr.substr(hr.indexOf('#'));
+		$("#quote-preview").html($(postid).html());
+		var off = $( el ).offset();
+		off.left = off.left + $(el).width();
+		off.top = off.top - $("#quote-preview").height()/2
+		$("#quote-preview").css("display", "block");
+				$("#quote-preview").find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
+				$("#quote-preview").find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
+		$("#quote-preview").offset(off);
+	} else {
+		$.ajax({
+			type: 'get',
+			url: href,
+			success: function(data, textStatus, xhr){
+				var html = xhr.responseText;
+				var nodes = $.parseHTML( html );
+				var hr = $(el).attr("href");
+				var postid = hr.substr(hr.indexOf('#'));
+				$("#quote-preview").html($(postid, nodes).html());
+				var off = $( el ).offset();
+				off.left = off.left + $(el).width();
+				off.top = off.top - $("#quote-preview").height()/2
+				$("#quote-preview").css("display", "block");
+				$("#quote-preview").find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
+				$("#quote-preview").find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
+				$("#quote-preview").offset(off);
+			}
+		});
+	}
 }
 
 function hidePostPreview( el )
@@ -111,4 +131,47 @@ function thread_toggle(id)
 			hideThread(id);
 		}
 	}
+}
+
+function parseURI(url) {
+  var m = String(url).replace(/^\s+|\s+$/g, '').match(/^([^:\/?#]+:)?(\/\/(?:[^:@]*(?::[^:@]*)?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
+  // authority = '//' + user + ':' + pass '@' + hostname + ':' port
+  return (m ? {
+    href     : m[0] || '',
+    protocol : m[1] || '',
+    authority: m[2] || '',
+    host     : m[3] || '',
+    hostname : m[4] || '',
+    port     : m[5] || '',
+    pathname : m[6] || '',
+    search   : m[7] || '',
+    hash     : m[8] || ''
+  } : null);
+}
+ 
+function absolutizeURI(base, href) {// RFC 3986
+ 
+  function removeDotSegments(input) {
+    var output = [];
+    input.replace(/^(\.\.?(\/|$))+/, '')
+         .replace(/\/(\.(\/|$))+/g, '/')
+         .replace(/\/\.\.$/, '/../')
+         .replace(/\/?[^\/]*/g, function (p) {
+      if (p === '/..') {
+        output.pop();
+      } else {
+        output.push(p);
+      }
+    });
+    return output.join('').replace(/^\//, input.charAt(0) === '/' ? '/' : '');
+  }
+ 
+  href = parseURI(href || '');
+  base = parseURI(base || '');
+ 
+  return !href || !base ? null : (href.protocol || base.protocol) +
+         (href.protocol || href.authority ? href.authority : base.authority) +
+         removeDotSegments(href.protocol || href.authority || href.pathname.charAt(0) === '/' ? href.pathname : (href.pathname ? ((base.authority && !base.pathname ? '/' : '') + base.pathname.slice(0, base.pathname.lastIndexOf('/') + 1) + href.pathname) : base.pathname)) +
+         (href.protocol || href.authority || href.pathname ? href.search : (href.search || base.search)) +
+         href.hash;
 }
