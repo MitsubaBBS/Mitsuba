@@ -1910,6 +1910,8 @@ echo '</div>';
 		break;
 	case "/board/action":
 		reqPermission(1);
+		if (!empty($_POST['mode']))
+		{
 		$mode = $_POST['mode'];
 		switch($mode)
 		{
@@ -2072,6 +2074,7 @@ echo '</div>';
 	</body>
 	</html>
 	<?php
+	}
 		break;
 	case "/reports":
 	?>
