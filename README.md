@@ -4,7 +4,7 @@ Mitsuba
 Project Mitsuba is an opensource (GPLv3 licensed) image board software written in PHP and using MySQLi.
 
 Installation
-============
+------------
 
 To install Mitsuba you'll have to:
 * Import database.sql into your MySQLi database
@@ -15,7 +15,7 @@ To install Mitsuba you'll have to:
 * Change password
 
 Planned features
-================
+----------------
 
 * logging actions
 * wordfilter
@@ -31,3 +31,7 @@ Planned features
 * plugin support
 * catalog feature (like 4chan)
 * floodlimits/spam detector
+
+License
+--------
+See [LICENSE](https://github.com/MitsubaBBS/Mitsuba/blob/master/LICENSE).
