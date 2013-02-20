@@ -235,6 +235,8 @@ function toggle(button,area) {
 <li><a href="?/reports" target="main">Report queue (<?php echo $reports; ?>)</a></li>
 <li><a href="?/notes" target="main">Notes</a></li>
 <li><a href="?/ipnotes" target="main">IP notes</a></li>
+<li><a href="?/recent/posts" target="main">Recent posts</a></li>
+<li><a href="?/recent/files" target="main">Recently uploaded images</a></li>
 <?php
 if ($_SESSION['type'] >= 1)
 {
@@ -3009,6 +3011,218 @@ Text:<br />
 				
 			}
 		}
+		break;
+	case "/recent/posts":
+		?>
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Recent 50 posts</h2></div>
+<div class="boxcontent">
+<table>
+			<thead>
+			<tr>
+			<td>Name</td>
+			<td>Email</td>
+			<td>Date</td>
+			<td>Comment</td>
+			<td>Subject</td>
+			<td>File</td>
+			<td>Delete</td>
+			</tr>
+			</thead>
+			<tbody>
+			<?php
+			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
+			$post_array = array();
+			$num = 0;
+			while ($board = mysqli_fetch_assoc($boards))
+			{
+				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." ORDER BY date DESC LIMIT 0, 50");
+				while ($row = mysqli_fetch_assoc($posts))
+				{
+					$post_array[$num] = $row;
+					$post_array[$num]['board'] = $board['short'];
+					$num++;
+				}
+			}
+			$dates = array();
+			
+			foreach ($post_array as $key => $row)
+			{
+				$dates[$key] = $row['date'];
+			}
+			array_multisort($dates, SORT_DESC, $post_array);
+			$max = 50;
+			if (count($post_array) < 50)
+			{
+				$max = count($post_array);
+			}
+			for ($i = 0; $i < $max; $i++)
+			{
+				$row = $post_array[$i];
+				echo "<tr><td>";
+				
+				$trip = "";
+				if (!empty($row['trip']))
+				{
+					$trip = "<span class='postertrip'>!".$row['trip']."</span>";
+				}
+				if ($row['capcode'] == 1)
+				{
+					echo '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span></span>';
+				} elseif ($row['capcode'] == 2)
+				{
+					echo '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span></span>';
+				} elseif ($row['capcode'] == 3)
+				{
+					echo '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span></span>';
+				} else {
+					echo '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.'</span>';
+				}
+			
+				echo "</td>";
+				echo "<td>".$row['email']."</td>";
+				echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
+				if ($row['raw'] != 1)
+				{
+					if ($row['raw'] == 2)
+					{
+						$comment = processComment($row['board'], $conn, $row['comment'], 2, 0);
+					} else {
+						$comment = processComment($row['board'], $conn, $row['comment'], 2);
+					}
+				} else {
+					$comment = $row['comment'];
+				}
+				echo "<td>".$comment."</td>";
+				echo "<td>".$row['subject']."</td>";
+				if (!empty($row['filename']))
+				{
+					if ($row['filename'] == "deleted")
+					{
+						echo "<td><img src='./img/deleted.gif' /></td>";
+					} else {
+						$fileparts = explode('.',$row['filename']);
+						echo "<td><img src='./".$row['board']."/src/thumb/".$fileparts[0].".jpg' /></td>";
+					}
+				} else {
+					echo "<td></td>";
+				}
+				echo '<td>[<a href="?/delete_post&b='.$board['short'].'&p='.$row['id'].'">D</a>] [<a href="?/delete_post&b='.$board['short'].'&p='.$row['id'].'&f=1">F</a>] [<a href="?/bans/add&b='.$board['short'].'&p='.$row['id'].'">B</a>]</td>';
+			}
+			?>
+			</tbody>
+			</table>
+</div>
+</div>
+</div>
+		<?php
+		break;
+	case "/recent/files":
+		?>
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Recent 50 posts with images</h2></div>
+<div class="boxcontent">
+<table>
+			<thead>
+			<tr>
+			<td>Name</td>
+			<td>Email</td>
+			<td>Date</td>
+			<td>Comment</td>
+			<td>Subject</td>
+			<td>File</td>
+			<td>Delete</td>
+			</tr>
+			</thead>
+			<tbody>
+			<?php
+			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
+			$post_array = array();
+			$num = 0;
+			while ($board = mysqli_fetch_assoc($boards))
+			{
+				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." WHERE filename != '' ORDER BY date DESC LIMIT 0, 50");
+				while ($row = mysqli_fetch_assoc($posts))
+				{
+					$post_array[$num] = $row;
+					$post_array[$num]['board'] = $board['short'];
+					$num++;
+				}
+			}
+			$dates = array();
+			
+			foreach ($post_array as $key => $row)
+			{
+				$dates[$key] = $row['date'];
+			}
+			array_multisort($dates, SORT_DESC, $post_array);
+			$max = 50;
+			if (count($post_array) < 50)
+			{
+				$max = count($post_array);
+			}
+			for ($i = 0; $i < $max; $i++)
+			{
+				$row = $post_array[$i];
+				echo "<tr><td>";
+				
+				$trip = "";
+				if (!empty($row['trip']))
+				{
+					$trip = "<span class='postertrip'>!".$row['trip']."</span>";
+				}
+				if ($row['capcode'] == 1)
+				{
+					echo '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span></span>';
+				} elseif ($row['capcode'] == 2)
+				{
+					echo '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span></span>';
+				} elseif ($row['capcode'] == 3)
+				{
+					echo '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span></span>';
+				} else {
+					echo '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.'</span>';
+				}
+			
+				echo "</td>";
+				echo "<td>".$row['email']."</td>";
+				echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
+				if ($row['raw'] != 1)
+				{
+					if ($row['raw'] == 2)
+					{
+						$comment = processComment($row['board'], $conn, $row['comment'], 2, 0);
+					} else {
+						$comment = processComment($row['board'], $conn, $row['comment'], 2);
+					}
+				} else {
+					$comment = $row['comment'];
+				}
+				echo "<td>".$comment."</td>";
+				echo "<td>".$row['subject']."</td>";
+				if (!empty($row['filename']))
+				{
+					if ($row['filename'] == "deleted")
+					{
+						echo "<td><img src='./img/deleted.gif' /></td>";
+					} else {
+						$fileparts = explode('.',$row['filename']);
+						echo "<td><img src='./".$row['board']."/src/thumb/".$fileparts[0].".jpg' /></td>";
+					}
+				} else {
+					echo "<td></td>";
+				}
+				echo '<td>[<a href="?/delete_post&b='.$board['short'].'&p='.$row['id'].'">D</a>] [<a href="?/delete_post&b='.$board['short'].'&p='.$row['id'].'&f=1">F</a>] [<a href="?/bans/add&b='.$board['short'].'&p='.$row['id'].'">B</a>]</td>';
+			}
+			?>
+			</tbody>
+			</table>
+</div>
+</div>
+</div>
+		<?php
 		break;
 }
 if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))))
