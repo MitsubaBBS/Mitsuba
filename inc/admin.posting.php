@@ -80,7 +80,7 @@ function generatePost($conn, $board, $id)
 	}
 }
 
-function addPostMod($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = 0, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0)
+function addPostMod($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = 0, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
 {
 	if (!isBoard($conn, $board))
 	{
@@ -124,11 +124,20 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 		echo "<center><h1>Error: No file selected.</h1><br /><a href='./".$board."'>RETURN</a></center>";
 		return;
 	}
+	$bdata = getBoardData($conn, $board);
 	$thread = "";
 	$tinfo = "";
+	$replies = 0;
 	if ($resto != 0)
 	{
 		$thread = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$resto);
+		
+		if (($bdata['bumplimit'] > 0) && ($nolimit == 0))
+		{
+			$replies = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=".$resto);
+			$replies = mysqli_num_rows($replies);
+		}
+		
 		if (mysqli_num_rows($thread) == 0)
 		{
 			echo "<center><h1>Error: Cannot reply to thread because thread does not exist.</h1><br /><a href='./".$board."'>RETURN</a></center>";
@@ -150,7 +159,7 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 	$id = mysqli_insert_id($conn);
 	if ($resto != 0)
 	{
-		if (($email == "sage") || ($email == "nokosage") || ($email == "nonokosage") || ($tinfo['sage'] == 1))
+		if (($email == "sage") || ($email == "nokosage") || ($email == "nonokosage") || ($tinfo['sage'] == 1) || ($replies > $bdata['bumplimit']))
 		{
 		
 		} else {

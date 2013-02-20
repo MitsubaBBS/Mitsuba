@@ -27,13 +27,17 @@ function createDirectories($board)
 	}
 }
 
-function addBoard($conn, $short, $name, $des = "", $message = "")
+function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0)
 {
 	$short = mysqli_real_escape_string($conn, trim($short, "/ "));
 	$name = mysqli_real_escape_string($conn, $name);
 	$des = mysqli_real_escape_string($conn, $des);
 	$message = mysqli_real_escape_string($conn, $message);
-	$result = mysqli_query($conn, "INSERT INTO boards (short, name, des, message) VALUES ('".$short."', '".$name."', '".$des."', '".$message."')");
+	if (!is_numeric($bumplimit))
+	{
+		$bumplimit = 0;
+	}
+	$result = mysqli_query($conn, "INSERT INTO boards (short, name, des, message, bumplimit) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.")");
 	if ($result)
 	{
 		mysqli_query($conn, "CREATE TABLE IF NOT EXISTS `posts_".$short."` (
@@ -73,11 +77,15 @@ function deleteBoard($conn, $short)
 	delTree("./".$short);
 }
 
-function updateBoard($conn, $short, $new_name, $new_des, $new_msg)
+function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 0)
 {
 	if (isBoard($conn, $short))
 	{
-		mysqli_query($conn, "UPDATE boards SET name='".mysqli_real_escape_string($conn, $new_name)."', des='".mysqli_real_escape_string($conn, $new_des)."', message='".mysqli_real_escape_string($conn, $new_msg)."' WHERE short='".mysqli_real_escape_string($conn, $short)."'");
+		if (!is_numeric($new_limit))
+		{
+			$new_limit = 0;
+		}
+		mysqli_query($conn, "UPDATE boards SET name='".mysqli_real_escape_string($conn, $new_name)."', des='".mysqli_real_escape_string($conn, $new_des)."', message='".mysqli_real_escape_string($conn, $new_msg)."', bumplimit=".$new_limit." WHERE short='".mysqli_real_escape_string($conn, $short)."'");
 		rebuildBoardCache($conn, $short);
 		return 1;
 	} else {

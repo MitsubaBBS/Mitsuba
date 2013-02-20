@@ -783,7 +783,7 @@ echo "<td><a href='?/news/delete&b=".$row['id']."'>Delete</a></td>";
 	reqPermission(2);
 		if ((!empty($_POST['short'])) && (!empty($_POST['name'])))
 		{
-			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg']) > 0)
+			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit']) > 0)
 			{
 				?>
 							<div class="box-outer top-box">
@@ -825,7 +825,8 @@ echo "<td><a href='?/news/delete&b=".$row['id']."'>Delete</a></td>";
 Board directory (without /'s): <input type="text" name="short" maxlenght=10 /><br />
 Board name: <input type="text" name="name" maxlenght=40 /><br />
 Board short description (optional): <input type="text" name="des" maxlenght=100 /><br />
-Board message (optional): <br /><textarea cols=70 rows=7 name="message"></textarea><br />
+Board message (optional): <br /><textarea cols=70 rows=7 name="msg"></textarea><br />
+Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlenght=9 value="0" /><br />
 <input type="submit" value="Create new board" />
 </form>
 </div>
@@ -843,6 +844,7 @@ All boards: <br />
 <td>Directory</td>
 <td>Name</td>
 <td>Description</td>
+<td>Bump limit</td>
 <td>Message</td>
 <td>Edit</td>
 <td>Delete</td>
@@ -858,6 +860,7 @@ echo '<tr>';
 echo "<td><a href='./".$row['short']."/'>/".$row['short']."/</a></td>";
 echo "<td>".$row['name']."</td>";
 echo "<td>".$row['des']."</td>";
+echo "<td>".$row['bumplimit']."</td>";
 if (!empty($row['message']))
 {
 echo "<td>Yes</td>";
@@ -960,7 +963,7 @@ echo '</tr>';
 		{
 			if (!empty($_POST['name']))
 			{
-				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg']))
+				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit']))
 				{
 				?>
 							<div class="box-outer top-box">
@@ -1054,7 +1057,8 @@ echo '</tr>';
 Board directory (without /'s): <input disabled type="text" name="short" maxlenght=10 value="<?php echo $data['short']; ?>" /><br />
 Board name: <input type="text" name="name" maxlenght=40 value="<?php echo $data['name']; ?>" /><br />
 Board short description (optional): <input type="text" name="des" maxlenght=100 value="<?php echo $data['des']; ?>" /><br />
-Board message (optional): <br /><textarea cols=70 rows=7 name="message"><?php echo $data['message']; ?></textarea><br />
+Board message (optional): <br /><textarea cols=70 rows=7 name="msg"><?php echo $data['message']; ?></textarea><br />
+Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlenght=9 value="<?php echo $data['bumplimit']; ?>" /><br />
 <input type="submit" value="Update board info!" />
 </form>
 </div>
@@ -1997,6 +2001,11 @@ echo '</div>';
 				$raw = 0;
 				$sticky = 0;
 				$lock = 0;
+				$nolimit = 0;
+				if ((!empty($_POST['nolimit'])) && ($_POST['nolimit']==1))
+				{
+					$nolimit = 1;
+				}
 				if ((!empty($_POST['capcode'])) && ($_POST['capcode']==1))
 				{
 					$capcode = $_SESSION['type'];
@@ -2013,7 +2022,7 @@ echo '</div>';
 				{
 					$lock = 1;
 				}
-				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, basename($_FILES['upfile']['name']), $resto, $capcode, $raw, $sticky, $lock);
+				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, basename($_FILES['upfile']['name']), $resto, $capcode, $raw, $sticky, $lock, $nolimit);
 				if ($is == -16)
 				{
 					echo "<h1>This board does not exist!</h1></body></html>"; exit;

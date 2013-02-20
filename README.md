@@ -24,7 +24,6 @@ Planned features
 * better design
 * bbcode/spoilers
 * installer
-* autosage/bumplimit
 * captcha support
 * automatic post deletion
 * file hash match

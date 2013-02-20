@@ -81,11 +81,20 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		echo "<center><h1>Error: No file selected.</h1><br /><a href='./".$board."'>RETURN</a></center>";
 		return;
 	}
+	$bdata = getBoardData($conn, $board);
 	$thread = "";
 	$tinfo = "";
+	$replies = 0;
 	if ($resto != 0)
 	{
 		$thread = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$resto);
+		
+		if ($bdata['bumplimit'] > 0)
+		{
+			$replies = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=".$resto);
+			$replies = mysqli_num_rows($replies);
+		}
+		
 		if (mysqli_num_rows($thread) == 0)
 		{
 			echo "<center><h1>Error: Cannot reply to thread because thread does not exist.</h1><br /><a href='./".$board."'>RETURN</a></center>";
@@ -113,7 +122,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	$id = mysqli_insert_id($conn);
 	if ($resto != 0)
 	{
-		if (($email == "sage") || ($email == "nokosage") || ($email == "nonokosage") || ($tinfo['sage'] == 1))
+		if (($email == "sage") || ($email == "nokosage") || ($email == "nonokosage") || ($tinfo['sage'] == 1) || ($replies > $bdata['bumplimit']))
 		{
 		
 		} else {

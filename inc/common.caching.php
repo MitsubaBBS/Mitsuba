@@ -54,18 +54,6 @@ function getBoardLinks($conn, $in_thread = 0)
 	}
 }
 
-
-function getBoardData($conn, $short)
-{
-	$result = mysqli_query($conn, "SELECT * FROM boards WHERE short='".mysqli_real_escape_string($conn, $short)."'");
-	if (mysqli_num_rows($result) == 1)
-	{
-		return mysqli_fetch_assoc($result);
-	} else {
-		return 0; //board not found
-	}
-}
-
 function processComment($board, $conn, $string, $thread = 0, $specialchars = 1)
 {
 	$new = $string;

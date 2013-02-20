@@ -96,7 +96,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			</tr>
 			<tr>
 			<td>Mod</td>
-			<td><input type="checkbox" name="capcode" value=1" />Capcode</input><input type="checkbox" name="raw" value=1" />Raw HTML</input><input type="checkbox" name="sticky" value=1" />Sticky</input><input type="checkbox" name="lock" value=1" />Lock</input></td>
+			<td><input type="checkbox" name="capcode" value=1" />Capcode<input type="checkbox" name="raw" value=1" />Raw HTML<input type="checkbox" name="sticky" value=1" />Sticky<input type="checkbox" name="lock" value=1" />Lock<input type="checkbox" name="nolimit" value=1" />Ignore bumplimit</td>
 			</tr>
 			<tr class="rules">
 			<td colspan="2">

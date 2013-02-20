@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `name` varchar(40) NOT NULL,
   `des` varchar(100) NOT NULL,
   `message` text NOT NULL,
+  `bumplimit` int(9) NOT NULL,
   PRIMARY KEY (`short`)
 ) ;
 
