@@ -30,4 +30,20 @@ function logEvent($conn, $event)
 {
 	mysqli_query($conn, "INSERT INTO log (date, event, mod_id) VALUES (".time().", '".mysqli_real_escape_string($conn, $event)."', ".$_SESSION['id'].")");
 }
+
+function canBoard($board)
+{
+	if (($_SESSION['boards'] != "*") && ($_SESSION['type'] != 2))
+	{
+		$boards = explode(",", $_SESSION['boards']);
+		if (in_array($board, $boards))
+		{
+			return 1;
+		} else {
+			die();
+		}
+	} else {
+		return 1;
+	}
+}
 ?>

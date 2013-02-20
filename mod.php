@@ -1888,6 +1888,7 @@ echo '</div>';
 		reqPermission(1);
 		if ((!empty($_GET['b'])) && (isBoard($conn, $_GET['b'])))
 		{
+			canBoard($_GET['b']);
 			$board = getBoardData($conn, $_GET['b']);
 			$mode = "page";
 			$page = 0;
@@ -1917,7 +1918,7 @@ echo '</div>';
 		{
 			case "regist":
 				$filename = null;
-				if (empty($_POST['board']))
+				if ((empty($_POST['board'])) || (!isBoard($_POST['board'])))
 				{
 				?>
 				
@@ -1931,6 +1932,7 @@ echo '</div>';
 					exit;
 				}
 				$board = $_POST['board'];
+				canBoard($board);
 				?>
 	<html>
 	<head>
@@ -2186,6 +2188,7 @@ if ($_SESSION['type'] >= 1)
 		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['p'])))
 		{
 			$imageonly = 0;
+			canBoard($_GET['b']);
 			if ((!empty($_GET['f'])) && ($_GET['f'] == 1))
 			{
 				$imageonly = 1;
@@ -2409,6 +2412,7 @@ echo "</tr>";
 	case "/sticky/toggle":
 		if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['t'])))
 		{
+			canBoard($_GET['b']);
 			$result = mysqli_query($conn, "SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['t']." AND resto=0");
 			if (mysqli_num_rows($result) == 1)
 			{
@@ -2456,6 +2460,7 @@ echo "</tr>";
 	case "/locked/toggle":
 		if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['t'])))
 		{
+			canBoard($_GET['b']);
 			$result = mysqli_query($conn, "SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['t']." AND resto=0");
 			if (mysqli_num_rows($result) == 1)
 			{
@@ -2503,6 +2508,7 @@ echo "</tr>";
 	case "/antibump/toggle":
 		if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['t'])))
 		{
+			canBoard($_GET['b']);
 			$result = mysqli_query($conn, "SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['t']." AND resto=0");
 			if (mysqli_num_rows($result) == 1)
 			{
