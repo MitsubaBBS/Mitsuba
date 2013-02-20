@@ -14,6 +14,12 @@ function generateBoardLinks($conn, $in_thread = 0)
 
 function generateLinks($conn, $id, $in_thread = 0)
 {
+	// MAGIC IS HAPPENING HERE, DO NOT EDIT
+	// MAGIC IS HAPPENING HERE, DO NOT EDIT
+	// MAGIC IS HAPPENING HERE, DO NOT EDIT
+	// MAGIC IS HAPPENING HERE, DO NOT EDIT
+	// MAGIC IS HAPPENING HERE, DO NOT EDIT
+	// MAGIC IS HAPPENING HERE, DO NOT EDIT
 	$result = mysqli_query($conn, "SELECT * FROM links WHERE parent=".$id." ORDER BY short ASC, title ASC, id DESC;");
 	if (mysqli_num_rows($result) == 0)
 	{
@@ -83,7 +89,7 @@ function processComment($board, $conn, $string, $thread = 0, $specialchars = 1)
 						} elseif ($thread == 0) {
 							$new .= '<a href="./res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
 						} else {
-							$new .= '<a href="./'.$board.'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							$new .= '<a href="?/board&b='.$board.'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
 						}
 					} else {
 						if ($thread == 1)
@@ -92,7 +98,7 @@ function processComment($board, $conn, $string, $thread = 0, $specialchars = 1)
 						} elseif ($thread == 0) {
 							$new .= '<a href="./res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
 						} else {
-							$new .= '<a href="./'.$board.'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							$new .= '<a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
 						}
 					}
 				} else {
