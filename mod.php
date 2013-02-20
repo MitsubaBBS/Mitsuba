@@ -3013,11 +3013,18 @@ Text:<br />
 		}
 		break;
 	case "/recent/posts":
+		if ((!empty($_GET['max'])) && (is_numeric($_GET['max'])))
+		{
+			$max = $_GET['max'];
+		} else {
+			$max = 50;
+		}
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Recent 50 posts</h2></div>
+<div class="boxbar"><h2>Recent <?php echo $max; ?> posts</h2></div>
 <div class="boxcontent">
+			Show recent: <a href="?/recent/posts">50</a> <a href="?/recent/posts&max=100">100</a> <a href="?/recent/posts&max=250">250</a> <a href="?/recent/posts&max=500">500</a>
 <table>
 			<thead>
 			<tr>
@@ -3035,9 +3042,10 @@ Text:<br />
 			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
 			$post_array = array();
 			$num = 0;
+			
 			while ($board = mysqli_fetch_assoc($boards))
 			{
-				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." ORDER BY date DESC LIMIT 0, 50");
+				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." ORDER BY date DESC LIMIT 0, ".$max);
 				while ($row = mysqli_fetch_assoc($posts))
 				{
 					$post_array[$num] = $row;
@@ -3052,8 +3060,7 @@ Text:<br />
 				$dates[$key] = $row['date'];
 			}
 			array_multisort($dates, SORT_DESC, $post_array);
-			$max = 50;
-			if (count($post_array) < 50)
+			if (count($post_array) < $max)
 			{
 				$max = count($post_array);
 			}
@@ -3108,7 +3115,7 @@ Text:<br />
 				} else {
 					echo "<td></td>";
 				}
-				echo '<td>[<a href="?/delete_post&b='.$board['short'].'&p='.$row['id'].'">D</a>] [<a href="?/delete_post&b='.$board['short'].'&p='.$row['id'].'&f=1">F</a>] [<a href="?/bans/add&b='.$board['short'].'&p='.$row['id'].'">B</a>]</td>';
+				echo '<td>[<a href="?/delete_post&b='.$row['board'].'&p='.$row['id'].'">D</a>] [<a href="?/delete_post&b='.$row['board'].'&p='.$row['id'].'&f=1">F</a>] [<a href="?/bans/add&b='.$row['board'].'&p='.$row['id'].'">B</a>]</td>';
 			}
 			?>
 			</tbody>
@@ -3119,12 +3126,20 @@ Text:<br />
 		<?php
 		break;
 	case "/recent/files":
+	
+		if ((!empty($_GET['max'])) && (is_numeric($_GET['max'])))
+		{
+			$max = $_GET['max'];
+		} else {
+			$max = 50;
+		}
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2>Recent 50 posts with images</h2></div>
-<div class="boxcontent">
-<table>
+			<div class="box-outer top-box">
+			<div class="box-inner">
+			<div class="boxbar"><h2>Recent <?php echo $max; ?> posts with images</h2></div>
+			<div class="boxcontent">
+			Show recent: <a href="?/recent/files">50</a> <a href="?/recent/files&max=100">100</a> <a href="?/recent/files&max=250">250</a> <a href="?/recent/files&max=500">500</a> 
+			<table>
 			<thead>
 			<tr>
 			<td>Name</td>
@@ -3143,7 +3158,7 @@ Text:<br />
 			$num = 0;
 			while ($board = mysqli_fetch_assoc($boards))
 			{
-				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." WHERE filename != '' ORDER BY date DESC LIMIT 0, 50");
+				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." WHERE filename != '' ORDER BY date DESC LIMIT 0, ".$max);
 				while ($row = mysqli_fetch_assoc($posts))
 				{
 					$post_array[$num] = $row;
@@ -3158,8 +3173,7 @@ Text:<br />
 				$dates[$key] = $row['date'];
 			}
 			array_multisort($dates, SORT_DESC, $post_array);
-			$max = 50;
-			if (count($post_array) < 50)
+			if (count($post_array) < $max)
 			{
 				$max = count($post_array);
 			}
@@ -3214,7 +3228,7 @@ Text:<br />
 				} else {
 					echo "<td></td>";
 				}
-				echo '<td>[<a href="?/delete_post&b='.$board['short'].'&p='.$row['id'].'">D</a>] [<a href="?/delete_post&b='.$board['short'].'&p='.$row['id'].'&f=1">F</a>] [<a href="?/bans/add&b='.$board['short'].'&p='.$row['id'].'">B</a>]</td>';
+				echo '<td>[<a href="?/delete_post&b='.$row['board'].'&p='.$row['id'].'">D</a>] [<a href="?/delete_post&b='.$row['board'].'&p='.$row['id'].'&f=1">F</a>] [<a href="?/bans/add&b='.$row['board'].'&p='.$row['id'].'">B</a>]</td>';
 			}
 			?>
 			</tbody>
