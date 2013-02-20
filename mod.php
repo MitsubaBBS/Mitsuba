@@ -119,6 +119,7 @@ if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && ((
 <link rel="stylesheet" href="./styles/global.css" />
 <link rel="stylesheet" href="./styles/table.css" />
 <script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/admin.js"></script>
 </head>
 <body>
 <div id="doc">
@@ -2203,6 +2204,7 @@ if ($_SESSION['type'] >= 1)
 </div>
 		<?php
 		}
+		break;
 	case "/delete_post/yes":
 		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['p'])))
 		{

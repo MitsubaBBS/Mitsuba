@@ -33,8 +33,9 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		<html xmlns="http://www.w3.org/1999/xhtml">';
 	$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title><link rel='stylesheet' href='./styles/stylesheet.css' />";
 	$file .= "<script type='text/javascript' src='./js/jquery.js'></script>";
-	$file .= "<script type='text/javascript' src='./js/common.js'></script>";
 	$file .= "<script type='text/javascript' src='./js/jquery.cookie.js'></script>";
+	$file .= "<script type='text/javascript' src='./js/common.js'></script>";
+	$file .= "<script type='text/javascript' src='./js/admin.js'></script>";
 	$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 	$file .= "</head><body>";
 	$file .= getBoardLinks($conn, 2);
