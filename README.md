@@ -7,12 +7,7 @@ Installation
 ------------
 
 To install Mitsuba you'll have to:
-* Import database.sql into your MySQLi database
-* Edit config.php
-* chmod 777 ./ (only on UNIX-like filesystems)
-* Go to ./mod.php and login as root:root
-* Configure boards in Manage boards
-* Change password
+* Run ./install.php
 
 Planned features
 ----------------
@@ -23,7 +18,6 @@ Planned features
 * alt. stylesheets
 * better design
 * bbcode/spoilers
-* installer
 * captcha support
 * automatic post deletion
 * file hash match
