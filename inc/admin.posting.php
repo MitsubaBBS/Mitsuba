@@ -36,7 +36,8 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 				{
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$postno.";");
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
-					generateView($conn, $board, $postno);
+					unlink("./".$board."/res/".$postno.".html");
+					//generateView($conn, $board, $postno);
 					generateView($conn, $board);
 					return 2; //done post
 				} else {

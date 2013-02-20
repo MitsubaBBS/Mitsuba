@@ -2161,7 +2161,7 @@ if ($_SESSION['type'] >= 1)
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Do you clear all reports?</h2></div>
+<div class="boxbar"><h2>Do you want to clear all reports?</h2></div>
 <div class="boxcontent"><a href="?/reports">[ NO ]</a> <a href="?/reports/clear_all_yes">[ YES ]</a></div>
 </div>
 </div>
@@ -2709,7 +2709,7 @@ while ($row = mysqli_fetch_assoc($appeals))
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Do you clear all appeals?</h2></div>
+<div class="boxbar"><h2>Do you want to clear all appeals?</h2></div>
 <div class="boxcontent"><a href="?/appeals">[ NO ]</a> <a href="?/appeals/clear_all_yes">[ YES ]</a></div>
 </div>
 </div>
@@ -2871,6 +2871,7 @@ Text:<br />
 			<div class="box-inner">
 			<div class="boxbar"><h2>Showing posts by IP <?php echo $_GET['ip']; ?></h2></div>
 			<div class="boxcontent">
+			<a href="?/delete_posts&ip=<?php echo $_GET['ip']; ?>">Delete posts from this IP</a>
 			<table>
 			<thead>
 			<tr>
@@ -2948,6 +2949,38 @@ Text:<br />
 			</div>
 			</div></div>
 			<?php
+		}
+		break;
+	case "/delete_posts":
+		if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
+		{
+	?>
+	
+								<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Do you want to delete posts from IP <?php echo $_GET['ip']; ?>?</h2></div>
+<div class="boxcontent"><a href="?/reports">[ NO ]</a> <a href="?/delete_posts&ip=<?php echo $_GET['ip']; ?>">[ YES ]</a></div>
+</div>
+</div>
+		<?php
+		}
+		break;
+	case "/delete_posts/yes":
+		if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
+		{
+			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
+			while ($board = mysqli_fetch_assoc($boards))
+			{
+				$threads = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." WHERE ip=".$_GET['ip']."' AND resto=0");
+				while ($row = mysqli_fetch_assoc($threads))
+				{
+					mysqli_query($conn, "DELETE FROM posts_".$board['short']." WHERE resto=".$row['id']);
+					unlink("./".$board['short']."/res/".$row['id'].".html");
+				}
+				mysqli_query($conn, "DELETE FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."'");
+				rebuildBoardCache($conn, $row['short']);
+				
+			}
 		}
 		break;
 }
