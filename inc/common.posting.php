@@ -38,7 +38,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 					{
 						mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$postno.";");
 						mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
-						unlink("./".$board['short']."/res/".$row['id'].".html");
+						unlink("./".$board."/res/".$postno.".html");
 						//generateView($conn, $board, $postno);
 						generateView($conn, $board);
 						return 2; //done post
