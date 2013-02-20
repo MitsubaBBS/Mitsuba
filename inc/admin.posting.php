@@ -80,7 +80,7 @@ function generatePost($conn, $board, $id)
 	}
 }
 
-function addPostMod($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = 0, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
+function addPostMod($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = 0, $md5 = "", $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
 {
 	if (!isBoard($conn, $board))
 	{
@@ -154,8 +154,10 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 		$trip = $name['trip'];
 		$name = $name['name'];
 	}
+	
+	$md5 = mysqli_real_escape_string($conn, $md5);
 	mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, sticky, sage, locked, capcode, raw)".
-	"VALUES (".time().", '".$name."', '".$trip."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", 'abc', ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
+	"VALUES (".time().", '".$name."', '".$trip."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
 	$id = mysqli_insert_id($conn);
 	if ($resto != 0)
 	{

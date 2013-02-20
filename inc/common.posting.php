@@ -60,7 +60,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 	}
 }
 
-function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null)
+function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "")
 {
 	if (!isBoard($conn, $board))
 	{
@@ -117,8 +117,9 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		$trip = $name['trip'];
 		$name = $name['name'];
 	}
+	$md5 = mysqli_real_escape_string($conn, $md5);
 	mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, sticky, sage, locked, capcode, raw)".
-	"VALUES (".time().", '".$name."', '".$trip."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", 'abc', 0, 0, 0, 0, 0)");
+	"VALUES (".time().", '".$name."', '".$trip."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', 0, 0, 0, 0, 0)");
 	$id = mysqli_insert_id($conn);
 	if ($resto != 0)
 	{

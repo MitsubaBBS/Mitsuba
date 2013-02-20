@@ -1937,6 +1937,8 @@ echo '</div>';
 	<body>
 	<center><h1>Updating Index...</h1></center>
 				<?php
+				
+				$md5 = "";
 				if (!empty($_FILES['upfile']['name']))
 				{
 					$target_path = "./".$board."/src/";
@@ -1955,7 +1957,7 @@ echo '</div>';
 						echo "<h1>File size too big!</h1></body></html>";
 						exit;
 					}
-
+					$md5 = md5_file($_FILES['upfile']['tmp_name']);
 					if(move_uploaded_file($_FILES['upfile']['tmp_name'], $target_path)) {
 						echo "The file ".basename( $_FILES['upfile']['name'])." has been uploaded";
 					} else {
@@ -2022,7 +2024,8 @@ echo '</div>';
 				{
 					$lock = 1;
 				}
-				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, basename($_FILES['upfile']['name']), $resto, $capcode, $raw, $sticky, $lock, $nolimit);
+				
+				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, basename($_FILES['upfile']['name']), $resto, $md5, $capcode, $raw, $sticky, $lock, $nolimit);
 				if ($is == -16)
 				{
 					echo "<h1>This board does not exist!</h1></body></html>"; exit;
