@@ -2422,6 +2422,7 @@ echo "</tr>";
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Thread unstickied</h2></div>
+<meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
 		<?php
@@ -2433,6 +2434,7 @@ echo "</tr>";
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Thread stickied</h2></div>
+<meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
 		<?php
@@ -2467,6 +2469,7 @@ echo "</tr>";
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Thread unlocked</h2></div>
+<meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
 		<?php
@@ -2478,6 +2481,7 @@ echo "</tr>";
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Thread locked</h2></div>
+<meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
 		<?php
@@ -2511,7 +2515,8 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Thread unlocked</h2></div>
+<div class="boxbar"><h2>Antibump off</h2></div>
+<meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
 		<?php
@@ -2522,7 +2527,8 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Thread locked</h2></div>
+<div class="boxbar"><h2>Antibump on</h2></div>
+<meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
 		<?php
