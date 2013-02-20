@@ -2189,6 +2189,23 @@ if ($_SESSION['type'] >= 1)
 	case "/delete_post":
 		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['p'])))
 		{
+			$f = "";
+			if ((!empty($_GET['f'])) && ($_GET['f'] == 1))
+			{
+				$f = "&f=1";
+			}
+		?>
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Do you want to delete this post?</h2></div>
+<div class="boxcontent"><a href="?/recent/posts">[ NO ]</a> <a href="?/delete_post/yes&b=<?php echo $_GET['b']; ?>&p=<?php echo $_GET['p'].$f; ?>">[ YES ]</a></div>
+</div>
+</div>
+		<?php
+		}
+	case "/delete_post/yes":
+		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['p'])))
+		{
 			$imageonly = 0;
 			canBoard($_GET['b']);
 			if ((!empty($_GET['f'])) && ($_GET['f'] == 1))
