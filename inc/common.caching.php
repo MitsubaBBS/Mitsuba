@@ -595,17 +595,6 @@ function generateView($conn, $board, $threadno = 0)
 	}
 }
 
-function performAutodelete($conn, $board)
-{
-	$board = mysqli_real_escape_string($conn, $board);
-	if (!isBoard($conn, $board))
-	{
-		return -16;
-	}
-	//$result = mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=0 ORDER BY lastbumped DESC LIMIT ".(16*10).",10");
-		
-}
-
 function updateThreads($conn, $board)
 {
 	$board = mysqli_real_escape_string($conn, $board);

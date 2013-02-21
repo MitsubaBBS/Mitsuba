@@ -145,6 +145,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 			
 		}
 	}
+	pruneOld($conn, $board);
 	if ($resto == 0)
 	{
 		generateView($conn, $board, $id);
@@ -180,6 +181,23 @@ function reportPost($conn, $board, $id, $reason)
 		}
 	} else {
 		return -15;
+	}
+}
+
+function pruneOld($conn, $board)
+{
+	$board = mysqli_real_escape_string($conn, $board);
+	if (!isBoard($conn, $board))
+	{
+		return -16;
+	}
+	$threads = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=0 ORDER BY sticky DESC, lastbumped DESC LIMIT 160, 2000");
+	echo mysqli_error($conn);
+	while ($row = mysqli_fetch_assoc($threads))
+	{
+		mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$row['id']);
+		mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$row['id']);
+		unlink("./".$board."/res/".$row['id'].".html");
 	}
 }
 

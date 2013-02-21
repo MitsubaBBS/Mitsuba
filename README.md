@@ -19,7 +19,6 @@ Planned features
 * better design
 * bbcode/spoilers
 * captcha support
-* automatic post deletion
 * file hash match
 * plugin support
 * catalog feature (like 4chan)
