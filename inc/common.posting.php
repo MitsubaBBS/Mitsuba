@@ -78,7 +78,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 	}
 }
 
-function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "")
+function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $spoiler = 0)
 {
 	if (!isBoard($conn, $board))
 	{
@@ -99,7 +99,12 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		echo "<center><h1>Error: No file selected.</h1><br /><a href='./".$board."'>RETURN</a></center>";
 		return;
 	}
+	
 	$bdata = getBoardData($conn, $board);
+	if ((!empty($filename)) && ($spoiler == 1) && ($bdata['spoilers'] == 1))
+	{
+		$filename = "spoiler:".$filename;
+	}
 	$thread = "";
 	$tinfo = "";
 	$replies = 0;

@@ -780,10 +780,15 @@ echo "<td><a href='?/news/delete&b=".$row['id']."'>Delete</a></td>";
 <?php
 		break;
 	case "/boards/add":
-	reqPermission(2);
+		reqPermission(2);
 		if ((!empty($_POST['short'])) && (!empty($_POST['name'])))
 		{
-			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit']) > 0)
+			$spoilers = 0;
+			if ((!empty($_POST['spoilers'])) && ($_POST['spoilers'] == 1))
+			{
+				$spoilers = 1;
+			}
+			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers) > 0)
 			{
 				?>
 							<div class="box-outer top-box">
@@ -827,6 +832,7 @@ Board name: <input type="text" name="name" maxlenght=40 /><br />
 Board short description (optional): <input type="text" name="des" maxlenght=100 /><br />
 Board message (optional): <br /><textarea cols=70 rows=7 name="msg"></textarea><br />
 Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlenght=9 value="0" /><br />
+Board special options: <input type="checkbox" name="spoilers" value="1" />Allow image spoilers<br />
 <input type="submit" value="Create new board" />
 </form>
 </div>
@@ -846,6 +852,7 @@ All boards: <br />
 <td>Description</td>
 <td>Bump limit</td>
 <td>Message</td>
+<td>Special</td>
 <td>Edit</td>
 <td>Delete</td>
 <td>Rebuild cache</td>
@@ -867,6 +874,9 @@ echo "<td>Yes</td>";
 } else {
 echo "<td>No</td>";
 }
+echo "<td>";
+if ($row['spoilers']==1) { echo "<b>Spoilers</b>"; }
+echo "</td>";
 echo "<td><a href='?/boards/edit&board=".$row['short']."'>Edit</a></td>";
 echo "<td><a href='?/boards/delete&board=".$row['short']."'>Delete</a></td>";
 echo "<td><a href='?/boards/rebuild&board=".$row['short']."'>Rebuild cache</a></td>";
@@ -963,7 +973,12 @@ echo '</tr>';
 		{
 			if (!empty($_POST['name']))
 			{
-				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit']))
+				$spoilers = 0;
+				if ((!empty($_POST['spoilers'])) && ($_POST['spoilers'] == 1))
+				{
+					$spoilers = 1;
+				}
+				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers))
 				{
 				?>
 							<div class="box-outer top-box">
@@ -1059,6 +1074,7 @@ Board name: <input type="text" name="name" maxlenght=40 value="<?php echo $data[
 Board short description (optional): <input type="text" name="des" maxlenght=100 value="<?php echo $data['des']; ?>" /><br />
 Board message (optional): <br /><textarea cols=70 rows=7 name="msg"><?php echo $data['message']; ?></textarea><br />
 Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlenght=9 value="<?php echo $data['bumplimit']; ?>" /><br />
+Board special options: <input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> />Allow image spoilers<br />
 <input type="submit" value="Update board info!" />
 </form>
 </div>
@@ -1384,7 +1400,12 @@ Title: <input type="text" name="title" value="" /><br />
 		<?php
 				} else {
 				//$parent, $url, $url_thread, $title, $short
-					addBoardLink($conn, $id, $_POST['url'], $_POST['url_thread'], $_POST['url_index'],  $_POST['title'], $_POST['short']);
+					$spoilers = 0;
+					if ((!empty($_POST['spoilers'])) && ($_POST['spoilers'] == 1))
+					{
+						$spoilers = 1;
+					}
+					addBoardLink($conn, $id, $_POST['url'], $_POST['url_thread'], $_POST['url_index'],  $_POST['title'], $_POST['short'], $spoilers);
 					
 					?>
 					<meta http-equiv="refresh" content="0;URL='?/links'" />
@@ -2038,8 +2059,13 @@ echo '</div>';
 				{
 					$lock = 1;
 				}
-				
-				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, basename($_FILES['upfile']['name']), $resto, $md5, $capcode, $raw, $sticky, $lock, $nolimit);
+				$bdata = getBoardData($_POST['board']);
+				$spoiler = 0;
+				if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1))
+				{
+					$spoiler = 1;
+				}
+				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, basename($_FILES['upfile']['name']), $resto, $md5, $spoiler, $capcode, $raw, $sticky, $lock, $nolimit);
 				if ($is == -16)
 				{
 					echo "<h1>This board does not exist!</h1></body></html>"; exit;

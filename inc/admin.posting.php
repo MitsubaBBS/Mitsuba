@@ -98,7 +98,7 @@ function generatePost($conn, $board, $id)
 	}
 }
 
-function addPostMod($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = 0, $md5 = "", $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
+function addPostMod($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = 0, $md5 = "", $spoiler = 0, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
 {
 	if (!isBoard($conn, $board))
 	{
@@ -142,7 +142,12 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 		echo "<center><h1>Error: No file selected.</h1><br /><a href='./".$board."'>RETURN</a></center>";
 		return;
 	}
+
 	$bdata = getBoardData($conn, $board);
+	if ((!empty($filename)) && ($spoiler == 1) && ($bdata['spoilers'] == 1))
+	{
+		$filename = "spoiler:".$filename;
+	}
 	$thread = "";
 	$tinfo = "";
 	$replies = 0;

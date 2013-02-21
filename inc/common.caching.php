@@ -234,7 +234,12 @@ function generateView($conn, $board, $threadno = 0)
 				</tr>
 				<tr>
 				<td>File</td>
-				<td><input id="postFile" name="upfile" type="file" /><div id="fileError"></div></td>
+				<td><input id="postFile" name="upfile" type="file" />';
+			if ($boarddata['spoilers'] == 1)
+			{
+				$file .= '<label><input type="checkbox" name="spoiler" value="1">Spoiler Image?</label>';
+			}
+			$file .= '</td>
 				</tr>
 				<tr>
 				<td>Password</td>
@@ -307,6 +312,24 @@ function generateView($conn, $board, $threadno = 0)
 					$file .= '<a class="fileThumb" target="_blank"><img src="../../img/deleted.gif" alt="Deleted"/></a>';
 				} else {
 					$file .= '<a class="fileThumb" target="_blank"><img src="../img/deleted.gif" alt="Deleted"/></a>';
+				}
+				$file .= '</div>';
+			} elseif (substr($row['filename'], 0, 8) == "spoiler:")
+			{
+				$file .= '<div class="file" id="f'.$row['id'].'">';
+				$file .= '<div class="fileInfo">';
+				if ($threadno != 0)
+				{
+					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="../src/'.substr($row['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+				} else {
+					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./src/'.substr($row['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+				}
+				$file .= '</div>';
+				if ($threadno != 0)
+				{
+					$file .= '<a class="fileThumb" href="../src/'.$row['filename'].'" target="_blank"><img src="../../img/spoiler.png" alt="Deleted"/></a>';
+				} else {
+					$file .= '<a class="fileThumb" href="./src/'.$row['filename'].'" target="_blank"><img src="../img/spoiler.png" alt="Deleted"/></a>';
 				}
 				$file .= '</div>';
 			} else {
@@ -481,6 +504,24 @@ function generateView($conn, $board, $threadno = 0)
 							$file .= '<a class="fileThumb" target="_blank"><img src="../img/deleted.gif" alt="Deleted" /></a>';
 						}
 					
+						$file .= '</div>';
+					} elseif (substr($row2['filename'], 0, 8) == "spoiler:")
+					{
+						$file .= '<div class="file" id="f'.$row2['id'].'">';
+						$file .= '<div class="fileInfo">';
+						if ($threadno != 0)
+						{
+							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="../src/'.substr($row2['filename'], 8).'" target="_blank"><b>Spoiler image</b></a></span>';
+						} else {
+							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./src/'.substr($row2['filename'], 8).'" target="_blank"><b>Spoiler image</b></a></span>';
+						}
+						$file .= '</div>';
+						if ($threadno != 0)
+						{
+							$file .= '<a class="fileThumb" href="../src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../../img/spoiler.png" alt="Deleted"/></a>';
+						} else {
+							$file .= '<a class="fileThumb" href="./src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../img/spoiler.png" alt="Deleted"/></a>';
+						}
 						$file .= '</div>';
 					} else {
 						$file .= '<div class="file" id="f'.$row2['id'].'">';

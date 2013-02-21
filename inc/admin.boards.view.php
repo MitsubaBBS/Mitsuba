@@ -89,7 +89,12 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			</tr>
 			<tr>
 			<td>File</td>
-			<td><input id="postFile" name="upfile" type="file" /><div id="fileError"></div></td>
+			<td><input id="postFile" name="upfile" type="file" />';
+			if ($boarddata['spoilers'] == 1)
+			{
+				$file .= '<label><input type="checkbox" name="spoiler" value="1">Spoiler Image?</label>';
+			}
+			$file .= '</td>
 			</tr>
 			<tr>
 			<td>Password</td>
@@ -153,31 +158,24 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		{
 			$file .= '<div class="file" id="f'.$row['id'].'">';
 			$file .= '<div class="fileInfo">';
-			if ($threadno != 0)
-			{
-				$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>deleted</b></span>';
-			} else {
-				$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>deleted</b></span>';
-			}
+			$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>deleted</b></span>';
 			$file .= '</div>';
-			if ($threadno != 0)
-			{
-				$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted" /></a>';
-			} else {
-				$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted" /></a>';
-			}
+			$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted" /></a>';
+			$file .= '</div>';
+		} elseif (substr($row['filename'], 0, 8) == "spoiler:")
+		{
+			$file .= '<div class="file" id="f'.$row['id'].'">';
+			$file .= '<div class="fileInfo">';
+			$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>spoiler image</b></span>';
+			$file .= '</div>';
+			$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row['filename'], 8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" /></a>';
 			$file .= '</div>';
 		} else {
 			$file .= '<div class="file" id="f'.$row['id'].'">';
 			$file .= '<div class="fileInfo">';
-			
 			$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./'.$board.'/src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a>-(<span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
-			
 			$file .= '</div>';
-			
 			$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row['filename'].'" alt="Thumbnail" /></a>';
-			
-			
 			$file .= '</div>';
 		}
 		$file .= '<div class="postInfo" id="pi'.$row['id'].'">';
@@ -350,21 +348,21 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 				{
 					$file .= '<div class="file" id="f'.$row2['id'].'">';
 					$file .= '<div class="fileInfo">';
-					if ($threadno != 0)
-					{
-						$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>deleted</b></span>';
-					} else {
-						$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>deleted</b></span>';
-					}
+					$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>deleted</b></span>';
 					$file .= '</div>';
-					if ($threadno != 0)
-					{
-						$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted" /></a>';
-					} else {
-						$file .= '<a class="fileThumb" target="_blank"><img src="./imgdeleted.gif" alt="Deleted" /></a>';
-					}
+					$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted" /></a>';
+					
 				
 					$file .= '</div>';
+				} elseif (substr($row2['filename'], 0, 8) == "spoiler:")
+				{
+					$file .= '<div class="file" id="f'.$row2['id'].'">';
+					$file .= '<div class="fileInfo">';
+					$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>spoiler image</b></span>';
+					$file .= '</div>';
+					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row2['filename'], 8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" /></a>';
+					$file .= '</div>';
+				
 				} else {
 					$file .= '<div class="file" id="f'.$row2['id'].'">';
 					$file .= '<div class="fileInfo">';
@@ -374,8 +372,6 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 					$file .= '</div>';
 					
 					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row2['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row2['filename'].'" alt="Thumbnail" /></a>';
-					
-				
 					$file .= '</div>';
 				}
 			}

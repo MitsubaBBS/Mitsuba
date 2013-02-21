@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `des` varchar(100) NOT NULL,
   `message` text NOT NULL,
   `bumplimit` int(9) NOT NULL,
+  `spoilers` int(1) NOT NULL,
   PRIMARY KEY (`short`)
 );
 
@@ -142,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `styles` (
   `name` varchar(20) NOT NULL,
   `path` varchar(60) NOT NULL,
   `path_thread` varchar(60) NOT NULL,
+  `path_index` varchar(60) NOT NULL,
   `default` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 );

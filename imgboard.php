@@ -102,8 +102,14 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 				}
 			}
 			
+			$bdata = getBoardData($conn, $_POST['board']);
+			$spoiler = 0;
+			if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1))
+			{
+				$spoiler = 1;
+			}
 			setcookie("password", $password, time() + 86400*256);
-			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, basename($_FILES['upfile']['name']), $resto, $md5);
+			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, basename($_FILES['upfile']['name']), $resto, $md5, $spoiler);
 			if ($is == -16)
 			{
 						echo "<h1>This board does not exist!</h1></body></html>"; exit;
