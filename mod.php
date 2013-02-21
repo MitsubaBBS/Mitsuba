@@ -2169,8 +2169,7 @@ if ($_SESSION['type'] >= 1)
 				{
 					echo "<td><img src='./img/deleted.gif' /></td>";
 				} else {
-					$fileparts = explode('.',$pdata['filename']);
-					echo "<td><img src='./".$row['board']."/src/thumb/".$fileparts[0].".jpg' /></td>";
+					echo "<td><a href='./".$row['board']."/src/".$pdata['filename']." target='_blank'><img src='./".$row['board']."/src/thumb/".$pdata['filename']."' /></a></td>";
 				}
 			} else {
 				echo "<td></td>";
@@ -3033,8 +3032,7 @@ Text:<br />
 						{
 							echo "<td><img src='./img/deleted.gif' /></td>";
 						} else {
-							$fileparts = explode('.',$row['filename']);
-							echo "<td><img src='./".$board['short']."/src/thumb/".$fileparts[0].".jpg' /></td>";
+							echo "<td><a href='./".$board['short']."/src/".$row['filename']."'><img src='./".$board['short']."/src/thumb/".$row['filename']."' /></a></td>";
 						}
 					} else {
 						echo "<td></td>";
@@ -3185,8 +3183,7 @@ Text:<br />
 					{
 						echo "<td><img src='./img/deleted.gif' /></td>";
 					} else {
-						$fileparts = explode('.',$row['filename']);
-						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$fileparts[0].".jpg' /></a></td>";
+						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></a></td>";
 					}
 				} else {
 					echo "<td></td>";
@@ -3304,8 +3301,7 @@ Text:<br />
 					{
 						echo "<td><img src='./img/deleted.gif' /></td>";
 					} else {
-						$fileparts = explode('.',$row['filename']);
-						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$fileparts[0].".jpg' /></a></td>";
+						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></a></td>";
 					}
 				} else {
 					echo "<td></td>";
