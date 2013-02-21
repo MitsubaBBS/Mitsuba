@@ -173,9 +173,8 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./'.$board.'/src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a>-(<span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
 			
 			$file .= '</div>';
-			$fileparts = explode('.',$row['filename']);
 			
-			$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileparts[0].'.jpg" alt="Thumbnail" /></a>';
+			$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row['filename'].'" alt="Thumbnail" /></a>';
 			
 			
 			$file .= '</div>';
@@ -367,9 +366,8 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 					$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./'.$board.'/src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> (<span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
 					
 					$file .= '</div>';
-					$fileparts = explode('.',$row2['filename']);
 					
-					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row2['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileparts[0].'.jpg" alt="Thumbnail" /></a>';
+					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row2['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row2['filename'].'" alt="Thumbnail" /></a>';
 					
 				
 					$file .= '</div>';

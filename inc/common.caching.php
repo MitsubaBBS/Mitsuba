@@ -319,12 +319,11 @@ function generateView($conn, $board, $threadno = 0)
 					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a>-(<span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
 				}
 				$file .= '</div>';
-				$fileparts = explode('.',$row['filename']);
 				if ($threadno != 0)
 				{
-					$file .= '<a class="fileThumb" href="../src/'.$row['filename'].'" target="_blank"><img src="../src/thumb/'.$fileparts[0].'.jpg" alt="Thumbnail"/></a>';
+					$file .= '<a class="fileThumb" href="../src/'.$row['filename'].'" target="_blank"><img src="../src/thumb/'.$row['filename'].'" alt="Thumbnail"/></a>';
 				} else {
-					$file .= '<a class="fileThumb" href="./src/'.$row['filename'].'" target="_blank"><img src="./src/thumb/'.$fileparts[0].'.jpg" alt="Thumbnail"/></a>';
+					$file .= '<a class="fileThumb" href="./src/'.$row['filename'].'" target="_blank"><img src="./src/thumb/'.$row['filename'].'" alt="Thumbnail"/></a>';
 				}
 				
 				$file .= '</div>';
@@ -493,12 +492,12 @@ function generateView($conn, $board, $threadno = 0)
 							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> (<span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
 						}
 						$file .= '</div>';
-						$fileparts = explode('.',$row2['filename']);
+						
 						if ($threadno != 0)
 						{
-							$file .= '<a class="fileThumb" href="../src/'.$row2['filename'].'" target="_blank"><img src="../src/thumb/'.$fileparts[0].'.jpg" alt="Thumbnail"/></a>';
+							$file .= '<a class="fileThumb" href="../src/'.$row2['filename'].'" target="_blank"><img src="../src/thumb/'.$row2['filename'].'" alt="Thumbnail"/></a>';
 						} else {
-							$file .= '<a class="fileThumb" href="./src/'.$row2['filename'].'" target="_blank"><img src="./src/thumb/'.$fileparts[0].'.jpg" alt="Thumbnail"/></a>';
+							$file .= '<a class="fileThumb" href="./src/'.$row2['filename'].'" target="_blank"><img src="./src/thumb/'.$row2['filename'].'" alt="Thumbnail"/></a>';
 						}
 					
 						$file .= '</div>';
@@ -622,12 +621,11 @@ function regenThumbnails($conn, $board)
 	{
 		if ((!empty($row['filename'])) && ($row['filename'] != "deleted"))
 		{
-			$fileparts = explode(".", $row['filename']);
 			if ($row['resto'] != 0)
 			{
-				thumb($board, $fileparts[0], ".".$fileparts[1], 125);
+				thumb($board, $row['filename'], 125);
 			} else {
-				thumb($board, $fileparts[0], ".".$fileparts[1]);
+				thumb($board, $row['filename']);
 			}
 		}
 	}

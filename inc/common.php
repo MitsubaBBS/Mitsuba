@@ -1,4 +1,17 @@
 <?php
+function getGraphicsExtension()
+{
+	if (extension_loaded('imagick'))
+	{
+		return "imagick";
+	} elseif (extension_loaded('gd'))
+	{
+		return "gd";
+	} else {
+		return 0;
+	}
+}
+
 function getBoardData($conn, $short)
 {
 	$result = mysqli_query($conn, "SELECT * FROM boards WHERE short='".mysqli_real_escape_string($conn, $short)."'");
@@ -51,61 +64,94 @@ function getConfigValue($conn, $name)
 	}
 }
 
-function thumb($board,$tim,$ext,$s=250){
-	if(!function_exists("ImageCreate")||!function_exists("ImageCreateFromJPEG"))return;
-	$fname='./'.$board.'/src/'.$tim.$ext;
-	$thumb_dir = './'.$board.'/src/thumb/';	 //thumbnail directory
-	$width	 = $s;			//output width
-	$height	= $s;			//output height
-	// width, height, and type are aquired
-	$size = GetImageSize($fname);
-	try {
-		switch ($size[2]) {
-			case 1 :
-				if(!function_exists("ImageCreateFromGIF"))return;
-				$im_in = ImageCreateFromGIF($fname);
-				if(!$im_in){return -1;}
-				break;
-			case 2 : $im_in = ImageCreateFromJPEG($fname);
-				if(!$im_in){return -1;}
-				break;
-			case 3 :
-				if(!function_exists("ImageCreateFromPNG"))return;
-				$im_in = ImageCreateFromPNG($fname);
-				if(!$im_in){return -1;}
-				break;
-			default : return -2;
-		}
-	} catch (Exception $e)
-	{
-		return -1;
-	}
-	// Resizing
-	if ($size[0] > $width || $size[1] >$height) {
-		$key_w = $width / $size[0];
-		$key_h = $height / $size[1];
-		($key_w < $key_h) ? $keys = $key_w : $keys = $key_h;
-		$out_w = ceil($size[0] * $keys) +1;
-		$out_h = ceil($size[1] * $keys) +1;
-	} else {
-		$out_w = $size[0];
-		$out_h = $size[1];
-	}
-	// the thumbnail is created
-	if(function_exists("ImageCreateTrueColor")){
-		$im_out = ImageCreateTrueColor($out_w, $out_h);
-	}else{$im_out = ImageCreate($out_w, $out_h);}
-	// copy resized original
-	ImageCopyResized($im_out, $im_in, 0, 0, 0, 0, $out_w, $out_h, $size[0], $size[1]);
-	$rcolor = imagecolorallocate($im_out, 255, 255, 238);
-	imagecolortransparent($im_out, $rcolor);
-	// thumbnail saved
+function thumb($board,$filename,$s=250){
+	$extension = getGraphicsExtension();
 	
-	ImageJPEG($im_out, $thumb_dir.$tim.'.jpg',60);
-	chmod($thumb_dir.$tim.'.jpg',0666);
-	// created image is destroyed
-	ImageDestroy($im_in);
-	ImageDestroy($im_out);
+	if ($extension == "gd")
+	{
+		if(!function_exists("ImageCreate")||!function_exists("ImageCreateFromJPEG"))return;
+		$fname='./'.$board.'/src/'.$filename;
+		$thumb_dir = './'.$board.'/src/thumb/';	 //thumbnail directory
+		$width	 = $s;			//output width
+		$height	= $s;			//output height
+		// width, height, and type are aquired
+		$size = GetImageSize($fname);
+		$type = "jpg";
+		try {
+			switch ($size[2]) {
+				case 1 :
+					if(!function_exists("ImageCreateFromGIF"))return;
+					$im_in = ImageCreateFromGIF($fname);
+					$type = "gif";
+					if(!$im_in){return -1;}
+					break;
+				case 2 : $im_in = ImageCreateFromJPEG($fname);
+					$type = "jpg";
+					if(!$im_in){return -1;}
+					break;
+				case 3 :
+					if(!function_exists("ImageCreateFromPNG"))return;
+					$im_in = ImageCreateFromPNG($fname);
+					$type = "png";
+					if(!$im_in){return -1;}
+					break;
+				default : return -2;
+			}
+		} catch (Exception $e)
+		{
+			return -1;
+		}
+		// Resizing
+		if ($size[0] > $width || $size[1] >$height) {
+			$key_w = $width / $size[0];
+			$key_h = $height / $size[1];
+			($key_w < $key_h) ? $keys = $key_w : $keys = $key_h;
+			$out_w = ceil($size[0] * $keys) +1;
+			$out_h = ceil($size[1] * $keys) +1;
+		} else {
+			$out_w = $size[0];
+			$out_h = $size[1];
+		}
+		// the thumbnail is created
+		if(function_exists("ImageCreateTrueColor")){
+			$im_out = ImageCreateTrueColor($out_w, $out_h);
+		}else{$im_out = ImageCreate($out_w, $out_h);}
+		// copy resized original
+		ImageCopyResized($im_out, $im_in, 0, 0, 0, 0, $out_w, $out_h, $size[0], $size[1]);
+		$rcolor = imagecolorallocate($im_out, 255, 255, 238);
+		imagecolortransparent($im_out, $rcolor);
+		// thumbnail saved
+		switch ($type)
+		{
+			case "jpg":
+				ImageJPEG($im_out, $thumb_dir.$filename,60);
+				break;
+			case "png":
+				ImagePNG($im_out, $thumb_dir.$filename, 9);
+				break;
+			case "gif":
+				ImageGIF($im_out, $thumb_dir.$filename);
+				break;
+		}
+		chmod($thumb_dir.$filename,0666);
+		// created image is destroyed
+		ImageDestroy($im_in);
+		ImageDestroy($im_out);
+	} elseif ($extension == "imagick")
+	{
+		$fname='./'.$board.'/src/'.$filename;
+		$thumb_dir = './'.$board.'/src/thumb/'; //thumbnail directory
+		$width = $s; //output width
+		$height = $s; //output height
+		$img = new Imagick($fname);
+		foreach($img as $frame)
+		{
+			$frame->scaleImage($width, $height, true);
+		}
+		$img->setImageCompressionQuality(60); 
+		$img->writeImages($thumb_dir.$filename, true);
+		$img->destroy();
+	}
 }
 
 function delTree($dir) { 

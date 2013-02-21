@@ -90,12 +90,12 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			{
 				if ($resto != 0)
 				{
-					if (thumb($board, $fileid, ".".$ext, 125) < 0)
+					if (thumb($board, $fileid.".".$ext, 125) < 0)
 					{
 						echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
 					}
 				} else {
-					if (thumb($board, $fileid, ".".$ext) < 0)
+					if (thumb($board, $fileid.".".$ext) < 0)
 					{
 						echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
 					}
