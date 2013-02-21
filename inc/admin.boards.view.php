@@ -145,6 +145,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 
 	while ($row = mysqli_fetch_assoc($result))
 	{
+		$opip = $row['ip'];
 		$file .= '<div class="thread" id="t'.$row['id'].'">';
 		$file .= '<div class="postContainer opContainer" id="pc'.$row['id'].'">';
 		$file .= '<div id="p'.$row['id'].'" class="post op">';
@@ -203,7 +204,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 				$file .= '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.'</span>';
 			}
 		}
-		$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row['ip'].'" target="_blank">'.$row['ip'].'</a>)</span>';
+		$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row['ip'].'" target="_blank">'.$row['ip'].'</a>) <b style="color: red;">[ OP ]</b></span>';
 		$file .= ' [<a href="?/info&ip='.$row['ip'].'">N</a>]';
 		$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row['date']).'</span> ';
 	
@@ -321,7 +322,12 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 					$file .= '<span class="nameBlock"><span class="name">'.$row2['name'].'</span>'.$trip.'</span>';
 				}
 			}
-			$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row2['ip'].'" target="_blank">'.$row2['ip'].'</a>) [<a href="?/info&ip='.$row2['ip'].'">N</a>]</span>';
+			$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row2['ip'].'" target="_blank">'.$row2['ip'].'</a>) [<a href="?/info&ip='.$row2['ip'].'">N</a>] '; 
+			if ($row2['ip'] == $opip)
+			{
+				$file .= '<b style="color: red;">[ OP ]</b>';
+			}
+			$file .= '</span>';
 			$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row2['date']).'</span> ' ;
 			if ($threadno != 0)
 			{
