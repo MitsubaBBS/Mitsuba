@@ -63,6 +63,7 @@ Admin password: <input type="text" name="password" value="" /><br />
 		{
 			$db = file_get_contents("./database.sql");
 			$result = mysqli_multi_query($conn, $db);
+			do { $conn->use_result(); } while( $conn->next_result() );
 			if (!$result)
 			{
 			?>
@@ -77,6 +78,7 @@ Admin password: <input type="text" name="password" value="" /><br />
 	<?php
 			} else {
 				$result = mysqli_query($conn, "INSERT INTO users (username, password, type, boards) VALUES ('".mysqli_real_escape_string($conn, $username)."', '".hash("sha512", $password)."', 2, '*')");
+				echo mysqli_error($conn);
 				if (!$result)
 				{
 				?>
