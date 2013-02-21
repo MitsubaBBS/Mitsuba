@@ -209,12 +209,15 @@ function generateView($conn, $board, $threadno = 0)
 			$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
 				<input type="hidden" name="mode" value="regist" />
 				<table class="postForm" id="postForm">
-				<tbody>
-				<tr>
-				<td>Name</td>
-				<td><input name="name" type="text" /></td>
-				</tr>
-				<tr>
+				<tbody>';
+			if ($boarddata['noname'] == 0)
+			{
+				$file .= '<tr>
+					<td>Name</td>
+					<td><input name="name" type="text" /></td>
+					</tr>';
+			}
+			$file .= '<tr>
 				<td>E-mail</td>
 				<td><input name="email" type="text" /></td>
 				</tr>
@@ -662,11 +665,21 @@ function regenThumbnails($conn, $board)
 	{
 		if ((!empty($row['filename'])) && ($row['filename'] != "deleted"))
 		{
-			if ($row['resto'] != 0)
+			if (substr($row['filename'], 0, 8) == "spoiler:")
 			{
-				thumb($board, $row['filename'], 125);
+				if ($row['resto'] != 0)
+				{
+					thumb($board, substr($row['filename'], 8), 125);
+				} else {
+					thumb($board, substr($row['filename'], 8));
+				}
 			} else {
-				thumb($board, $row['filename']);
+				if ($row['resto'] != 0)
+				{
+					thumb($board, $row['filename'], 125);
+				} else {
+					thumb($board, $row['filename']);
+				}
 			}
 		}
 	}

@@ -134,11 +134,20 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	}
 	$lastbumped = time();
 	$trip = "";
-	$name = processString($conn, $name, 1);
-	if (isset($name['trip']))
+	if ($bdata['noname'] == 0)
 	{
-		$trip = $name['trip'];
-		$name = $name['name'];
+		$name = processString($conn, $name, 1);
+		if (isset($name['trip']))
+		{
+			$trip = $name['trip'];
+			$name = $name['name'];
+		}
+	} else {
+		$name = "Anonymous";
+		if (($email != "nonoko") || ($email != "nonokosage") || ($email != "noko") || ($email != "nokosage") || ($email != "sage"))
+		{
+			$email = "";
+		}
 	}
 	$md5 = mysqli_real_escape_string($conn, $md5);
 	mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, sticky, sage, locked, capcode, raw)".

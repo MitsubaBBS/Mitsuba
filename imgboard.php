@@ -69,9 +69,10 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 					$filename = "";
 				}
 			}
+			$bdata = getBoardData($conn, $_POST['board']);
 
 			$name = "Anonymous";
-			if ($_POST['name'] != "") { $name = $_POST['name']; }
+			if (($_POST['name'] != "") && ($bdata['noname'] == 0)) { $name = $_POST['name']; }
 			$resto = 0;
 			if (isset($_POST['resto'])) { $resto = $_POST['resto']; }
 			$password = "";
@@ -102,7 +103,6 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 				}
 			}
 			
-			$bdata = getBoardData($conn, $_POST['board']);
 			$spoiler = 0;
 			if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1))
 			{

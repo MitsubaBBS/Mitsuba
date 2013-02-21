@@ -27,7 +27,7 @@ function createDirectories($board)
 	}
 }
 
-function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0)
+function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0)
 {
 	$short = mysqli_real_escape_string($conn, trim($short, "/ "));
 	$name = mysqli_real_escape_string($conn, $name);
@@ -41,7 +41,11 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 	{
 		$spoilers = 0;
 	}
-	$result = mysqli_query($conn, "INSERT INTO boards (short, name, des, message, bumplimit, spoilers) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.")");
+	if (!is_numeric($noname))
+	{
+		$noname = 0;
+	}
+	$result = mysqli_query($conn, "INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.")");
 	if ($result)
 	{
 		mysqli_query($conn, "CREATE TABLE IF NOT EXISTS `posts_".$short."` (
@@ -81,7 +85,7 @@ function deleteBoard($conn, $short)
 	delTree("./".$short);
 }
 
-function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 0, $new_spoilers = 0)
+function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 0, $new_spoilers = 0, $new_noname = 0)
 {
 	if (isBoard($conn, $short))
 	{
@@ -93,7 +97,11 @@ function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 
 		{
 			$new_spoilers = 0;
 		}
-		mysqli_query($conn, "UPDATE boards SET name='".mysqli_real_escape_string($conn, $new_name)."', des='".mysqli_real_escape_string($conn, $new_des)."', message='".mysqli_real_escape_string($conn, $new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers." WHERE short='".mysqli_real_escape_string($conn, $short)."'");
+		if (!is_numeric($new_noname))
+		{
+			$new_noname = 0;
+		}
+		mysqli_query($conn, "UPDATE boards SET name='".mysqli_real_escape_string($conn, $new_name)."', des='".mysqli_real_escape_string($conn, $new_des)."', message='".mysqli_real_escape_string($conn, $new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers.", noname=".$new_noname." WHERE short='".mysqli_real_escape_string($conn, $short)."'");
 		rebuildBoardCache($conn, $short);
 		return 1;
 	} else {

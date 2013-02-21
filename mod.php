@@ -788,7 +788,12 @@ echo "<td><a href='?/news/delete&b=".$row['id']."'>Delete</a></td>";
 			{
 				$spoilers = 1;
 			}
-			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers) > 0)
+			$noname = 0;
+			if ((!empty($_POST['noname'])) && ($_POST['noname'] == 1))
+			{
+				$noname = 1;
+			}
+			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname) > 0)
 			{
 				?>
 							<div class="box-outer top-box">
@@ -832,7 +837,7 @@ Board name: <input type="text" name="name" maxlenght=40 /><br />
 Board short description (optional): <input type="text" name="des" maxlenght=100 /><br />
 Board message (optional): <br /><textarea cols=70 rows=7 name="msg"></textarea><br />
 Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlenght=9 value="0" /><br />
-Board special options: <input type="checkbox" name="spoilers" value="1" />Allow image spoilers<br />
+Board special options: <input type="checkbox" name="spoilers" value="1" />Allow image spoilers <input type="checkbox" name="noname" value="1" />No name field (forced anonymity)<br />
 <input type="submit" value="Create new board" />
 </form>
 </div>
@@ -875,7 +880,8 @@ echo "<td>Yes</td>";
 echo "<td>No</td>";
 }
 echo "<td>";
-if ($row['spoilers']==1) { echo "<b>Spoilers</b>"; }
+if ($row['spoilers']==1) { echo "<b>Spoilers</b><br />"; }
+if ($row['noname']==1) { echo "<b>No name</b><br />"; }
 echo "</td>";
 echo "<td><a href='?/boards/edit&board=".$row['short']."'>Edit</a></td>";
 echo "<td><a href='?/boards/delete&board=".$row['short']."'>Delete</a></td>";
@@ -978,7 +984,12 @@ echo '</tr>';
 				{
 					$spoilers = 1;
 				}
-				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers))
+				$noname = 0;
+				if ((!empty($_POST['noname'])) && ($_POST['noname'] == 1))
+				{
+					$noname = 1;
+				}
+				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname))
 				{
 				?>
 							<div class="box-outer top-box">
@@ -1074,7 +1085,7 @@ Board name: <input type="text" name="name" maxlenght=40 value="<?php echo $data[
 Board short description (optional): <input type="text" name="des" maxlenght=100 value="<?php echo $data['des']; ?>" /><br />
 Board message (optional): <br /><textarea cols=70 rows=7 name="msg"><?php echo $data['message']; ?></textarea><br />
 Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlenght=9 value="<?php echo $data['bumplimit']; ?>" /><br />
-Board special options: <input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> />Allow image spoilers<br />
+Board special options: <input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> />Allow image spoilers <input type="checkbox" name="noname" value="1" <?php if ($data['noname'] == 1) { echo "checked "; } ?> />No name field (forced anonymity)<br />
 <input type="submit" value="Update board info!" />
 </form>
 </div>
@@ -1400,12 +1411,7 @@ Title: <input type="text" name="title" value="" /><br />
 		<?php
 				} else {
 				//$parent, $url, $url_thread, $title, $short
-					$spoilers = 0;
-					if ((!empty($_POST['spoilers'])) && ($_POST['spoilers'] == 1))
-					{
-						$spoilers = 1;
-					}
-					addBoardLink($conn, $id, $_POST['url'], $_POST['url_thread'], $_POST['url_index'],  $_POST['title'], $_POST['short'], $spoilers);
+					addBoardLink($conn, $id, $_POST['url'], $_POST['url_thread'], $_POST['url_index'],  $_POST['title'], $_POST['short']);
 					
 					?>
 					<meta http-equiv="refresh" content="0;URL='?/links'" />

@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `message` text NOT NULL,
   `bumplimit` int(9) NOT NULL,
   `spoilers` int(1) NOT NULL,
+  `noname` int(1) NOT NULL,
   PRIMARY KEY (`short`)
 );
 
