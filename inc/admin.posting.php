@@ -183,6 +183,7 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 			
 		}
 	}
+	pruneOld($conn, $board);
 	if ($resto == 0)
 	{
 		generateView($conn, $board, $id);
