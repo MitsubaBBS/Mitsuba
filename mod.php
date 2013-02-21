@@ -2066,7 +2066,7 @@ echo '</div>';
 				{
 					$lock = 1;
 				}
-				$bdata = getBoardData($_POST['board']);
+				$bdata = getBoardData($conn, $_POST['board']);
 				$spoiler = 0;
 				if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1))
 				{
