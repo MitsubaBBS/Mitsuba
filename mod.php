@@ -2169,6 +2169,8 @@ if ($_SESSION['type'] >= 1)
 				if ($pdata['filename'] == "deleted")
 				{
 					echo "<td><img src='./img/deleted.gif' /></td>";
+				} elseif (substr($pdata['filename'], 0, 8) == "spoiler:") {
+					echo "<td><a href='./".$row['board']."/src/".substr($pdata['filename'], 8)." target='_blank'><img src='./".$row['board']."/src/thumb/".substr($pdata['filename'], 8)."' /></a></td>";
 				} else {
 					echo "<td><a href='./".$row['board']."/src/".$pdata['filename']." target='_blank'><img src='./".$row['board']."/src/thumb/".$pdata['filename']."' /></a></td>";
 				}
@@ -3029,11 +3031,14 @@ Text:<br />
 					echo "<td>".$row['subject']."</td>";
 					if (!empty($row['filename']))
 					{
+						
 						if ($row['filename'] == "deleted")
 						{
 							echo "<td><img src='./img/deleted.gif' /></td>";
+						} elseif (substr($row['filename'], 0, 8) == "spoiler:") {
+							echo "<td><a href='./".$board['short']."/src/".substr($row['filename'], 8)."' target='_blank'><img src='./".$board['short']."/src/thumb/".substr($row['filename'], 8)."' /></a><br /><b>Spoiler image</b></td>";
 						} else {
-							echo "<td><a href='./".$board['short']."/src/".$row['filename']."'><img src='./".$board['short']."/src/thumb/".$row['filename']."' /></a></td>";
+							echo "<td><a href='./".$board['short']."/src/".$row['filename']."' target='_blank'><img src='./".$board['short']."/src/thumb/".$row['filename']."' /></a></td>";
 						}
 					} else {
 						echo "<td></td>";
@@ -3183,6 +3188,8 @@ Text:<br />
 					if ($row['filename'] == "deleted")
 					{
 						echo "<td><img src='./img/deleted.gif' /></td>";
+					} elseif (substr($row['filename'], 0, 8) == "spoiler:") {
+						echo "<td><a href='./".$row['board']."/src/".substr($row['filename'], 8)."' target='_blank'><img src='./".$row['board']."/src/thumb/".substr($row['filename'], 8)."' /></a><br /><b>Spoiler image</b></td>";
 					} else {
 						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></a></td>";
 					}
@@ -3301,6 +3308,8 @@ Text:<br />
 					if ($row['filename'] == "deleted")
 					{
 						echo "<td><img src='./img/deleted.gif' /></td>";
+					} elseif (substr($row['filename'], 0, 8) == "spoiler:") {
+						echo "<td><a href='./".$row['board']."/src/".substr($row['filename'], 8)."' target='_blank'><img src='./".$row['board']."/src/thumb/".substr($row['filename'], 8)."' /></a><br /><b>Spoiler image</b></td>";
 					} else {
 						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></a></td>";
 					}
