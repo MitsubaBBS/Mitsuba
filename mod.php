@@ -1758,9 +1758,10 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		break;
 	case "/users/add":
 	reqPermission(2);
-		if ((!empty($_POST['username'])) && (!empty($_POST['password'])) && (!empty($_POST['type'])) && (is_numeric($_POST['type'])))
+		if ((!empty($_POST['username'])) && (!empty($_POST['password'])) && (is_numeric($_POST['type'])))
 		{
 			$type = $_POST['type'];
+			if (empty($type)) { $type = 0; }
 			$boards = "";
 			if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
 			{
@@ -1797,7 +1798,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Fill all field!</h2></div>
+<div class="boxbar"><h2>Please, fill all fields!</h2></div>
 <div class="boxcontent"><a href="?/users">[ BACK ]</a></div>
 </div>
 </div>
@@ -1855,7 +1856,7 @@ echo '</div>';
 				?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Fill all fields!</h2></div>
+<div class="boxbar"><h2>Please, fill all fields!</h2></div>
 <div class="boxcontent">
 <a href="?/notes">[ BACK ]</a>
 </div>
