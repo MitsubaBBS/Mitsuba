@@ -18,6 +18,12 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 			{
 				if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
 				{
+						
+					$filename = $postdata['filename'];
+					if (substr($filename, 0, 8) == "spoiler:")
+					{
+						$filename = substr($filename, 8);
+					}
 					unlink("./".$board."/src/".$postdata['filename']);
 					unlink("./".$board."/src/thumb/".$postdata['filename']);
 					mysqli_query($conn, "UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
@@ -39,13 +45,23 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 					$files = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$postdata['id']);
 					while ($file = mysqli_fetch_assoc($files))
 					{
-						unlink("./".$board."/src/".$file['filename']);
-						unlink("./".$board."/src/thumb/".$file['filename']);
+						$filename = $file['filename'];
+						if (substr($filename, 0, 8) == "spoiler:")
+						{
+							$filename = substr($filename, 8);
+						}
+						unlink("./".$board."/src/".$filename);
+						unlink("./".$board."/src/thumb/".$$filename);
 					}
 					if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
 					{
-						unlink("./".$board."/src/".$postdata['filename']);
-						unlink("./".$board."/src/thumb/".$postdata['filename']);
+						$filename = $postdata['filename'];
+						if (substr($filename, 0, 8) == "spoiler:")
+						{
+							$filename = substr($filename, 8);
+						}
+						unlink("./".$board."/src/".$filename);
+						unlink("./".$board."/src/thumb/".$$filename);
 					}
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$postno.";");
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
@@ -56,8 +72,14 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 				} else {
 					if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
 					{
-						unlink("./".$board."/src/".$postdata['filename']);
-						unlink("./".$board."/src/thumb/".$postdata['filename']);
+						
+						$filename = $postdata['filename'];
+						if (substr($filename, 0, 8) == "spoiler:")
+						{
+							$filename = substr($filename, 8);
+						}
+						unlink("./".$board."/src/".$filename);
+						unlink("./".$board."/src/thumb/".$$filename);
 					}
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
 					generateView($conn, $board, $postdata['resto']);
