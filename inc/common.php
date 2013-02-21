@@ -355,4 +355,30 @@ if ((($left > 3) || ($left == -1)) && (mysqli_num_rows($appeals) == 0))
 die();
 }
 }
+
+
+function pruneOld($conn, $board)
+{
+	$board = mysqli_real_escape_string($conn, $board);
+	if (!isBoard($conn, $board))
+	{
+		return -16;
+	}
+	$threads = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=0 ORDER BY sticky DESC, lastbumped DESC LIMIT 160, 2000");
+	while ($row = mysqli_fetch_assoc($threads))
+	{
+		$files = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$row['id']);
+		while ($file = mysqli_fetch_assoc($files))
+		{
+			unlink("./".$board."/src/".$file['filename']);
+			unlink("./".$board."/src/thumb/".$file['filename']);
+		}
+		unlink("./".$board."/src/".$row['filename']);
+		unlink("./".$board."/src/thumb/".$row['filename']);
+		
+		mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$row['id']);
+		mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$row['id']);
+		unlink("./".$board."/res/".$row['id'].".html");
+	}
+}
 ?>
