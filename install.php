@@ -97,7 +97,7 @@ Admin password: <input type="text" name="password" value="" /><br />
 				$file .= 'date_default_timezone_set("UTC")'."\n";
 				$file .= '$db_username = "'.$db_username.'"'."\n";
 				$file .= '$db_password = "'.$db_password.'"'."\n";
-				$file .= '$db_database = "'.$db_database.'"'."\n";
+				$file .= '$db_database = "'.$db_name.'"'."\n";
 				$file .= '$db_host = "'.$db_host.'"'."\n";
 				$file .= '?>'."\n";
 				?>
