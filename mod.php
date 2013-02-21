@@ -1949,7 +1949,7 @@ echo '</div>';
 				if (!empty($_FILES['upfile']['name']))
 				{
 					$target_path = "./".$board."/src/";
-					$fileid = time() . rand(10000000, 999999999);
+					$fileid = time() . mt_rand(10000000, 999999999);
 					$ext = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
 					$filename = $fileid . "." . $ext; 
 					$target_path .= $filename;
