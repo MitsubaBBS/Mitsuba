@@ -16,8 +16,10 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 		
 			if ($onlyimgdel == 1)
 			{
-				if (!empty($postdata['filename']))
+				if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
 				{
+					unlink("./".$board."/src/".$postdata['filename']);
+					unlink("./".$board."/src/thumb/".$postdata['filename']);
 					mysqli_query($conn, "UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
 					if ($postdata['resto'] != 0)
 					{
@@ -34,6 +36,17 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 			} else {
 				if ($postdata['resto'] == 0) //we'll have to delete whole thread
 				{
+					$files = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$postdata['id']);
+					while ($file = mysqli_fetch_assoc($files))
+					{
+						unlink("./".$board."/src/".$file['filename']);
+						unlink("./".$board."/src/thumb/".$file['filename']);
+					}
+					if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
+					{
+						unlink("./".$board."/src/".$postdata['filename']);
+						unlink("./".$board."/src/thumb/".$postdata['filename']);
+					}
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$postno.";");
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
 					unlink("./".$board."/res/".$postno.".html");
@@ -41,6 +54,11 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 					generateView($conn, $board);
 					return 2; //done post
 				} else {
+					if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
+					{
+						unlink("./".$board."/src/".$postdata['filename']);
+						unlink("./".$board."/src/thumb/".$postdata['filename']);
+					}
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
 					generateView($conn, $board, $postdata['resto']);
 					generateView($conn, $board);
