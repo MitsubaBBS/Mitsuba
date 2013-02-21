@@ -1588,12 +1588,19 @@ echo "<option value='",$row['short']."'>/".$row['short']."/ - ".$row['name']."</
 </select><br />
 <br />
 <?php
-if (!empty($postinfo))
+if ((!empty($postinfo)) && ((empty($_GET['d'])) || ($_GET['d'] != 1)))
 {
 ?>
 <input type="hidden" name="post" value="<?php echo $post; ?>" />
 <input type="hidden" name="board" value="<?php echo $board; ?>" />
 Append text to post: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/>Yes<br/>
+<?php
+}
+
+if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
+{
+?>
+<input type="hidden" name="delete" value="1" /><b>POST WILL BE DELETED</b>
 <?php
 }
 ?>
@@ -1637,7 +1644,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		}
 			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
 		addBan($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
-		if ((!empty($_GET['d'])) && ($_GET['d']==1))
+		if ((!empty($_POST['delete'])) && ($_POST['delete']==1))
 		{
 			deletePostMod($conn, $board, $post);
 		} else {
