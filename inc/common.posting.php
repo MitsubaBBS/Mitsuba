@@ -149,13 +149,24 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 			$email = "";
 		}
 	}
+	$old_email = $email;
+	if (($email == "noko") || ($email == "nonoko"))
+	{
+		$email = "";
+	}
+	if (($email = "nokosage") || ($email == "nonokosage"))
+	{
+		$email = "sage";
+		$old_email = "sage";
+	}
 	$md5 = mysqli_real_escape_string($conn, $md5);
 	mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, sticky, sage, locked, capcode, raw)".
 	"VALUES (".time().", '".$name."', '".$trip."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', 0, 0, 0, 0, 0)");
 	$id = mysqli_insert_id($conn);
+	$email = $old_email;
 	if ($resto != 0)
 	{
-		if (($email == "sage") || ($email == "nokosage") || ($email == "nonokosage") || ($tinfo['sage'] == 1) || ($replies > $bdata['bumplimit']))
+		if (($email == "sage") || ($tinfo['sage'] == 1) || ($replies > $bdata['bumplimit']))
 		{
 		
 		} else {
