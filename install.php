@@ -62,7 +62,7 @@ Admin password: <input type="text" name="password" value="" /><br />
 		if (file_exists("./database.sql"))
 		{
 			$db = file_get_contents("./database.sql");
-			$result = mysqli_query($conn, $db);
+			$result = mysqli_multi_query($conn, $db);
 			if (!$result)
 			{
 			?>

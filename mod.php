@@ -85,9 +85,6 @@ function processEntry($conn, $string)
 	}
 	return $new;
 }
-?>
-
-<?php
 if (count($_GET) == 0)
 {
 	$path = "/";

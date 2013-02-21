@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS `announcements` (
   `text` text NOT NULL,
   `mod_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `appeals` (
   `id` int(30) NOT NULL AUTO_INCREMENT,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `appeals` (
   `email` varchar(70) NOT NULL,
   `rangeban` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `bans` (
   `id` int(30) NOT NULL AUTO_INCREMENT,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `bans` (
   `expires` int(30) NOT NULL,
   `boards` text NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `boards` (
   `short` varchar(10) NOT NULL,
@@ -38,13 +38,13 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `message` text NOT NULL,
   `bumplimit` int(9) NOT NULL,
   PRIMARY KEY (`short`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `config` (
   `name` varchar(100) NOT NULL,
   `value` text NOT NULL,
   UNIQUE KEY `name` (`name`)
-) ;
+);
 
 INSERT INTO `config` (`name`, `value`) VALUES
 ('boardLinks', ''),
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `ip_notes` (
   `created` int(30) NOT NULL,
   `mod_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `links` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `links` (
   `title` varchar(40) NOT NULL,
   `short` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `log` (
   `id` int(50) NOT NULL AUTO_INCREMENT,
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `event` varchar(300) NOT NULL,
   `mod_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `text` text NOT NULL,
   `mod_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `notes` (
   `id` int(15) NOT NULL AUTO_INCREMENT,
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `notes` (
   `note` text NOT NULL,
   `created` int(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `pm` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `pm` (
   `text` text NOT NULL,
   `read_msg` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `rangebans` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `rangebans` (
   `mod_id` int(10) NOT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `reports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
   `created` int(30) NOT NULL,
   `board` varchar(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `styles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `styles` (
   `path_thread` varchar(60) NOT NULL,
   `default` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -154,13 +154,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `boards` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ;
-
-INSERT INTO `users` (`id`, `username`, `password`, `type`, `boards`) VALUES
-(1, 'root', '99adc231b045331e514a516b4b7680f588e3823213abe901738bc3ad67b2f6fcb3c64efb93d18002588d3ccc1a49efbae1ce20cb43df36b38651f11fa75678e8', 2, '*');
+);
 
 CREATE TABLE IF NOT EXISTS `wordfilter` (
   `search` varchar(100) NOT NULL,
   `replace` varchar(100) NOT NULL,
   `active` int(1) NOT NULL
-) ;
+);
