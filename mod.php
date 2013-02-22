@@ -2231,6 +2231,7 @@ echo '</div>';
 				<?php
 				
 				$md5 = "";
+				$bdata = getBoardData($conn, $_POST['board']);
 				if (!empty($_POST['embed']))
 				{
 					if ((isEmbed($_POST['embed'])) && ($bdata['embeds']==1))
@@ -2331,7 +2332,6 @@ echo '</div>';
 				{
 					$lock = 1;
 				}
-				$bdata = getBoardData($conn, $_POST['board']);
 				$spoiler = 0;
 				if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1) && (substr($filename, 0, 6) != "embed:"))
 				{
