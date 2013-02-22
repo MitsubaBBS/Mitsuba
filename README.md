@@ -27,6 +27,7 @@ Planned features
 Credits
 -------
 onexxen - creator and developer of Project Mitsuba
+
 skandal - first betatester, helped with bughunting
 
 License
