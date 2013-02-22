@@ -2192,21 +2192,19 @@ echo '</div>';
 				<?php
 				
 				$md5 = "";
-				if (!empty($_FILES['upfile']['name']))
+				if (!empty($_FILES['upfile']['tmp_name']))
 				{
 					$target_path = "./".$board."/src/";
 					$fileid = time() . mt_rand(10000000, 999999999);
 					$ext = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
 					$filename = $fileid . "." . $ext; 
 					$target_path .= $filename;
-					
 					$file_size = $_FILES['upfile']['size'];
 					if ($file_size > 2097152)
 					{
 						echo "<h1>File size too big!</h1></body></html>";
 						exit;
 					}
-					
 					if (!isImage($_FILES['upfile']['tmp_name']))
 					{
 						echo "<h1>File is not an image!</h1></body></html>";
@@ -3580,7 +3578,7 @@ if ($_SESSION['type']>=1)
 $result = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
 if (mysqli_num_rows($result) == 1)
 {
-$post = mysqli_fetch_assoc($conn, $result);
+$post = mysqli_fetch_assoc($result);
 $resto = $post['resto'];
 if ($resto == 0) { $resto = $post['id']; }
 echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>D</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";

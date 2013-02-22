@@ -265,12 +265,31 @@ function preprocessComment($conn, $string)
 
 function isImage($path)
 {
-	$a = getimagesize($path);
-	$image_type = $a[2];
-
-	if(in_array($image_type , array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG)))
+	if (function_exists("finfo_file"))
 	{
-		return true;
+		$finfo = finfo_open();
+		$mime = finfo_file($finfo, $path);
+		if (($mime == "image/jpeg") || ($mime == "image/png") || ($mime == "image/gif"))
+		{
+			return true;
+		}
+	} elseif (function_exists("mime_content_type"))
+	{
+		$mime = mime_content_type($path);
+		if (($mime == "image/jpeg") || ($mime == "image/png") || ($mime == "image/gif"))
+		{
+			return true;
+		}
+	} elseif (function_exists("getimagesize")) {
+		$a = getimagesize($path);
+		$image_type = $a[2];
+
+		if(in_array($image_type , array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG)))
+		{
+			return true;
+		}
+	} else {
+		return false;
 	}
 	return false;
 }

@@ -42,14 +42,13 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			<?php
 			
 			$md5 = "";
-			if (!empty($_FILES['upfile']['name']))
+			if (!empty($_FILES['upfile']['tmp_name']))
 			{
 				$target_path = "./".$board."/src/";
 				$fileid = time() . mt_rand(10000000, 999999999);
 				$ext = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
 				$filename = $fileid . "." . $ext; 
 				$target_path .= $filename;
-				
 				$file_size = $_FILES['upfile']['size'];
 				if ($file_size > 2097152)
 				{
