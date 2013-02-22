@@ -242,6 +242,10 @@ function generateView($conn, $board, $threadno = 0)
 			{
 				$file .= '<label><input type="checkbox" name="spoiler" value="1">Spoiler Image?</label>';
 			}
+			if ($boarddata['embeds'] == 1)
+			{
+				$file .= '<br />Embed: <input type="text" name="embed"/>';
+			}
 			$file .= '</td>
 				</tr>
 				<tr>
@@ -334,6 +338,16 @@ function generateView($conn, $board, $threadno = 0)
 				} else {
 					$file .= '<a class="fileThumb" href="./src/'.$row['filename'].'" target="_blank"><img src="../img/spoiler.png" alt="Deleted"/></a>';
 				}
+				$file .= '</div>';
+			} elseif (substr($row['filename'], 0, 6) == "embed:")
+			{
+				$file .= '<div class="file" id="f'.$row['id'].'">';
+				$file .= '<div class="fileInfo">';
+				$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>Embed</b></span>';
+				
+				$file .= '</div>';
+				$file .= '<a class="fileThumb">'.getEmbed(substr($row['filename'], 6)).'</a>';
+				
 				$file .= '</div>';
 			} else {
 				$file .= '<div class="file" id="f'.$row['id'].'">';
@@ -536,6 +550,16 @@ function generateView($conn, $board, $threadno = 0)
 							$file .= '<a class="fileThumb" href="./src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../img/spoiler.png" alt="Deleted"/></a>';
 						}
 						$file .= '</div>';
+					} elseif (substr($row2['filename'], 0, 6) == "embed:")
+					{
+						$file .= '<div class="file" id="f'.$row2['id'].'">';
+						$file .= '<div class="fileInfo">';
+						$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>Embed</b></span>';
+						
+						$file .= '</div>';
+						$file .= '<a class="fileThumb">'.getEmbed(substr($row2['filename'], 6), 125).'</a>';
+						
+						$file .= '</div>';
 					} else {
 						$file .= '<div class="file" id="f'.$row2['id'].'">';
 						$file .= '<div class="fileInfo">';
@@ -683,7 +707,7 @@ function regenThumbnails($conn, $board)
 				} else {
 					thumb($board, substr($row['filename'], 8));
 				}
-			} else {
+			} elseif (substr($row['filename'], 0, 6) != "embed:") {
 				if ($row['resto'] != 0)
 				{
 					thumb($board, $row['filename'], 125);

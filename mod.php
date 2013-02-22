@@ -80,7 +80,7 @@ function processEntry($conn, $string)
 	{
 		if (substr($line, 0, 1) != "<")
 		{
-			$new .= "<p>".$line."</p>";
+			$new .= "<p>".strip_tags($line, "<script><style><link><meta><iframe><frame><canvas>")."</p>";
 		}
 	}
 	return $new;
@@ -801,7 +801,12 @@ echo "<td><a href='?/news/delete&b=".$row['id']."'>Delete</a></td>";
 			{
 				$ids = 1;
 			}
-			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids) > 0)
+			$embeds = 0;
+			if ((!empty($_POST['embeds'])) && ($_POST['embeds'] == 1))
+			{
+				$embeds = 1;
+			}
+			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds) > 0)
 			{
 				?>
 							<div class="box-outer top-box">
@@ -846,6 +851,7 @@ Board short description (optional): <input type="text" name="des" maxlenght=100 
 Board message (optional): <br /><textarea cols=70 rows=7 name="msg"></textarea><br />
 Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlenght=9 value="0" /><br />
 Board special options: <input type="checkbox" name="spoilers" value="1" />Allow image spoilers <input type="checkbox" name="noname" value="1" />No name field (forced anonymity) <input type="checkbox" name="ids" value="1" />Poster IDs<br />
+<input type="checkbox" name="embeds" value="1" />Allow embeds <br />
 <input type="submit" value="Create new board" />
 </form>
 </div>
@@ -891,6 +897,7 @@ echo "<td>";
 if ($row['spoilers']==1) { echo "<b>Spoilers</b><br />"; }
 if ($row['noname']==1) { echo "<b>No name</b><br />"; }
 if ($row['ids']==1) { echo "<b>Poster IDs</b><br />"; }
+if ($row['embeds']==1) { echo "<b>Embeds</b><br />"; }
 echo "</td>";
 echo "<td><a href='?/boards/edit&board=".$row['short']."'>Edit</a></td>";
 echo "<td><a href='?/boards/delete&board=".$row['short']."'>Delete</a></td>";
@@ -1003,7 +1010,12 @@ echo '</tr>';
 				{
 					$ids = 1;
 				}
-				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids))
+				$embeds = 0;
+				if ((!empty($_POST['embeds'])) && ($_POST['embeds'] == 1))
+				{
+					$embeds = 1;
+				}
+				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds))
 				{
 				?>
 							<div class="box-outer top-box">
@@ -1100,6 +1112,7 @@ Board short description (optional): <input type="text" name="des" maxlenght=100 
 Board message (optional): <br /><textarea cols=70 rows=7 name="msg"><?php echo $data['message']; ?></textarea><br />
 Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlenght=9 value="<?php echo $data['bumplimit']; ?>" /><br />
 Board special options: <input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> />Allow image spoilers <input type="checkbox" name="noname" value="1" <?php if ($data['noname'] == 1) { echo "checked "; } ?> />No name field (forced anonymity) <input type="checkbox" name="ids" value="1" <?php if ($data['ids'] == 1) { echo "checked "; } ?> />Poster IDs<br />
+<input type="checkbox" name="embeds" value="1" <?php if ($data['embeds'] == 1) { echo "checked "; } ?> />Allow embeds <br />
 <input type="submit" value="Update board info!" />
 </form>
 </div>
@@ -2218,38 +2231,48 @@ echo '</div>';
 				<?php
 				
 				$md5 = "";
-				if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
+				if (!empty($_POST['embed']))
 				{
-					echo "<h1>File size too big!</h1></body></html>";
-					exit;
-				}
-				if (!empty($_FILES['upfile']['tmp_name']))
-				{
-					$target_path = "./".$board."/src/";
-					$fileid = time() . mt_rand(10000000, 999999999);
-					$ext = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
-					$filename = $fileid . "." . $ext; 
-					$target_path .= $filename;
-					$file_size = $_FILES['upfile']['size'];
-					if ($file_size > 2097152)
+					if ((isEmbed($_POST['embed'])) && ($bdata['embeds']==1))
+					{
+						$filename = "embed:".$_POST['embed'];
+					} else {
+						echo "<center><h1>Embed not supported!</h1></center></body></html>";
+						exit;
+					}
+				} else {
+					if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 					{
 						echo "<h1>File size too big!</h1></body></html>";
 						exit;
 					}
-					if (!isImage($_FILES['upfile']['tmp_name']))
+					if (!empty($_FILES['upfile']['tmp_name']))
 					{
-						echo "<h1>File is not an image!</h1></body></html>";
-						exit;
-					}
-					$md5 = md5_file($_FILES['upfile']['tmp_name']);
-					if(move_uploaded_file($_FILES['upfile']['tmp_name'], $target_path)) {
-						echo "The file ".basename( $_FILES['upfile']['name'])." has been uploaded";
-					} else {
-						echo "There was an error uploading the file, please try again!";
-						$filename = "";
+						$target_path = "./".$board."/src/";
+						$fileid = time() . mt_rand(10000000, 999999999);
+						$ext = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
+						$filename = $fileid . "." . $ext; 
+						$target_path .= $filename;
+						$file_size = $_FILES['upfile']['size'];
+						if ($file_size > 2097152)
+						{
+							echo "<h1>File size too big!</h1></body></html>";
+							exit;
+						}
+						if (!isImage($_FILES['upfile']['tmp_name']))
+						{
+							echo "<h1>File is not an image!</h1></body></html>";
+							exit;
+						}
+						$md5 = md5_file($_FILES['upfile']['tmp_name']);
+						if(move_uploaded_file($_FILES['upfile']['tmp_name'], $target_path)) {
+							echo "The file ".basename( $_FILES['upfile']['name'])." has been uploaded";
+						} else {
+							echo "There was an error uploading the file, please try again!";
+							$filename = "";
+						}
 					}
 				}
-
 				$name = "Anonymous";
 				if (!empty($_POST['name'])) { $name = $_POST['name']; }
 				$resto = 0;
@@ -2310,19 +2333,26 @@ echo '</div>';
 				}
 				$bdata = getBoardData($conn, $_POST['board']);
 				$spoiler = 0;
-				if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1))
+				if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1) && (substr($filename, 0, 6) != "embed:"))
 				{
 					$spoiler = 1;
 				}
-				$fname = $_FILES['upfile']['name'];
-				$filename = "";
-				if (empty($_FILES['upfile']['tmp_name']))
+				$embed = 0;
+				if (substr($filename, 0, 6) != "embed:")
 				{
-					$fname = "";
+					$fname = $_FILES['upfile']['name'];
+					$filename = "";
+					if (empty($_FILES['upfile']['tmp_name']))
+					{
+						$fname = "";
+					} else {
+						$filename = $fileid.".".$ext;
+					}
 				} else {
-					$filename = $fileid.".".$ext;
+					$embed = 1;
+					$fname = "embed";
 				}
-				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler, $capcode, $raw, $sticky, $lock, $nolimit);
+				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler, $embed, $capcode, $raw, $sticky, $lock, $nolimit);
 				if ($is == -16)
 				{
 					echo "<h1>This board does not exist!</h1></body></html>"; exit;
@@ -2421,6 +2451,8 @@ if ($_SESSION['type'] >= 1)
 					echo "<td><img src='./img/deleted.gif' /></td>";
 				} elseif (substr($pdata['filename'], 0, 8) == "spoiler:") {
 					echo "<td><a href='./".$row['board']."/src/".substr($pdata['filename'], 8)." target='_blank'><img src='./".$row['board']."/src/thumb/".substr($pdata['filename'], 8)."' /></a></td>";
+				} elseif (substr($pdata['filename'], 0, 6) == "embed:") {
+					echo "<td><a href='".substr($pdata['filename'], 6)."'>Embed</a></td>";
 				} else {
 					echo "<td><a href='./".$row['board']."/src/".$pdata['filename']." target='_blank'><img src='./".$row['board']."/src/thumb/".$pdata['filename']."' /></a></td>";
 				}
@@ -3288,6 +3320,8 @@ Text:<br />
 							echo "<td><img src='./img/deleted.gif' /></td>";
 						} elseif (substr($row['filename'], 0, 8) == "spoiler:") {
 							echo "<td><a href='./".$board['short']."/src/".substr($row['filename'], 8)."' target='_blank'><img src='./".$board['short']."/src/thumb/".substr($row['filename'], 8)."' /></a><br /><b>Spoiler image</b></td>";
+						} elseif (substr($row['filename'], 0, 6) == "embed:") {
+							echo "<td><a href='".substr($row['filename'], 6)."'>Embed</a></td>";
 						} else {
 							echo "<td><a href='./".$board['short']."/src/".$row['filename']."' target='_blank'><img src='./".$board['short']."/src/thumb/".$row['filename']."' /></a></td>";
 						}
@@ -3441,6 +3475,8 @@ Text:<br />
 						echo "<td><img src='./img/deleted.gif' /></td>";
 					} elseif (substr($row['filename'], 0, 8) == "spoiler:") {
 						echo "<td><a href='./".$row['board']."/src/".substr($row['filename'], 8)."' target='_blank'><img src='./".$row['board']."/src/thumb/".substr($row['filename'], 8)."' /></a><br /><b>Spoiler image</b></td>";
+					} elseif (substr($row['filename'], 0, 6) == "embed:") {
+						echo "<td><a href='".substr($row['filename'], 6)."'>Embed</a></td>";
 					} else {
 						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></a></td>";
 					}
@@ -3561,6 +3597,8 @@ Text:<br />
 						echo "<td><img src='./img/deleted.gif' /></td>";
 					} elseif (substr($row['filename'], 0, 8) == "spoiler:") {
 						echo "<td><a href='./".$row['board']."/src/".substr($row['filename'], 8)."' target='_blank'><img src='./".$row['board']."/src/thumb/".substr($row['filename'], 8)."' /></a><br /><b>Spoiler image</b></td>";
+					} elseif (substr($row['filename'], 0, 6) == "embed:") {
+						echo "<td><a href='".substr($row['filename'], 6)."'>Embed</a></td>";
 					} else {
 						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></a></td>";
 					}

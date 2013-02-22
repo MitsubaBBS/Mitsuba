@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `spoilers` int(1) NOT NULL,
   `noname` int(1) NOT NULL,
   `ids` int(1) NOT NULL,
+  `embeds` int(1) NOT NULL,
   PRIMARY KEY (`short`)
 );
 

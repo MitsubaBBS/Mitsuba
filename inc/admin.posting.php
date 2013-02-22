@@ -24,8 +24,11 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 					{
 						$filename = substr($filename, 8);
 					}
-					unlink("./".$board."/src/".$postdata['filename']);
-					unlink("./".$board."/src/thumb/".$postdata['filename']);
+					if (substr($filename, 0, 6) != "embed:")
+					{
+						unlink("./".$board."/src/".$filename);
+						unlink("./".$board."/src/thumb/".$filename);
+					}
 					mysqli_query($conn, "UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
 					if ($postdata['resto'] != 0)
 					{
@@ -50,8 +53,11 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 						{
 							$filename = substr($filename, 8);
 						}
-						unlink("./".$board."/src/".$filename);
-						unlink("./".$board."/src/thumb/".$$filename);
+						if (substr($filename, 0, 6) != "embed:")
+						{
+							unlink("./".$board."/src/".$filename);
+							unlink("./".$board."/src/thumb/".$filename);
+						}
 					}
 					if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
 					{
@@ -60,8 +66,11 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 						{
 							$filename = substr($filename, 8);
 						}
-						unlink("./".$board."/src/".$filename);
-						unlink("./".$board."/src/thumb/".$filename);
+						if (substr($filename, 0, 6) != "embed:")
+						{
+							unlink("./".$board."/src/".$filename);
+							unlink("./".$board."/src/thumb/".$filename);
+						}
 					}
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$postno.";");
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
@@ -78,8 +87,11 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 						{
 							$filename = substr($filename, 8);
 						}
-						unlink("./".$board."/src/".$filename);
-						unlink("./".$board."/src/thumb/".$filename);
+						if (substr($filename, 0, 6) != "embed:")
+						{
+							unlink("./".$board."/src/".$filename);
+							unlink("./".$board."/src/thumb/".$filename);
+						}
 					}
 					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
 					generateView($conn, $board, $postdata['resto']);
@@ -120,7 +132,7 @@ function generatePost($conn, $board, $id)
 	}
 }
 
-function addPostMod($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = 0, $md5 = "", $spoiler = 0, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
+function addPostMod($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = 0, $md5 = "", $spoiler = 0, $embed = 0, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
 {
 	if (!isBoard($conn, $board))
 	{
@@ -166,9 +178,16 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 	}
 
 	$bdata = getBoardData($conn, $board);
+	$fname2 = $filename;
 	if ((!empty($filename)) && ($spoiler == 1) && ($bdata['spoilers'] == 1))
 	{
 		$filename = "spoiler:".$filename;
+	}
+	$embed_img = 0;
+	if ((!empty($filename)) && ($embed == 1) && ($bdata['embeds'] == 1))
+	{
+		$fname2 = "embed";
+		$embed_img = 1;
 	}
 	$thread = "";
 	$tinfo = "";
@@ -213,13 +232,10 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 		}
 		
 	}
-	//mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, sticky, sage, locked, capcode, raw)".
-	//"VALUES (".time().", '".$name."', '".$trip."', '".mysqli_real_escape_string($conn, $poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', 0, 0, 0, 0, 0)");
-	//$id = mysqli_insert_id($conn);
 	$md5 = mysqli_real_escape_string($conn, $md5);
 	$isize = "";
 	$fsize = "";
-	if (!empty($filename))
+	if ((!empty($fname2)) || ($fname2 != "embed"))
 	{
 		$d = getimagesize("./".$board."/src/".$filename);
 		$isize = $d[0]."x".$d[1];

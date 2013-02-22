@@ -26,8 +26,11 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 						{
 							$filename = substr($filename, 8);
 						}
-						unlink("./".$board."/src/".$postdata['filename']);
-						unlink("./".$board."/src/thumb/".$postdata['filename']);
+						if (substr($filename, 0, 6) != "embed:")
+						{
+							unlink("./".$board."/src/".$filename);
+							unlink("./".$board."/src/thumb/".$filename);
+						}
 						mysqli_query($conn, "UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
 						if ($postdata['resto'] != 0)
 						{
@@ -52,8 +55,11 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 							{
 								$filename = substr($filename, 8);
 							}
-							unlink("./".$board."/src/".$filename);
-							unlink("./".$board."/src/thumb/".$filename);
+							if (substr($filename, 0, 6) != "embed:")
+							{
+								unlink("./".$board."/src/".$filename);
+								unlink("./".$board."/src/thumb/".$filename);
+							}
 						}
 						if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
 						{
@@ -62,8 +68,11 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 							{
 								$filename = substr($filename, 8);
 							}
-							unlink("./".$board."/src/".$filename);
-							unlink("./".$board."/src/thumb/".$filename);
+							if (substr($filename, 0, 6) != "embed:")
+							{
+								unlink("./".$board."/src/".$filename);
+								unlink("./".$board."/src/thumb/".$filename);
+							}
 						}
 						mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$postno.";");
 						mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
@@ -80,8 +89,11 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 							{
 								$filename = substr($filename, 8);
 							}
-							unlink("./".$board."/src/".$filename);
-							unlink("./".$board."/src/thumb/".$filename);
+							if (substr($filename, 0, 6) != "embed:")
+							{
+								unlink("./".$board."/src/".$filename);
+								unlink("./".$board."/src/thumb/".$filename);
+							}
 						}
 						mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
 						generateView($conn, $board, $postdata['resto']);
@@ -100,7 +112,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 	}
 }
 
-function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $spoiler = 0)
+function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $spoiler = 0, $embed = 0)
 {
 	if (!isBoard($conn, $board))
 	{
@@ -123,9 +135,16 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	}
 	
 	$bdata = getBoardData($conn, $board);
+	$fname2 = $filename;
 	if ((!empty($filename)) && ($spoiler == 1) && ($bdata['spoilers'] == 1))
 	{
 		$filename = "spoiler:".$filename;
+	}
+	$embed_img = 0;
+	if ((!empty($filename)) && ($embed == 1) && ($bdata['embeds'] == 1))
+	{
+		$fname2 = "embed";
+		$embed_img = 1;
 	}
 	$thread = "";
 	$tinfo = "";
@@ -201,7 +220,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	}
 	$isize = "";
 	$fsize = "";
-	if (!empty($filename))
+	if ((!empty($fname2)) && ($fname2 != "embed"))
 	{
 		$d = getimagesize("./".$board."/src/".$filename);
 		$isize = $d[0]."x".$d[1];

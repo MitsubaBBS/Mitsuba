@@ -42,38 +42,49 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			<?php
 			
 			$md5 = "";
-			if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
+			$bdata = getBoardData($conn, $_POST['board']);
+			if (!empty($_POST['embed']))
 			{
-				echo "<h1>File size too big!</h1></body></html>";
-				exit;
-			}
-			if (!empty($_FILES['upfile']['tmp_name']))
-			{
-				$target_path = "./".$board."/src/";
-				$fileid = time() . mt_rand(10000000, 999999999);
-				$ext = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
-				$filename = $fileid . "." . $ext; 
-				$target_path .= $filename;
-				$file_size = $_FILES['upfile']['size'];
-				if ($file_size > 2097152)
+				if ((isEmbed($_POST['embed'])) && ($bdata['embeds']==1))
+				{
+					$filename = "embed:".$_POST['embed'];
+				} else {
+					echo "<center><h1>Embed not supported!</h1></center></body></html>";
+					exit;
+				}
+			} else {
+				if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 				{
 					echo "<h1>File size too big!</h1></body></html>";
 					exit;
 				}
-				if (!isImage($_FILES['upfile']['tmp_name']))
+				if (!empty($_FILES['upfile']['tmp_name']))
 				{
-					echo "<h1>File is not an image!</h1></body></html>";
-					exit;
-				}
-				$md5 = md5_file($_FILES['upfile']['tmp_name']);
-				if(move_uploaded_file($_FILES['upfile']['tmp_name'], $target_path)) {
-					echo "The file ".basename( $_FILES['upfile']['name'])." has been uploaded";
-				} else {
-					echo "There was an error uploading the file, please try again!";
-					$filename = "";
+					$target_path = "./".$board."/src/";
+					$fileid = time() . mt_rand(10000000, 999999999);
+					$ext = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
+					$filename = $fileid . "." . $ext; 
+					$target_path .= $filename;
+					$file_size = $_FILES['upfile']['size'];
+					if ($file_size > 2097152)
+					{
+						echo "<h1>File size too big!</h1></body></html>";
+						exit;
+					}
+					if (!isImage($_FILES['upfile']['tmp_name']))
+					{
+						echo "<h1>File is not an image!</h1></body></html>";
+						exit;
+					}
+					$md5 = md5_file($_FILES['upfile']['tmp_name']);
+					if(move_uploaded_file($_FILES['upfile']['tmp_name'], $target_path)) {
+						echo "The file ".basename( $_FILES['upfile']['name'])." has been uploaded";
+					} else {
+						echo "There was an error uploading the file, please try again!";
+						$filename = "";
+					}
 				}
 			}
-			$bdata = getBoardData($conn, $_POST['board']);
 
 			$name = "Anonymous";
 			if ((!empty($_POST['name'])) && ($bdata['noname'] == 0)) { $name = $_POST['name']; }
@@ -108,20 +119,27 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			}
 			
 			$spoiler = 0;
-			if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1))
+			if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1) && (substr($filename, 0, 6) != "embed:"))
 			{
 				$spoiler = 1;
 			}
 			setcookie("password", $password, time() + 86400*256);
-			$fname = $_FILES['upfile']['name'];
-			$filename = "";
-			if (empty($_FILES['upfile']['tmp_name']))
+			$embed = 0;
+			if (substr($filename, 0, 6) != "embed:")
 			{
-				$fname = "";
+				$fname = $_FILES['upfile']['name'];
+				$filename = "";
+				if (empty($_FILES['upfile']['tmp_name']))
+				{
+					$fname = "";
+				} else {
+					$filename = $fileid.".".$ext;
+				}
 			} else {
-				$filename = $fileid.".".$ext;
+				$embed = 1;
+				$fname = "embed";
 			}
-			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler);
+			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler, $embed);
 			if ($is == -16)
 			{
 						echo "<h1>This board does not exist!</h1></body></html>"; exit;

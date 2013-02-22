@@ -1,4 +1,44 @@
 <?php
+function getEmbed($url, $s = 250) {
+	if(preg_match('/http(s)?:\/\/(www\.)?youtube\.com\/watch\?v=([^&]+)/', $url, $vresult)) {
+		$type= 'youtube';
+		return '<iframe width="'.$s.'" height="'.$s.'" src="http://www.youtube.com/embed/'.$vresult[3].'" frameborder="0" allowfullscreen></iframe>';
+	//} elseif(preg_match('/http(s)?:\/\/(www\.)?metacafe\.com\/watch\/(.*?)\/(.*?)\//', $url, $vresult)) {
+	//	$type= 'metacafe';
+	} elseif(preg_match('/http(s)?:\/\/(www\.)?liveleak\.com\/view\?i=([^&]+)/', $url, $vresult)) {
+		$type='liveleak';
+		return '<iframe width="'.$s.'" height="'.$s.'" src="http://www.liveleak.com/e/'.$vresult[3].'" frameborder="0" allowfullscreen></iframe>';
+	} elseif(preg_match('/http(s)?:\/\/(www\.)?vimeo\.com\/([0-9]+)/', $url, $vresult)) {
+		$type='vimeo';
+		return '<iframe width="'.$s.'" height="'.$s.'" src="http://player.vimeo.com/video/'.$vresult[3].'" frameborder="0" allowfullscreen></iframe>';
+		//http://player.vimeo.com/video/
+	} elseif(preg_match('/http(s)?:\/\/(www\.)?dailymotion\.com\/video\/([^&]+)/', $url, $vresult)) {
+		$type= 'dailymotion';
+		//http://www.dailymotion.com/embed/video/
+		return '<iframe width="'.$s.'" height="'.$s.'" src="http://www.dailymotion.com/embed/video/'.$vresult[3].'" frameborder="0" allowfullscreen></iframe>';
+	} else {
+		return 0;
+	}
+	
+	
+}
+
+function isEmbed($url) {
+	if(preg_match('/http(s)?:\/\/(www\.)?youtube\.com\/watch\?v=[^&]+/', $url, $vresult)) {
+		return 1;
+	//} elseif(preg_match('/http(s)?:\/\/(www\.)?metacafe\.com\/watch\/(.*?)\/(.*?)\//', $url, $vresult)) {
+	//	return 1;
+	} elseif(preg_match('/http(s)?:\/\/(www\.)?vimeo\.com\/[0-9]+/', $url, $vresult)) {
+		return 1;
+	} elseif(preg_match('/http(s)?:\/\/(www\.)?liveleak\.com\/view\?i=[^&]+/', $url, $vresult)) {
+		return 1;
+	} elseif(preg_match('/http(s)?:\/\/(www\.)?dailymotion\.com\/video\/+/', $url, $vresult)) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
 function human_filesize($bytes, $decimals = 2) {
   $sz = 'BKMGTP';
   $factor = floor((strlen($bytes) - 1) / 3);
