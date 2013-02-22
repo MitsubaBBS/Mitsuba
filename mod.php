@@ -1667,7 +1667,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 }
 ?>
 <br />
-<input type="submit" value="<?php if ($_SESSION['type']==0) { echo "Add request"; } else { echo "Ban" } ?>" />
+<input type="submit" value="<?php if ($_SESSION['type']==0) { echo "Add request"; } else { echo "Ban"; } ?>" />
 </form>
 </div>
 </div>
