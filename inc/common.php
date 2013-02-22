@@ -1,4 +1,10 @@
 <?php
+function human_filesize($bytes, $decimals = 2) {
+  $sz = 'BKMGTP';
+  $factor = floor((strlen($bytes) - 1) / 3);
+  return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+}
+
 function mkid($ip, $topic, $board, $junk = "")
 {
     return substr(crypt(md5($ip.'t'.$board.$topic.$junk),'h!'),-8);
@@ -268,7 +274,7 @@ function isImage($path)
 	if (function_exists("finfo_file"))
 	{
 		$finfo = finfo_open();
-		$mime = finfo_file($finfo, $path);
+		$mime = finfo_file($finfo, $path, FILEINFO_MIME_TYPE);
 		if (($mime == "image/jpeg") || ($mime == "image/png") || ($mime == "image/gif"))
 		{
 			return true;

@@ -179,7 +179,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		} else {
 			$file .= '<div class="file" id="f'.$row['id'].'">';
 			$file .= '<div class="fileInfo">';
-			$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./'.$board.'/src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a>-(<span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
+			$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./'.$board.'/src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a> -('.$row['filesize'].', '.$row['imagesize'].', <span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
 			$file .= '</div>';
 			$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row['filename'].'" alt="Thumbnail" /></a>';
 			$file .= '</div>';
@@ -385,7 +385,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 					$file .= '<div class="file" id="f'.$row2['id'].'">';
 					$file .= '<div class="fileInfo">';
 				
-					$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./'.$board.'/src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> (<span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
+					$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./'.$board.'/src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> -('.$row2['filesize'].', '.$row2['imagesize'].', <span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
 					
 					$file .= '</div>';
 					

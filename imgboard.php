@@ -114,11 +114,14 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			}
 			setcookie("password", $password, time() + 86400*256);
 			$fname = $_FILES['upfile']['name'];
+			$filename = "";
 			if (empty($_FILES['upfile']['tmp_name']))
 			{
 				$fname = "";
+			} else {
+				$filename = $fileid.".".$ext;
 			}
-			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $fname, basename($fname), $resto, $md5, $spoiler);
+			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler);
 			if ($is == -16)
 			{
 						echo "<h1>This board does not exist!</h1></body></html>"; exit;

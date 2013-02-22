@@ -340,9 +340,9 @@ function generateView($conn, $board, $threadno = 0)
 				$file .= '<div class="fileInfo">';
 				if ($threadno != 0)
 				{
-					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="../src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a>-(<span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
+					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="../src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a> -('.$row['filesize'].', '.$row['imagesize'].', <span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
 				} else {
-					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a>-(<span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
+					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a> -('.$row['filesize'].', '.$row['imagesize'].', <span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
 				}
 				$file .= '</div>';
 				if ($threadno != 0)
@@ -541,9 +541,9 @@ function generateView($conn, $board, $threadno = 0)
 						$file .= '<div class="fileInfo">';
 						if ($threadno != 0)
 						{
-							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="../src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> (<span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
+							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="../src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> -('.$row2['filesize'].', '.$row2['imagesize'].', <span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
 						} else {
-							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> (<span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
+							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> -('.$row2['filesize'].', '.$row2['imagesize'].', <span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
 						}
 						$file .= '</div>';
 						

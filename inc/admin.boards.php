@@ -94,6 +94,8 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
   `ip` varchar(50) NOT NULL,
   `lastbumped` int(20) NOT NULL,
   `filehash` varchar(80) NOT NULL,
+  `filesize` varchar(15) NOT NULL,
+  `imagesize` varchar(20) NOT NULL,
   `sticky` int(1) NOT NULL,
   `sage` int(1) NOT NULL,
   `locked` int(1) NOT NULL,

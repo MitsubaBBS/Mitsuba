@@ -2289,8 +2289,14 @@ echo '</div>';
 					$spoiler = 1;
 				}
 				$fname = $_FILES['upfile']['name'];
-				if (empty($_FILES['upfile']['tmp_name'])) { $fname = ""; }
-				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $fname, basename($fname), $resto, $md5, $spoiler, $capcode, $raw, $sticky, $lock, $nolimit);
+				$filename = "";
+				if (empty($_FILES['upfile']['tmp_name']))
+				{
+					$fname = "";
+				} else {
+					$filename = $fileid.".".$ext;
+				}
+				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler, $capcode, $raw, $sticky, $lock, $nolimit);
 				if ($is == -16)
 				{
 					echo "<h1>This board does not exist!</h1></body></html>"; exit;
