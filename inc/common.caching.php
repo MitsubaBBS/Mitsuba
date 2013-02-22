@@ -368,7 +368,7 @@ function generateView($conn, $board, $threadno = 0)
 				$poster_id = '<span class="posteruid">(ID: '.$row['poster_id'].')</span>';
 			}
 			if (!empty($row['email'])) {
-				$file .= '<span class="nameBlock"><a href="mailto:'.$row['email'].'" class="useremail"><span class="name">'.$row['name'].'</span>'.$trip.' '.$poster_id.'</a></span>';
+				$file .= '<span class="nameBlock"><a href="mailto:'.$row['email'].'" class="useremail"><span class="name">'.$row['name'].'</span>'.$trip.'</a> '.$poster_id.'</span>';
 			} else {
 				if ($row['capcode'] == 1)
 				{
@@ -380,7 +380,7 @@ function generateView($conn, $board, $threadno = 0)
 				{
 					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' '.$poster_id.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span></span>';
 				} else {
-					$file .= '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.'</span>';
+					$file .= '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.' '.$poster_id.'</span>';
 				}
 			}
 			$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row['date']).'</span> ';
@@ -474,7 +474,7 @@ function generateView($conn, $board, $threadno = 0)
 					$poster_id = '<span class="posteruid">(ID: '.$row2['poster_id'].')</span>';
 				}
 				if (!empty($row2['email'])) {
-					$file .= '<span class="nameBlock"><a href="mailto:'.$row2['email'].'" class="useremail"><span class="name">'.$row2['name'].'</span>'.$trip.' '.$poster_id.'</a></span>';
+					$file .= '<span class="nameBlock"><a href="mailto:'.$row2['email'].'" class="useremail"><span class="name">'.$row2['name'].'</span>'.$trip.'</a> '.$poster_id.'</span>';
 				} else {
 					if ($row2['capcode'] == 1)
 					{
@@ -486,7 +486,7 @@ function generateView($conn, $board, $threadno = 0)
 					{
 						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$trip.' '.$poster_id.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span></span>';
 					} else {
-						$file .= '<span class="nameBlock"><span class="name">'.$row2['name'].'</span>'.$trip.'</span>';
+						$file .= '<span class="nameBlock"><span class="name">'.$row2['name'].'</span>'.$trip.' '.$poster_id.'</span>';
 					}
 				}
 				$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row2['date']).'</span> ' ;

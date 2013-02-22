@@ -172,13 +172,21 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		}
 	}
 	$old_email = $email;
-	if (($email == "noko") || ($email == "nonoko"))
+	if (($bdata['noname'] == 1) && (!empty($email)))
 	{
-		$email = "";
+		if (($email == "noko") || ($email == "nonoko"))
+		{
+			$email = "";
+		}
+		if (($email == "nokosage") || ($email == "nonokosage"))
+		{
+			$email = "sage";
+			$old_email = "sage";
+		}
 	}
-	if (($email = "nokosage") || ($email == "nonokosage"))
+	
+	if (($email == "nokosage") || ($email == "nonokosage"))
 	{
-		$email = "sage";
 		$old_email = "sage";
 	}
 	$md5 = mysqli_real_escape_string($conn, $md5);
