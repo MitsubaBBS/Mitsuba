@@ -1721,7 +1721,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 					$append = 1;
 				}
 			}
-			$result = addBanRequest($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards, $board, $post, $append);
+			$result = addBanRequest($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $board, $post, $append);
 			$what = 2;
 		} else {
 			$result = addBan($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
@@ -3651,6 +3651,7 @@ Text:<br />
 		<?php
 		break;
 		case "/ban_requests":
+		reqPermission(1);
 	?>
 <div class="box-outer top-box">
 <div class="box-inner">
@@ -3668,7 +3669,7 @@ Text:<br />
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM ban_requests ORDER BY created LIMIT 0, 15;");
+$result = mysqli_query($conn, "SELECT * FROM ban_requests ORDER BY created DESC LIMIT 0, 15;");
 while ($row = mysqli_fetch_assoc($result))
 {
 echo "<tr>";
@@ -3676,21 +3677,18 @@ echo "<td>".$row['ip']."</td>";
 echo "<td>".$row['reason']."</td>";
 echo "<td>".$row['note']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
-if ($_SESSION['type']>=1)
+
+$post_r = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
+if (mysqli_num_rows($post_r) == 1)
 {
-$result = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
-if (mysqli_num_rows($result) == 1)
-{
-$post = mysqli_fetch_assoc($result);
+$post = mysqli_fetch_assoc($post_r);
 $resto = $post['resto'];
 if ($resto == 0) { $resto = $post['id']; }
 echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
 } else {
 echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
 }
-} else {
-echo "<td></td>";
-}
+
 echo "</tr>";
 }
 ?>
@@ -3706,54 +3704,52 @@ Showing recent 15 ban requests. <a href="?/ban_requests/all">Show all</a>
 	case "/ban_requests/all":
 	reqPermission(1);
 	?>
-	<div class="box-outer top-box">
-	<div class="box-inner">
-	<div class="boxbar"><h2>All bans</h2></div>
-	<div class="boxcontent">
-	<table>
-	<thead>
-	<tr>
-	<td>IP</td>
-	<td>Reason</td>
-	<td>Staff note</td>
-	<td>Created</td>
-	<td>Expires</td>
-	<td>Boards</td>
-	<td>Delete</td>
-	</tr>
-	</thead>
-	<tbody>
-	<?php
-	$result = mysqli_query($conn, "SELECT * FROM bans ORDER BY created;");
-	while ($row = mysqli_fetch_assoc($result))
-	{
-	echo "<tr>";
-	echo "<td>".$row['ip']."</td>";
-	echo "<td>".$row['reason']."</td>";
-	echo "<td>".$row['note']."</td>";
-	echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
-	if ($row['expires'] != 0)
-	{
-	echo "<td>".date("d/m/Y @ H:i", $row['expires'])."</td>";
-	} else {
-	echo "<td><b>never</b></td>";
-	}
-	echo "<td>".$row['boards']."</td>";
-	if ($_SESSION['type']>=1)
-	{
-	echo "<td><a href='?/bans/delete&b=".$row['id']."'>Delete</a></td>";
-	} else {
-	echo "<td></td>";
-	}
-	echo "</tr>";
-	}
-	?>
-	</tbody>
-	</table>
-	</div>
-	</div>
-	</div>
-	<?php
+<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Ban requests</h2></div>
+<div class="boxcontent">
+<table>
+<thead>
+<tr>
+<td>IP</td>
+<td>Reason</td>
+<td>Staff note</td>
+<td>Created</td>
+<td>Actions</td>
+</tr>
+</thead>
+<tbody>
+<?php
+$result = mysqli_query($conn, "SELECT * FROM ban_requests ORDER BY created DESC");
+while ($row = mysqli_fetch_assoc($result))
+{
+echo "<tr>";
+echo "<td>".$row['ip']."</td>";
+echo "<td>".$row['reason']."</td>";
+echo "<td>".$row['note']."</td>";
+echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
+
+$post_r = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
+if (mysqli_num_rows($post_r) == 1)
+{
+$post = mysqli_fetch_assoc($post_r);
+$resto = $post['resto'];
+if ($resto == 0) { $resto = $post['id']; }
+echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
+} else {
+echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
+}
+
+echo "</tr>";
+}
+?>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<script type="text/javascript">parent.nav.location.reload();</script>
+<?php
 		break;
 	case "/ban_requests/delete":
 		reqPermission(1);
