@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS `ban_requests` (
   `reason` varchar(80) NOT NULL,
   `note` text NOT NULL,
   `created` int(30) NOT NULL,
-  `expires` int(30) NOT NULL,
   `board` varchar(10) NOT NULL,
   `post` int(20) NOT NULL,
   `append` int(1) NOT NULL,

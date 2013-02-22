@@ -1630,11 +1630,11 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a>
 IP: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 Reason: <input type="text" name="reason" /><br />
 Staff note: <input type="text" name="note" /><br />
-Expires (e.g. 1d, 20s): <input type="text" name="expires" /><br />
-<br /><br />
 <?php
 if ($_SESSION['type']>=1) {
 ?>
+Expires (e.g. 1d, 20s): <input type="text" name="expires" /><br />
+<br /><br />
 Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
 <select name="boards[]" id="boardSelect" multiple>
 <?php
@@ -3663,7 +3663,6 @@ Text:<br />
 <td>Reason</td>
 <td>Staff note</td>
 <td>Created</td>
-<td>Expires</td>
 <td>Actions</td>
 </tr>
 </thead>
@@ -3677,12 +3676,6 @@ echo "<td>".$row['ip']."</td>";
 echo "<td>".$row['reason']."</td>";
 echo "<td>".$row['note']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
-if ($row['expires'] != 0)
-{
-echo "<td>".date("d/m/Y @ H:i", $row['expires'])."</td>";
-} else {
-echo "<td><b>never</b></td>";
-}
 if ($_SESSION['type']>=1)
 {
 $result = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
