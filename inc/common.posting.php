@@ -53,7 +53,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 								$filename = substr($filename, 8);
 							}
 							unlink("./".$board."/src/".$filename);
-							unlink("./".$board."/src/thumb/".$$filename);
+							unlink("./".$board."/src/thumb/".$filename);
 						}
 						if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
 						{
@@ -81,7 +81,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 								$filename = substr($filename, 8);
 							}
 							unlink("./".$board."/src/".$filename);
-							unlink("./".$board."/src/thumb/".$$filename);
+							unlink("./".$board."/src/thumb/".$filename);
 						}
 						mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
 						generateView($conn, $board, $postdata['resto']);
