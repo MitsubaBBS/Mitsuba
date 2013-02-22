@@ -3758,7 +3758,7 @@ echo "</tr>";
 			mysqli_query($conn, "DELETE FROM ban_requests WHERE id=".$_GET['b']);
 		}
 		?>
-		<meta http-equiv="refresh" content="0;URL='?/bans'" />
+		<meta http-equiv="refresh" content="0;URL='?/ban_requests'" />
 		<?php
 		break;
 }
