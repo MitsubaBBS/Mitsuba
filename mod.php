@@ -3664,7 +3664,6 @@ Text:<br />
 <td>Staff note</td>
 <td>Created</td>
 <td>Expires</td>
-<td>Boards</td>
 <td>Actions</td>
 </tr>
 </thead>
@@ -3684,7 +3683,6 @@ echo "<td>".date("d/m/Y @ H:i", $row['expires'])."</td>";
 } else {
 echo "<td><b>never</b></td>";
 }
-echo "<td>".$row['boards']."</td>";
 if ($_SESSION['type']>=1)
 {
 $result = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
@@ -3693,9 +3691,9 @@ if (mysqli_num_rows($result) == 1)
 $post = mysqli_fetch_assoc($result);
 $resto = $post['resto'];
 if ($resto == 0) { $resto = $post['id']; }
-echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>D</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
+echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
 } else {
-echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>D</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
+echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
 }
 } else {
 echo "<td></td>";
