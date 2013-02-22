@@ -49,18 +49,18 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 				$ext = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
 				$filename = $fileid . "." . $ext; 
 				$target_path .= $filename;
-				if (!isImage($_FILES['upfile']['tmp_name']))
-				{
-					echo "<h1>File is not an image!</h1></body></html>";
-					exit;
-				}
+				
 				$file_size = $_FILES['upfile']['size'];
 				if ($file_size > 2097152)
 				{
 					echo "<h1>File size too big!</h1></body></html>";
 					exit;
 				}
-
+				if (!isImage($_FILES['upfile']['tmp_name']))
+				{
+					echo "<h1>File is not an image!</h1></body></html>";
+					exit;
+				}
 				$md5 = md5_file($_FILES['upfile']['tmp_name']);
 				if(move_uploaded_file($_FILES['upfile']['tmp_name'], $target_path)) {
 					echo "The file ".basename( $_FILES['upfile']['name'])." has been uploaded";

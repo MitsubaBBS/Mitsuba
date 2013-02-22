@@ -2199,15 +2199,17 @@ echo '</div>';
 					$ext = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
 					$filename = $fileid . "." . $ext; 
 					$target_path .= $filename;
-					if (!isImage($_FILES['upfile']['tmp_name']))
-					{
-						echo "<h1>File is not an image!</h1></body></html>";
-						exit;
-					}
+					
 					$file_size = $_FILES['upfile']['size'];
 					if ($file_size > 2097152)
 					{
 						echo "<h1>File size too big!</h1></body></html>";
+						exit;
+					}
+					
+					if (!isImage($_FILES['upfile']['tmp_name']))
+					{
+						echo "<h1>File is not an image!</h1></body></html>";
 						exit;
 					}
 					$md5 = md5_file($_FILES['upfile']['tmp_name']);
@@ -3149,7 +3151,7 @@ Text:<br />
 <div class="boxbar"><h2>Read message</h2></div>
 <div class="boxcontent">
 <form action="?/inbox/new" method="POST">
-To: <b><?php echo $row['username']; ?></b><br />
+From: <b><?php echo $row['username']; ?></b><br />
 Title: <b><?php echo $row['title']; ?></b><br />
 Text:<br />
 <?php echo $row['text']; ?><br />
