@@ -45,7 +45,7 @@ Admin password: <input type="text" name="password" value="" /><br />
 	$db_name = $_POST['db_name'];
 	$username = $_POST['username'];
 	$password = $_POST['password'];
-	$conn = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+	$conn = new mysqli($db_host, $db_username, $db_password, $db_name);
 	if (!$conn)
 	{
 	?>
@@ -62,8 +62,13 @@ Admin password: <input type="text" name="password" value="" /><br />
 		if (file_exists("./database.sql"))
 		{
 			$db = file_get_contents("./database.sql");
-			$result = mysqli_multi_query($conn, $db);
-			do { $conn->use_result(); } while( $conn->next_result() );
+			$result = $conn->multi_query($db);
+			while ($conn->more_results())
+			{
+				$conn->next_result();
+				$conn->use_result();
+			}
+			
 			if (!$result)
 			{
 			?>
@@ -77,8 +82,7 @@ Admin password: <input type="text" name="password" value="" /><br />
 </div>
 	<?php
 			} else {
-				$result = mysqli_query($conn, "INSERT INTO users (username, password, type, boards) VALUES ('".mysqli_real_escape_string($conn, $username)."', '".hash("sha512", $password)."', 2, '*')");
-				echo mysqli_error($conn);
+				$result = $conn->query("INSERT INTO users (username, password, type, boards) VALUES ('".$conn->real_escape_string($username)."', '".hash("sha512", $password)."', 2, '*')");
 				if (!$result)
 				{
 				?>
@@ -94,12 +98,14 @@ Admin password: <input type="text" name="password" value="" /><br />
 				} else {
 				$handle = fopen("./config.php", "w");
 				$file = '<?php'."\n";
-				$file .= 'date_default_timezone_set("UTC")'."\n";
-				$file .= '$db_username = "'.$db_username.'"'."\n";
-				$file .= '$db_password = "'.$db_password.'"'."\n";
-				$file .= '$db_database = "'.$db_name.'"'."\n";
-				$file .= '$db_host = "'.$db_host.'"'."\n";
+				$file .= 'date_default_timezone_set("UTC")'.";\n";
+				$file .= '$db_username = "'.$db_username.'"'.";\n";
+				$file .= '$db_password = "'.$db_password.'"'.";\n";
+				$file .= '$db_database = "'.$db_name.'"'.";\n";
+				$file .= '$db_host = "'.$db_host.'"'.";\n";
 				$file .= '?>'."\n";
+				fwrite($handle, $file);
+				fclose($handle);
 				?>
 	<div class="box-outer top-box">
 <div class="box-inner">
