@@ -42,6 +42,11 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			<?php
 			
 			$md5 = "";
+			if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
+			{
+				echo "<h1>File size too big!</h1></body></html>";
+				exit;
+			}
 			if (!empty($_FILES['upfile']['tmp_name']))
 			{
 				$target_path = "./".$board."/src/";
@@ -86,7 +91,7 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			} else {
 				$password = $_POST['pwd'];
 			}
-			if (!empty($_FILES['upfile']['name']))
+			if (!empty($_FILES['upfile']['tmp_name']))
 			{
 				if ($resto != 0)
 				{
@@ -108,7 +113,12 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 				$spoiler = 1;
 			}
 			setcookie("password", $password, time() + 86400*256);
-			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, basename($_FILES['upfile']['name']), $resto, $md5, $spoiler);
+			$fname = $_FILES['upfile']['name'];
+			if (empty($_FILES['upfile']['tmp_name']))
+			{
+				$fname = "";
+			}
+			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $fname, basename($fname), $resto, $md5, $spoiler);
 			if ($is == -16)
 			{
 						echo "<h1>This board does not exist!</h1></body></html>"; exit;

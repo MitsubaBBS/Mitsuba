@@ -2192,6 +2192,11 @@ echo '</div>';
 				<?php
 				
 				$md5 = "";
+				if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
+				{
+					echo "<h1>File size too big!</h1></body></html>";
+					exit;
+				}
 				if (!empty($_FILES['upfile']['tmp_name']))
 				{
 					$target_path = "./".$board."/src/";
@@ -2235,7 +2240,7 @@ echo '</div>';
 				} else {
 					$password = $_POST['pwd'];
 				}
-				if (!empty($_FILES['upfile']['name']))
+				if (!empty($_FILES['upfile']['tmp_name']))
 				{
 					if ($resto != 0)
 					{
@@ -2283,7 +2288,9 @@ echo '</div>';
 				{
 					$spoiler = 1;
 				}
-				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, basename($_FILES['upfile']['name']), $resto, $md5, $spoiler, $capcode, $raw, $sticky, $lock, $nolimit);
+				$fname = $_FILES['upfile']['name'];
+				if (empty($_FILES['upfile']['tmp_name'])) { $fname = ""; }
+				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $fname, basename($fname), $resto, $md5, $spoiler, $capcode, $raw, $sticky, $lock, $nolimit);
 				if ($is == -16)
 				{
 					echo "<h1>This board does not exist!</h1></body></html>"; exit;
