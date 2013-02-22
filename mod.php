@@ -2069,7 +2069,7 @@ echo '</div>';
 		{
 		if ((!empty($_POST['board'])) || (isBoard($conn, $_POST['board'])))
 		{
-			canBoard($_POST['b']);
+			canBoard($_POST['board']);
 		}
 		$mode = $_POST['mode'];
 		switch($mode)
@@ -2129,7 +2129,7 @@ echo '</div>';
 				}
 
 				$name = "Anonymous";
-				if ($_POST['name'] != "") { $name = $_POST['name']; }
+				if (!empty($_POST['name'])) { $name = $_POST['name']; }
 				$resto = 0;
 				if (isset($_POST['resto'])) { $resto = $_POST['resto']; }
 				$password = "";
