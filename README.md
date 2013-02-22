@@ -1,7 +1,7 @@
 Mitsuba
 =======
 
-Project Mitsuba is an opensource (GPLv3 licensed) image board software written in PHP and using MySQLi.
+Project Mitsuba is an opensource (AGPLv3 licensed) image board software written in PHP and using MySQLi.
 
 Installation
 ------------
