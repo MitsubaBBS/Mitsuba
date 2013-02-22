@@ -2232,6 +2232,11 @@ echo '</div>';
 				
 				$md5 = "";
 				$bdata = getBoardData($conn, $_POST['board']);
+				if ((!empty($_POST['embed'])) && (!empty($_FILES['upfile']['tmp_name'])))
+				{
+					echo "<center><h1>Choose one! ;_;</h1></center></body></html>";
+					exit;
+				}
 				if (!empty($_POST['embed']))
 				{
 					if ((isEmbed($_POST['embed'])) && ($bdata['embeds']==1))
@@ -2290,22 +2295,24 @@ echo '</div>';
 				} else {
 					$password = $_POST['pwd'];
 				}
-				if (!empty($_FILES['upfile']['tmp_name']))
+				if (substr($filename, 0, 6) != "embed:")
 				{
-					if ($resto != 0)
+					if (!empty($_FILES['upfile']['tmp_name']))
 					{
-						if (thumb($board, $fileid.".".$ext, 125) < 0)
+						if ($resto != 0)
 						{
-							echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
-						}
-					} else {
-						if (thumb($board, $fileid.".".$ext) < 0)
-						{
-							echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
+							if (thumb($board, $fileid.".".$ext, 125) < 0)
+							{
+								echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
+							}
+						} else {
+							if (thumb($board, $fileid.".".$ext) < 0)
+							{
+								echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
+							}
 						}
 					}
 				}
-				
 				setcookie("password", $password, time() + 86400*256);
 				$capcode = 0;
 				$raw = 0;
