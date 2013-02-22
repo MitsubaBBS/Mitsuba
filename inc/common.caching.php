@@ -557,7 +557,7 @@ function generateView($conn, $board, $threadno = 0)
 						$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>Embed</b></span>';
 						
 						$file .= '</div>';
-						$file .= '<a class="fileThumb">'.getEmbed(substr($row2['filename'], 6), 125).'</a>';
+						$file .= '<a class="fileThumb">'.getEmbed(substr($row2['filename'], 6)).'</a>';
 						
 						$file .= '</div>';
 					} else {
