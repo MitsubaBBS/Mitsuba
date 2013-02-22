@@ -193,11 +193,16 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 	}
 	$lastbumped = time();
 	$trip = "";
-	$name = processString($conn, $name, 1);
-	if (isset($name['trip']))
+	if (($bdata['noname'] == 1) && ($_SESSION['type']==0))
 	{
-		$trip = $name['trip'];
-		$name = $name['name'];
+		$name = "Anonymous";
+	} else {
+		$name = processString($conn, $name, 1);
+		if (isset($name['trip']))
+		{
+			$trip = $name['trip'];
+			$name = $name['name'];
+		}
 	}
 	$poster_id = "";
 	if ($bdata['ids'] == 1)

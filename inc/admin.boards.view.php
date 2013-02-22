@@ -64,12 +64,15 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
 			<input type="hidden" name="mode" value="regist" />
 			<table class="postForm" id="postForm">
-			<tbody>
-			<tr>
-			<td>Name</td>
-			<td><input name="name" type="text" /></td>
-			</tr>
-			<tr>
+			<tbody>';
+		if (($boarddata['noname'] == 0) && ($_SESSION['type'] == 0))
+		{
+			$file .= '<tr>
+				<td>Name</td>
+				<td><input name="name" type="text" /></td>
+				</tr>';
+		}
+		$file .= '<tr>
 			<td>E-mail</td>
 			<td><input name="email" type="text"></td>
 			</tr>

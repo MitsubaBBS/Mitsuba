@@ -2065,9 +2065,12 @@ echo '</div>';
 		}
 		break;
 	case "/board/action":
-		reqPermission(1);
 		if (!empty($_POST['mode']))
 		{
+		if ((!empty($_POST['board'])) || (isBoard($conn, $_POST['board'])))
+		{
+			canBoard($_POST['b']);
+		}
 		$mode = $_POST['mode'];
 		switch($mode)
 		{
