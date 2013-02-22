@@ -1495,6 +1495,14 @@ Title: <input type="text" name="title" value="" /><br />
 		break;
 		
 	case "/bans":
+	if ((isset($_GET['del'])) && ($_GET['del']==1))
+	{
+		reqPermission(1);
+		if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
+		{
+			mysqli_query($conn, "DELETE FROM bans WHERE id=".$_GET['b']);
+		}
+	}
 	?>
 <div class="box-outer top-box">
 <div class="box-inner">
@@ -1531,7 +1539,7 @@ echo "<td><b>never</b></td>";
 echo "<td>".$row['boards']."</td>";
 if ($_SESSION['type']>=1)
 {
-echo "<td><a href='?/bans/delete&b=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/bans&del=1&b=".$row['id']."'>Delete</a></td>";
 } else {
 echo "<td></td>";
 }
@@ -1583,7 +1591,7 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a>
 	echo "<td>".$row['boards']."</td>";
 	if ($_SESSION['type']>=1)
 	{
-	echo "<td><a href='?/bans/delete&b=".$row['id']."'>Delete</a></td>";
+	echo "<td><a href='?/bans&del=1&b=".$row['id']."'>Delete</a></td>";
 	} else {
 	echo "<td></td>";
 	}
@@ -1839,16 +1847,6 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 				}
 			}
 		}
-		break;
-	case "/bans/delete":
-		reqPermission(1);
-		if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
-		{
-			mysqli_query($conn, "DELETE FROM bans WHERE id=".$_GET['b']);
-		}
-		?>
-		<meta http-equiv="refresh" content="0;URL='?/bans'" />
-		<?php
 		break;
 	case "/users/delete_yes":
 	reqPermission(2);
@@ -2415,6 +2413,13 @@ echo '</div>';
 	}
 		break;
 	case "/reports":
+	if ((!empty($_GET['cl'])) && ($_GET['cl']==1))
+	{
+		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
+		{
+			mysqli_query($conn, "DELETE FROM reports WHERE id=".$_GET['id']);
+		}
+	}
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
@@ -2483,7 +2488,7 @@ if ($_SESSION['type'] >= 1)
 			}
 			echo "<td>".$row['reason']."</td>";
 			echo "<td>".$row['reporter_ip']."</td>";
-			echo "<td>[ <a href='?/reports/clear&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> / <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."&d=1'>&</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."'>D</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."&f=1'>F</a> ] [ <a href='?/info&ip=".$pdata['ip']."'>N</a> ]</td>";
+			echo "<td>[ <a href='?/reports&cl=1&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> / <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."&d=1'>&</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."'>D</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."&f=1'>F</a> ] [ <a href='?/info&ip=".$pdata['ip']."'>N</a> ]</td>";
 			echo "</tr>";
 		}
 		?>
@@ -2494,15 +2499,6 @@ if ($_SESSION['type'] >= 1)
 		</div>
 		<script type="text/javascript">parent.nav.location.reload();</script>
 		<?php
-		break;
-	case "/reports/clear":
-		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
-		{
-			mysqli_query($conn, "DELETE FROM reports WHERE id=".$_GET['id']);
-			?>
-			<meta http-equiv="refresh" content="0;URL='?/reports'" />
-			<?php
-		}
 		break;
 	case "/reports/clear_all_yes":
 		reqPermission(1);
@@ -2619,7 +2615,7 @@ echo "<td><b>never</b></td>";
 echo "<td>".$row['boards']."</td>";
 if ($_SESSION['type']>=1)
 {
-echo "<td><a href='?/bans/delete&b=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/bans&del=1&b=".$row['id']."'>Delete</a></td>";
 } else {
 echo "<td></td>";
 }
@@ -3094,7 +3090,7 @@ while ($row = mysqli_fetch_assoc($appeals))
 		}
 		echo "<td>".$row['email']."</td>";
 		echo "<td>".$row['msg']."</td>";
-		echo "<td> [ <a href='?/appeals/clear&id=".$row['id']."'>C</a> / <a href='?/bans/delete&b=".$ban['id']."'>U</a> ]</td>";
+		echo "<td> [ <a href='?/appeals/clear&id=".$row['id']."'>C</a> / <a href='?/bans&del=1&b=".$ban['id']."'>U</a> ]</td>";
 		echo "</tr>";
 	} else {
 		mysqli_query($conn, "DELETE FROM appeals WHERE id=".$row['id']);
@@ -3654,6 +3650,13 @@ Text:<br />
 		break;
 		case "/ban_requests":
 		reqPermission(1);
+		if ((isset($_GET['del'])) && ($_GET['del']==1))
+		{
+			if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
+			{
+				mysqli_query($conn, "DELETE FROM ban_requests WHERE id=".$_GET['b']);
+			}
+		}
 	?>
 <div class="box-outer top-box">
 <div class="box-inner">
@@ -3686,9 +3689,9 @@ if (mysqli_num_rows($post_r) == 1)
 $post = mysqli_fetch_assoc($post_r);
 $resto = $post['resto'];
 if ($resto == 0) { $resto = $post['id']; }
-echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
+echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
 } else {
-echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
+echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
 }
 
 echo "</tr>";
@@ -3737,9 +3740,9 @@ if (mysqli_num_rows($post_r) == 1)
 $post = mysqli_fetch_assoc($post_r);
 $resto = $post['resto'];
 if ($resto == 0) { $resto = $post['id']; }
-echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
+echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
 } else {
-echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
+echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
 }
 
 echo "</tr>";
@@ -3752,16 +3755,6 @@ echo "</tr>";
 </div>
 <script type="text/javascript">parent.nav.location.reload();</script>
 <?php
-		break;
-	case "/ban_requests/delete":
-		reqPermission(1);
-		if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
-		{
-			mysqli_query($conn, "DELETE FROM ban_requests WHERE id=".$_GET['b']);
-		}
-		?>
-		<meta http-equiv="refresh" content="0;URL='?/ban_requests'" />
-		<?php
 		break;
 }
 if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))))
