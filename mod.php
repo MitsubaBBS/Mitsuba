@@ -1632,6 +1632,9 @@ Reason: <input type="text" name="reason" /><br />
 Staff note: <input type="text" name="note" /><br />
 Expires (e.g. 1d, 20s): <input type="text" name="expires" /><br />
 <br /><br />
+<?php
+if ($_SESSION['type']>=1) {
+?>
 Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
 <select name="boards[]" id="boardSelect" multiple>
 <?php
@@ -1644,6 +1647,7 @@ echo "<option value='",$row['short']."'>/".$row['short']."/ - ".$row['name']."</
 </select><br />
 <br />
 <?php
+}
 if (!empty($postinfo))
 {
 ?>
@@ -1663,7 +1667,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 }
 ?>
 <br />
-<input type="submit" value="Add request" />
+<input type="submit" value="<?php if ($_SESSION['type']==0) { echo "Add request"; } else { echo "Ban" } ?>" />
 </form>
 </div>
 </div>
@@ -2757,6 +2761,28 @@ echo "</tr>";
 			<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>IP note added</h2></div>
+<div class="boxcontent"><a href="?/ipnotes">[ BACK ]</a></div>
+</div></div>
+
+			<?php
+		}
+		if (((empty($_GET['ip'])) || (!filter_var($_GET['ip'], FILTER_VALIDATE_IP))) || ((empty($_POST['ip'])) || (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))))
+		{
+		?>
+			<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>No IP provided or IP wrong</h2></div>
+<div class="boxcontent"><a href="?/ipnotes">[ BACK ]</a></div>
+</div></div>
+
+			<?php
+		}
+		if (empty($_POST['note']))
+		{
+		?>
+			<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Please, fill all fields</h2></div>
 <div class="boxcontent"><a href="?/ipnotes">[ BACK ]</a></div>
 </div></div>
 
