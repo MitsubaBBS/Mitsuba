@@ -24,6 +24,11 @@ Planned features
 * catalog feature (like 4chan)
 * floodlimits/spam detector
 
+Credits
+-------
+onexxen - creator and developer of Project Mitsuba
+skandal - first betatester, helped with bughunting
+
 License
 --------
 See [LICENSE](https://github.com/MitsubaBBS/Mitsuba/blob/master/LICENSE).
