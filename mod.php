@@ -1754,7 +1754,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Request added!</h2></div>
-<div class="boxcontent"><a href="?/bans">[ BACK ]</a></div>
+<div class="boxcontent"><a href="javascript:history.go(-2);">[ BACK ]</a></div>
 </div>
 </div>
 				<?php
@@ -2536,7 +2536,7 @@ if ($_SESSION['type'] >= 1)
 		<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Do you want to delete this post?</h2></div>
-<div class="boxcontent"><a href="?/recent/posts">[ NO ]</a> <a href="?/delete_post/yes&b=<?php echo $_GET['b']; ?>&p=<?php echo $_GET['p'].$f; ?>">[ YES ]</a></div>
+<div class="boxcontent"><a href="javascript:history.back(-1);">[ NO ]</a> <a href="?/delete_post/yes&b=<?php echo $_GET['b']; ?>&p=<?php echo $_GET['p'].$f; ?>">[ YES ]</a></div>
 </div>
 </div>
 		<?php
@@ -2559,6 +2559,7 @@ if ($_SESSION['type'] >= 1)
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>File deleted</h2></div>
+<div class="boxcontent"><a href="javascript:history.back(-2);">[ BACK ]</a></div>
 </div>
 </div>
 		<?php
@@ -2568,6 +2569,7 @@ if ($_SESSION['type'] >= 1)
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Post deleted</h2></div>
+<div class="boxcontent"><a href="javascript:history.back(-2);">[ BACK ]</a></div>
 </div>
 </div>
 		<?php
