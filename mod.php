@@ -1650,7 +1650,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 }
 ?>
 <br />
-<input type="submit" value="Ban" />
+<input type="submit" value="Add request" />
 </form>
 </div>
 </div>
@@ -2025,7 +2025,7 @@ $result = mysqli_query($conn, "SELECT * FROM notes WHERE mod_id=".$_SESSION['id'
 while ($row = mysqli_fetch_assoc($result))
 {
 echo '<div class="content">';
-echo '<h3><span class="newssub">'.date("d/m/Y @ H:i", $row['created']).'</span><a href="?/notes/delete&id='.$row['id'].'">Delete</a></span></h3>';
+echo '<h3><span class="newssub">'.date("d/m/Y @ H:i", $row['created']).'</span> <a href="?/notes/delete&id='.$row['id'].'">Delete</a></span></h3>';
 echo $row['note'];
 echo '</div>';
 }
