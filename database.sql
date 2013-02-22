@@ -31,6 +31,21 @@ CREATE TABLE IF NOT EXISTS `bans` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `ban_requests` (
+  `id` int(30) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(50) NOT NULL,
+  `mod_id` int(10) NOT NULL,
+  `reason` varchar(80) NOT NULL,
+  `note` text NOT NULL,
+  `created` int(30) NOT NULL,
+  `expires` int(30) NOT NULL,
+  `boards` text NOT NULL,
+  `board` varchar(10) NOT NULL,
+  `post` int(20) NOT NULL,
+  `append` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `boards` (
   `short` varchar(10) NOT NULL,
   `name` varchar(40) NOT NULL,

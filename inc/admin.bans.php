@@ -25,6 +25,36 @@ function addBan($conn, $ip, $reason, $note, $expires, $boards)
 	}
 }
 
+function addBanRequest($conn, $ip, $reason, $note, $expires, $boards, $board = "", $post = 0, $append = 0)
+{
+	if (!empty($ip))
+	{
+		$ip = mysqli_real_escape_string($conn, $ip);
+		$reason = mysqli_real_escape_string($conn, $reason);
+		$note = mysqli_real_escape_string($conn, $note);
+		$boards = mysqli_real_escape_string($conn, $boards);
+		if (is_numeric($post))
+		{
+		
+		}
+		$created = time();
+		$perma = 1;
+		if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
+		{
+			$expires = 0;
+			$perma = 1;
+		} else {
+			$expires = parse_time($expires);
+			$perma = 0;
+		}
+		if (($expires == false) && ($perma == 0))
+		{
+			return -2;
+		}
+		mysqli_query($conn, "INSERT INTO ban_requests (ip, mod_id, reason, note, created, expires, boards, board, post, append) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", ".$expires.", '".$boards."', '".$board."', ".$post.", ".$append.");");
+	}
+}
+
 function parse_time($str) {
 	if (empty($str))
 		return false;

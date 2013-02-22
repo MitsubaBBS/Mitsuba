@@ -198,6 +198,8 @@ switch ($path)
 	$reports = mysqli_num_rows($reports);
 	$appeals = mysqli_query($conn, "SELECT * FROM appeals;");
 	$appeals = mysqli_num_rows($appeals);
+	$breqs = mysqli_query($conn, "SELECT * FROM ban_requests;");
+	$breqs = mysqli_num_rows($breqs);
 	$pms = mysqli_query($conn, "SELECT * FROM pm WHERE to_user=".$_SESSION['id']." AND read_msg=0");
 	$pms = mysqli_num_rows($pms);
 ?>
@@ -239,6 +241,7 @@ function toggle(button,area) {
 if ($_SESSION['type'] >= 1)
 {
 ?>
+<li><a href="?/ban_requests" target="main">Ban requests (<?php echo $breqs; ?>)</a></li>
 <li><a href="?/announcements/add" target="main">New announcement</a></li>
 <li><a href="?/news/add" target="main">Add news entry</a></li>
 <li><a href="?/bans/add" target="main">Add new ban</a></li>
@@ -1580,8 +1583,10 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a>
 	</div>
 	</div>
 	<?php
+	break;
 	case "/bans/add":
-	reqPermission(1);
+	if (empty($_GET['r']))
+	{
 	if (empty($_POST['ip']))
 	{
 		$ip = "";
@@ -1606,7 +1611,7 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a>
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>All bans</h2></div>
+<div class="boxbar"><h2>Add ban <?php if ($_SESSION['type']==0) { echo "request"; } ?></h2></div>
 <div class="boxcontent">
 <form action="?/bans/add" method="POST">
 IP: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
@@ -1682,18 +1687,34 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 				$boards = "*";
 			}
 		}
-			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-		addBan($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
-		if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
+		if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+		
+		if ($_SESSION['type'] == 0)
 		{
-			deletePostMod($conn, $board, $post);
-			echo mysqli_error($conn);
-		} else {
-			if ((!empty($post)) && (!empty($_POST['append'])) && ($_POST['append'] == 1))
+			$append = 0;
+			if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
 			{
-				appendToPost($conn, $board, $post, $_POST['append_text']);
+				$append = 2;
+			} else {
+				if ((!empty($post)) && (!empty($_POST['append'])) && ($_POST['append'] == 1))
+				{
+					$append = 1;
+				}
+			}
+			addBanRequest($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards, $board, $post, $append);
+		} else {
+			addBan($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
+			if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
+			{
+				deletePostMod($conn, $board, $post);
+			} else {
+				if ((!empty($post)) && (!empty($_POST['append'])) && ($_POST['append'] == 1))
+				{
+					appendToPost($conn, $board, $post, $_POST['append_text']);
+				}
 			}
 		}
+		
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
@@ -1702,6 +1723,76 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 </div>
 </div>
 				<?php
+		}
+		} else {
+			if (is_numeric($_GET['r']))
+			{
+				$req = mysqli_query($conn, "SELECT * FROM ban_requests WHERE id=".$_GET['r']);
+				if (mysqli_num_rows($req) == 1)
+				{
+				$request = mysqli_fetch_assoc($req);
+				$board = $request['board'];
+				$post = $request['post'];
+				//<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>
+				$postdata = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$post);
+				if (mysqli_num_rows($postdata) == 1)
+				{
+					$postinfo = mysqli_fetch_assoc($postdata);
+					$ip = $postinfo['ip'];
+				} else {
+					$post = "";
+					$board = "";
+				}
+					?>
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Add ban <?php if ($_SESSION['type']==0) { echo "request"; } ?></h2></div>
+<div class="boxcontent">
+<form action="?/bans/add" method="POST">
+IP: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
+Reason: <input type="text" name="reason" value="<?php echo $request['reason']; ?>"/><br />
+Staff note: <input type="text" name="note" value="<?php echo $request['note']; ?>"/><br />
+Expires (e.g. 1d, 20s): <input type="text" name="expires" /><br />
+<br /><br />
+Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
+<select name="boards[]" id="boardSelect" multiple>
+<?php
+$result = mysqli_query($conn, "SELECT * FROM boards;");
+while ($row = mysqli_fetch_assoc($result))
+{
+echo "<option value='",$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
+}
+?>
+</select><br />
+<br />
+<?php
+if (!empty($postinfo))
+{
+?>
+<input type="hidden" name="post" value="<?php echo $post; ?>" />
+<input type="hidden" name="board" value="<?php echo $board; ?>" />
+<?php
+if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
+{
+?>
+<input type="hidden" name="delete" value="1" /><b>POST WILL BE DELETED</b>
+<?php
+} else {
+?>
+Append text to post: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/>Yes<br/>
+<?php
+}
+}
+?>
+<br />
+<input type="submit" value="Ban" />
+</form>
+</div>
+</div>
+</div>
+		<?php
+				}
+			}
 		}
 		break;
 	case "/bans/delete":
@@ -2349,6 +2440,7 @@ if ($_SESSION['type'] >= 1)
 		<?php
 		break;
 	case "/delete_post":
+		reqPermission(1);
 		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['p'])))
 		{
 			$f = "";
@@ -3444,6 +3536,130 @@ Text:<br />
 </div>
 </div>
 </div>
+		<?php
+		break;
+		case "/ban_requests":
+	?>
+<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Ban requests</h2></div>
+<div class="boxcontent">
+<table>
+<thead>
+<tr>
+<td>IP</td>
+<td>Reason</td>
+<td>Staff note</td>
+<td>Created</td>
+<td>Expires</td>
+<td>Boards</td>
+<td>Actions</td>
+</tr>
+</thead>
+<tbody>
+<?php
+$result = mysqli_query($conn, "SELECT * FROM ban_requests ORDER BY created LIMIT 0, 15;");
+while ($row = mysqli_fetch_assoc($result))
+{
+echo "<tr>";
+echo "<td>".$row['ip']."</td>";
+echo "<td>".$row['reason']."</td>";
+echo "<td>".$row['note']."</td>";
+echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
+if ($row['expires'] != 0)
+{
+echo "<td>".date("d/m/Y @ H:i", $row['expires'])."</td>";
+} else {
+echo "<td><b>never</b></td>";
+}
+echo "<td>".$row['boards']."</td>";
+if ($_SESSION['type']>=1)
+{
+$result = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
+if (mysqli_num_rows($result) == 1)
+{
+$post = mysqli_fetch_assoc($conn, $result);
+$resto = $post['resto'];
+if ($resto == 0) { $resto = $post['id']; }
+echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>D</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
+} else {
+echo "<td>[ <a href='?/ban_requests/delete&b=".$row['id']."'>D</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
+}
+} else {
+echo "<td></td>";
+}
+echo "</tr>";
+}
+?>
+</tbody>
+</table>
+Showing recent 15 ban requests. <a href="?/ban_requests/all">Show all</a>
+</div>
+</div>
+</div>
+<script type="text/javascript">parent.nav.location.reload();</script>
+<?php
+		break;
+	case "/ban_requests/all":
+	reqPermission(1);
+	?>
+	<div class="box-outer top-box">
+	<div class="box-inner">
+	<div class="boxbar"><h2>All bans</h2></div>
+	<div class="boxcontent">
+	<table>
+	<thead>
+	<tr>
+	<td>IP</td>
+	<td>Reason</td>
+	<td>Staff note</td>
+	<td>Created</td>
+	<td>Expires</td>
+	<td>Boards</td>
+	<td>Delete</td>
+	</tr>
+	</thead>
+	<tbody>
+	<?php
+	$result = mysqli_query($conn, "SELECT * FROM bans ORDER BY created;");
+	while ($row = mysqli_fetch_assoc($result))
+	{
+	echo "<tr>";
+	echo "<td>".$row['ip']."</td>";
+	echo "<td>".$row['reason']."</td>";
+	echo "<td>".$row['note']."</td>";
+	echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
+	if ($row['expires'] != 0)
+	{
+	echo "<td>".date("d/m/Y @ H:i", $row['expires'])."</td>";
+	} else {
+	echo "<td><b>never</b></td>";
+	}
+	echo "<td>".$row['boards']."</td>";
+	if ($_SESSION['type']>=1)
+	{
+	echo "<td><a href='?/bans/delete&b=".$row['id']."'>Delete</a></td>";
+	} else {
+	echo "<td></td>";
+	}
+	echo "</tr>";
+	}
+	?>
+	</tbody>
+	</table>
+	</div>
+	</div>
+	</div>
+	<?php
+		break;
+	case "/ban_requests/delete":
+		reqPermission(1);
+		if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
+		{
+			mysqli_query($conn, "DELETE FROM ban_requests WHERE id=".$_GET['b']);
+		}
+		?>
+		<meta http-equiv="refresh" content="0;URL='?/bans'" />
 		<?php
 		break;
 }
