@@ -22,6 +22,7 @@ function addBan($conn, $ip, $reason, $note, $expires, $boards)
 			return -2;
 		}
 		mysqli_query($conn, "INSERT INTO bans (ip, mod_id, reason, note, created, expires, boards) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", ".$expires.", '".$boards."');");
+		return 1;
 	}
 }
 
@@ -52,6 +53,7 @@ function addBanRequest($conn, $ip, $reason, $note, $expires, $boards, $board = "
 			return -2;
 		}
 		mysqli_query($conn, "INSERT INTO ban_requests (ip, mod_id, reason, note, created, expires, boards, board, post, append) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", ".$expires.", '".$boards."', '".$board."', ".$post.", ".$append.");");
+		return 1;
 	}
 }
 

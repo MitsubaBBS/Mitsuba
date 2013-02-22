@@ -1688,7 +1688,8 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 			}
 		}
 		if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-		
+		$result = 0;
+		$what = 1;
 		if ($_SESSION['type'] == 0)
 		{
 			$append = 0;
@@ -1701,20 +1702,25 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 					$append = 1;
 				}
 			}
-			addBanRequest($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards, $board, $post, $append);
+			$result = addBanRequest($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards, $board, $post, $append);
+			$what = 2;
 		} else {
-			addBan($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
-			if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
+			$result = addBan($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
+			if ($result != -2)
 			{
-				deletePostMod($conn, $board, $post);
-			} else {
-				if ((!empty($post)) && (!empty($_POST['append'])) && ($_POST['append'] == 1))
+				if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
 				{
-					appendToPost($conn, $board, $post, $_POST['append_text']);
+					deletePostMod($conn, $board, $post);
+				} else {
+					if ((!empty($post)) && (!empty($_POST['append'])) && ($_POST['append'] == 1))
+					{
+						appendToPost($conn, $board, $post, $_POST['append_text']);
+					}
 				}
 			}
 		}
-		
+		if (($what == 1) && ($result == 1))
+		{
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
@@ -1723,6 +1729,26 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 </div>
 </div>
 				<?php
+		} elseif (($what == 2) && ($result == 1))
+		{
+		?>
+								<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Request added!</h2></div>
+<div class="boxcontent"><a href="?/bans">[ BACK ]</a></div>
+</div>
+</div>
+				<?php
+		} else {
+		?>
+								<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Form filled wrong</h2></div>
+<div class="boxcontent"><a href="javascript:history.back(-1);">[ BACK ]</a></div>
+</div>
+</div>
+				<?php
+		}
 		}
 		} else {
 			if (is_numeric($_GET['r']))
