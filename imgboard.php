@@ -45,7 +45,7 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			$bdata = getBoardData($conn, $_POST['board']);
 			if ((!empty($_POST['embed'])) && (!empty($_FILES['upfile']['tmp_name'])))
 			{
-				echo "<center><h1>Choose one! ;_;</h1></center></body></html>";
+				echo "<center><h1>Choose one: image or embed! ;_;</h1></center></body></html>";
 				exit;
 			}
 			if (!empty($_POST['embed']))
