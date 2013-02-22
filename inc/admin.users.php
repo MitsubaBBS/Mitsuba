@@ -55,10 +55,15 @@ function updateUser($conn, $id, $username, $password, $type, $boards)
 		return -1;
 	}
 	$username = mysqli_real_escape_string($conn, $username);
-	$password = hash("sha512", $password);
+	$password_db = "";
+	if (!empty($password))
+	{
+		$password_db = ", password='".hash("sha512", $password)."'";
+	}
+	
 	$type = mysqli_real_escape_string($conn, $type);
 	$boards = mysqli_real_escape_string($conn, $boards);
-	mysqli_query($conn, "UPDATE users SET username='".$username."', password='".$password."', type=".$type.", boards='".$boards."' WHERE id=".$id);
+	mysqli_query($conn, "UPDATE users SET username='".$username."'".$password_db.", type=".$type.", boards='".$boards."' WHERE id=".$id);
 
 }
 

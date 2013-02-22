@@ -1805,6 +1805,113 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 				<?php
 		}
 		break;
+	case "/users/edit":
+		reqPermission(2);
+		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
+		{
+			$id = $_GET['id'];
+			if (isUser($conn, $id))
+			{
+				if ((!empty($_POST['username'])) && (is_numeric($_POST['type'])))
+				{
+					$type = $_POST['type'];
+					if (empty($type)) { $type = 0; }
+					$boards = "";
+					if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
+					{
+						$boards = "*";
+					} else {
+						foreach ($_POST['boards'] as $board)
+						{
+							$boards .= $board.",";
+						}
+					}
+					if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+					updateUser($conn, $id, $_POST['username'], $_POST['password'], $_POST['type'], $boards);
+					?>
+					<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>User updated</h2></div>
+<div class="boxcontent">
+<a href="?/users">[ BACK ]</a>
+</div>
+</div>
+</div>
+					<?php
+				} else {
+					$result = mysqli_query($conn, "SELECT * FROM users WHERE id=".$_GET['id']);
+					$data = mysqli_fetch_assoc($result);
+					$boards = $data['boards'];
+					if ($data['boards'] != "*") { $board = explode(",", $data['boards']); }
+		?>
+				<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Edit user</h2></div>
+<div class="boxcontent">
+<form action="?/users/edit&id=<?php echo $id; ?>" method="POST">
+Username: <input type="text" name="username" value="<?php echo $data['username']; ?>"/><br />
+Password (leave blank to not change): <input type="password" name="password"/><br />
+<?php
+$janitor = "";
+$moderator = "";
+$administrator = "";
+
+switch ($data['type'])
+{
+	case 0:
+		$janitor = " selected ";
+		break;
+	case 1:
+		$moderator = " selected ";
+		break;
+	case 2:
+		$administrator = " selected ";
+		break;
+}
+?>
+Type: <select name="type"><option value="0"<?php echo $janitor; ?>>Janitor</option><option value="1"<?php echo $moderator; ?>>Moderator</option><option value="2"<?php echo $administrator; ?>>Administrator</option></select>
+
+<br /><br />
+<?php
+if ($boards == "*")
+{
+?>
+Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1 checked/> All<br/>
+<select name="boards[]" id="boardSelect" multiple style="display: none;">
+<?php
+} else {
+?>
+Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
+<select name="boards[]" id="boardSelect" multiple>
+<?php
+}
+?>
+<?php
+$result = mysqli_query($conn, "SELECT * FROM boards;");
+while ($row = mysqli_fetch_assoc($result))
+{
+$checked = "";
+if ($boards !== "*")
+{
+	if (in_array($boards, $row['short']))
+	{
+		$checked = " checked ";
+	}
+}
+echo "<option onClick='document.getElementById(\"all\").checked=false;' value='",$row['short']."'".$checked.">/".$row['short']."/ - ".$row['name']."</option>";
+}
+?>
+</select><br />
+<input type="submit" value="Update user!" />
+</form>
+</div>
+</div>
+</div><br />
+<?php
+				}
+			}
+		}
+		break;
 	case "/notes":
 	?>
 		<div class="box-outer top-box">
@@ -1923,7 +2030,6 @@ echo '</div>';
 		}
 		break;
 	case "/board":
-		reqPermission(1);
 		if ((!empty($_GET['b'])) && (isBoard($conn, $_GET['b'])))
 		{
 			canBoard($_GET['b']);
