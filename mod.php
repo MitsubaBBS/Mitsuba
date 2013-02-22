@@ -1654,6 +1654,7 @@ if (!empty($postinfo))
 <input type="hidden" name="post" value="<?php echo $post; ?>" />
 <input type="hidden" name="board" value="<?php echo $board; ?>" />
 <?php
+if ($_SESSION['type']>=1) {
 if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 {
 ?>
@@ -1663,6 +1664,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 ?>
 Append text to post: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/>Yes<br/>
 <?php
+}
 }
 }
 ?>
