@@ -72,7 +72,7 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			$bdata = getBoardData($conn, $_POST['board']);
 
 			$name = "Anonymous";
-			if (($_POST['name'] != "") && ($bdata['noname'] == 0)) { $name = $_POST['name']; }
+			if ((!empty($_POST['name'])) && ($bdata['noname'] == 0)) { $name = $_POST['name']; }
 			$resto = 0;
 			if (isset($_POST['resto'])) { $resto = $_POST['resto']; }
 			$password = "";
