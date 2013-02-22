@@ -199,11 +199,35 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 		$trip = $name['trip'];
 		$name = $name['name'];
 	}
-	
+	$poster_id = "";
+	if ($bdata['ids'] == 1)
+	{
+		if ($resto != 0)
+		{
+			$poster_id = mkid($_SERVER['REMOTE_ADDR'], $resto, $board);
+		}
+		
+	}
+	//mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, sticky, sage, locked, capcode, raw)".
+	//"VALUES (".time().", '".$name."', '".$trip."', '".mysqli_real_escape_string($conn, $poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', 0, 0, 0, 0, 0)");
+	//$id = mysqli_insert_id($conn);
 	$md5 = mysqli_real_escape_string($conn, $md5);
-	mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, sticky, sage, locked, capcode, raw)".
-	"VALUES (".time().", '".$name."', '".$trip."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
+	mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, sticky, sage, locked, capcode, raw)".
+	"VALUES (".time().", '".$name."', '".$trip."', '".mysqli_real_escape_string($conn, $poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
 	$id = mysqli_insert_id($conn);
+	$poster_id = "";
+	if ($bdata['ids'] == 1)
+	{
+		if ($resto == 0)
+		{
+			$poster_id = mkid($_SERVER['REMOTE_ADDR'], $id, $board);
+		}
+		
+	}
+	if ($poster_id != "")
+	{
+		mysqli_query($conn, "UPDATE posts_".$board." SET poster_id='".mysqli_real_escape_string($conn, $poster_id)."' WHERE id=".$id);
+	}
 	if ($resto != 0)
 	{
 		if (($email == "sage") || ($email == "nokosage") || ($email == "nonokosage") || ($tinfo['sage'] == 1) || ($replies > $bdata['bumplimit']))

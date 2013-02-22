@@ -5,6 +5,32 @@ function rebuildBoardCache($conn, $board)
 generateView($conn, $board);
 updateThreads($conn, $board);
 regenThumbnails($conn, $board);
+regenIDs($conn, $board);
+}
+
+function regenIDs($conn, $board)
+{
+	if (isBoard($conn, $board))
+	{
+		$bdata = getBoardData($conn, $board);
+		if ($bdata['ids'] == 1)
+		{
+			$result = mysqli_query($conn, "SELECT * FROM posts_".$board);
+			while ($row = mysqli_fetch_assoc($result))
+			{
+				$poster_id = "";
+				if ($row['resto'] != 0)
+				{
+					$poster_id = mkid($row['ip'], $row['resto'], $board);
+				} else {
+					$poster_id = mkid($row['ip'], $row['id'], $board);
+				}
+				mysqli_query($conn, "UPDATE posts_".$board." SET poster_id='".$poster_id."' WHERE id=".$row['id']);
+			}
+		} else {
+			mysqli_query($conn, "UPDATE posts_".$board." SET poster_id=''");
+		}
+	}
 }
 
 function createDirectories($board)
@@ -27,7 +53,7 @@ function createDirectories($board)
 	}
 }
 
-function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0)
+function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0)
 {
 	$short = mysqli_real_escape_string($conn, trim($short, "/ "));
 	$name = mysqli_real_escape_string($conn, $name);
@@ -45,7 +71,11 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 	{
 		$noname = 0;
 	}
-	$result = mysqli_query($conn, "INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.")");
+	if (!is_numeric($ids))
+	{
+		$ids = 0;
+	}
+	$result = mysqli_query($conn, "INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname, ids) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.")");
 	if ($result)
 	{
 		mysqli_query($conn, "CREATE TABLE IF NOT EXISTS `posts_".$short."` (
@@ -53,6 +83,7 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
   `date` int(30) NOT NULL,
   `name` varchar(60) NOT NULL,
   `trip` varchar(11) NOT NULL,
+  `poster_id` varchar(8) NOT NULL,
   `email` varchar(60) NOT NULL,
   `subject` varchar(100) NOT NULL,
   `comment` text NOT NULL,
@@ -63,11 +94,11 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
   `ip` varchar(50) NOT NULL,
   `lastbumped` int(20) NOT NULL,
   `filehash` varchar(80) NOT NULL,
-  `sticky` varchar(1) NOT NULL,
-  `sage` varchar(1) NOT NULL,
-  `locked` varchar(1) NOT NULL,
-  `capcode` varchar(1) NOT NULL,
-  `raw` varchar(1) NOT NULL,
+  `sticky` int(1) NOT NULL,
+  `sage` int(1) NOT NULL,
+  `locked` int(1) NOT NULL,
+  `capcode` int(1) NOT NULL,
+  `raw` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 );");
 		createDirectories($short);
@@ -85,7 +116,7 @@ function deleteBoard($conn, $short)
 	delTree("./".$short);
 }
 
-function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 0, $new_spoilers = 0, $new_noname = 0)
+function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 0, $new_spoilers = 0, $new_noname = 0, $new_ids = 0)
 {
 	if (isBoard($conn, $short))
 	{
@@ -101,7 +132,11 @@ function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 
 		{
 			$new_noname = 0;
 		}
-		mysqli_query($conn, "UPDATE boards SET name='".mysqli_real_escape_string($conn, $new_name)."', des='".mysqli_real_escape_string($conn, $new_des)."', message='".mysqli_real_escape_string($conn, $new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers.", noname=".$new_noname." WHERE short='".mysqli_real_escape_string($conn, $short)."'");
+		if (!is_numeric($new_ids))
+		{
+			$new_ids = 0;
+		}
+		mysqli_query($conn, "UPDATE boards SET name='".mysqli_real_escape_string($conn, $new_name)."', des='".mysqli_real_escape_string($conn, $new_des)."', message='".mysqli_real_escape_string($conn, $new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers.", noname=".$new_noname.", ids=".$new_ids." WHERE short='".mysqli_real_escape_string($conn, $short)."'");
 		rebuildBoardCache($conn, $short);
 		return 1;
 	} else {

@@ -1,4 +1,9 @@
 <?php
+function mkid($ip, $topic, $board, $junk = "")
+{
+    return substr(crypt(md5($ip.'t'.$board.$topic.$junk),'h!'),-8);
+}
+
 function getGraphicsExtension()
 {
 	if (extension_loaded('imagick'))
