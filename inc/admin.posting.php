@@ -235,7 +235,7 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 	$md5 = mysqli_real_escape_string($conn, $md5);
 	$isize = "";
 	$fsize = "";
-	if ((!empty($fname2)) || ($fname2 != "embed"))
+	if ((!empty($fname2)) && ($fname2 != "embed"))
 	{
 		$d = getimagesize("./".$board."/src/".$filename);
 		$isize = $d[0]."x".$d[1];
