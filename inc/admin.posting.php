@@ -130,19 +130,19 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 	{
 		$resto = 0;
 	}
-	if (!is_numeric($raw))
+	if ((!is_numeric($raw)) || ($_SESSION['type'] == 0))
 	{
 		$raw = 0;
 	}
-	if (!is_numeric($capcode))
+	if ((!is_numeric($capcode)) || ($_SESSION['type'] == 0))
 	{
 		$capcode = 0;
 	}
-	if (!is_numeric($sticky))
+	if ((!is_numeric($sticky)) || ($_SESSION['type'] == 0))
 	{
 		$sticky = 0;
 	}
-	if (!is_numeric($locked))
+	if ((!is_numeric($locked)) || ($_SESSION['type'] == 0))
 	{
 		$locked = 0;
 	}

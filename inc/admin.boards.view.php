@@ -102,11 +102,14 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			<tr>
 			<td>Password</td>
 			<td><input id="postPassword" name="pwd" type="password" maxlength="8" /> <span class="password">(Password used for deletion)</span></td>
-			</tr>
-			<tr>
-			<td>Mod</td>
-			<td><input type="checkbox" name="capcode" value=1" />Capcode<input type="checkbox" name="raw" value=1" />Raw HTML<input type="checkbox" name="sticky" value=1" />Sticky<input type="checkbox" name="lock" value=1" />Lock<input type="checkbox" name="nolimit" value=1" />Ignore bumplimit</td>
-			</tr>
+			</tr>';
+		if ($_SESSION['type'] >= 1)
+		{
+			$file .='<tr>
+				<td>Mod</td>
+				<td><input type="checkbox" name="capcode" value=1" />Capcode<input type="checkbox" name="raw" value=1" />Raw HTML<input type="checkbox" name="sticky" value=1" />Sticky<input type="checkbox" name="lock" value=1" />Lock<input type="checkbox" name="nolimit" value=1" />Ignore bumplimit</td>';
+		}
+		$file .= '</tr>
 			<tr class="rules">
 			<td colspan="2">
 			<ul class="rules">
@@ -249,9 +252,11 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		} else {
 			$file .= ']';
 		}
+		if ($_SESSION['type'] >= 1)
+		{
+			$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
+		}
 		
-		$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
-	
 		$file .= '</span>';
 		$file .= '</div>';
 		
