@@ -93,7 +93,7 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
   `comment` text NOT NULL,
   `password` varchar(100) NOT NULL,
   `orig_filename` varchar(80) NOT NULL,
-  `filename` varchar(40) NOT NULL,
+  `filename` varchar(100) NOT NULL,
   `resto` int(20) NOT NULL,
   `ip` varchar(50) NOT NULL,
   `lastbumped` int(20) NOT NULL,
