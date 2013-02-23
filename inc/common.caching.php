@@ -60,11 +60,8 @@ function getBoardLinks($conn, $in_thread = 0)
 	}
 }
 
-function processComment($board, $conn, $string, $thread = 0, $specialchars = 1)
+function processComment($board, $conn, $string, $parser, $thread = 0, $specialchars = 1)
 {
-	require_once( "./jbbcode/Parser.php" );
-	$parser = new JBBCode\Parser();
-	$parser->addBBCode("spoiler", '<s>{param}</s>');
 	$new = $string;
 	if ($specialchars == 1)
 	{
@@ -191,6 +188,22 @@ function generateView($conn, $board, $threadno = 0)
 	if ($threadno != 0)
 	{
 		$pages = 0;
+	}
+	
+	require_once( "./jbbcode/Parser.php" );
+	$parser = new JBBCode\Parser();
+	$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+	
+	while ($row = mysqli_fetch_assoc($bbcode))
+	{
+		$parser->addBBCode($row['name'], $row['code']);
+	}
+	
+	$embed_table = array();
+	$result = mysqli_query("SELECT * FROM embeds;");
+	while ($row = mysqli_fetch_assoc($result))
+	{
+		$embed_table[] = $row;
 	}
 	
 	for ($pg = 0; $pg <= $pages; $pg++)
@@ -399,7 +412,7 @@ function generateView($conn, $board, $threadno = 0)
 				$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>Embed</b></span>';
 				
 				$file .= '</div>';
-				$file .= '<a class="fileThumb">'.getEmbed(substr($row['filename'], 6)).'</a>';
+				$file .= '<a class="fileThumb">'.getEmbed(substr($row['filename'], 6), $embed_table).'</a>';
 				
 				$file .= '</div>';
 			} else {
@@ -485,9 +498,9 @@ function generateView($conn, $board, $threadno = 0)
 			{
 				if ($row['raw'] == 2)
 				{
-					$file .= processComment($board, $conn, $row['comment'], $threadno != 0, 0);
+					$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 0);
 				} else {
-					$file .= processComment($board, $conn, $row['comment'], $threadno != 0);
+					$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0);
 				}
 			} else {
 				$file .= $row['comment'];
@@ -610,7 +623,7 @@ function generateView($conn, $board, $threadno = 0)
 						$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>Embed</b></span>';
 						
 						$file .= '</div>';
-						$file .= '<a class="fileThumb">'.getEmbed(substr($row2['filename'], 6)).'</a>';
+						$file .= '<a class="fileThumb">'.getEmbed(substr($row2['filename'], 6), $embed_table).'</a>';
 						
 						$file .= '</div>';
 					} else {
@@ -640,9 +653,9 @@ function generateView($conn, $board, $threadno = 0)
 				{
 					if ($row2['raw'] == 2)
 					{
-						$file .= processComment($board, $conn, $row2['comment'], $threadno != 0, 0);
+						$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0);
 					} else {
-						$file .= processComment($board, $conn, $row2['comment'], $threadno != 0);
+						$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0);
 					}
 				} else {
 					$file .= $row2['comment'];

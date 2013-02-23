@@ -44,6 +44,12 @@ CREATE TABLE IF NOT EXISTS `ban_requests` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `bbcodes` (
+  `name` varchar(100) NOT NULL,
+  `code` text NOT NULL,
+  UNIQUE KEY `name` (`name`)
+);
+
 CREATE TABLE IF NOT EXISTS `boards` (
   `short` varchar(10) NOT NULL,
   `name` varchar(40) NOT NULL,
@@ -63,17 +69,12 @@ CREATE TABLE IF NOT EXISTS `config` (
   UNIQUE KEY `name` (`name`)
 );
 
-INSERT INTO `config` (`name`, `value`) VALUES
-('boardLinks', ''),
-('boardLinks_thread', ''),
-('frontpage_menu_url', 'menu.html'),
-('frontpage_style', '0'),
-('frontpage_url', 'index.html'),
-('global_message', ''),
-('news_url', 'news.html'),
-('sitename', 'Mitsuba'),
-('styles', ''),
-('styles_thread', '');
+CREATE TABLE IF NOT EXISTS `embeds` (
+  `name` varchar(50) NOT NULL,
+  `regex` varchar(100) NOT NULL,
+  `code` text NOT NULL,
+  UNIQUE KEY `name` (`name`)
+);
 
 CREATE TABLE IF NOT EXISTS `ip_notes` (
   `id` int(30) NOT NULL AUTO_INCREMENT,
@@ -179,3 +180,24 @@ CREATE TABLE IF NOT EXISTS `wordfilter` (
   `replace` varchar(100) NOT NULL,
   `active` int(1) NOT NULL
 );
+
+INSERT INTO `bbcodes` (`name`, `code`) VALUES
+('spoiler', '<s>{param}</s>');
+
+INSERT INTO `config` (`name`, `value`) VALUES
+('boardLinks', ''),
+('boardLinks_thread', ''),
+('frontpage_menu_url', 'menu.html'),
+('frontpage_style', '0'),
+('frontpage_url', 'index.html'),
+('global_message', ''),
+('news_url', 'news.html'),
+('sitename', 'Mitsuba'),
+('styles', ''),
+('styles_thread', '');
+
+INSERT INTO `embeds` (`name`, `regex`, `code`) VALUES
+('dailymotion', '/http(s)?:\\/\\/(www\\.)?dailymotion\\.com\\/video\\/([^&]+)/', '<iframe width="%1$s" height=""%1$s" src="http://www.dailymotion.com/embed/video/"%4$s" frameborder="0" allowfullscreen></iframe>'),
+('liveleak', '/http(s)?:\\/\\/(www\\.)?liveleak\\.com\\/view\\?i=([^&]+)/', '<iframe width="%1$s" height="%1$s" src="http://www.liveleak.com/e/%4$s" frameborder="0" allowfullscreen></iframe>\r\n	'),
+('vimeo', '/http(s)?:\\/\\/(www\\.)?vimeo\\.com\\/([0-9]+)/', '<iframe width="%1$s" height="%1$s" src="http://player.vimeo.com/video/%4$s" frameborder="0" allowfullscreen></iframe>'),
+('youtube', '/http(s)?:\\/\\/(www\\.)?youtube\\.com\\/watch\\?v=([^&]+)/', '<iframe width="%1$s" height="%1$s" src="http://www.youtube.com/embed/%4$s" frameborder="0" allowfullscreen></iframe>');

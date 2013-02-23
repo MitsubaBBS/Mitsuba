@@ -28,6 +28,17 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	{
 		$pages = 0;
 	}
+	
+	
+	require_once( "./jbbcode/Parser.php" );
+	$parser = new JBBCode\Parser();
+	$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+	
+	while ($row = mysqli_fetch_assoc($bbcode))
+	{
+		$parser->addBBCode($row['name'], $row['code']);
+	}
+	
 	$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">';
@@ -186,7 +197,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			$file .= '<div class="fileInfo">';
 			$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>embed</b></span>';
 			$file .= '</div>';
-			$file .= '<a class="fileThumb">'.getEmbed(substr($row['filename'], 6)).'</a>';
+			$file .= '<a class="fileThumb">'.getEmbed(substr($row['filename'], 6), $embed_table).'</a>';
 			$file .= '</div>';
 		} else {
 			$file .= '<div class="file" id="f'.$row['id'].'">';
@@ -279,9 +290,9 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		{
 			if ($row['raw'] == 2)
 			{
-				$file .= processComment($board, $conn, $row['comment'], 2, 0);
+				$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0);
 			} else {
-				$file .= processComment($board, $conn, $row['comment'], 2);
+				$file .= processComment($board, $conn, $row['comment'], $parser, 2);
 			}
 		} else {
 			$file .= $row['comment'];
@@ -399,7 +410,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 					$file .= '<div class="fileInfo">';
 					$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>embed</b></span>';
 					$file .= '</div>';
-					$file .= '<a class="fileThumb">'.getEmbed(substr($row2['filename'], 6)).'</a>';
+					$file .= '<a class="fileThumb">'.getEmbed(substr($row2['filename'], 6), $embed_table).'</a>';
 					$file .= '</div>';
 				
 				} else {
@@ -420,9 +431,9 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			{
 				if ($row2['raw'] == 2)
 				{
-					$file .= processComment($board, $conn, $row2['comment'], 2, 0);
+					$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 0);
 				} else {
-					$file .= processComment($board, $conn, $row2['comment'], 2);
+					$file .= processComment($board, $conn, $row2['comment'], $parser, 2);
 				}
 			} else {
 				$file .= $row2['comment'];

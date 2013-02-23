@@ -273,6 +273,8 @@ if ($_SESSION['type'] >= 2)
 <li><a href="?/whitelist" target="main">Manage whitelist</a></li>
 <li><a href="?/news/manage" target="main">Manage news entries</a></li>
 <li><a href="?/announcements/manage" target="main">Manage announcements</a></li>
+<li><a href="?/bbcodes" target="main">Manage BBCodes</a></li>
+<li><a href="?/embeds" target="main">Manage embeds</a></li>
 <li><a href="?/styles" target="main">Manage styles</a></li>
 <li><a href="?/range" target="main">Manage range bans</a></li>
 <li><a href="?/message" target="main">Global message</a></li>
@@ -3831,6 +3833,237 @@ echo "</tr>";
 </div>
 <script type="text/javascript">parent.nav.location.reload();</script>
 <?php
+		break;
+	case "/bbcodes":
+		reqPermission(2);
+		$name = "";
+		$code = "";
+		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
+		{
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>Please fill name field!</b>"; } else { $name = $_POST['name']; }
+			if (empty($_POST['code'])) { echo "<b style='color: red;'>Please fill code field!</b>"; } else { $code = $_POST['code']; }
+			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
+			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
+			else {
+				$name = mysqli_real_escape_string($conn, $_POST['name']);
+				$code = mysqli_real_escape_string($conn, $_POST['code']);
+				mysqli_query($conn, "INSERT INTO bbcodes (name, code) VALUES ('".$name."', '".$code."');");
+				$name = "";
+				$code = "";
+			}
+		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['name2']))) {
+			
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>Please fill name field!</b>"; } else { $name = $_POST['name']; }
+			if (empty($_POST['code'])) { echo "<b style='color: red;'>Please fill code field!</b>"; } else { $code = $_POST['code']; }
+			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
+			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
+			else {
+				$name = mysqli_real_escape_string($conn, $_POST['name']);
+				$name2 = mysqli_real_escape_string($conn, $_POST['name2']);
+				$code = mysqli_real_escape_string($conn, $_POST['code']);
+				mysqli_query($conn, "UPDATE bbcodes SET name='".$name."', code='".$code."' WHERE name='".$name2."';");
+			}
+			$name = "";
+			$code = "";
+		}
+
+		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
+		{
+			$n = mysqli_real_escape_string($conn, $_GET['n']);
+			mysqli_query($conn, "DELETE FROM bbcodes WHERE name='".$n."'");
+		}
+		?>
+<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>BBCodes</h2></div>
+<div class="boxcontent">
+<table>
+<thead>
+<tr>
+<td>BBCode</td>
+<td>HTML Code</td>
+<td>Actions</td>
+</tr>
+</thead>
+<tbody>
+<?php
+$result = mysqli_query($conn, "SELECT * FROM bbcodes ORDER BY name ASC");
+while ($row = mysqli_fetch_assoc($result))
+{
+echo "<tr>";
+echo "<td>".$row['name']."</td>";
+echo "<td>".htmlspecialchars($row['code'])."</td>";
+echo "<td><a href='?/bbcodes&d=1&n=".$row['name']."'>Delete</a> <a href='?/bbcodes/edit&n=".$row['name']."'>Edit</a></td>";
+echo "</tr>";
+}
+?>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<br /><br />
+<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Add BBCode</h2></div>
+<div class="boxcontent">
+<form action="?/bbcodes" method="POST">
+<input type="hidden" name="mode" value="add">
+Name: <input type="text" name="name" value="<?php echo $name; ?>"/><br />
+HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><br />
+<input type="submit" value="Add" />
+</form>
+</div>
+</div>
+</div>
+		<?php
+		break;
+	case "/bbcodes/edit":
+		reqPermission(2);
+		if (!empty($_GET['n']))
+		{
+		$result = mysqli_query($conn, "SELECT * FROM bbcodes WHERE name='".mysqli_real_escape_string($conn, $_GET['n'])."'");
+		if (mysqli_num_rows($result) == 1)
+		{
+		$binfo = mysqli_fetch_assoc($result);
+		?>
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Edit BBCode</h2></div>
+<div class="boxcontent">
+<form action="?/bbcodes" method="POST">
+<input type="hidden" name="mode" value="edit">
+<input type="hidden" name="name2" value="<?php echo mysqli_real_escape_string($conn, $_GET['n']); ?>">
+Name: <input type="text" name="name" value="<?php echo $binfo['name']; ?>"/><br />
+HTML Code:<textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?>"</textarea><br />
+<input type="submit" value="Update" />
+</form>
+</div>
+</div>
+</div>
+		<?php
+		}
+		}
+		break;
+	case "/embeds":
+		reqPermission(2);
+		$name = "";
+		$code = "";
+		$regex = "";
+		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
+		{
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>Please fill name field!</b>"; } else { $name = $_POST['name']; }
+			if (empty($_POST['code'])) { echo "<b style='color: red;'>Please fill code field!</b>"; } else { $code = $_POST['code']; }
+			if (empty($_POST['regex'])) { echo "<b style='color: red;'>Please fill code field!</b>"; } else { $regex = $_POST['regex']; }
+			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
+			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
+			else {
+				$name = mysqli_real_escape_string($conn, $_POST['name']);
+				$regex = mysqli_real_escape_string($conn, $_POST['regex']);
+				$code = mysqli_real_escape_string($conn, $_POST['code']);
+				mysqli_query($conn, "INSERT INTO embeds (name, regex, code) VALUES ('".$name."', '".$regex."', '".$code."');");
+				$name = "";
+				$code = "";
+			}
+		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['name2']))) {
+			
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>Please fill name field!</b>"; } else { $name = $_POST['name']; }
+			if (empty($_POST['regex'])) { echo "<b style='color: red;'>Please regex name field!</b>"; } else { $regex = $_POST['name']; }
+			if (empty($_POST['code'])) { echo "<b style='color: red;'>Please fill code field!</b>"; } else { $code = $_POST['code']; }
+			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
+			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
+			else {
+				$name = mysqli_real_escape_string($conn, $_POST['name']);
+				$name2 = mysqli_real_escape_string($conn, $_POST['name2']);
+				$regex = mysqli_real_escape_string($conn, $_POST['regex']);
+				$code = mysqli_real_escape_string($conn, $_POST['code']);
+				mysqli_query($conn, "UPDATE embeds SET name='".$name."', code='".$code."', regex='".$regex."' WHERE name='".$name2."';");
+			}
+			$name = "";
+			$code = "";
+		}
+
+		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
+		{
+			$n = mysqli_real_escape_string($conn, $_GET['n']);
+			mysqli_query($conn, "DELETE FROM embeds WHERE name='".$n."'");
+		}
+		?>
+<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Embeds</h2></div>
+<div class="boxcontent">
+<table>
+<thead>
+<tr>
+<td>BBCode</td>
+<td>Regex</td>
+<td>Actions</td>
+</tr>
+</thead>
+<tbody>
+<?php
+$result = mysqli_query($conn, "SELECT * FROM embeds ORDER BY name ASC");
+while ($row = mysqli_fetch_assoc($result))
+{
+echo "<tr>";
+echo "<td>".$row['name']."</td>";
+echo "<td>".htmlspecialchars($row['regex'])."</td>";
+echo "<td><a href='?/embeds&d=1&n=".$row['name']."'>Delete</a> <a href='?/embeds/edit&n=".$row['name']."'>Edit</a></td>";
+echo "</tr>";
+}
+?>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<br /><br />
+<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Add embed</h2></div>
+<div class="boxcontent">
+<form action="?/embeds" method="POST">
+<input type="hidden" name="mode" value="add">
+Name: <input type="text" name="name" value="<?php echo $name; ?>"/><br />
+Regex: <input type="text" name="code" value="<?php echo $regex; ?>"/><br />
+HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><br />
+<input type="submit" value="Add" />
+</form>
+</div>
+</div>
+</div>
+		<?php
+		break;
+	case "/embeds/edit":
+		reqPermission(2);
+		if (!empty($_GET['n']))
+		{
+		$result = mysqli_query($conn, "SELECT * FROM embeds WHERE name='".mysqli_real_escape_string($conn, $_GET['n'])."'");
+		if (mysqli_num_rows($result) == 1)
+		{
+		$binfo = mysqli_fetch_assoc($result);
+		?>
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Edit embed</h2></div>
+<div class="boxcontent">
+<form action="?/embeds" method="POST">
+<input type="hidden" name="mode" value="edit">
+<input type="hidden" name="name2" value="<?php echo mysqli_real_escape_string($conn, $_GET['n']); ?>">
+Name: <input type="text" name="name" value="<?php echo $binfo['name']; ?>"/><br />
+Regex: <input type="text" name="regex" value="<?php echo $binfo['regex']; ?>"/><br />
+HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></textarea><br />
+<input type="submit" value="Update" />
+</form>
+</div>
+</div>
+</div>
+		<?php
+		}
+		}
 		break;
 }
 if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))))
