@@ -2827,6 +2827,7 @@ echo "</tr>";
 </div>
 </div>
 <?php
+	break;
 	case "/ipnotes/add":
 		$ip = "";
 		if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
