@@ -168,7 +168,12 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 
 function urlCallback($match)
 {
-	return "<a href='".$match[0]."'>".$match[0]."</a>";
+	if ((substr($match[0], 0, 5) == "http:") || (substr($match[0], 0, 6) == "https:"))
+	{
+		return "<a href='".$match[0]."'>".$match[0]."</a>";
+	} else {
+		return $match[0];
+	}
 }
 
 function generateView($conn, $board, $threadno = 0)
