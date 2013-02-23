@@ -2402,7 +2402,7 @@ echo '</div>';
 							}
 						}
 					}
-					echo '<meta http-equiv="refresh" content="2;URL='."'./".$_POST['board']."/index.html'".'">';
+					echo '<meta http-equiv="refresh" content="2;URL='."'?/board&b=".$_POST['board']."'".'">';
 				}
 				break;
 		}
