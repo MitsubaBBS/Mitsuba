@@ -458,13 +458,13 @@ function generateView($conn, $board, $threadno = 0)
 			} else {
 				if ($row['capcode'] == 1)
 				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' '.$poster_id.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span></span>';
+					$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span> '.$poster_id.'</span>';
 				} elseif ($row['capcode'] == 2)
 				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' '.$poster_id.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span></span>';
+					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span> '.$poster_id.'</span>';
 				} elseif ($row['capcode'] == 3)
 				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' '.$poster_id.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span></span>';
+					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span> '.$poster_id.'</span>';
 				} else {
 					$file .= '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.' '.$poster_id.'</span>';
 				}
@@ -564,13 +564,13 @@ function generateView($conn, $board, $threadno = 0)
 				} else {
 					if ($row2['capcode'] == 1)
 					{
-						$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$trip.' '.$poster_id.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span></span>';
+						$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span> '.$poster_id.'</span>';
 					} elseif ($row2['capcode'] == 2)
 					{
-						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$trip.' '.$poster_id.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span></span>';
+						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span> '.$poster_id.'</span>';
 					} elseif ($row2['capcode'] == 3)
 					{
-						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$trip.' '.$poster_id.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span></span>';
+						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span> '.$poster_id.'</span>';
 					} else {
 						$file .= '<span class="nameBlock"><span class="name">'.$row2['name'].'</span>'.$trip.' '.$poster_id.'</span>';
 					}

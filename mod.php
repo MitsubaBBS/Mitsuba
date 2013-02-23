@@ -452,10 +452,12 @@ Text: <br />
 $result = mysqli_query($conn, "SELECT * FROM announcements WHERE mod_id=".$_SESSION['id']." ORDER BY date DESC;");
 while ($row = mysqli_fetch_assoc($result))
 {
+echo "<tr>";
 echo "<td>".$row['title']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
 echo "<td><a href='?/announcements/edit&b=".$row['id']."'>Edit</a></td>";
 echo "<td><a href='?/announcements/delete&b=".$row['id']."'>Delete</a></td>";
+echo "</tr>";
 }
 ?>
 </tbody>
@@ -575,10 +577,12 @@ Text: <br />
 $result = mysqli_query($conn, "SELECT * FROM announcements ORDER BY date DESC;");
 while ($row = mysqli_fetch_assoc($result))
 {
+echo "<tr>";
 echo "<td>".$row['title']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
 echo "<td><a href='?/announcements/edit&b=".$row['id']."'>Edit</a></td>";
 echo "<td><a href='?/announcements/delete&b=".$row['id']."'>Delete</a></td>";
+echo "</tr>";
 }
 ?>
 </tbody>
@@ -647,10 +651,12 @@ Text: <br />
 $result = mysqli_query($conn, "SELECT * FROM news WHERE mod_id=".$_SESSION['id']." ORDER BY date DESC;");
 while ($row = mysqli_fetch_assoc($result))
 {
+echo "<tr>";
 echo "<td>".$row['title']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
 echo "<td><a href='?/news/edit&b=".$row['id']."'>Edit</a></td>";
 echo "<td><a href='?/news/delete&b=".$row['id']."'>Delete</a></td>";
+echo "</td>";
 }
 generateNews($conn);
 ?>
@@ -771,10 +777,12 @@ Text: <br />
 $result = mysqli_query($conn, "SELECT * FROM news ORDER BY date DESC;");
 while ($row = mysqli_fetch_assoc($result))
 {
+echo "<tr>";
 echo "<td>".$row['title']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
 echo "<td><a href='?/news/edit&b=".$row['id']."'>Edit</a></td>";
 echo "<td><a href='?/news/delete&b=".$row['id']."'>Delete</a></td>";
+echo "</tr>";
 }
 ?>
 </tbody>

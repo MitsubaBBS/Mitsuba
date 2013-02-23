@@ -237,9 +237,16 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 	$fsize = "";
 	if ((!empty($fname2)) && ($fname2 != "embed"))
 	{
-		$d = getimagesize("./".$board."/src/".$filename);
-		$isize = $d[0]."x".$d[1];
-		$fsize = human_filesize(filesize("./".$board."/src/".$filename));
+		if (substr($filename, 0, 8) == "spoiler:")
+		{
+			$d = getimagesize("./".$board."/src/".substr($filename, 8));
+			$isize = $d[0]."x".$d[1];
+			$fsize = human_filesize(filesize("./".$board."/src/".substr($filename, 8)));
+		} else {
+			$d = getimagesize("./".$board."/src/".substr($filename, 8));
+			$isize = $d[0]."x".$d[1];
+			$fsize = human_filesize(filesize("./".$board."/src/".substr($filename, 8)));
+		}
 	}
 	mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, sticky, sage, locked, capcode, raw)".
 	"VALUES (".time().", '".$name."', '".$trip."', '".mysqli_real_escape_string($conn, $poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
