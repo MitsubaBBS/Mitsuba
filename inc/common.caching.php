@@ -153,10 +153,15 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 			
 		}
 	}
-	
+	$rexProtocol = '(https?://)?';
+	$rexDomain   = '((?:[-a-zA-Z0-9]{1,63}\.)+[-a-zA-Z0-9]{2,63}|(?:[0-9]{1,3}\.){3}[0-9]{1,3})';
+	$rexPort     = '(:[0-9]{1,5})?';
+	$rexPath     = '(/[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]*?)?';
+	$rexQuery    = '(\?[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
+	$rexFragment = '(#[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
 	$parser->parse($new);
 	$new = $parser->getAsHtml();
-	$rurl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+	$rurl = "&\\b$rexProtocol$rexDomain$rexPort$rexPath$rexQuery$rexFragment(?=[?.!,;:\"]?(\s|$))&";
 	$new = preg_replace_callback($rurl, "urlCallback", $new);
 	return $new;
 }
