@@ -1684,6 +1684,21 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 </div>
 		<?php
 		} else {
+		if (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))
+		{
+		?>
+								<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>IP syntax wrong!</h2></div>
+<div class="boxcontent"><a href="?/bans/add">[ BACK ]</a></div>
+</div>
+</div>
+</div>
+</body>
+</html>
+		<?php
+		exit;
+		}
 		$post = "";
 		$board = "";
 		$postinfo = "";
