@@ -102,8 +102,46 @@ function processComment($board, $conn, $string, $thread = 0, $specialchars = 1)
 						}
 					}
 				} else {
-					$new .= "<span class='quote'>".$space[0]."</span> ".$space[1]."<br />";
+					$new .= "<span class='quote'>".$space[0]." ".$space[1]."</span><br />";
 				}
+			} elseif (substr($space[0], 8, 1) == "/")
+			{
+				$parts = explode("/", substr($space[0], 8));
+				if ((isBoard($conn, $parts[1])) && (is_numeric($parts[2])))
+				{
+					$result = mysqli_query($conn, "SELECT * FROM posts_".$parts[1]." WHERE id='".$parts[2]."';");
+					if (empty($space[1])) { $space[1] = ""; }
+					if (mysqli_num_rows($result) == 1)
+					{
+						$row = mysqli_fetch_assoc($result);
+						if ($row['resto'] != 0)
+						{
+							if ($thread == 1)
+							{
+								$new .= '<a href="../../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							} elseif ($thread == 0) {
+								$new .= '<a href="../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							} else {
+								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							}
+						} else {
+							if ($thread == 1)
+							{
+								$new .= '<a href="../../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							} elseif ($thread == 0) {
+								$new .= '<a href="../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							} else {
+								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							}
+						}
+					} else {
+						$new .= "<span class='quote'>".$space[0]."</span> ".$space[1]."<br />";
+					}
+				} else {
+					$new .= "<span class='quote'>".$line."</span><br />";
+				}
+			} else {
+				$new .= "<span class='quote'>".$line."</span><br />";
 			}
 		} elseif (substr($line, 0, 4) == "&gt;")
 		{
