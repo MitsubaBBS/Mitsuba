@@ -625,3 +625,6 @@ div.post-hidden:not(#quote-preview) blockquote.postMessage {
   display: none;
 }
 
+textarea {
+	white-space: pre-wrap;
+}
