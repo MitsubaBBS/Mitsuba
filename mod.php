@@ -3387,7 +3387,7 @@ Text:<br />
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Do you want to delete posts from IP <?php echo $_GET['ip']; ?>?</h2></div>
-<div class="boxcontent"><a href="?/reports">[ NO ]</a> <a href="?/delete_posts&ip=<?php echo $_GET['ip']; ?>">[ YES ]</a></div>
+<div class="boxcontent"><a href="?/info&ip=<?php echo $_GET['ip']; ?>">[ NO ]</a> <a href="?/delete_posts&ip=<?php echo $_GET['ip']; ?>">[ YES ]</a></div>
 </div>
 </div>
 		<?php
