@@ -1548,7 +1548,7 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-Showing recent 15 bans. <a href="?/bans/all">Show all</a>
+Showing recent 15 bans. <a href="?/bans/all">Show all</a> <a href="?/bans/recent&c=100">Show recent 100</a>
 </div>
 </div>
 </div>
@@ -1604,6 +1604,60 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a>
 	</div>
 	</div>
 	<?php
+	break;
+	case "/bans/recent":
+	if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
+	{
+	?>
+	<div class="box-outer top-box">
+	<div class="box-inner">
+	<div class="boxbar"><h2>All bans</h2></div>
+	<div class="boxcontent">
+	<table>
+	<thead>
+	<tr>
+	<td>IP</td>
+	<td>Reason</td>
+	<td>Staff note</td>
+	<td>Created</td>
+	<td>Expires</td>
+	<td>Boards</td>
+	<td>Delete</td>
+	</tr>
+	</thead>
+	<tbody>
+	<?php
+	$result = mysqli_query($conn, "SELECT * FROM bans ORDER BY created LIMIT 0, ".$_GET['c'].";");
+	while ($row = mysqli_fetch_assoc($result))
+	{
+	echo "<tr>";
+	echo "<td>".$row['ip']."</td>";
+	echo "<td>".$row['reason']."</td>";
+	echo "<td>".$row['note']."</td>";
+	echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
+	if ($row['expires'] != 0)
+	{
+	echo "<td>".date("d/m/Y @ H:i", $row['expires'])."</td>";
+	} else {
+	echo "<td><b>never</b></td>";
+	}
+	echo "<td>".$row['boards']."</td>";
+	if ($_SESSION['type']>=1)
+	{
+	echo "<td><a href='?/bans&del=1&b=".$row['id']."'>Delete</a></td>";
+	} else {
+	echo "<td></td>";
+	}
+	echo "</tr>";
+	}
+	?>
+	</tbody>
+	</table>
+	</div>
+	</div>
+	</div>
+	<?php
+	}
 	break;
 	case "/bans/add":
 	if (empty($_GET['r']))
