@@ -406,9 +406,9 @@ function generateView($conn, $board, $threadno = 0)
 				$file .= '</div>';
 				if ($threadno != 0)
 				{
-					$file .= '<a class="fileThumb" href="../src/'.$row['filename'].'" target="_blank"><img src="../../img/spoiler.png" alt="Deleted"/></a>';
+					$file .= '<a class="fileThumb" href="../src/'substr($row['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Deleted"/></a>';
 				} else {
-					$file .= '<a class="fileThumb" href="./src/'.$row['filename'].'" target="_blank"><img src="../img/spoiler.png" alt="Deleted"/></a>';
+					$file .= '<a class="fileThumb" href="./src/'.substr($row['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Deleted"/></a>';
 				}
 				$file .= '</div>';
 			} elseif (substr($row['filename'], 0, 6) == "embed:")
