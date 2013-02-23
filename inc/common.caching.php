@@ -62,6 +62,9 @@ function getBoardLinks($conn, $in_thread = 0)
 
 function processComment($board, $conn, $string, $thread = 0, $specialchars = 1)
 {
+	require_once( "./jbbcode/Parser.php" );
+	$parser = new JBBCode\Parser();
+	$parser->addBBCode("spoiler", '<s>{param}</s>');
 	$new = $string;
 	if ($specialchars == 1)
 	{
@@ -78,6 +81,10 @@ function processComment($board, $conn, $string, $thread = 0, $specialchars = 1)
 			{
 				$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id='".substr($space[0], 8)."';");
 				if (empty($space[1])) { $space[1] = ""; }
+				if (!empty($space[1])) {
+					$parser->parse($space[1]);
+					$space[1] = $parser->getAsHtml();
+				}
 				if (mysqli_num_rows($result) == 1)
 				{
 					$row = mysqli_fetch_assoc($result);
@@ -106,6 +113,10 @@ function processComment($board, $conn, $string, $thread = 0, $specialchars = 1)
 				}
 			} elseif ((substr($space[0], 0, 9) == "&gt;&gt;/") || (substr($space[0], 0, 13) == "&gt;&gt;&gt;/"))
 			{
+				if (!empty($space[1])) {
+					$parser->parse($space[1]);
+					$space[1] = $parser->getAsHtml();
+				}
 				$parts = explode("/", $space[0]);
 				if ((isBoard($conn, $parts[1])) && (is_numeric($parts[2])))
 				{
@@ -148,11 +159,15 @@ function processComment($board, $conn, $string, $thread = 0, $specialchars = 1)
 			$new .= "<span class='quote'>".$line."</span><br />";
 		} else {
 			$rurl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+			$ln = "";
 			if(preg_match($rurl, $line, $url)) {
-				$new .= preg_replace($rurl, '<a href="'.$url[0].'">'.$url[0].'</a> ', $line)."<br />";
+				$ln = preg_replace($rurl, '<a href="'.$url[0].'">'.$url[0].'</a> ', $line)."<br />";
 			} else {
-				$new .= $line."<br />";
+				$ln = $line."<br />";
 			}
+			$parser->parse($ln);
+			$new .= $parser->getAsHtml();
+			
 		}
 	}
 	return $new;
