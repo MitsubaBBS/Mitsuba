@@ -2523,6 +2523,14 @@ if ($_SESSION['type'] >= 1)
 </thead>
 <tbody>
 <?php
+		require_once( "./jbbcode/Parser.php" );
+		$parser = new JBBCode\Parser();
+		$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+		
+		while ($row = mysqli_fetch_assoc($bbcode))
+		{
+			$parser->addBBCode($row['name'], $row['code']);
+		}
 		$result = mysqli_query($conn, "SELECT * FROM reports ORDER BY created DESC");
 		while ($row = mysqli_fetch_assoc($result))
 		{
@@ -2556,10 +2564,10 @@ if ($_SESSION['type'] >= 1)
 			}
 			if ($pdata['raw'] == 0)
 			{
-				echo "<td>".processComment($row['board'], $conn, $pdata['comment'], 2)."</td>";
+				echo "<td>".processComment($row['board'], $conn, $pdata['comment'], $parser, 2)."</td>";
 			} elseif ($pdata['raw'] == 2)
 			{
-				echo "<td>".processComment($row['board'], $conn, $pdata['comment'], 2, 0)."</td>";
+				echo "<td>".processComment($row['board'], $conn, $pdata['comment'], $parser, 2, 0)."</td>";
 			} else {
 				echo "<td>".$pdata['comment']."</td>";
 			}
@@ -3046,6 +3054,14 @@ echo "</tr>";
 </thead>
 <tbody>
 	<?php
+	require_once( "./jbbcode/Parser.php" );
+	$parser = new JBBCode\Parser();
+	$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+	
+	while ($row = mysqli_fetch_assoc($bbcode))
+	{
+		$parser->addBBCode($row['name'], $row['code']);
+	}
 	$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC;");
 	while ($row = mysqli_fetch_assoc($boards))
 	{
@@ -3056,10 +3072,10 @@ echo "</tr>";
 			echo "<td><a href='?/board&b=".$row['short']."&t=".$thread['id']."#p".$thread['id']."'>/".$row['short']."/".$thread['id']."</a></td>";
 			if ($thread['raw'] == 0)
 			{
-				echo "<td>".processComment($row['short'], $conn, $thread['comment'], 2)."</td>";
+				echo "<td>".processComment($row['short'], $conn, $thread['comment'], $parser, 2)."</td>";
 			} elseif ($thread['raw'] == 2)
 			{
-				echo "<td>".processComment($row['short'], $conn, $thread['comment'], 2, 0)."</td>";
+				echo "<td>".processComment($row['short'], $conn, $thread['comment'], $parser, 2, 0)."</td>";
 			} else {
 				echo "<td>".$thread['comment']."</td>";
 			}
@@ -3091,6 +3107,14 @@ echo "</tr>";
 </thead>
 <tbody>
 	<?php
+	require_once( "./jbbcode/Parser.php" );
+	$parser = new JBBCode\Parser();
+	$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+	
+	while ($row = mysqli_fetch_assoc($bbcode))
+	{
+		$parser->addBBCode($row['name'], $row['code']);
+	}
 	$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC;");
 	while ($row = mysqli_fetch_assoc($boards))
 	{
@@ -3101,10 +3125,10 @@ echo "</tr>";
 			echo "<td><a href='?/board&b=".$row['short']."&t=".$thread['id']."#p".$thread['id']."'>/".$row['short']."/".$thread['id']."</a></td>";
 			if ($thread['raw'] == 0)
 			{
-				echo "<td>".processComment($row['short'], $conn, $thread['comment'], 2)."</td>";
+				echo "<td>".processComment($row['short'], $conn, $thread['comment'], $parser, 2)."</td>";
 			} elseif ($thread['raw'] == 2)
 			{
-				echo "<td>".processComment($row['short'], $conn, $thread['comment'], 2, 0)."</td>";
+				echo "<td>".processComment($row['short'], $conn, $thread['comment'], $parser, 2, 0)."</td>";
 			} else {
 				echo "<td>".$thread['comment']."</td>";
 			}
@@ -3390,6 +3414,14 @@ Text:<br />
 			</thead>
 			<tbody>
 			<?php
+			require_once( "./jbbcode/Parser.php" );
+			$parser = new JBBCode\Parser();
+			$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+			
+			while ($row = mysqli_fetch_assoc($bbcode))
+			{
+				$parser->addBBCode($row['name'], $row['code']);
+			}
 			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
 			while ($board = mysqli_fetch_assoc($boards))
 			{
@@ -3423,9 +3455,9 @@ Text:<br />
 					{
 						if ($row['raw'] == 2)
 						{
-							$comment = processComment($board['short'], $conn, $row['comment'], 2, 0);
+							$comment = processComment($board['short'], $conn, $row['comment'], $parser, 2, 0);
 						} else {
-							$comment = processComment($board['short'], $conn, $row['comment'], 2);
+							$comment = processComment($board['short'], $conn, $row['comment'], $parser, 2);
 						}
 					} else {
 						$comment = $row['comment'];
@@ -3534,7 +3566,14 @@ Text:<br />
 				}
 			}
 			$dates = array();
+			require_once( "./jbbcode/Parser.php" );
+			$parser = new JBBCode\Parser();
+			$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
 			
+			while ($row = mysqli_fetch_assoc($bbcode))
+			{
+				$parser->addBBCode($row['name'], $row['code']);
+			}
 			foreach ($post_array as $key => $row)
 			{
 				$dates[$key] = $row['date'];
@@ -3579,9 +3618,9 @@ Text:<br />
 				{
 					if ($row['raw'] == 2)
 					{
-						$comment = processComment($row['board'], $conn, $row['comment'], 2, 0);
+						$comment = processComment($row['board'], $conn, $row['comment'], $parser, 2, 0);
 					} else {
-						$comment = processComment($row['board'], $conn, $row['comment'], 2);
+						$comment = processComment($row['board'], $conn, $row['comment'], $parser, 2);
 					}
 				} else {
 					$comment = $row['comment'];
@@ -3656,7 +3695,14 @@ Text:<br />
 				}
 			}
 			$dates = array();
+			require_once( "./jbbcode/Parser.php" );
+			$parser = new JBBCode\Parser();
+			$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
 			
+			while ($row = mysqli_fetch_assoc($bbcode))
+			{
+				$parser->addBBCode($row['name'], $row['code']);
+			}
 			foreach ($post_array as $key => $row)
 			{
 				$dates[$key] = $row['date'];
@@ -3701,9 +3747,9 @@ Text:<br />
 				{
 					if ($row['raw'] == 2)
 					{
-						$comment = processComment($row['board'], $conn, $row['comment'], 2, 0);
+						$comment = processComment($row['board'], $conn, $row['comment'], $parser, 2, 0);
 					} else {
-						$comment = processComment($row['board'], $conn, $row['comment'], 2);
+						$comment = processComment($row['board'], $conn, $row['comment'], $parser, 2);
 					}
 				} else {
 					$comment = $row['comment'];
