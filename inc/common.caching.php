@@ -69,6 +69,8 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 	}
 	$lines = explode("\n", $new);
 	$new = "";
+	
+
 	foreach ($lines as $line)
 	{
 		if (substr($line, 0, 8) == "&gt;&gt;")
@@ -78,10 +80,6 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 			{
 				$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id='".substr($space[0], 8)."';");
 				if (empty($space[1])) { $space[1] = ""; }
-				if (!empty($space[1])) {
-					$parser->parse($space[1]);
-					$space[1] = $parser->getAsHtml();
-				}
 				if (mysqli_num_rows($result) == 1)
 				{
 					$row = mysqli_fetch_assoc($result);
@@ -89,20 +87,20 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 					{
 						if ($thread == 1)
 						{
-							$new .= '<a href="../res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							$new .= '<a href="../res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 						} elseif ($thread == 0) {
-							$new .= '<a href="./res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							$new .= '<a href="./res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 						} else {
-							$new .= '<a href="?/board&b='.$board.'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							$new .= '<a href="?/board&b='.$board.'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'< br />';
 						}
 					} else {
 						if ($thread == 1)
 						{
-							$new .= '<a href="../res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							$new .= '<a href="../res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 						} elseif ($thread == 0) {
-							$new .= '<a href="./res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							$new .= '<a href="./res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 						} else {
-							$new .= '<a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+							$new .= '<a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 						}
 					}
 				} else {
@@ -110,10 +108,6 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 				}
 			} elseif ((substr($space[0], 0, 9) == "&gt;&gt;/") || (substr($space[0], 0, 13) == "&gt;&gt;&gt;/"))
 			{
-				if (!empty($space[1])) {
-					$parser->parse($space[1]);
-					$space[1] = $parser->getAsHtml();
-				}
 				$parts = explode("/", $space[0]);
 				if ((isBoard($conn, $parts[1])) && (is_numeric($parts[2])))
 				{
@@ -126,48 +120,50 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 						{
 							if ($thread == 1)
 							{
-								$new .= '<a href="../../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+								$new .= '<a href="../../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 							} elseif ($thread == 0) {
-								$new .= '<a href="../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+								$new .= '<a href="../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 							} else {
-								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 							}
 						} else {
 							if ($thread == 1)
 							{
-								$new .= '<a href="../../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+								$new .= '<a href="../../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 							} elseif ($thread == 0) {
-								$new .= '<a href="../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+								$new .= '<a href="../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 							} else {
-								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
+								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 							}
 						}
 					} else {
-						$new .= "<span class='quote'>".$space[0]."</span> ".$space[1]."<br />";
+						$new .= "<span class='quote'>".$space[0]."</span> ".$space[1]." <br />";
 					}
 				} else {
 					$new .= "<span class='quote'>".$line."</span><br />";
 				}
 			} else {
-				$new .= "<span class='quote'>".$line."</span><br />";
+				$new .= "<span class='quote'>".$line."</span> <br />";
 			}
 		} elseif (substr($line, 0, 4) == "&gt;")
 		{
 			$new .= "<span class='quote'>".$line."</span><br />";
 		} else {
-			$rurl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-			$ln = "";
-			if(preg_match($rurl, $line, $url)) {
-				$ln = preg_replace($rurl, '<a href="'.$url[0].'">'.$url[0].'</a> ', $line)."<br />";
-			} else {
-				$ln = $line."<br />";
-			}
-			$parser->parse($ln);
-			$new .= $parser->getAsHtml();
+			$new .= $line." <br />";
 			
 		}
 	}
+	
+	$parser->parse($new);
+	$new = $parser->getAsHtml();
+	$rurl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+	$new = preg_replace_callback($rurl, "urlCallback", $new);
 	return $new;
+}
+
+function urlCallback($match)
+{
+	return "<a href='".$match[0]."'>".$match[0]."</a>";
 }
 
 function generateView($conn, $board, $threadno = 0)
