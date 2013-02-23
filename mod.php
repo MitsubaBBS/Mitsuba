@@ -2555,7 +2555,7 @@ if ($_SESSION['type'] >= 1)
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>File deleted</h2></div>
-<div class="boxcontent"><a href="javascript:history.back(-2);">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/board&b=<?php echo $_GET['b']; ?>">[ BACK ]</a></div>
 </div>
 </div>
 		<?php
@@ -2565,7 +2565,7 @@ if ($_SESSION['type'] >= 1)
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Post deleted</h2></div>
-<div class="boxcontent"><a href="javascript:history.back(-2);">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/board&b=<?php echo $_GET['b']; ?>">[ BACK ]</a></div>
 </div>
 </div>
 		<?php
