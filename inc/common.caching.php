@@ -91,7 +91,7 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 						} elseif ($thread == 0) {
 							$new .= '<a href="./res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
 						} else {
-							$new .= '<a href="?/board&b='.$board.'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'< br />';
+							$new .= '<a href="?/board&b='.$board.'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
 						}
 					} else {
 						if ($thread == 1)

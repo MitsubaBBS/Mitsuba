@@ -109,7 +109,7 @@ function getLinkTable($conn, $id)
 $result = mysqli_query($conn, "SELECT * FROM links WHERE parent=".$id." ORDER BY short ASC, title ASC, id DESC;");
 	if (mysqli_num_rows($result) > 0)
 	{
-		if ($id != -1) { $table = "<table style='width: 92%;'>"; } else { $table = "<table style='width: 100%;'>"; }
+		if ($id != -1) { $table = "<table style='width: 92% !important;'>"; } else { $table = "<table style='width: 100%;'>"; }
 $table .= "<thead>
 <tr>
 <td>Short</td>
