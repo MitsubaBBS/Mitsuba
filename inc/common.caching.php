@@ -442,7 +442,7 @@ function generateView($conn, $board, $threadno = 0)
 			}
 			$file .= '<div class="postInfo" id="pi'.$row['id'].'">';
 			$file .= '<input type="checkbox" name="'.$row['id'].'" value="delete" />';
-			$file .= '<span class="subject">'.$row['subject'].'</span>';
+			$file .= '<span class="subject">'.$row['subject'].'</span> ';
 			$trip = "";
 			if (!empty($row['trip']))
 			{
@@ -453,18 +453,36 @@ function generateView($conn, $board, $threadno = 0)
 			{
 				$poster_id = '<span class="posteruid">(ID: '.$row['poster_id'].')</span>';
 			}
+			$c_image = "";
+			if ($row['capcode'] == 1)
+			{
+				if ($threadno != 0)
+				{
+					$c_image = ' <img src="../../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+				} else {
+					$c_image = ' <img src="../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+				}
+			} elseif ($row['capcode'] == 2)
+			{
+				if ($threadno != 0)
+				{
+					$c_image = ' <img src="../../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+				} else {
+					$c_image = ' <img src="../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+				}
+			}
 			if (!empty($row['email'])) {
 				$file .= '<span class="nameBlock"><a href="mailto:'.$row['email'].'" class="useremail"><span class="name">'.$row['name'].'</span>'.$trip.'</a> '.$poster_id.'</span>';
 			} else {
 				if ($row['capcode'] == 1)
 				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span> '.$poster_id.'</span>';
+					$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
 				} elseif ($row['capcode'] == 2)
 				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span> '.$poster_id.'</span>';
+					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
 				} elseif ($row['capcode'] == 3)
 				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span> '.$poster_id.'</span>';
+					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
 				} else {
 					$file .= '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.' '.$poster_id.'</span>';
 				}
@@ -548,7 +566,7 @@ function generateView($conn, $board, $threadno = 0)
 				$file .= '<div id="p'.$row2['id'].'" class="post reply">';
 				$file .= '<div class="postInfo" id="pi'.$row2['id'].'">';
 				$file .= '<input type="checkbox" name="'.$row2['id'].'" value="delete" />';
-				$file .= '<span class="subject">'.$row2['subject'].'</span>';
+				$file .= '<span class="subject">'.$row2['subject'].'</span> ';
 				$trip = "";
 				if (!empty($row2['trip']))
 				{
@@ -559,18 +577,36 @@ function generateView($conn, $board, $threadno = 0)
 				{
 					$poster_id = '<span class="posteruid">(ID: '.$row2['poster_id'].')</span>';
 				}
+				$c_image = "";
+				if ($row2['capcode'] == 1)
+				{
+					if ($threadno != 0)
+					{
+						$c_image = ' <img src="../../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+					} else {
+						$c_image = ' <img src="../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+					}
+				} elseif ($row2['capcode'] == 2)
+				{
+					if ($threadno != 0)
+					{
+						$c_image = ' <img src="../../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+					} else {
+						$c_image = ' <img src="../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+					}
+				}
 				if (!empty($row2['email'])) {
 					$file .= '<span class="nameBlock"><a href="mailto:'.$row2['email'].'" class="useremail"><span class="name">'.$row2['name'].'</span>'.$trip.'</a> '.$poster_id.'</span>';
 				} else {
 					if ($row2['capcode'] == 1)
 					{
-						$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span> '.$poster_id.'</span>';
+						$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
 					} elseif ($row2['capcode'] == 2)
 					{
-						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span> '.$poster_id.'</span>';
+						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
 					} elseif ($row2['capcode'] == 3)
 					{
-						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span> '.$poster_id.'</span>';
+						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
 					} else {
 						$file .= '<span class="nameBlock"><span class="name">'.$row2['name'].'</span>'.$trip.' '.$poster_id.'</span>';
 					}

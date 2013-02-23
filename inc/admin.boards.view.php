@@ -216,7 +216,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		}
 		$file .= '<div class="postInfo" id="pi'.$row['id'].'">';
 		$file .= '<input type="checkbox" name="'.$row['id'].'" value="delete">';
-		$file .= '<span class="subject">'.$row['subject'].'</span>';
+		$file .= '<span class="subject">'.$row['subject'].'</span> ';
 		$trip = "";
 		if (!empty($row['trip']))
 		{
@@ -232,10 +232,10 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		} else {
 			if ($row['capcode'] == 1)
 			{
-				$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span> '.$poster_id.'</span>';
+				$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span> <img src="./img/mod.png" alt="Moderator" style="margin-bottom: -3px;" /></span> '.$poster_id.'</span>';
 			} elseif ($row['capcode'] == 2)
 			{
-				$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span> '.$poster_id.'</span>';
+				$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span> <img src="./img/admin.png" alt="Administrator" style="margin-bottom: -3px;" /></span> '.$poster_id.'</span>';
 			} elseif ($row['capcode'] == 3)
 			{
 				$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span> '.$poster_id.'</span>';
@@ -341,7 +341,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			$file .= '<div id="p'.$row2['id'].'" class="post reply">';
 			$file .= '<div class="postInfo" id="pi'.$row2['id'].'">';
 			$file .= '<input type="checkbox" name="'.$row2['id'].'" value="delete">';
-			$file .= '<span class="subject">'.$row2['subject'].'</span>';
+			$file .= '<span class="subject">'.$row2['subject'].'</span> ';
 			$trip = "";
 			if (!empty($row2['trip']))
 			{
@@ -357,10 +357,10 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			} else {
 				if ($row2['capcode'] == 1)
 				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span> '.$poster_id.'</span>';
+					$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span> <img src="./img/mod.png" alt="Moderator" style="margin-bottom: -3px;" /></span> '.$poster_id.'</span>';
 				} elseif ($row2['capcode'] == 2)
 				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span> '.$poster_id.'</span>';
+					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span> <img src="./img/admin.png" alt="Moderator" style="margin-bottom: -3px;" /></span> '.$poster_id.'</span>';
 				} elseif ($row2['capcode'] == 3)
 				{
 					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span> '.$poster_id.'</span>';
