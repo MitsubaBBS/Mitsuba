@@ -26,7 +26,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 						{
 							$filename = substr($filename, 8);
 						}
-						if (substr($filename, 0, 6) != "embed:")
+						if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
 						{
 							unlink("./".$board."/src/".$filename);
 							unlink("./".$board."/src/thumb/".$filename);
@@ -55,7 +55,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 							{
 								$filename = substr($filename, 8);
 							}
-							if (substr($filename, 0, 6) != "embed:")
+							if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
 							{
 								unlink("./".$board."/src/".$filename);
 								unlink("./".$board."/src/thumb/".$filename);
@@ -68,7 +68,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 							{
 								$filename = substr($filename, 8);
 							}
-							if (substr($filename, 0, 6) != "embed:")
+							if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
 							{
 								unlink("./".$board."/src/".$filename);
 								unlink("./".$board."/src/thumb/".$filename);
@@ -89,7 +89,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 							{
 								$filename = substr($filename, 8);
 							}
-							if (substr($filename, 0, 6) != "embed:")
+							if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
 							{
 								unlink("./".$board."/src/".$filename);
 								unlink("./".$board."/src/thumb/".$filename);
