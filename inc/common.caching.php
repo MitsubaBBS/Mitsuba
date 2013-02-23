@@ -104,9 +104,9 @@ function processComment($board, $conn, $string, $thread = 0, $specialchars = 1)
 				} else {
 					$new .= "<span class='quote'>".$space[0]." ".$space[1]."</span><br />";
 				}
-			} elseif (substr($space[0], 8, 1) == "/")
+			} elseif ((substr($space[0], 0, 9) == "&gt;&gt;/") || (substr($space[0], 0, 13) == "&gt;&gt;&gt;/"))
 			{
-				$parts = explode("/", substr($space[0], 8));
+				$parts = explode("/", $space[0]);
 				if ((isBoard($conn, $parts[1])) && (is_numeric($parts[2])))
 				{
 					$result = mysqli_query($conn, "SELECT * FROM posts_".$parts[1]." WHERE id='".$parts[2]."';");
