@@ -2838,7 +2838,7 @@ echo "</tr>";
 			$ip = $_POST['ip'];
 		}
 		
-		if (((empty($_GET['ip'])) || (!filter_var($_GET['ip'], FILTER_VALIDATE_IP))) || ((empty($_POST['ip'])) || (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))))
+		if (empty($ip))
 		{
 		?>
 			<div class="box-outer top-box">
