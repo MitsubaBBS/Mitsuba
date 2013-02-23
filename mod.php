@@ -2837,19 +2837,7 @@ echo "</tr>";
 		{
 			$ip = $_POST['ip'];
 		}
-		if ((!empty($ip)) && (!empty($_POST['note'])))
-		{
-			$note = processEntry($conn, $_POST['note']);
-			mysqli_query($conn, "INSERT INTO ip_notes (ip, text, created, mod_id) VALUES ('".$ip."', '".$note."', ".time().", ".$_SESSION['id'].")");
-			?>
-			<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2>IP note added</h2></div>
-<div class="boxcontent"><a href="?/ipnotes">[ BACK ]</a></div>
-</div></div>
-
-			<?php
-		}
+		
 		if (((empty($_GET['ip'])) || (!filter_var($_GET['ip'], FILTER_VALIDATE_IP))) || ((empty($_POST['ip'])) || (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))))
 		{
 		?>
@@ -2860,6 +2848,20 @@ echo "</tr>";
 </div></div>
 
 			<?php
+		} else {
+			if ((!empty($ip)) && (!empty($_POST['note'])))
+			{
+				$note = processEntry($conn, $_POST['note']);
+				mysqli_query($conn, "INSERT INTO ip_notes (ip, text, created, mod_id) VALUES ('".$ip."', '".$note."', ".time().", ".$_SESSION['id'].")");
+				?>
+				<div class="box-outer top-box">
+	<div class="box-inner">
+	<div class="boxbar"><h2>IP note added</h2></div>
+	<div class="boxcontent"><a href="?/ipnotes">[ BACK ]</a></div>
+	</div></div>
+
+				<?php
+			}
 		}
 		if (empty($_POST['note']))
 		{
