@@ -50,7 +50,13 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			}
 			if (!empty($_POST['embed']))
 			{
-				if ((isEmbed($_POST['embed'])) && ($bdata['embeds']==1))
+				$embed_table = array();
+				$result = mysqli_query($conn, "SELECT * FROM embeds;");
+				while ($row = mysqli_fetch_assoc($result))
+				{
+					$embed_table[] = $row;
+				}
+				if ((isEmbed($_POST['embed'], $embed_table)) && ($bdata['embeds']==1))
 				{
 					$filename = "embed:".$_POST['embed'];
 				} else {

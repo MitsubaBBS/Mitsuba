@@ -39,6 +39,13 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		$parser->addBBCode($row['name'], $row['code']);
 	}
 	
+	$embed_table = array();
+	$result = mysqli_query($conn, "SELECT * FROM embeds;");
+	while ($row = mysqli_fetch_assoc($result))
+	{
+		$embed_table[] = $row;
+	}
+	
 	$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">';

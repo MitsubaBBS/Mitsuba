@@ -1,14 +1,5 @@
 <?php
 function getEmbed($url, $embed_table = null, $s = 250) {
-	if ($embed_table = null)
-	{
-		$embed_table = array();
-		$result = mysqli_query("SELECT * FROM embeds;");
-		while ($row = mysqli_fetch_assoc($result))
-		{
-			$embed_table[] = $row;
-		}
-	}
 	foreach ($embed_table as $row)
 	{
 		if (preg_match($row['regex'], $url, $vresult))
@@ -22,14 +13,6 @@ function getEmbed($url, $embed_table = null, $s = 250) {
 }
 
 function isEmbed($url, $embed_table = null) {
-	if ($embed_table = null)
-	{
-		$result = mysqli_query("SELECT * FROM embeds;");
-		while ($row = mysqli_fetch_assoc($result))
-		{
-			$embed_table[] = $row;
-		}
-	}
 	foreach ($embed_table as $row)
 	{
 		if (preg_match($row['regex'], $url, $vresult))

@@ -200,7 +200,7 @@ function generateView($conn, $board, $threadno = 0)
 	}
 	
 	$embed_table = array();
-	$result = mysqli_query("SELECT * FROM embeds;");
+	$result = mysqli_query($conn, "SELECT * FROM embeds;");
 	while ($row = mysqli_fetch_assoc($result))
 	{
 		$embed_table[] = $row;
