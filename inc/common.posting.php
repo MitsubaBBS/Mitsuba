@@ -228,9 +228,9 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 			$isize = $d[0]."x".$d[1];
 			$fsize = human_filesize(filesize("./".$board."/src/".substr($filename, 8)));
 		} else {
-			$d = getimagesize("./".$board."/src/".substr($filename, 8));
+			$d = getimagesize("./".$board."/src/".$filename);
 			$isize = $d[0]."x".$d[1];
-			$fsize = human_filesize(filesize("./".$board."/src/".substr($filename, 8)));
+			$fsize = human_filesize(filesize("./".$board."/src/".$filename));
 		}
 	}
 	mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, sticky, sage, locked, capcode, raw)".
