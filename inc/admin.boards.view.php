@@ -397,7 +397,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 				{
 					$file .= '<div class="file" id="f'.$row2['id'].'">';
 					$file .= '<div class="fileInfo">';
-					$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>spoiler image</b></span>';
+					$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>embed</b></span>';
 					$file .= '</div>';
 					$file .= '<a class="fileThumb">'.getEmbed(substr($row2['filename'], 6)).'</a>';
 					$file .= '</div>';
