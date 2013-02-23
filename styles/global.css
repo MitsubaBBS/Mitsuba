@@ -404,3 +404,16 @@ span.postertrip {
     color: #117743;
     font-weight: normal!important;
 }
+.lnkSmall {
+	font-size: 7pt;
+	text-decoration: none;
+	color: #000000;
+}
+.lnkSmall:hover {
+	color: #835B36 !important;
+	text-decoration: underline;
+}
+.lnkSmall:visited {
+	text-decoration: none;
+	color: #000000;
+}
