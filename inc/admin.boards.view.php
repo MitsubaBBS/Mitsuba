@@ -83,7 +83,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			<input type="hidden" name="mode" value="regist" />
 			<table class="postForm" id="postForm">
 			<tbody>';
-		if (($boarddata['noname'] == 0) && ($_SESSION['type'] == 0))
+		if (($boarddata['noname'] == 0) || ($_SESSION['type'] >= 1))
 		{
 			$file .= '<tr>
 				<td>Name</td>

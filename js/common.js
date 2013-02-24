@@ -23,13 +23,7 @@ $(document).ready(function () {
 		$(".thread").each(function () {
 			$('<a href="javascript:;" class="expander" id="e'+$(this).attr("id")+'">[+]</a>').insertAfter($("div#"+$(this).attr("id")+" > span.summary")).click(function () {
 				var tid = "#"+$(this).attr("id").substr(1);
-				var href = "";
-				if (window.location.href.indexOf("mod.php") == -1)
-				{
-					href = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1)+"res/"+tid.substr(2)+'.html';
-				} else {
-					href = window.location.href.replace("&p", "&x")+"&t="+tid.substr(2);
-				}
+				var href = absolutizeURI(window.location.href, $(tid).find(".replylink").attr("href"));
 				$.ajax({
 				type: 'get',
 				url: href,
@@ -37,7 +31,7 @@ $(document).ready(function () {
 					var html = xhr.responseText;
 					var nodes = $.parseHTML( html );
 					$(tid).html($(tid, nodes).html());
-					$(tid+" div.op span.postNum").append('<span> &nbsp; [<a href="./res/'+tid.substr(1)+'.html" class="replylink">Reply</a>]</span>');
+					$(tid+" div.op span.postNum").append('<span> &nbsp; [<a href="'+href+'" class="replylink">Reply</a>]</span>');
 					$(tid+" div.op span.postNum").append(' <a href="javascript:;" class="hider" id="h'+tid.substr(2)+'">[-]</a>');
 					$(tid).find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
 					$(tid).find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );

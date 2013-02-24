@@ -208,6 +208,7 @@ switch ($path)
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Mitsuba Navigation</title>
+<meta http-equiv="refresh" content="180" />
 <link rel="stylesheet" href="./styles/menu.css" />
 <script type="text/javascript">
 function toggle(button,area) {
@@ -224,6 +225,8 @@ function toggle(button,area) {
 </head>
 <body>
 <ul>
+<li>You are logged in as <b><?php echo $_SESSION['username']; ?></b></li>
+<li>Privileges: <b><?php if ($_SESSION['type']==2) { echo "Administrator"; } elseif ($_SESSION['type']==1) { echo "Moderator"; } elseif ($_SESSION['type']==0) { echo "Janitor"; } else { echo "Faggot"; } ?></b></li>
 <li><a href="?/logout" target="_top">[Log out]</a></li>
 </ul>
 <h2><span class="coll" onclick="toggle(this,'gen');" title="Toggle Category">&minus;</span>General</h2>
@@ -2546,6 +2549,7 @@ if ($_SESSION['type'] >= 1)
 			if (mysqli_num_rows($post) == 0)
 			{
 				mysqli_query($conn, "DELETE FROM reports WHERE id=".$row['id']);
+				continue;
 			}
 			$pdata = mysqli_fetch_assoc($post);
 			$resto = $pdata['id'];
@@ -2682,7 +2686,14 @@ if ($_SESSION['type'] >= 1)
 <div class="box-inner">
 <div class="boxbar"><h2>Information about <?php echo $_GET['ip']; ?></h2></div>
 <div class="boxcontent">
+<?php
+if ($_SESSION['type']>=1)
+{
+?>
 <a href="?/search/ip&ip=<?php echo $_GET['ip']; ?>">Search for posts by this IP</a><br />
+<?php
+}
+?>
 <b>Recent 15 bans for this IP:</b>
 <table>
 <thead>
@@ -3400,6 +3411,7 @@ Text:<br />
 	case "/log/all":
 		break;
 	case "/search/ip":
+		reqPermission(1);
 		if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
 		{
 			?>
@@ -3527,7 +3539,15 @@ Text:<br />
 				}
 				mysqli_query($conn, "DELETE FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."'");
 				rebuildBoardCache($conn, $row['short']);
-				
+				?>
+	
+								<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Posts deleted.</h2></div>
+<div class="boxcontent"><a href="?/info&ip=<?php echo $_GET['ip']; ?>">[ BACK ]</a></div>
+</div>
+</div>
+		<?php
 			}
 		}
 		break;
@@ -3869,23 +3889,23 @@ Showing recent 15 ban requests. <a href="?/ban_requests/all">Show all</a>
 $result = mysqli_query($conn, "SELECT * FROM ban_requests ORDER BY created DESC");
 while ($row = mysqli_fetch_assoc($result))
 {
+
+$post_r = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
+if (mysqli_num_rows($post_r) == 0)
+{
+	mysqli_query($conn, "DELETE FROM reports WHERE id=".$row['id']);
+	continue;
+}
+$post = mysqli_fetch_assoc($post_r);
+
 echo "<tr>";
 echo "<td>".$row['ip']."</td>";
 echo "<td>".$row['reason']."</td>";
 echo "<td>".$row['note']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
-
-$post_r = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
-if (mysqli_num_rows($post_r) == 1)
-{
-$post = mysqli_fetch_assoc($post_r);
 $resto = $post['resto'];
 if ($resto == 0) { $resto = $post['id']; }
 echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$post['id']."'>P</a> ]</td>";
-} else {
-echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
-}
-
 echo "</tr>";
 }
 ?>
