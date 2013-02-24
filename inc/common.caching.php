@@ -32,7 +32,10 @@ function generateLinks($conn, $id, $in_thread = 0)
 		if (!empty($row['url']))
 		{
 			if ($no > 0) { $links .= ' / '; }
-			if ((!empty($row['url_thread'])) && ($in_thread == 1))
+			if ((!empty($row['url_index'])) && ($in_thread == 2))
+			{
+				$links .= '<a href="'.$row['url_index'].'" title="'.$row['title'].'">'.$row['short'].'</a>';
+			} elseif ((!empty($row['url_thread'])) && ($in_thread == 1))
 			{
 				$links .= '<a href="'.$row['url_thread'].'" title="'.$row['title'].'">'.$row['short'].'</a>';
 			} else {
@@ -55,8 +58,10 @@ function getBoardLinks($conn, $in_thread = 0)
 	if ($in_thread == 1)
 	{
 		return $config['boardLinks_thread'];
-	} else {
+	} elseif ($in_thread == 0) {
 		return $config['boardLinks'];
+	} else {
+		return $config['boardLinks_index'];
 	}
 }
 

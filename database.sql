@@ -187,6 +187,7 @@ INSERT INTO `bbcodes` (`name`, `code`) VALUES
 INSERT INTO `config` (`name`, `value`) VALUES
 ('boardLinks', ''),
 ('boardLinks_thread', ''),
+('boardLinks_index', ''),
 ('frontpage_menu_url', 'menu.html'),
 ('frontpage_style', '0'),
 ('frontpage_url', 'index.html'),
