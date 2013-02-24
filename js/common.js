@@ -19,6 +19,32 @@ $(document).ready(function () {
 			thread_toggle(id);
 		});
 		hideThreads();
+		
+		$(".thread").each(function () {
+			$('<a href="javascript:;" class="expander" id="e'+$(this).attr("id")+'">[+]</a>').insertAfter($("div#"+$(this).attr("id")+" > span.summary")).click(function () {
+				var tid = "#"+$(this).attr("id").substr(1);
+				var href = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1)+"res/"+tid.substr(2)+'.html';
+				
+				$.ajax({
+				type: 'get',
+				url: href,
+				success: function(data, textStatus, xhr){
+					var html = xhr.responseText;
+					var nodes = $.parseHTML( html );
+					$(tid).html($(tid, nodes).html());
+					$(tid+" div.op span.postNum").append('<span> &nbsp; [<a href="./res/'+tid.substr(1)+'.html" class="replylink">Reply</a>]</span>');
+					$(tid+" div.op span.postNum").append(' <a href="javascript:;" class="hider" id="h'+tid.substr(2)+'">[-]</a>');
+					$(tid).find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
+					$(tid).find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
+					$(tid).find(".hider").click(function () {
+						var id = $(this).attr("id").substr(1);
+						thread_toggle(id);
+					});
+					
+				}
+				});
+			});
+		});
 	}
 	
 	$("body").append('<div id="quote-preview" class="post preview" style="display: none; position: absolute; z-index:999;"></div>');
@@ -28,6 +54,14 @@ $(document).ready(function () {
 		hidePostPreview(this);
 	}
 	);
+	
+	$(".quotelink").each(function () {
+		var hr = $(this).attr("href");
+		var postid = hr.substr(hr.indexOf('#'));
+		//here
+	});
+	
+	
 	
 });
 
