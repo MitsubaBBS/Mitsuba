@@ -43,11 +43,6 @@ $(document).ready(function () {
 						var id = $(this).attr("id").substr(1);
 						thread_toggle(id);
 					});
-					$(tid).find(".quotelink").hover(function () {
-						showPostPreview(this);
-					}, function () {
-						hidePostPreview(this);
-					});
 					$(tid+" .postInfo").each(function () {
 						
 						$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'"></div>');
@@ -62,6 +57,11 @@ $(document).ready(function () {
 						} catch(ex) {
 							
 						}
+					});
+					$(tid).find(".quotelink").hover(function () {
+						showPostPreview(this);
+					}, function () {
+						hidePostPreview(this);
 					});
 					
 					}
