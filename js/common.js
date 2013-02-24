@@ -23,8 +23,13 @@ $(document).ready(function () {
 		$(".thread").each(function () {
 			$('<a href="javascript:;" class="expander" id="e'+$(this).attr("id")+'">[+]</a>').insertAfter($("div#"+$(this).attr("id")+" > span.summary")).click(function () {
 				var tid = "#"+$(this).attr("id").substr(1);
-				var href = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1)+"res/"+tid.substr(2)+'.html';
-				
+				var href = "";
+				if (window.location.href.indexOf("mod.php") == -1)
+				{
+					href = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1)+"res/"+tid.substr(2)+'.html';
+				} else {
+					href = window.location.href.replace("&p", "&x")+"&t="+tid.substr(2);
+				}
 				$.ajax({
 				type: 'get',
 				url: href,
@@ -40,6 +45,12 @@ $(document).ready(function () {
 						var id = $(this).attr("id").substr(1);
 						thread_toggle(id);
 					});
+					$(tid).find(".quotelink").hover(function () {
+						showPostPreview(this);
+					}, function () {
+						hidePostPreview(this);
+					}
+					);
 					
 				}
 				});
