@@ -3507,7 +3507,7 @@ Text:<br />
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Do you want to delete posts from IP <?php echo $_GET['ip']; ?>?</h2></div>
-<div class="boxcontent"><a href="?/info&ip=<?php echo $_GET['ip']; ?>">[ NO ]</a> <a href="?/delete_posts&ip=<?php echo $_GET['ip']; ?>">[ YES ]</a></div>
+<div class="boxcontent"><a href="?/info&ip=<?php echo $_GET['ip']; ?>">[ NO ]</a> <a href="?/delete_posts/yes&ip=<?php echo $_GET['ip']; ?>">[ YES ]</a></div>
 </div>
 </div>
 		<?php
@@ -3519,7 +3519,7 @@ Text:<br />
 			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
 			while ($board = mysqli_fetch_assoc($boards))
 			{
-				$threads = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." WHERE ip=".$_GET['ip']."' AND resto=0");
+				$threads = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."' AND resto=0");
 				while ($row = mysqli_fetch_assoc($threads))
 				{
 					mysqli_query($conn, "DELETE FROM posts_".$board['short']." WHERE resto=".$row['id']);
@@ -3830,7 +3830,7 @@ if (mysqli_num_rows($post_r) == 1)
 $post = mysqli_fetch_assoc($post_r);
 $resto = $post['resto'];
 if ($resto == 0) { $resto = $post['id']; }
-echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
+echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$post['id']."'>P</a> ]</td>";
 } else {
 echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
 }
@@ -3881,7 +3881,7 @@ if (mysqli_num_rows($post_r) == 1)
 $post = mysqli_fetch_assoc($post_r);
 $resto = $post['resto'];
 if ($resto == 0) { $resto = $post['id']; }
-echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['id']."'>P</a> ]</td>";
+echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$post['id']."'>P</a> ]</td>";
 } else {
 echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
 }
