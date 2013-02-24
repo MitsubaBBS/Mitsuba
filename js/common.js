@@ -7,6 +7,24 @@ function strStartsWith(str, prefix) {
 
 $(document).ready(function () {
 	//ready
+	
+	
+	$(".postInfo").each(function () {
+		
+		$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'"></div>');
+		
+	});
+	$(".quotelink:not(cross)").each(function () {
+		var hr = $(this).attr("href");
+		var postid = hr.substr(hr.indexOf('#')+2);
+		//here
+		try {
+		$("#bl"+postid).append("<span><a href='#p"+$(this).parent(".postMessage").attr("id").substr(1)+"' class='quotelink'>>>"+$(this).parent(".postMessage").attr("id").substr(1)+"</a> </span>");
+		} catch(ex) {
+			
+		}
+	});
+	
 	if (window.location.href.indexOf("res") == -1)
 	{
 		$(".op .postInfo").each(function () {
@@ -59,12 +77,6 @@ $(document).ready(function () {
 		hidePostPreview(this);
 	}
 	);
-	
-	$(".quotelink").each(function () {
-		var hr = $(this).attr("href");
-		var postid = hr.substr(hr.indexOf('#'));
-		//here
-	});
 	
 	
 	
