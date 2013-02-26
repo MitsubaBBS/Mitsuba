@@ -22,7 +22,6 @@ $(document).ready(function () {
 			var id = $(this).attr("id").substr(1);
 			thread_toggle(id);
 		});
-		hideThreads();
 		
 		$(".thread").each(function () {
 			$('<a href="javascript:;" class="expander" id="e'+$(this).attr("id")+'">[+]</a>').insertAfter($("div#"+$(this).attr("id")+" > span.summary")).click(function () {
@@ -68,6 +67,7 @@ $(document).ready(function () {
 				});
 			});
 		});
+		hideThreads();
 	}
 	
 	$(".postInfo").each(function () {

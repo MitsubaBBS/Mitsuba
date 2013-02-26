@@ -739,7 +739,7 @@ function generateView($conn, $board, $threadno = 0)
 					$file .= '<form action="./index.html" onsubmit="location=this.action; return false;"><input type="submit" value="Previous" /></form>';
 				}
 			} else {
-				$file .= '<span>Next</span>';
+				$file .= '<span>Previous</span>';
 			}
 			$file .= ' </div>';
 			$file .= '<div class="pages">';
@@ -763,7 +763,7 @@ function generateView($conn, $board, $threadno = 0)
 			{
 				$file .= '<form action="./'.($pg+1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="Next" /></form>';
 			} else {
-				$file .= '<span>Previous</span>';
+				$file .= '<span>Next</span>';
 			}
 			$file .= '</div>';
 			$file .= '</div>';
