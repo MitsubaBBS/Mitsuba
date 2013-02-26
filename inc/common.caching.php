@@ -125,20 +125,20 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 						{
 							if ($thread == 1)
 							{
-								$new .= '<a href="../../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
+								$new .= '<a href="../../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
 							} elseif ($thread == 0) {
-								$new .= '<a href="../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
+								$new .= '<a href="../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
 							} else {
-								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
+								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
 							}
 						} else {
 							if ($thread == 1)
 							{
-								$new .= '<a href="../../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
+								$new .= '<a href="../../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
 							} elseif ($thread == 0) {
-								$new .= '<a href="../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
+								$new .= '<a href="../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
 							} else {
-								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
+								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
 							}
 						}
 					} else {

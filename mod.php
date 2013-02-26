@@ -16,6 +16,8 @@ include("inc/admin.boards.php");
 include("inc/admin.boards.links.php");
 include("inc/admin.boards.view.php");
 include("inc/admin.posting.php");
+include("inc/common.plugins.php");
+
 
 function deleteEntry($conn, $type, $id, $validate_id = 0)
 {
@@ -124,6 +126,7 @@ if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && ((
 <?php
 }
 $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
+loadPlugins($conn);
 switch ($path)
 {
 	case "/":
@@ -241,6 +244,7 @@ function toggle(button,area) {
 <li><a href="?/recent/posts" target="main">Recent posts</a></li>
 <li><a href="?/recent/files" target="main">Recently uploaded images</a></li>
 <?php
+echo runHooks("menu", null);
 if ($_SESSION['type'] >= 1)
 {
 ?>
@@ -4147,6 +4151,9 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></t
 		<?php
 		}
 		}
+		break;
+	default:
+		echo runHooks("panel", $path);
 		break;
 }
 if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))))
