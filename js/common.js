@@ -34,14 +34,13 @@ $(document).ready(function () {
 					var html = xhr.responseText;
 					var nodes = $.parseHTML( html );
 					$(tid).html($(tid, nodes).html());
-					$('<a href="javascript:;" class="hider" id="ht'+tid.substr(2)+'"> [-]</a>').insertAfter($(tid+" div.op span.postNum"));
+					$('<a href="javascript:;" class="hider" id="ht'+tid.substr(2)+'"> [-]</a>').insertAfter($(tid+" div.op span.postNum")).click(function () {
+						var id = $(this).attr("id").substr(2);
+						thread_toggle(id);
+					});
 					$('<span> &nbsp; [<a href="'+href+'" class="replylink">Reply</a>] </span>').insertAfter($(tid+" div.op span.postNum"));
 					$(tid).find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
 					$(tid).find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
-					$(tid).find(".hider").click(function () {
-						var id = $(this).attr("id").substr(1);
-						thread_toggle(id);
-					});
 					$(tid+" .postInfo").each(function () {
 						
 						$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'"></div>');
