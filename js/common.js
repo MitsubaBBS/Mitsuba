@@ -34,7 +34,7 @@ $(document).ready(function () {
 					var html = xhr.responseText;
 					var nodes = $.parseHTML( html );
 					$(tid).html($(tid, nodes).html());
-					$('<a href="javascript:;" class="hider" id="ht'+tid.substr(2)+'"> [-]</a>').insertAfter($(tid+" div.op span.postNum")).click(function () {
+					$('<a href="javascript:;" class="hider" id="ht'+tid.substr(2)+'">[-]</a>').appendTo($(tid+" div.op div.postInfo")).click(function () {
 						var id = $(this).attr("id").substr(2);
 						thread_toggle(id);
 					});
@@ -43,7 +43,7 @@ $(document).ready(function () {
 					$(tid).find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
 					$(tid+" .postInfo").each(function () {
 						
-						$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'"></div>');
+						$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'">&nbsp;</div>');
 						
 					});
 					$(tid+" .quotelink:not(cross)").each(function () {
