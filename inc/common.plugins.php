@@ -1,5 +1,9 @@
 <?php
-include("IPlugin.php");
+interface IPlugin {
+	public function load($conn);
+	public function runHook($hook, $params);
+}
+
 function loadPlugins($conn)
 {
 	foreach (glob("./plugins/*.php") as $pluginname)
