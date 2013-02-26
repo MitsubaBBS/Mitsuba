@@ -167,7 +167,7 @@ function hideThread(id)
 {
 	$("#f"+id).css("display", "none");
 	$("#m"+id).css("display", "none");
-	$("#h"+id).css("display", "none");
+	$("#e"+id).css("display", "none");
 	$("#t"+id).find(".replyContainer").css("display", "none");
 	$("#t"+id).find("span.summary").css("display", "none");
 	$("#h"+id).html("[+]");
@@ -177,7 +177,7 @@ function showThread(id)
 {
 	$("#f"+id).css("display", "block");
 	$("#m"+id).css("display", "block");
-	$("#h"+id).css("display", "inline");
+	$("#e"+id).css("display", "inline");
 	$("#t"+id).find(".replyContainer").css("display", "block");
 	$("#t"+id).find("span.summary").css("display", "inline");
 	$("#h"+id).html("[-]");
