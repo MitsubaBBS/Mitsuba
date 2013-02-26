@@ -71,7 +71,7 @@ $(document).ready(function () {
 	
 	$(".postInfo").each(function () {
 		
-		$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'"></div>');
+		$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'">&nbsp;</div>');
 		
 	});
 	$(".quotelink:not(cross)").each(function () {
