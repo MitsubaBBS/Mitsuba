@@ -4056,7 +4056,7 @@ HTML Code:<textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?>"</t
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['name2']))) {
 			
 			if (empty($_POST['name'])) { echo "<b style='color: red;'>Please fill name field!</b>"; } else { $name = $_POST['name']; }
-			if (empty($_POST['regex'])) { echo "<b style='color: red;'>Please regex name field!</b>"; } else { $regex = $_POST['name']; }
+			if (empty($_POST['regex'])) { echo "<b style='color: red;'>Please regex name field!</b>"; } else { $regex = $_POST['regex']; }
 			if (empty($_POST['code'])) { echo "<b style='color: red;'>Please fill code field!</b>"; } else { $code = $_POST['code']; }
 			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
 			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
@@ -4115,7 +4115,7 @@ echo "</tr>";
 <form action="?/embeds" method="POST">
 <input type="hidden" name="mode" value="add">
 Name: <input type="text" name="name" value="<?php echo $name; ?>"/><br />
-Regex: <input type="text" name="code" value="<?php echo $regex; ?>"/><br />
+Regex: <input type="text" name="regex" value="<?php echo $regex; ?>"/><br />
 HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><br />
 <input type="submit" value="Add" />
 </form>
