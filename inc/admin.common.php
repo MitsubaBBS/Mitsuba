@@ -46,4 +46,12 @@ function canBoard($board)
 		return 1;
 	}
 }
+
+function checkForUpdates()
+{
+	if ((defined(MITSUBA_VERSION)) && (MITSUBA_VERSION != "disabled"))
+	{
+		//magic here
+	}
+}
 ?>

@@ -1,8 +1,8 @@
- Example plugin:
- 
+Example plugin:
+
 <?php
 class plugin_TestMenu implements IPlugin {
-	public function load($conn)
+	public function __construct($conn)
 	{
 	
 	}
@@ -20,6 +20,16 @@ class plugin_TestMenu implements IPlugin {
 				return "<b>Test</b>";
 			}
 		}
+	}
+	
+	public function getName()
+	{
+		return "TestMenu";
+	}
+	
+	public function getUpdateURL()
+	{
+		return null;
 	}
 }
 ?>

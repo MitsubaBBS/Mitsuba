@@ -1,11 +1,44 @@
 <?php
-interface IPlugin {
-	public function load($conn);
-	public function runHook($hook, $params);
+interface ILibrary {
+	public function __construct($conn);
+	public function getName();
+	public function getUpdateURL();
 }
+
+interface IPlugin {
+	public function __construct($conn);
+	public function runHook($hook, $params);
+	public function getName();
+	public function getUpdateURL();
+}
+$libraries_array = array();
+$plugins_array = array();
 
 function loadPlugins($conn)
 {
+	global $plugins_array;
+	global $libraries_array;
+	foreach (glob("./libs/*.php") as $libname)
+	{
+		include($libname);
+	}
+	foreach (get_declared_classes() as $classname)
+	{
+		if (substr($classname, 0, 4) == "lib_") {
+			try {
+				$lib = new $classname();
+				if ($lib instanceof ILibrary)
+				{
+					$libraries_array[] = $lib;
+				}
+			} catch (Exception $e)
+			{
+				//we do nothing because we can't
+			}
+			
+		}
+	}
+	
 	foreach (glob("./plugins/*.php") as $pluginname)
 	{
 		include($pluginname);
@@ -14,10 +47,15 @@ function loadPlugins($conn)
 	{
 		if (substr($classname, 0, 7) == "plugin_")
 		{
-			$plugin = new $classname();
-			if ($plugin instanceof IPlugin)
+			try {
+				$plugin = new $classname($conn);
+				if ($plugin instanceof IPlugin)
+				{
+					$plugins_array[] = $plugin;
+				} 
+			} catch (Exception $e)
 			{
-				$return = $plugin->load($conn);
+				//we do nothing because we can't
 			}
 		}
 	}
@@ -25,16 +63,13 @@ function loadPlugins($conn)
 
 function runHooks($hook, $params)
 {
+	global $plugins_array;
 	$return = "";
-	foreach (get_declared_classes() as $classname)
+	foreach ($plugins_array as $class)
 	{
-		if (substr($classname, 0, 7) == "plugin_")
+		if ($class instanceof IPlugin)
 		{
-			$plugin = new $classname();
-			if ($plugin instanceof IPlugin)
-			{
-				$return = $plugin->runHook($hook, $params) . "\n";
-			}
+			$return = $class->runHook($hook, $params) . "\n";
 		}
 	}
 	return $return;
