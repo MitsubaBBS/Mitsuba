@@ -18,7 +18,11 @@ function loadPlugins($conn)
 {
 	global $plugins_array;
 	global $libraries_array;
-	foreach (glob("./libs/*.php") as $libname)
+	$libs = array();
+	$plugins = array();
+	if ($array = glob("./libs/*.php")) { $libs = $array; }
+	if ($array = glob("./plugins/*.php")) { $plugins = $array; }
+	foreach ($libs as $libname)
 	{
 		include($libname);
 	}
@@ -39,7 +43,7 @@ function loadPlugins($conn)
 		}
 	}
 	
-	foreach (glob("./plugins/*.php") as $pluginname)
+	foreach ($plugins as $pluginname)
 	{
 		include($pluginname);
 	}
