@@ -5,15 +5,15 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 	
 	if (is_numeric($postno))
 	{
-		$board = mysqli_real_escape_string($conn, $board);
+		$board = $conn->real_escape_string($board);
 		if (!isBoard($conn, $board))
 		{
 			return -16;
 		}
-		$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$postno);
-		if (mysqli_num_rows($result) == 1)
+		$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$postno);
+		if ($result->num_rows == 1)
 		{
-			$postdata = mysqli_fetch_assoc($result);
+			$postdata = $result->fetch_assoc();
 			if (md5($password) == $postdata['password'])
 			{
 				if ($onlyimgdel == 1)
@@ -31,7 +31,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 							unlink("./".$board."/src/".$filename);
 							unlink("./".$board."/src/thumb/".$filename);
 						}
-						mysqli_query($conn, "UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
+						$conn->query("UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
 						if ($postdata['resto'] != 0)
 						{
 							generateView($conn, $board, $postdata['resto']);
@@ -47,8 +47,8 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 				} else {
 					if ($postdata['resto'] == 0) //we'll have to delete whole thread
 					{
-						$files = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$postdata['id']);
-						while ($file = mysqli_fetch_assoc($files))
+						$files = $conn->query("SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$postdata['id']);
+						while ($file = $files->fetch_assoc())
 						{
 							$filename = $file['filename'];
 							if (substr($filename, 0, 8) == "spoiler:")
@@ -74,8 +74,8 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 								unlink("./".$board."/src/thumb/".$filename);
 							}
 						}
-						mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$postno.";");
-						mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
+						$conn->query("DELETE FROM posts_".$board." WHERE resto=".$postno.";");
+						$conn->query("DELETE FROM posts_".$board." WHERE id=".$postno.";");
 						unlink("./".$board."/res/".$postno.".html");
 						//generateView($conn, $board, $postno);
 						generateView($conn, $board);
@@ -95,7 +95,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 								unlink("./".$board."/src/thumb/".$filename);
 							}
 						}
-						mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
+						$conn->query("DELETE FROM posts_".$board." WHERE id=".$postno.";");
 						generateView($conn, $board, $postdata['resto']);
 						generateView($conn, $board);
 						return 2;
@@ -151,21 +151,21 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	$replies = 0;
 	if ($resto != 0)
 	{
-		$thread = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$resto);
+		$thread = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$resto);
 		
 		if ($bdata['bumplimit'] > 0)
 		{
-			$replies = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=".$resto);
-			$replies = mysqli_num_rows($replies);
+			$replies = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$resto);
+			$replies = $replies->num_rows;
 		}
 		
-		if (mysqli_num_rows($thread) == 0)
+		if ($thread->num_rows == 0)
 		{
 			echo "<center><h1>Error: Cannot reply to thread because thread does not exist.</h1><br /><a href='./".$board."'>RETURN</a></center>";
 			return;
 		}
 		
-		$tinfo = mysqli_fetch_assoc($thread);
+		$tinfo = $thread->fetch_assoc();
 		if ($tinfo['locked'] == 1)
 		{
 			echo "<center><h1>Error: This thread is locked.</h1><br /><a href='./".$board."'>RETURN</a></center>";
@@ -208,7 +208,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	{
 		$old_email = "sage";
 	}
-	$md5 = mysqli_real_escape_string($conn, $md5);
+	$md5 = $conn->real_escape_string($md5);
 	$poster_id = "";
 	if ($bdata['ids'] == 1)
 	{
@@ -233,8 +233,8 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 			$fsize = human_filesize(filesize("./".$board."/src/".$filename));
 		}
 	}
-	mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, sticky, sage, locked, capcode, raw)".
-	"VALUES (".time().", '".$name."', '".$trip."', '".mysqli_real_escape_string($conn, $poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', 0, 0, 0, 0, 0)");
+	$conn->query("INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, sticky, sage, locked, capcode, raw)".
+	"VALUES (".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', 0, 0, 0, 0, 0)");
 	$id = mysqli_insert_id($conn);
 	$poster_id = "";
 	if ($bdata['ids'] == 1)
@@ -247,7 +247,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	}
 	if ($poster_id != "")
 	{
-		mysqli_query($conn, "UPDATE posts_".$board." SET poster_id='".mysqli_real_escape_string($conn, $poster_id)."' WHERE id=".$id);
+		$conn->query("UPDATE posts_".$board." SET poster_id='".$conn->real_escape_string($poster_id)."' WHERE id=".$id);
 	}
 	$email = $old_email;
 	if ($resto != 0)
@@ -256,7 +256,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		{
 		
 		} else {
-			mysqli_query($conn, "UPDATE posts_".$board." SET lastbumped=".time()." WHERE id=".$resto);
+			$conn->query("UPDATE posts_".$board." SET lastbumped=".time()." WHERE id=".$resto);
 		}
 	
 	
@@ -288,20 +288,20 @@ function reportPost($conn, $board, $id, $reason)
 {
 	if (is_numeric($id))
 	{
-		$board = mysqli_real_escape_string($conn, $board);
+		$board = $conn->real_escape_string($board);
 		if (!isBoard($conn, $board))
 		{
 			return -16;
 		}
-		$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$id);
-		if (mysqli_num_rows($result) == 1)
+		$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$id);
+		if ($result->num_rows == 1)
 		{
-			$postdata = mysqli_fetch_assoc($result);
-			$result = mysqli_query($conn, "SELECT * FROM reports WHERE reported_post=".$id." AND board='".$board."'");
-			if (mysqli_num_rows($result) == 0)
+			$postdata = $result->fetch_assoc();
+			$result = $conn->query("SELECT * FROM reports WHERE reported_post=".$id." AND board='".$board."'");
+			if ($result->num_rows == 0)
 			{
-				$reason = mysqli_real_escape_string($conn, $reason);
-				mysqli_query($conn, "INSERT INTO reports (reporter_ip, reported_post, reason, created, board) VALUES ('".$_SERVER['REMOTE_ADDR']."', ".$id.", '".$reason."', ".time().", '".$board."')");
+				$reason = $conn->real_escape_string($reason);
+				$conn->query("INSERT INTO reports (reporter_ip, reported_post, reason, created, board) VALUES ('".$_SERVER['REMOTE_ADDR']."', ".$id.", '".$reason."', ".time().", '".$board."')");
 			} else {
 				return 1;
 			}

@@ -8,10 +8,12 @@ include("config.php");
 include("inc/common.php");
 include("inc/common.caching.php");
 include("inc/common.posting.php");
+include("inc/common.plugins.php");
 
 if (isset($_POST['mode']))
 {
-$conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
+$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
+loadPlugins($conn);
 	$mode = $_POST['mode'];
 	switch($mode)
 	{
@@ -51,8 +53,8 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			if (!empty($_POST['embed']))
 			{
 				$embed_table = array();
-				$result = mysqli_query($conn, "SELECT * FROM embeds;");
-				while ($row = mysqli_fetch_assoc($result))
+				$result = $conn->query("SELECT * FROM embeds;");
+				while ($row = $result->fetch_assoc())
 				{
 					$embed_table[] = $row;
 				}
@@ -223,13 +225,13 @@ $conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
 			if (!empty($_POST['msg']))
 			{
 				$msg = preprocessComment($conn, $_POST['msg']);
-				$email = mysqli_real_escape_string($conn, $_POST['email']);
+				$email = $conn->real_escape_string($_POST['email']);
 				$ip = $_SERVER['REMOTE_ADDR'];
 				$ban = isBanned($conn, $ip, $_POST['board']);
 				$ban_id = $ban['id'];
 				$range = 0;
 				if (!empty($bandata['start_ip'])) { $range = 1; }
-				mysqli_query($conn, "INSERT INTO appeals (created, ban_id, ip, msg, email, rangeban) VALUES (".time().", ".$ban_id.", '".$ip."', '".$msg."', '".$email."', ".$range.")");
+				$conn->query("INSERT INTO appeals (created, ban_id, ip, msg, email, rangeban) VALUES (".time().", ".$ban_id.", '".$ip."', '".$msg."', '".$email."', ".$range.")");
 				echo "Your appeal has been sent. Keep calm and wait for reply";
 			}
 			break;

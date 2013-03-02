@@ -3,10 +3,10 @@ function addBan($conn, $ip, $reason, $note, $expires, $boards)
 {
 	if (!empty($ip))
 	{
-		$ip = mysqli_real_escape_string($conn, $ip);
-		$reason = mysqli_real_escape_string($conn, $reason);
-		$note = mysqli_real_escape_string($conn, $note);
-		$boards = mysqli_real_escape_string($conn, $boards);
+		$ip = $conn->real_escape_string($ip);
+		$reason = $conn->real_escape_string($reason);
+		$note = $conn->real_escape_string($note);
+		$boards = $conn->real_escape_string($boards);
 		$created = time();
 		$perma = 1;
 		if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
@@ -21,7 +21,7 @@ function addBan($conn, $ip, $reason, $note, $expires, $boards)
 		{
 			return -2;
 		}
-		mysqli_query($conn, "INSERT INTO bans (ip, mod_id, reason, note, created, expires, boards) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", ".$expires.", '".$boards."');");
+		$conn->query("INSERT INTO bans (ip, mod_id, reason, note, created, expires, boards) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", ".$expires.", '".$boards."');");
 		return 1;
 	}
 }
@@ -30,16 +30,16 @@ function addBanRequest($conn, $ip, $reason, $note, $board = "", $post = 0, $appe
 {
 	if (!empty($ip))
 	{
-		$ip = mysqli_real_escape_string($conn, $ip);
-		$reason = mysqli_real_escape_string($conn, $reason);
-		$note = mysqli_real_escape_string($conn, $note);
+		$ip = $conn->real_escape_string($ip);
+		$reason = $conn->real_escape_string($reason);
+		$note = $conn->real_escape_string($note);
 		if (is_numeric($post))
 		{
 		
 		}
 		$created = time();
 	
-		mysqli_query($conn, "INSERT INTO ban_requests (ip, mod_id, reason, note, created, board, post, append) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", '".$board."', ".$post.", ".$append.");");
+		$conn->query("INSERT INTO ban_requests (ip, mod_id, reason, note, created, board, post, append) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", '".$board."', ".$post.", ".$append.");");
 		return 1;
 	}
 }

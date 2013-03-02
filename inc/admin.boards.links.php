@@ -6,17 +6,17 @@ function deleteBoardLink($conn, $id)
 	{
 		return -1;
 	}
-	mysqli_query($conn, "DELETE FROM links WHERE parent=".$id.";");
-	mysqli_query($conn, "DELETE FROM links WHERE id=".$id.";");
+	$conn->query("DELETE FROM links WHERE parent=".$id.";");
+	$conn->query("DELETE FROM links WHERE id=".$id.";");
 	rebuildBoardLinks($conn);
 }
 
 function addLinkCategory($conn, $name)
 {
-	$allcat = mysqli_query($conn, "SELECT * FROM links WHERE url='' AND parent=-1");
-	$catnum = mysqli_num_rows($allcat);
-	$name = mysqli_real_escape_string($conn, $name);
-	mysqli_query($conn, "INSERT INTO links (parent, url, url_thread, url_index, title, short) VALUES (-1, '', '', '', '".$name."', 'c".($catnum + 1)."');");
+	$allcat = $conn->query("SELECT * FROM links WHERE url='' AND parent=-1");
+	$catnum = $allcat->num_rows;
+	$name = $conn->real_escape_string($name);
+	$conn->query("INSERT INTO links (parent, url, url_thread, url_index, title, short) VALUES (-1, '', '', '', '".$name."', 'c".($catnum + 1)."');");
 	rebuildBoardLinks($conn);
 }
 
@@ -27,15 +27,15 @@ function updateBoardLink($conn, $id, $url, $url_thread, $url_index, $title, $sho
 	{
 		return -1;
 	}
-	$title = mysqli_real_escape_string($conn, $title);
-	$url = mysqli_real_escape_string($conn, $url);
-	$url_thread = mysqli_real_escape_string($conn, $url_thread);
-	$url_index = mysqli_real_escape_string($conn, $url_index);
-	$short = mysqli_real_escape_string($conn, $short);
-	$cat = mysqli_query($conn, "SELECT * FROM links WHERE id=".$id);
-	if (mysqli_num_rows($cat) == 1)
+	$title = $conn->real_escape_string($title);
+	$url = $conn->real_escape_string($url);
+	$url_thread = $conn->real_escape_string($url_thread);
+	$url_index = $conn->real_escape_string($url_index);
+	$short = $conn->real_escape_string($short);
+	$cat = $conn->query("SELECT * FROM links WHERE id=".$id);
+	if ($cat->num_rows == 1)
 	{
-		mysqli_query($conn, "UPDATE links SET title='".$title."', url='".$url."', url_thread='".$url_thread."', url_index='".$url_index."', short='".$short."' WHERE id=".$id);
+		$conn->query("UPDATE links SET title='".$title."', url='".$url."', url_thread='".$url_thread."', url_index='".$url_index."', short='".$short."' WHERE id=".$id);
 		rebuildBoardLinks($conn);
 		return 1;
 	} else {
@@ -45,16 +45,16 @@ function updateBoardLink($conn, $id, $url, $url_thread, $url_index, $title, $sho
 
 function addBoardLink($conn, $parent, $url, $url_thread, $url_index, $title, $short)
 {
-	$parent = mysqli_real_escape_string($conn, $parent);
-	$title = mysqli_real_escape_string($conn, $title);
-	$url = mysqli_real_escape_string($conn, $url);
-	$url_thread = mysqli_real_escape_string($conn, $url_thread);
-	$url_index = mysqli_real_escape_string($conn, $url_index);
-	$short = mysqli_real_escape_string($conn, $short);
-	$cat = mysqli_query($conn, "SELECT * FROM links WHERE id=".$parent);
-	if (mysqli_num_rows($cat) == 1)
+	$parent = $conn->real_escape_string($parent);
+	$title = $conn->real_escape_string($title);
+	$url = $conn->real_escape_string($url);
+	$url_thread = $conn->real_escape_string($url_thread);
+	$url_index = $conn->real_escape_string($url_index);
+	$short = $conn->real_escape_string($short);
+	$cat = $conn->query("SELECT * FROM links WHERE id=".$parent);
+	if ($cat->num_rows == 1)
 	{
-		mysqli_query($conn, "INSERT INTO links (parent, url, url_thread, url_index, title, short) VALUES (".$parent.", '".$url."', '".$url_thread."', '".$url_index."', '".$title."', '".$short."');");
+		$conn->query("INSERT INTO links (parent, url, url_thread, url_index, title, short) VALUES (".$parent.", '".$url."', '".$url_thread."', '".$url_index."', '".$title."', '".$short."');");
 		rebuildBoardLinks($conn);
 		return 1;
 	} else {
@@ -64,17 +64,17 @@ function addBoardLink($conn, $parent, $url, $url_thread, $url_index, $title, $sh
 
 function moveDownCategory($conn, $id)
 {
-	$result = mysqli_query($conn, "SELECT * FROM links WHERE id=".$id.";");
-	if (mysqli_num_rows($result) == 1)
+	$result = $conn->query("SELECT * FROM links WHERE id=".$id.";");
+	if ($result->num_rows == 1)
 	{
-		$allcat = mysqli_query($conn, "SELECT * FROM links WHERE url='' AND parent=-1");
-		$row = mysqli_fetch_assoc($result);
+		$allcat = $conn->query("SELECT * FROM links WHERE url='' AND parent=-1");
+		$row = $result->fetch_assoc();
 		$curpos = substr($row['short'], 1);
-		$catnum = mysqli_num_rows($allcat);
+		$catnum = $allcat->num_rows;
 		if ($curpos < $catnum)
 		{
-			mysqli_query($conn, "UPDATE links SET short='c".($curpos)."' WHERE short='c".($curpos+1)."';");
-			mysqli_query($conn, "UPDATE links SET short='c".($curpos+1)."' WHERE id=".$id);
+			$conn->query("UPDATE links SET short='c".($curpos)."' WHERE short='c".($curpos+1)."';");
+			$conn->query("UPDATE links SET short='c".($curpos+1)."' WHERE id=".$id);
 			rebuildBoardLinks($conn);
 		}
 		return 1;
@@ -85,17 +85,17 @@ function moveDownCategory($conn, $id)
 
 function moveUpCategory($conn, $id)
 {
-	$result = mysqli_query($conn, "SELECT * FROM links WHERE id=".$id.";");
-	if (mysqli_num_rows($result) == 1)
+	$result = $conn->query("SELECT * FROM links WHERE id=".$id.";");
+	if ($result->num_rows == 1)
 	{
-		//$allcat = mysqli_query($conn, "SELECT * FROM links WHERE url='' AND parent=-1");
-		$row = mysqli_fetch_assoc($result);
+		//$allcat = $conn->query("SELECT * FROM links WHERE url='' AND parent=-1");
+		$row = $result->fetch_assoc();
 		$curpos = substr($row['short'], 1);
-		//$catnum = mysqli_num_rows($allcat);
+		//$catnum = $allcat->num_rows;
 		if ($curpos > 1)
 		{
-			mysqli_query($conn, "UPDATE links SET short='c".($curpos)."' WHERE short='c".($curpos-1)."';");
-			mysqli_query($conn, "UPDATE links SET short='c".($curpos-1)."' WHERE id=".$id);
+			$conn->query("UPDATE links SET short='c".($curpos)."' WHERE short='c".($curpos-1)."';");
+			$conn->query("UPDATE links SET short='c".($curpos-1)."' WHERE id=".$id);
 			rebuildBoardLinks($conn);
 		}
 		return 1;
@@ -106,8 +106,8 @@ function moveUpCategory($conn, $id)
 
 function getLinkTable($conn, $id)
 {
-$result = mysqli_query($conn, "SELECT * FROM links WHERE parent=".$id." ORDER BY short ASC, title ASC, id DESC;");
-	if (mysqli_num_rows($result) > 0)
+$result = $conn->query("SELECT * FROM links WHERE parent=".$id." ORDER BY short ASC, title ASC, id DESC;");
+	if ($result->num_rows > 0)
 	{
 		if ($id != -1) { $table = "<table style='width: 92% !important;'>"; } else { $table = "<table style='width: 100%;'>"; }
 $table .= "<thead>
@@ -123,7 +123,7 @@ $table .= "<thead>
 		return "";
 	}
 
-while ($row = mysqli_fetch_assoc($result))
+while ($row = $result->fetch_assoc())
 {
 $table .= "<tr>";
 if (empty($row['url'])){

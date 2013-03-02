@@ -15,8 +15,8 @@ function regenIDs($conn, $board)
 		$bdata = getBoardData($conn, $board);
 		if ($bdata['ids'] == 1)
 		{
-			$result = mysqli_query($conn, "SELECT * FROM posts_".$board);
-			while ($row = mysqli_fetch_assoc($result))
+			$result = $conn->query("SELECT * FROM posts_".$board);
+			while ($row = $result->fetch_assoc())
 			{
 				$poster_id = "";
 				if ($row['resto'] != 0)
@@ -25,10 +25,10 @@ function regenIDs($conn, $board)
 				} else {
 					$poster_id = mkid($row['ip'], $row['id'], $board);
 				}
-				mysqli_query($conn, "UPDATE posts_".$board." SET poster_id='".$poster_id."' WHERE id=".$row['id']);
+				$conn->query("UPDATE posts_".$board." SET poster_id='".$poster_id."' WHERE id=".$row['id']);
 			}
 		} else {
-			mysqli_query($conn, "UPDATE posts_".$board." SET poster_id=''");
+			$conn->query("UPDATE posts_".$board." SET poster_id=''");
 		}
 	}
 }
@@ -55,10 +55,10 @@ function createDirectories($board)
 
 function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0)
 {
-	$short = mysqli_real_escape_string($conn, trim($short, "/ "));
-	$name = mysqli_real_escape_string($conn, $name);
-	$des = mysqli_real_escape_string($conn, $des);
-	$message = mysqli_real_escape_string($conn, $message);
+	$short = $conn->real_escape_string(trim($short, "/ "));
+	$name = $conn->real_escape_string($name);
+	$des = $conn->real_escape_string($des);
+	$message = $conn->real_escape_string($message);
 	if (!is_numeric($bumplimit))
 	{
 		$bumplimit = 0;
@@ -79,10 +79,10 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 	{
 		$embeds = 0;
 	}
-	$result = mysqli_query($conn, "INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname, ids, embeds) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.")");
+	$result = $conn->query("INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname, ids, embeds) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.")");
 	if ($result)
 	{
-		mysqli_query($conn, "CREATE TABLE IF NOT EXISTS `posts_".$short."` (
+		$conn->query("CREATE TABLE IF NOT EXISTS `posts_".$short."` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `date` int(30) NOT NULL,
   `name` varchar(60) NOT NULL,
@@ -117,8 +117,8 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 
 function deleteBoard($conn, $short)
 {
-	mysqli_query($conn, "DELETE FROM boards WHERE short='".mysqli_real_escape_string($conn, $short)."'");
-	mysqli_query($conn, "DROP TABLE posts_".$short.";");
+	$conn->query("DELETE FROM boards WHERE short='".$conn->real_escape_string($short)."'");
+	$conn->query("DROP TABLE posts_".$short.";");
 	delTree("./".$short);
 }
 
@@ -146,7 +146,7 @@ function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 
 		{
 			$new_embeds = 0;
 		}
-		mysqli_query($conn, "UPDATE boards SET name='".mysqli_real_escape_string($conn, $new_name)."', des='".mysqli_real_escape_string($conn, $new_des)."', message='".mysqli_real_escape_string($conn, $new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers.", noname=".$new_noname.", ids=".$new_ids.", embeds=".$new_embeds." WHERE short='".mysqli_real_escape_string($conn, $short)."'");
+		$conn->query("UPDATE boards SET name='".$conn->real_escape_string($new_name)."', des='".$conn->real_escape_string($new_des)."', message='".$conn->real_escape_string($new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers.", noname=".$new_noname.", ids=".$new_ids.", embeds=".$new_embeds." WHERE short='".$conn->real_escape_string($short)."'");
 		rebuildBoardCache($conn, $short);
 		return 1;
 	} else {
@@ -162,8 +162,8 @@ function moveBoard($conn, $short, $new)
 	{
 		if (!isBoard($conn, $new))
 		{
-			mysqli_query($conn, "UPDATE boards SET short='".mysqli_real_escape_string($conn, $new)."' WHERE short='".mysqli_real_escape_string($conn, $short)."'");
-			mysqli_query($conn, "RENAME TABLE posts_".mysqli_real_escape_string($conn, $short)." TO posts_".mysqli_real_escape_string($conn, $new));
+			$conn->query("UPDATE boards SET short='".$conn->real_escape_string($new)."' WHERE short='".$conn->real_escape_string($short)."'");
+			$conn->query("RENAME TABLE posts_".$conn->real_escape_string($short)." TO posts_".$conn->real_escape_string($new));
 			rename("./".$short, "./".$new);
 			rebuildBoardCache($conn, $new);
 			return 1;

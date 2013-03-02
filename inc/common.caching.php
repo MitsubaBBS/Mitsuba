@@ -20,14 +20,14 @@ function generateLinks($conn, $id, $in_thread = 0)
 	// MAGIC IS HAPPENING HERE, DO NOT EDIT
 	// MAGIC IS HAPPENING HERE, DO NOT EDIT
 	// MAGIC IS HAPPENING HERE, DO NOT EDIT
-	$result = mysqli_query($conn, "SELECT * FROM links WHERE parent=".$id." ORDER BY short ASC, title ASC, id DESC;");
-	if (mysqli_num_rows($result) == 0)
+	$result = $conn->query("SELECT * FROM links WHERE parent=".$id." ORDER BY short ASC, title ASC, id DESC;");
+	if ($result->num_rows == 0)
 	{
 		return "";
 	}
 	$links = "";
 	$no = 0;
-	while ($row = mysqli_fetch_assoc($result))
+	while ($row = $result->fetch_assoc())
 	{	
 		if (!empty($row['url']))
 		{
@@ -72,10 +72,14 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 	{
 		$new = htmlspecialchars($new);
 	}
+	
+	$fresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
+	$replace_array = array();
+	while ($row = $fresult->fetch_assoc()) { $replace_array[$row['search']] = $row['replace']; }
+	$new = strtr($new, $replace_array);
 	$lines = explode("\n", $new);
 	$new = "";
 	
-
 	foreach ($lines as $line)
 	{
 		if (substr($line, 0, 8) == "&gt;&gt;")
@@ -83,11 +87,11 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 			$space = explode(" ", $line, 2);
 			if (is_numeric(substr($space[0], 8)))
 			{
-				$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id='".substr($space[0], 8)."';");
+				$result = $conn->query("SELECT * FROM posts_".$board." WHERE id='".substr($space[0], 8)."';");
 				if (empty($space[1])) { $space[1] = ""; }
-				if (mysqli_num_rows($result) == 1)
+				if ($result->num_rows == 1)
 				{
-					$row = mysqli_fetch_assoc($result);
+					$row = $result->fetch_assoc();
 					if ($row['resto'] != 0)
 					{
 						if ($thread == 1)
@@ -116,11 +120,11 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 				$parts = explode("/", $space[0]);
 				if ((isBoard($conn, $parts[1])) && (is_numeric($parts[2])))
 				{
-					$result = mysqli_query($conn, "SELECT * FROM posts_".$parts[1]." WHERE id='".$parts[2]."';");
+					$result = $conn->query("SELECT * FROM posts_".$parts[1]." WHERE id='".$parts[2]."';");
 					if (empty($space[1])) { $space[1] = ""; }
-					if (mysqli_num_rows($result) == 1)
+					if ($result->num_rows == 1)
 					{
-						$row = mysqli_fetch_assoc($result);
+						$row = $result->fetch_assoc();
 						if ($row['resto'] != 0)
 						{
 							if ($thread == 1)
@@ -185,7 +189,7 @@ function generateView($conn, $board, $threadno = 0)
 {
 	$pages = 15;
 	$config = getConfig($conn);
-	$board = mysqli_real_escape_string($conn, $board);
+	$board = $conn->real_escape_string($board);
 	if (!isBoard($conn, $board))
 	{
 		return -16;
@@ -203,16 +207,16 @@ function generateView($conn, $board, $threadno = 0)
 	
 	require_once( "./jbbcode/Parser.php" );
 	$parser = new JBBCode\Parser();
-	$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+	$bbcode = $conn->query("SELECT * FROM bbcodes;");
 	
-	while ($row = mysqli_fetch_assoc($bbcode))
+	while ($row = $bbcode->fetch_assoc())
 	{
 		$parser->addBBCode($row['name'], $row['code']);
 	}
 	
 	$embed_table = array();
-	$result = mysqli_query($conn, "SELECT * FROM embeds;");
-	while ($row = mysqli_fetch_assoc($result))
+	$result = $conn->query("SELECT * FROM embeds;");
+	while ($row = $result->fetch_assoc())
 	{
 		$embed_table[] = $row;
 	}
@@ -260,10 +264,10 @@ function generateView($conn, $board, $threadno = 0)
 		
 		if ($threadno != 0)
 		{
-			$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$threadno.";");
-			if (mysqli_num_rows($result) == 1)
+			$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$threadno.";");
+			if ($result->num_rows == 1)
 			{
-				$tdata = mysqli_fetch_assoc($result);
+				$tdata = $result->fetch_assoc();
 				$locked = $tdata['locked'];
 			} else {
 				return;
@@ -369,13 +373,13 @@ function generateView($conn, $board, $threadno = 0)
 
 		if ($threadno != 0)
 		{
-			$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$threadno.";");
+			$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$threadno.";");
 		} else {
 			
-			$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
+			$result = $conn->query("SELECT * FROM posts_".$board." WHERE resto=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
 		}
 
-		while ($row = mysqli_fetch_assoc($result))
+		while ($row = $result->fetch_assoc())
 		{
 			$file .= '<div class="thread" id="t'.$row['id'].'">';
 			$file .= '<div class="postContainer opContainer" id="pc'.$row['id'].'">';
@@ -542,9 +546,9 @@ function generateView($conn, $board, $threadno = 0)
 			$file .= '</div>';
 			if ($threadno != 0)
 			{
-				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
+				$posts = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
 			} else {
-			$posts = mysqli_query($conn, "SELECT COUNT(*) FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
+			$posts = $conn->query("SELECT COUNT(*) FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
 			$row1 = mysqli_fetch_row($posts);
 			if ($row1[0] == 0)
 			{
@@ -561,10 +565,10 @@ function generateView($conn, $board, $threadno = 0)
 				$offset = $row1[0] - 3;
 				
 			}
-			$posts = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC LIMIT ".$offset.",3");
+			$posts = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC LIMIT ".$offset.",3");
 				
 			}
-			while ($row2 = mysqli_fetch_assoc($posts))
+			while ($row2 = $posts->fetch_assoc())
 			{
 				$file .= '<div class="postContainer replyContainer" id="pc'.$row2['id'].'">';
 				$file .= '<div class="sideArrows" id="sa'.$row2['id'].'">&gt;&gt;</div>';
@@ -787,13 +791,13 @@ function generateView($conn, $board, $threadno = 0)
 
 function updateThreads($conn, $board)
 {
-	$board = mysqli_real_escape_string($conn, $board);
+	$board = $conn->real_escape_string($board);
 	if (!isBoard($conn, $board))
 	{
 		return -16;
 	}
-	$result = mysqli_query($conn, "SELECT id FROM posts_".$board." WHERE resto=0");
-	while ($row = mysqli_fetch_assoc($result))
+	$result = $conn->query("SELECT id FROM posts_".$board." WHERE resto=0");
+	while ($row = $result->fetch_assoc())
 	{
 		generateView($conn, $board, $row['id']);
 	}
@@ -802,13 +806,13 @@ function updateThreads($conn, $board)
 
 function regenThumbnails($conn, $board)
 {
-	$board = mysqli_real_escape_string($conn, $board);
+	$board = $conn->real_escape_string($board);
 	if (!isBoard($conn, $board))
 	{
 		return -16;
 	}
-	$result = mysqli_query($conn, "SELECT filename, resto FROM posts_".$board);
-	while ($row = mysqli_fetch_assoc($result))
+	$result = $conn->query("SELECT filename, resto FROM posts_".$board);
+	while ($row = $result->fetch_assoc())
 	{
 		if ((!empty($row['filename'])) && ($row['filename'] != "deleted"))
 		{
@@ -876,14 +880,14 @@ function generateFrontpage($conn)
 			</head>
 			<body>';
 		$menu .= "<h1>".$config['sitename']."</h1>";
-		$cats = mysqli_query($conn, "SELECT * FROM links WHERE parent=-1;");
-		while ($row = mysqli_fetch_assoc($cats))
+		$cats = $conn->query("SELECT * FROM links WHERE parent=-1;");
+		while ($row = $cats->fetch_assoc())
 		{
 			$menu .= '<h2><span class="coll" onclick="toggle(this,' ."'".$row['short']."');". '" title="Toggle Category">&minus;</span>'.$row['title'].'</h2>';
 			$menu .= '<div id="'.$row['short'].'" style="">
 				<ul>';
-			$children = mysqli_query($conn, "SELECT * FROM links WHERE parent=".$row['id']);
-			while ($child = mysqli_fetch_assoc($children))
+			$children = $conn->query("SELECT * FROM links WHERE parent=".$row['id']);
+			while ($child = $children->fetch_assoc())
 			{
 				if (!empty($child['url_index']))
 				{
@@ -916,8 +920,8 @@ function generateFrontpage($conn)
 			<div class="box-inner">
 			<div class="boxbar"><h2>News</h2></div>
 			<div class="boxcontent">';
-		$result = mysqli_query($conn, "SELECT * FROM news ORDER BY date DESC;");
-		while ($row = mysqli_fetch_assoc($result))
+		$result = $conn->query("SELECT * FROM news ORDER BY date DESC;");
+		while ($row = $result->fetch_assoc())
 		{
 			$file .= '<div class="content">';
 			$file .= '<h3><span class="newssub">'.$row['title'].' by '.$row['who'].' - '.date("d/m/Y @ H:i", $row['date']).'</span></span></h3>';
@@ -956,8 +960,8 @@ function generateNews($conn)
 		<div class="box-inner">
 		<div class="boxbar"><h2>News</h2></div>
 		<div class="boxcontent">';
-	$result = mysqli_query($conn, "SELECT * FROM news ORDER BY date DESC;");
-	while ($row = mysqli_fetch_assoc($result))
+	$result = $conn->query("SELECT * FROM news ORDER BY date DESC;");
+	while ($row = $result->fetch_assoc())
 	{
 		$file .= '<div class="content">';
 		$file .= '<h3><span class="newssub">'.$row['title'].' by '.$row['who'].' - '.date("d/m/Y @ H:i", $row['date']).'</span></span></h3>';

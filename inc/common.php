@@ -49,10 +49,10 @@ function getGraphicsExtension()
 
 function getBoardData($conn, $short)
 {
-	$result = mysqli_query($conn, "SELECT * FROM boards WHERE short='".mysqli_real_escape_string($conn, $short)."'");
-	if (mysqli_num_rows($result) == 1)
+	$result = $conn->query("SELECT * FROM boards WHERE short='".$conn->real_escape_string($short)."'");
+	if ($result->num_rows == 1)
 	{
-		return mysqli_fetch_assoc($result);
+		return $result->fetch_assoc();
 	} else {
 		return 0; //board not found
 	}
@@ -60,8 +60,8 @@ function getBoardData($conn, $short)
 
 function isBoard($conn, $short)
 {
-	$result = mysqli_query($conn, "SELECT * FROM boards WHERE short='".mysqli_real_escape_string($conn, $short)."'");
-	if (mysqli_num_rows($result) == 1)
+	$result = $conn->query("SELECT * FROM boards WHERE short='".$conn->real_escape_string($short)."'");
+	if ($result->num_rows == 1)
 	{
 		return 1;
 	} else {
@@ -71,9 +71,9 @@ function isBoard($conn, $short)
 
 function getConfig($conn)
 {
-	$result = mysqli_query($conn, "SELECT * FROM config;");
+	$result = $conn->query("SELECT * FROM config;");
 	$array = array();
-	while ($row = mysqli_fetch_assoc($result))
+	while ($row = $result->fetch_assoc())
 	{
 		$array[$row['name']] = $row['value'];
 	}
@@ -82,18 +82,18 @@ function getConfig($conn)
 
 function updateConfig($conn, $name, $value)
 {
-	$name = mysqli_real_escape_string($conn, $name);
-	$value = mysqli_real_escape_string($conn, $value);
-	mysqli_query($conn, "UPDATE config SET value='".$value."' WHERE name='".$name."';");
+	$name = $conn->real_escape_string($name);
+	$value = $conn->real_escape_string($value);
+	$conn->query("UPDATE config SET value='".$value."' WHERE name='".$name."';");
 }
 
 function getConfigValue($conn, $name)
 {
-	$name = mysqli_real_escape_string($conn, $name);
-	$result = mysqli_query($conn, "SELECT * FROM config WHERE name='".$name."';");
-	if (mysqli_num_rows($result) == 1)
+	$name = $conn->real_escape_string($name);
+	$result = $conn->query("SELECT * FROM config WHERE name='".$name."';");
+	if ($result->num_rows == 1)
 	{
-		return mysqli_fetch_assoc($result);
+		return $result->fetch_assoc();
 	} else {
 		return 0;
 	}
@@ -200,20 +200,20 @@ function delTree($dir) {
 
 function isBanned($conn, $ip, $board)
 {
-	$ipbans = mysqli_query($conn, "SELECT * FROM bans WHERE ip='".$ip."' AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
-	$rangebans = mysqli_query($conn, "SELECT * FROM rangebans WHERE INET_ATON('".$ip."') BETWEEN start_ip AND end_ip AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
+	$ipbans = $conn->query("SELECT * FROM bans WHERE ip='".$ip."' AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
+	$rangebans = $conn->query("SELECT * FROM rangebans WHERE INET_ATON('".$ip."') BETWEEN start_ip AND end_ip AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
 	$ipbandata = null;
 	$rangebandata = null;
 	$bandata = null;
 	
-	if (mysqli_num_rows($ipbans) == 1)
+	if ($ipbans->num_rows == 1)
 	{
-		$ipbandata = mysqli_fetch_assoc($ipbans);
+		$ipbandata = $ipbans->fetch_assoc();
 	}
 	
-	if (mysqli_num_rows($rangebans) == 1)
+	if ($rangebans->num_rows == 1)
 	{
-		$rangebandata = mysqli_fetch_assoc($rangebans);
+		$rangebandata = $rangebans->fetch_assoc();
 	}
 	
 	if (($ipbandata != null) && ($rangebandata != null))
@@ -268,7 +268,7 @@ function randomPassword() {
 function processString($conn, $string, $name = 0)
 {
 	$new = $string;
-	$new = mysqli_real_escape_string($conn, $new);
+	$new = $conn->real_escape_string($new);
 	$new = htmlspecialchars($new);
 	
 	if ($name == 1)
@@ -289,7 +289,7 @@ function processString($conn, $string, $name = 0)
 function preprocessComment($conn, $string)
 {
 	$new = str_replace("\r", "", $string);
-	$new = mysqli_real_escape_string($conn, $new);
+	$new = $conn->real_escape_string($new);
 	return $new;
 }
 
@@ -381,8 +381,8 @@ $bandata = isBanned($conn, $_SERVER['REMOTE_ADDR'], $board);
 <?php
 $range = 0;
 if (!empty($bandata['start_ip'])) { $range = 1; }
-$appeals = mysqli_query($conn, "SELECT * FROM appeals WHERE ban_id=".$bandata['id']." AND rangeban=".$range);
-if ((($left > 3) || ($left == -1)) && (mysqli_num_rows($appeals) == 0))
+$appeals = $conn->query("SELECT * FROM appeals WHERE ban_id=".$bandata['id']." AND rangeban=".$range);
+if ((($left > 3) || ($left == -1)) && ($appeals->num_rows == 0))
 {
 ?>
 <p>According to our server your IP is: <b><?php echo $_SERVER['REMOTE_ADDR']; ?></b></p>
@@ -413,16 +413,16 @@ die();
 
 function pruneOld($conn, $board)
 {
-	$board = mysqli_real_escape_string($conn, $board);
+	$board = $conn->real_escape_string($board);
 	if (!isBoard($conn, $board))
 	{
 		return -16;
 	}
-	$threads = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=0 ORDER BY sticky DESC, lastbumped DESC LIMIT 160, 2000");
-	while ($row = mysqli_fetch_assoc($threads))
+	$threads = $conn->query("SELECT * FROM posts_".$board." WHERE resto=0 ORDER BY sticky DESC, lastbumped DESC LIMIT 160, 2000");
+	while ($row = $threads->fetch_assoc())
 	{
-		$files = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$row['id']);
-		while ($file = mysqli_fetch_assoc($files))
+		$files = $conn->query("SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$row['id']);
+		while ($file = $files->fetch_assoc())
 		{
 			unlink("./".$board."/src/".$file['filename']);
 			unlink("./".$board."/src/thumb/".$file['filename']);
@@ -430,8 +430,8 @@ function pruneOld($conn, $board)
 		unlink("./".$board."/src/".$row['filename']);
 		unlink("./".$board."/src/thumb/".$row['filename']);
 		
-		mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$row['id']);
-		mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$row['id']);
+		$conn->query("DELETE FROM posts_".$board." WHERE resto=".$row['id']);
+		$conn->query("DELETE FROM posts_".$board." WHERE id=".$row['id']);
 		unlink("./".$board."/res/".$row['id'].".html");
 	}
 }

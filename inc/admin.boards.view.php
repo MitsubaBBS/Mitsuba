@@ -4,7 +4,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	$pages = 15;
 	$page = 0;
 	$config = getConfig($conn);
-	$board = mysqli_real_escape_string($conn, $board);
+	$board = $conn->real_escape_string($board);
 	if (!isBoard($conn, $board))
 	{
 		return -16;
@@ -32,16 +32,16 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	
 	require_once( "./jbbcode/Parser.php" );
 	$parser = new JBBCode\Parser();
-	$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+	$bbcode = $conn->query("SELECT * FROM bbcodes;");
 	
-	while ($row = mysqli_fetch_assoc($bbcode))
+	while ($row = $bbcode->fetch_assoc())
 	{
 		$parser->addBBCode($row['name'], $row['code']);
 	}
 	
 	$embed_table = array();
-	$result = mysqli_query($conn, "SELECT * FROM embeds;");
-	while ($row = mysqli_fetch_assoc($result))
+	$result = $conn->query("SELECT * FROM embeds;");
+	while ($row = $result->fetch_assoc())
 	{
 		$embed_table[] = $row;
 	}
@@ -171,12 +171,12 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 
 	if ($threadno != 0)
 	{
-		$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$threadno.";");
+		$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$threadno.";");
 	} else {
-		$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".($page*10).",10");
+		$result = $conn->query("SELECT * FROM posts_".$board." WHERE resto=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".($page*10).",10");
 	}
 
-	while ($row = mysqli_fetch_assoc($result))
+	while ($row = $result->fetch_assoc())
 	{
 		$opip = $row['ip'];
 		$file .= '<div class="thread" id="t'.$row['id'].'">';
@@ -312,9 +312,9 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		$file .= '</div>';
 		if ($threadno != 0)
 		{
-			$posts = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
+			$posts = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
 		} else {
-		$posts = mysqli_query($conn, "SELECT COUNT(*) FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
+		$posts = $conn->query("SELECT COUNT(*) FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
 		$row1 = mysqli_fetch_row($posts);
 		if ($row1[0] == 0)
 		{
@@ -331,10 +331,10 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			$offset = $row1[0] - 3;
 			
 		}
-		$posts = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC LIMIT ".$offset.",3");
+		$posts = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC LIMIT ".$offset.",3");
 			
 		}
-		while ($row2 = mysqli_fetch_assoc($posts))
+		while ($row2 = $posts->fetch_assoc())
 		{
 			$file .= '<div class="postContainer replyContainer" id="pc'.$row2['id'].'">';
 			$file .= '<div class="sideArrows" id="sa'.$row2['id'].'">&gt;&gt;</div>';

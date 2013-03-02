@@ -6,6 +6,7 @@ header("Location: ./install.php");
 
 session_start();
 include("config.php");
+include("version.php");
 include("inc/common.php");
 include("inc/common.caching.php");
 include("inc/admin.common.php");
@@ -31,14 +32,14 @@ function deleteEntry($conn, $type, $id, $validate_id = 0)
 	
 	if ($validate_id == 1)
 	{
-		$result = mysqli_query($conn, "SELECT * FROM ".$table." WHERE id=".$id);
-		$entry = mysqli_fetch_assoc($result);
+		$result = $conn->query("SELECT * FROM ".$table." WHERE id=".$id);
+		$entry = $result->fetch_assoc();
 		if ($entry['mod_id'] == $_SESSION['id'])
 		{
-			mysqli_query($conn, "DELETE FROM ".$table." WHERE id=".$id);
+			$conn->query("DELETE FROM ".$table." WHERE id=".$id);
 		}
 	} else {
-		mysqli_query($conn, "DELETE FROM ".$table." WHERE id=".$id);
+		$conn->query("DELETE FROM ".$table." WHERE id=".$id);
 	}
 
 	if ($type == 1) { generateNews($conn); }
@@ -50,23 +51,23 @@ function updateEntry($conn, $type, $id, $who, $title, $text, $validate_id = 0)
 	{
 		return -1;
 	}
-	$who = mysqli_real_escape_string($conn, $who);
-	$title = mysqli_real_escape_string($conn, $title);
-	$text = mysqli_real_escape_string($conn, $text);
+	$who = $conn->real_escape_string($who);
+	$title = $conn->real_escape_string($title);
+	$text = $conn->real_escape_string($text);
 	$table = "";
 	if ($type == 0) { $table = "announcements"; }
 	if ($type == 1) { $table = "news"; }
 	
 	if ($validate_id == 1)
 	{
-		$result = mysqli_query("SELECT * FROM ".$table." WHERE id=".$id);
-		$entry = mysqli_fetch_assoc($result);
+		$result = $conn->query("SELECT * FROM ".$table." WHERE id=".$id);
+		$entry = $result->fetch_assoc();
 		if ($entry['mod_id'] == $_SESSION['id'])
 		{
-			mysqli_query($conn, "UPDATE ".$table." SET who='".$who."', title='".$title."', text='".$text."' WHERE id=".$id);
+			$conn->query("UPDATE ".$table." SET who='".$who."', title='".$title."', text='".$text."' WHERE id=".$id);
 		}
 	} else {
-		mysqli_query($conn, "UPDATE ".$table." SET who='".$who."', title='".$title."', text='".$text."' WHERE id=".$id);
+		$conn->query("UPDATE ".$table." SET who='".$who."', title='".$title."', text='".$text."' WHERE id=".$id);
 	}
 	
 	if ($type == 1) { generateNews($conn); }
@@ -75,7 +76,7 @@ function updateEntry($conn, $type, $id, $who, $title, $text, $validate_id = 0)
 function processEntry($conn, $string)
 {
 	$new = str_replace("\r", "", $string);
-	$new = mysqli_real_escape_string($conn, $new);
+	$new = $conn->real_escape_string($new);
 	$lines = explode("\n", $new);
 	$new = "";
 	foreach ($lines as $line)
@@ -125,7 +126,7 @@ if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && ((
 <br /><br />
 <?php
 }
-$conn = mysqli_connect($db_host, $db_username, $db_password, $db_database);
+$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
 loadPlugins($conn);
 switch ($path)
 {
@@ -168,12 +169,12 @@ switch ($path)
 	case "/login":
 		if ((!empty($_POST['username'])) && (!empty($_POST['password'])))
 		{
-			$username = mysqli_real_escape_string($conn, $_POST['username']);
+			$username = $conn->real_escape_string($_POST['username']);
 			$password = hash("sha512", $_POST['password']);
-			$result = mysqli_query($conn, "SELECT * FROM users WHERE username='".$username."'");
-			if (mysqli_num_rows($result) == 1)
+			$result = $conn->query("SELECT * FROM users WHERE username='".$username."'");
+			if ($result->num_rows == 1)
 			{
-				$data = mysqli_fetch_assoc($result);
+				$data = $result->fetch_assoc();
 				if ($data['password'] == $password)
 				{
 					$_SESSION['logged']=1;
@@ -197,14 +198,14 @@ switch ($path)
 		header("Location: ./mod.php");
 		break;
 	case "/nav":
-	$reports = mysqli_query($conn, "SELECT * FROM reports;");
-	$reports = mysqli_num_rows($reports);
-	$appeals = mysqli_query($conn, "SELECT * FROM appeals;");
-	$appeals = mysqli_num_rows($appeals);
-	$breqs = mysqli_query($conn, "SELECT * FROM ban_requests;");
-	$breqs = mysqli_num_rows($breqs);
-	$pms = mysqli_query($conn, "SELECT * FROM pm WHERE to_user=".$_SESSION['id']." AND read_msg=0");
-	$pms = mysqli_num_rows($pms);
+	$reports = $conn->query("SELECT * FROM reports;");
+	$reports = $reports->num_rows;
+	$appeals = $conn->query("SELECT * FROM appeals;");
+	$appeals = $appeals->num_rows;
+	$breqs = $conn->query("SELECT * FROM ban_requests;");
+	$breqs = $breqs->num_rows;
+	$pms = $conn->query("SELECT * FROM pm WHERE to_user=".$_SESSION['id']." AND read_msg=0");
+	$pms = $pms->num_rows;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -295,14 +296,14 @@ if ($_SESSION['type'] >= 2)
 <div id="brd" style="">
 <ul>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC;");
+$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
 if (($_SESSION['boards'] != "*") && ($_SESSION['type'] != 2))
 {
 $boards = explode(",", $_SESSION['boards']);
 } else {
 $boards = "*";
 }
-while ($row = mysqli_fetch_assoc($result))
+while ($row = $result->fetch_assoc())
 {
 if (($boards == "*") || (in_array($row['short'], $boards)))
 {
@@ -323,8 +324,8 @@ echo '<li><a href="?/board&b='.$row['short'].'" target="main">/'.$row['short'].'
 <div class="boxbar"><h2>Announcements</h2></div>
 <div class="boxcontent">
 <?php
-$result = mysqli_query($conn, "SELECT * FROM announcements ORDER BY date DESC;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM announcements ORDER BY date DESC;");
+while ($row = $result->fetch_assoc())
 {
 echo '<div class="content">';
 echo '<h3><span class="newssub">'.$row['title'].' by '.$row['who'].' - '.date("d/m/Y @ H:i", $row['date']).'</span></span></h3>';
@@ -353,8 +354,8 @@ Type: <select name="type"><option value="0">Janitor</option><option value="1">Mo
 Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
 <select name="boards[]" id="boardSelect" multiple>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM boards;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM boards;");
+while ($row = $result->fetch_assoc())
 {
 echo "<option onClick='document.getElementById(\"all\").checked=false;' value='",$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
 }
@@ -381,9 +382,9 @@ echo "<option onClick='document.getElementById(\"all\").checked=false;' value='"
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM users;");
-$usern = mysqli_num_rows($result);
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM users;");
+$usern = $result->num_rows;
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".$row['username']."</td>";
@@ -456,8 +457,8 @@ Text: <br />
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM announcements WHERE mod_id=".$_SESSION['id']." ORDER BY date DESC;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM announcements WHERE mod_id=".$_SESSION['id']." ORDER BY date DESC;");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".$row['title']."</td>";
@@ -477,7 +478,7 @@ echo "</tr>";
 		$text = processEntry($conn, $_POST['text']);
 		$who = $_SESSION['username'];
 		if (!empty($_POST['who'])) { $who = $_POST['who']; }
-		mysqli_query($conn, "INSERT INTO announcements (date, who, title, text, mod_id) VALUES (".time().", '".$who."', '".mysqli_real_escape_string($conn, htmlspecialchars($_POST['title']))."', '".$text."', ".$_SESSION['id'].");");
+		$conn->query("INSERT INTO announcements (date, who, title, text, mod_id) VALUES (".time().", '".$who."', '".$conn->real_escape_string(htmlspecialchars($_POST['title']))."', '".$text."', ".$_SESSION['id'].");");
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
@@ -493,12 +494,12 @@ echo "</tr>";
 	reqPermission(1);
 	if ((isset($_GET['b'])) && (is_numeric($_GET['b'])))
 	{
-	$result = mysqli_query($conn, "SELECT * FROM announcements WHERE id=".$_GET['b']);
-	if (mysqli_num_rows($result) != 0)
+	$result = $conn->query("SELECT * FROM announcements WHERE id=".$_GET['b']);
+	if ($result->num_rows != 0)
 	{
 	if (empty($_POST['text']))
 	{
-	$data = mysqli_fetch_assoc($result);
+	$data = $result->fetch_assoc();
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
@@ -581,8 +582,8 @@ Text: <br />
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM announcements ORDER BY date DESC;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM announcements ORDER BY date DESC;");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".$row['title']."</td>";
@@ -607,8 +608,8 @@ echo "</tr>";
 <div class="boxbar"><h2>News</h2></div>
 <div class="boxcontent">
 <?php
-$result = mysqli_query($conn, "SELECT * FROM news ORDER BY date DESC;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM news ORDER BY date DESC;");
+while ($row = $result->fetch_assoc())
 {
 echo '<div class="content">';
 echo '<h3><span class="newssub">'.$row['title'].' by '.$row['who'].' - '.date("d/m/Y @ H:i", $row['date']).'</span></span></h3>';
@@ -655,8 +656,8 @@ Text: <br />
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM news WHERE mod_id=".$_SESSION['id']." ORDER BY date DESC;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM news WHERE mod_id=".$_SESSION['id']." ORDER BY date DESC;");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".$row['title']."</td>";
@@ -677,7 +678,7 @@ generateNews($conn);
 		$text = processEntry($conn, $_POST['text']);
 		$who = $_SESSION['username'];
 		if (!empty($_POST['who'])) { $who = $_POST['who']; }
-		mysqli_query($conn, "INSERT INTO news (date, who, title, text, mod_id) VALUES (".time().", '".$who."', '".mysqli_real_escape_string($conn, htmlspecialchars($_POST['title']))."', '".$text."', ".$_SESSION['id'].");");
+		$conn->query("INSERT INTO news (date, who, title, text, mod_id) VALUES (".time().", '".$who."', '".$conn->real_escape_string(htmlspecialchars($_POST['title']))."', '".$text."', ".$_SESSION['id'].");");
 		generateNews($conn);
 		
 		?>
@@ -694,12 +695,12 @@ generateNews($conn);
 	reqPermission(1);
 		if ((isset($_GET['b'])) && (is_numeric($_GET['b'])))
 	{
-	$result = mysqli_query($conn, "SELECT * FROM news WHERE id=".$_GET['b']);
-	if (mysqli_num_rows($result) != 0)
+	$result = $conn->query("SELECT * FROM news WHERE id=".$_GET['b']);
+	if ($result->num_rows != 0)
 	{
 	if (empty($_POST['text']))
 	{
-	$data = mysqli_fetch_assoc($result);
+	$data = $result->fetch_assoc();
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
@@ -781,8 +782,8 @@ Text: <br />
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM news ORDER BY date DESC;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM news ORDER BY date DESC;");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".$row['title']."</td>";
@@ -896,8 +897,8 @@ All boards: <br />
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM boards;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM boards;");
+while ($row = $result->fetch_assoc())
 {
 echo '<tr>';
 echo "<td><a href='./".$row['short']."/'>/".$row['short']."/</a></td>";
@@ -957,7 +958,7 @@ echo '</tr>';
 	reqPermission(2);
 		if (!empty($_GET['board']))
 		{
-			$board = mysqli_real_escape_string($conn, $_GET['board']);
+			$board = $conn->real_escape_string($_GET['board']);
 			if (isBoard($conn, $board))
 			{
 				deleteBoard($conn, $board);
@@ -1164,8 +1165,8 @@ New board directory (without /'s): <input type="text" name="new" maxlenght=10 />
 			if ($_POST['new']==$_POST['new2'])
 			{
 		
-			$result = mysqli_query($conn, "SELECT password FROM users WHERE id=".$_SESSION['id']);
-			$row = mysqli_fetch_assoc($result);
+			$result = $conn->query("SELECT password FROM users WHERE id=".$_SESSION['id']);
+			$row = $result->fetch_assoc();
 				if ($row['password'] != hash("sha512", $_POST['old']))
 				{
 							?>
@@ -1177,7 +1178,7 @@ New board directory (without /'s): <input type="text" name="new" maxlenght=10 />
 </div>
 			<?php
 				} else {
-					mysqli_query($conn, "UPDATE users SET password='".hash("sha512", $_POST['new'])."' WHERE id=".$_SESSION['id']);
+					$conn->query("UPDATE users SET password='".hash("sha512", $_POST['new'])."' WHERE id=".$_SESSION['id']);
 				?>
 								<div class="box-outer top-box">
 <div class="box-inner">
@@ -1263,8 +1264,8 @@ Confirm new password: <input type="password" name="new2"><br />
 		
 		if ((!empty($_POST['boards'])) && ($_POST['boards']==1))
 		{
-			$result = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC;");
-			while ($row = mysqli_fetch_assoc($result))
+			$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
+			while ($row = $result->fetch_assoc())
 			{
 				rebuildBoardCache($conn, $row['short']);
 			}
@@ -1339,7 +1340,7 @@ Title: <input type="text" name="title" value="Category" /><input type="submit" v
 	reqPermission(2);
 		if (!empty($_GET['i']))
 		{
-			$id = mysqli_real_escape_string($conn, $_GET['i']);
+			$id = $conn->real_escape_string($_GET['i']);
 			deleteBoardLink($conn, $id);
 		}
 		?>
@@ -1350,11 +1351,11 @@ Title: <input type="text" name="title" value="Category" /><input type="submit" v
 	reqPermission(2);
 		if (isset($_GET['i']))
 		{
-			$id = mysqli_real_escape_string($conn, $_GET['i']);
-			$link = mysqli_query($conn, "SELECT * FROM links WHERE id=".$id);
-			if (mysqli_num_rows($link) == 1)
+			$id = $conn->real_escape_string($_GET['i']);
+			$link = $conn->query("SELECT * FROM links WHERE id=".$id);
+			if ($link->num_rows == 1)
 			{
-				$data = mysqli_fetch_assoc($link);
+				$data = $link->fetch_assoc();
 				if (empty($_POST['title']))
 				{
 		?>
@@ -1407,7 +1408,7 @@ Title: <input type="text" name="title" value="<?php echo $data['title']; ?>" /><
 	reqPermission(2);
 		if (!empty($_GET['l']))
 		{
-			$id = mysqli_real_escape_string($conn, $_GET['l']);
+			$id = $conn->real_escape_string($_GET['l']);
 			moveUpCategory($conn, $id);
 		}
 		?>
@@ -1418,7 +1419,7 @@ Title: <input type="text" name="title" value="<?php echo $data['title']; ?>" /><
 	reqPermission(2);
 		if (!empty($_GET['l']))
 		{
-			$id = mysqli_real_escape_string($conn, $_GET['l']);
+			$id = $conn->real_escape_string($_GET['l']);
 			moveDownCategory($conn, $id);
 		}
 		?>
@@ -1429,9 +1430,9 @@ Title: <input type="text" name="title" value="<?php echo $data['title']; ?>" /><
 	reqPermission(2);
 		if (isset($_GET['p']))
 		{
-			$id = mysqli_real_escape_string($conn, $_GET['p']);
-			$cat = mysqli_query($conn, "SELECT * FROM links WHERE url='' AND id=".$id);
-			if (mysqli_num_rows($cat) == 1)
+			$id = $conn->real_escape_string($_GET['p']);
+			$cat = $conn->query("SELECT * FROM links WHERE url='' AND id=".$id);
+			if ($cat->num_rows == 1)
 			{
 				if (empty($_POST['title']))
 				{
@@ -1477,7 +1478,6 @@ Title: <input type="text" name="title" value="" /><br />
 		if (isset($_POST['message']))
 		{
 			updateConfig($conn, "global_message", $_POST['message']);
-			echo mysqli_error($conn);
 		?>
 							<div class="box-outer top-box">
 <div class="box-inner">
@@ -1517,7 +1517,7 @@ Title: <input type="text" name="title" value="" /><br />
 		reqPermission(1);
 		if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
 		{
-			mysqli_query($conn, "DELETE FROM bans WHERE id=".$_GET['b']);
+			$conn->query("DELETE FROM bans WHERE id=".$_GET['b']);
 		}
 	}
 	?>
@@ -1539,8 +1539,8 @@ Title: <input type="text" name="title" value="" /><br />
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM bans ORDER BY created LIMIT 0, 15;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM bans ORDER BY created LIMIT 0, 15;");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".$row['ip']."</td>";
@@ -1591,8 +1591,8 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a> <a href="?/bans/recent
 	</thead>
 	<tbody>
 	<?php
-	$result = mysqli_query($conn, "SELECT * FROM bans ORDER BY created;");
-	while ($row = mysqli_fetch_assoc($result))
+	$result = $conn->query("SELECT * FROM bans ORDER BY created;");
+	while ($row = $result->fetch_assoc())
 	{
 	echo "<tr>";
 	echo "<td>".$row['ip']."</td>";
@@ -1644,8 +1644,8 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a> <a href="?/bans/recent
 	</thead>
 	<tbody>
 	<?php
-	$result = mysqli_query($conn, "SELECT * FROM bans ORDER BY created LIMIT 0, ".$_GET['c'].";");
-	while ($row = mysqli_fetch_assoc($result))
+	$result = $conn->query("SELECT * FROM bans ORDER BY created LIMIT 0, ".$_GET['c'].";");
+	while ($row = $result->fetch_assoc())
 	{
 	echo "<tr>";
 	echo "<td>".$row['ip']."</td>";
@@ -1687,13 +1687,13 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a> <a href="?/bans/recent
 		$postinfo = "";
 		if ((!empty($_GET['p'])) && (!empty($_GET['b'])) && (is_numeric($_GET['p'])) && (isBoard($conn, $_GET['b'])))
 		{
-			$board = mysqli_real_escape_string($conn, $_GET['b']);
+			$board = $conn->real_escape_string($_GET['b']);
 			$post = $_GET['p'];
 			//<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>
-			$postdata = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$post);
-			if (mysqli_num_rows($postdata) == 1)
+			$postdata = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$post);
+			if ($postdata->num_rows == 1)
 			{
-				$postinfo = mysqli_fetch_assoc($postdata);
+				$postinfo = $postdata->fetch_assoc();
 				$ip = $postinfo['ip'];
 			} else {
 				$post = "";
@@ -1717,8 +1717,8 @@ Expires (e.g. 1d, 20s): <input type="text" name="expires" /><br />
 Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
 <select name="boards[]" id="boardSelect" multiple>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM boards;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM boards;");
+while ($row = $result->fetch_assoc())
 {
 echo "<option value='",$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
 }
@@ -1775,11 +1775,11 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		$postinfo = "";
 		if ((!empty($_POST['post'])) && (!empty($_POST['board'])) && (is_numeric($_POST['post'])) && (isBoard($conn, $_POST['board'])))
 		{
-			$board = mysqli_real_escape_string($conn, $_POST['board']);
+			$board = $conn->real_escape_string($_POST['board']);
 			$post = $_POST['post'];
 			//<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>
-			$postdata = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$post);
-			if (mysqli_num_rows($postdata) == 0)
+			$postdata = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$post);
+			if ($postdata->num_rows == 0)
 			{
 				$post = "";
 				$board = "";
@@ -1866,17 +1866,17 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		} else {
 			if (is_numeric($_GET['r']))
 			{
-				$req = mysqli_query($conn, "SELECT * FROM ban_requests WHERE id=".$_GET['r']);
-				if (mysqli_num_rows($req) == 1)
+				$req = $conn->query("SELECT * FROM ban_requests WHERE id=".$_GET['r']);
+				if ($req->num_rows == 1)
 				{
-				$request = mysqli_fetch_assoc($req);
+				$request = $req->fetch_assoc();
 				$board = $request['board'];
 				$post = $request['post'];
 				//<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>
-				$postdata = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$post);
-				if (mysqli_num_rows($postdata) == 1)
+				$postdata = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$post);
+				if ($postdata->num_rows == 1)
 				{
-					$postinfo = mysqli_fetch_assoc($postdata);
+					$postinfo = $postdata->fetch_assoc();
 					$ip = $postinfo['ip'];
 				} else {
 					$post = "";
@@ -1896,8 +1896,8 @@ Expires (e.g. 1d, 20s): <input type="text" name="expires" /><br />
 Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
 <select name="boards[]" id="boardSelect" multiple>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM boards;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM boards;");
+while ($row = $result->fetch_assoc())
 {
 echo "<option value='",$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
 }
@@ -2070,8 +2070,8 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 </div>
 					<?php
 				} else {
-					$result = mysqli_query($conn, "SELECT * FROM users WHERE id=".$_GET['id']);
-					$data = mysqli_fetch_assoc($result);
+					$result = $conn->query("SELECT * FROM users WHERE id=".$_GET['id']);
+					$data = $result->fetch_assoc();
 					$boards = $data['boards'];
 					if ($data['boards'] != "*") { $board = explode(",", $data['boards']); }
 		?>
@@ -2118,8 +2118,8 @@ Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').to
 }
 ?>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM boards;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM boards;");
+while ($row = $result->fetch_assoc())
 {
 $checked = "";
 if ($boards !== "*")
@@ -2150,8 +2150,8 @@ echo "<option onClick='document.getElementById(\"all\").checked=false;' value='"
 <div class="boxbar"><h2>Your notes</h2></div>
 <div class="boxcontent">
 <?php
-$result = mysqli_query($conn, "SELECT * FROM notes WHERE mod_id=".$_SESSION['id']." ORDER BY created DESC;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM notes WHERE mod_id=".$_SESSION['id']." ORDER BY created DESC;");
+while ($row = $result->fetch_assoc())
 {
 echo '<div class="content">';
 echo '<h3><span class="newssub">'.date("d/m/Y @ H:i", $row['created']).'</span> <a href="?/notes/delete&id='.$row['id'].'">Delete</a></span></h3>';
@@ -2178,8 +2178,8 @@ echo '</div>';
 	case "/notes/add":
 		if (!empty($_POST['note']))
 		{
-			$note = mysqli_real_escape_string($conn, $_POST['note']);
-			mysqli_query($conn, "INSERT INTO notes (mod_id, note, created) VALUES (".$_SESSION['id'].", '".$note."', ".time().")");
+			$note = $conn->real_escape_string($_POST['note']);
+			$conn->query("INSERT INTO notes (mod_id, note, created) VALUES (".$_SESSION['id'].", '".$note."', ".time().")");
 		?>
 <div class="box-outer top-box">
 <div class="box-inner">
@@ -2206,13 +2206,13 @@ echo '</div>';
 	case "/notes/delete":
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
-			$note = mysqli_query($conn, "SELECT * FROM notes WHERE id=".$_GET['id']);
-			if (mysqli_num_rows($note) == 1)
+			$note = $conn->query("SELECT * FROM notes WHERE id=".$_GET['id']);
+			if ($note->num_rows == 1)
 			{
-				$info = mysqli_fetch_assoc($note);
+				$info = $note->fetch_assoc();
 				if ($info['mod_id'] == $_SESSION['id'])
 				{
-					mysqli_query($conn, "DELETE FROM notes WHERE id=".$_GET['id']);
+					$conn->query("DELETE FROM notes WHERE id=".$_GET['id']);
 					?>
 <div class="box-outer top-box">
 <div class="box-inner">
@@ -2330,8 +2330,8 @@ echo '</div>';
 				if (!empty($_POST['embed']))
 				{
 					$embed_table = array();
-					$result = mysqli_query($conn, "SELECT * FROM embeds;");
-					while ($row = mysqli_fetch_assoc($result))
+					$result = $conn->query("SELECT * FROM embeds;");
+					while ($row = $result->fetch_assoc())
 					{
 						$embed_table[] = $row;
 					}
@@ -2509,7 +2509,7 @@ echo '</div>';
 	{
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
-			mysqli_query($conn, "DELETE FROM reports WHERE id=".$_GET['id']);
+			$conn->query("DELETE FROM reports WHERE id=".$_GET['id']);
 		}
 	}
 	?>
@@ -2540,22 +2540,22 @@ if ($_SESSION['type'] >= 1)
 <?php
 		require_once( "./jbbcode/Parser.php" );
 		$parser = new JBBCode\Parser();
-		$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+		$bbcode = $conn->query("SELECT * FROM bbcodes;");
 		
-		while ($row = mysqli_fetch_assoc($bbcode))
+		while ($row = $bbcode->fetch_assoc())
 		{
 			$parser->addBBCode($row['name'], $row['code']);
 		}
-		$result = mysqli_query($conn, "SELECT * FROM reports ORDER BY created DESC");
-		while ($row = mysqli_fetch_assoc($result))
+		$result = $conn->query("SELECT * FROM reports ORDER BY created DESC");
+		while ($row = $result->fetch_assoc())
 		{
-			$post = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['reported_post']);
-			if (mysqli_num_rows($post) == 0)
+			$post = $conn->query("SELECT * FROM posts_".$row['board']." WHERE id=".$row['reported_post']);
+			if ($post->num_rows == 0)
 			{
-				mysqli_query($conn, "DELETE FROM reports WHERE id=".$row['id']);
+				$conn->query("DELETE FROM reports WHERE id=".$row['id']);
 				continue;
 			}
-			$pdata = mysqli_fetch_assoc($post);
+			$pdata = $post->fetch_assoc();
 			$resto = $pdata['id'];
 			if ($pdata['resto'] != 0)
 			{
@@ -2610,7 +2610,7 @@ if ($_SESSION['type'] >= 1)
 		break;
 	case "/reports/clear_all_yes":
 		reqPermission(1);
-		mysqli_query($conn, "TRUNCATE TABLE reports;");
+		$conn->query("TRUNCATE TABLE reports;");
 		?>
 		<meta http-equiv="refresh" content="0;URL='?/reports'" />
 		<?php
@@ -2713,8 +2713,8 @@ if ($_SESSION['type']>=1)
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM bans WHERE ip='".$_GET['ip']."' ORDER BY created LIMIT 0, 15;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM bans WHERE ip='".$_GET['ip']."' ORDER BY created LIMIT 0, 15;");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".$row['ip']."</td>";
@@ -2750,8 +2750,8 @@ echo "</tr>";
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM ip_notes WHERE ip='".$_GET['ip']."';");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM ip_notes WHERE ip='".$_GET['ip']."';");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".date("d/m/Y(D)H:i:s", $row['created'])."</td>";
@@ -2793,8 +2793,8 @@ echo "</td>";
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM ip_notes LIMIT 0, 15;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM ip_notes LIMIT 0, 15;");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".date("d/m/Y(D)H:i:s", $row['created'])."</td>";
@@ -2837,8 +2837,8 @@ IP: <input type="text" name="ip" /><br />
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM ip_notes;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM ip_notes;");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".date("d/m/Y(D)H:i:s", $row['created'])."</td>";
@@ -2884,7 +2884,7 @@ echo "</tr>";
 			if ((!empty($ip)) && (!empty($_POST['note'])))
 			{
 				$note = processEntry($conn, $_POST['note']);
-				mysqli_query($conn, "INSERT INTO ip_notes (ip, text, created, mod_id) VALUES ('".$ip."', '".$note."', ".time().", ".$_SESSION['id'].")");
+				$conn->query("INSERT INTO ip_notes (ip, text, created, mod_id) VALUES ('".$ip."', '".$note."', ".time().", ".$_SESSION['id'].")");
 				?>
 				<div class="box-outer top-box">
 	<div class="box-inner">
@@ -2911,7 +2911,7 @@ echo "</tr>";
 		reqPermission(1);
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
-			mysqli_query($conn, "DELETE FROM ip_notes WHERE id=".$_GET['id']);
+			$conn->query("DELETE FROM ip_notes WHERE id=".$_GET['id']);
 		}
 		?>
 		<meta http-equiv="refresh" content="0;URL='?/ipnotes'" />
@@ -2921,13 +2921,13 @@ echo "</tr>";
 		if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['t'])))
 		{
 			canBoard($_GET['b']);
-			$result = mysqli_query($conn, "SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['t']." AND resto=0");
-			if (mysqli_num_rows($result) == 1)
+			$result = $conn->query("SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['t']." AND resto=0");
+			if ($result->num_rows == 1)
 			{
-				$pdata = mysqli_fetch_assoc($result);
+				$pdata = $result->fetch_assoc();
 				if ($pdata['sticky'] == 1)
 				{
-					mysqli_query($conn, "UPDATE posts_".$_GET['b']." SET sticky=0 WHERE id=".$_GET['t']);
+					$conn->query("UPDATE posts_".$_GET['b']." SET sticky=0 WHERE id=".$_GET['t']);
 					generatePost($conn, $_GET['b'], $_GET['t']);
 				?>
 	
@@ -2939,7 +2939,7 @@ echo "</tr>";
 </div>
 		<?php
 				} else {
-					mysqli_query($conn, "UPDATE posts_".$_GET['b']." SET sticky=1 WHERE id=".$_GET['t']);
+					$conn->query("UPDATE posts_".$_GET['b']." SET sticky=1 WHERE id=".$_GET['t']);
 					generatePost($conn, $_GET['b'], $_GET['t']);
 				?>
 	
@@ -2969,13 +2969,13 @@ echo "</tr>";
 		if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['t'])))
 		{
 			canBoard($_GET['b']);
-			$result = mysqli_query($conn, "SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['t']." AND resto=0");
-			if (mysqli_num_rows($result) == 1)
+			$result = $conn->query("SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['t']." AND resto=0");
+			if ($result->num_rows == 1)
 			{
-				$pdata = mysqli_fetch_assoc($result);
+				$pdata = $result->fetch_assoc();
 				if ($pdata['locked'] == 1)
 				{
-					mysqli_query($conn, "UPDATE posts_".$_GET['b']." SET locked=0 WHERE id=".$_GET['t']);
+					$conn->query("UPDATE posts_".$_GET['b']." SET locked=0 WHERE id=".$_GET['t']);
 					generatePost($conn, $_GET['b'], $_GET['t']);
 				?>
 	
@@ -2987,7 +2987,7 @@ echo "</tr>";
 </div>
 		<?php
 				} else {
-					mysqli_query($conn, "UPDATE posts_".$_GET['b']." SET locked=1 WHERE id=".$_GET['t']);
+					$conn->query("UPDATE posts_".$_GET['b']." SET locked=1 WHERE id=".$_GET['t']);
 					generatePost($conn, $_GET['b'], $_GET['t']);
 				?>
 	
@@ -3017,13 +3017,13 @@ echo "</tr>";
 		if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['t'])))
 		{
 			canBoard($_GET['b']);
-			$result = mysqli_query($conn, "SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['t']." AND resto=0");
-			if (mysqli_num_rows($result) == 1)
+			$result = $conn->query("SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['t']." AND resto=0");
+			if ($result->num_rows == 1)
 			{
-				$pdata = mysqli_fetch_assoc($result);
+				$pdata = $result->fetch_assoc();
 				if ($pdata['sage'] == 1)
 				{
-					mysqli_query($conn, "UPDATE posts_".$_GET['b']." SET sage=0 WHERE id=".$_GET['t']);
+					$conn->query("UPDATE posts_".$_GET['b']." SET sage=0 WHERE id=".$_GET['t']);
 					generatePost($conn, $_GET['b'], $_GET['t']);
 				?>
 	
@@ -3035,7 +3035,7 @@ echo "</tr>";
 </div>
 		<?php
 				} else {
-					mysqli_query($conn, "UPDATE posts_".$_GET['b']." SET sage=1 WHERE id=".$_GET['t']);
+					$conn->query("UPDATE posts_".$_GET['b']." SET sage=1 WHERE id=".$_GET['t']);
 					generatePost($conn, $_GET['b'], $_GET['t']);
 				?>
 	
@@ -3079,17 +3079,17 @@ echo "</tr>";
 	<?php
 	require_once( "./jbbcode/Parser.php" );
 	$parser = new JBBCode\Parser();
-	$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+	$bbcode = $conn->query("SELECT * FROM bbcodes;");
 	
-	while ($row = mysqli_fetch_assoc($bbcode))
+	while ($row = $bbcode->fetch_assoc())
 	{
 		$parser->addBBCode($row['name'], $row['code']);
 	}
-	$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC;");
-	while ($row = mysqli_fetch_assoc($boards))
+	$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
+	while ($row = $boards->fetch_assoc())
 	{
-		$threads = mysqli_query($conn, "SELECT * FROM posts_".$row['short']." WHERE locked=1 AND resto=0 ORDER BY lastbumped DESC;");
-		while ($thread = mysqli_fetch_assoc($threads))
+		$threads = $conn->query("SELECT * FROM posts_".$row['short']." WHERE locked=1 AND resto=0 ORDER BY lastbumped DESC;");
+		while ($thread = $threads->fetch_assoc())
 		{
 			echo "<tr>";
 			echo "<td><a href='?/board&b=".$row['short']."&t=".$thread['id']."#p".$thread['id']."'>/".$row['short']."/".$thread['id']."</a></td>";
@@ -3132,17 +3132,17 @@ echo "</tr>";
 	<?php
 	require_once( "./jbbcode/Parser.php" );
 	$parser = new JBBCode\Parser();
-	$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+	$bbcode = $conn->query("SELECT * FROM bbcodes;");
 	
-	while ($row = mysqli_fetch_assoc($bbcode))
+	while ($row = $bbcode->fetch_assoc())
 	{
 		$parser->addBBCode($row['name'], $row['code']);
 	}
-	$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC;");
-	while ($row = mysqli_fetch_assoc($boards))
+	$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
+	while ($row = $boards->fetch_assoc())
 	{
-		$threads = mysqli_query($conn, "SELECT * FROM posts_".$row['short']." WHERE sticky=1 AND resto=0 ORDER BY lastbumped DESC;");
-		while ($thread = mysqli_fetch_assoc($threads))
+		$threads = $conn->query("SELECT * FROM posts_".$row['short']." WHERE sticky=1 AND resto=0 ORDER BY lastbumped DESC;");
+		while ($thread = $threads->fetch_assoc())
 		{
 			echo "<tr>";
 			echo "<td><a href='?/board&b=".$row['short']."&t=".$thread['id']."#p".$thread['id']."'>/".$row['short']."/".$thread['id']."</a></td>";
@@ -3189,18 +3189,18 @@ echo "</tr>";
 </thead>
 <tbody>
 <?php
-$appeals = mysqli_query($conn, "SELECT * FROM appeals;");
-while ($row = mysqli_fetch_assoc($appeals))
+$appeals = $conn->query("SELECT * FROM appeals;");
+while ($row = $appeals->fetch_assoc())
 {
 	if ($row['rangeban'] == 0)
 	{
-		$bandata = mysqli_query($conn, "SELECT * FROM bans WHERE id=".$row['ban_id']);
+		$bandata = $conn->query("SELECT * FROM bans WHERE id=".$row['ban_id']);
 	} else {
-		$bandata = mysqli_query($conn, "SELECT * FROM rangebans WHERE id=".$row['ban_id']);
+		$bandata = $conn->query("SELECT * FROM rangebans WHERE id=".$row['ban_id']);
 	}
-	if (mysqli_num_rows($bandata) == 1)
+	if ($bandata->num_rows == 1)
 	{
-		$ban = mysqli_fetch_assoc($bandata);
+		$ban = $bandata->fetch_assoc();
 		echo "<tr>";
 		if ($row['rangeban'] == 0)
 		{
@@ -3227,7 +3227,7 @@ while ($row = mysqli_fetch_assoc($appeals))
 		echo "<td> [ <a href='?/appeals/clear&id=".$row['id']."'>C</a> / <a href='?/bans&del=1&b=".$ban['id']."'>U</a> ]</td>";
 		echo "</tr>";
 	} else {
-		mysqli_query($conn, "DELETE FROM appeals WHERE id=".$row['id']);
+		$conn->query("DELETE FROM appeals WHERE id=".$row['id']);
 	}
 }
 ?>
@@ -3241,7 +3241,7 @@ while ($row = mysqli_fetch_assoc($appeals))
 	case "/appeals/clear":
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
-			mysqli_query($conn, "DELETE FROM appeals WHERE id=".$_GET['id']);
+			$conn->query("DELETE FROM appeals WHERE id=".$_GET['id']);
 			?>
 			<meta http-equiv="refresh" content="0;URL='?/appeals'" />
 			<?php
@@ -3249,7 +3249,7 @@ while ($row = mysqli_fetch_assoc($appeals))
 		break;
 	case "/appeals/clear_all_yes":
 		reqPermission(1);
-		mysqli_query($conn, "TRUNCATE TABLE appeals;");
+		$conn->query("TRUNCATE TABLE appeals;");
 		?>
 		<meta http-equiv="refresh" content="0;URL='?/appeals'" />
 		<?php
@@ -3304,8 +3304,8 @@ while ($row = mysqli_fetch_assoc($appeals))
 </thead>
 <tbody>
 		<?php
-		$pms = mysqli_query($conn, "SELECT users.username, pm.* FROM pm LEFT JOIN users ON pm.from_user=users.id WHERE pm.to_user=".$_SESSION['id']." ORDER BY pm.created DESC");
-		while ($row = mysqli_fetch_assoc($pms))
+		$pms = $conn->query("SELECT users.username, pm.* FROM pm LEFT JOIN users ON pm.from_user=users.id WHERE pm.to_user=".$_SESSION['id']." ORDER BY pm.created DESC");
+		while ($row = $pms->fetch_assoc())
 		{
 			echo "<tr>";
 			if ($row['read_msg']==0)
@@ -3328,13 +3328,13 @@ while ($row = mysqli_fetch_assoc($appeals))
 	case "/inbox/new":
 		if ((!empty($_POST['to'])) && (!empty($_POST['title'])) && (!empty($_POST['text'])))
 		{
-			$result = mysqli_query($conn, "SELECT * FROM users WHERE username='".mysqli_real_escape_string($conn, $_POST['to'])."'");
-			if (mysqli_num_rows($result) == 1)
+			$result = $conn->query("SELECT * FROM users WHERE username='".$conn->real_escape_string($_POST['to'])."'");
+			if ($result->num_rows == 1)
 			{
-				$row = mysqli_fetch_assoc($result);
+				$row = $result->fetch_assoc();
 				$text = processEntry($conn, $_POST['text']);
-				$title = mysqli_real_escape_string($conn, $_POST['title']);
-				mysqli_query($conn, "INSERT INTO pm (created, from_user, to_user, title, text, read_msg) VALUES (".time().", ".$_SESSION['id'].", ".$row['id'].", '".$title."', '".$text."', 0)");
+				$title = $conn->real_escape_string($_POST['title']);
+				$conn->query("INSERT INTO pm (created, from_user, to_user, title, text, read_msg) VALUES (".time().", ".$_SESSION['id'].", ".$row['id'].", '".$title."', '".$text."', 0)");
 			?>
 			<div class="box-outer top-box">
 <div class="box-inner">
@@ -3373,13 +3373,13 @@ Text:<br />
 	case "/inbox/read":
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
-		$result = mysqli_query($conn, "SELECT users.username, pm.* FROM pm LEFT JOIN users ON pm.from_user=users.id WHERE pm.to_user=".$_SESSION['id']." AND pm.id=".$_GET['id']);
-		if (mysqli_num_rows($result) == 1)
+		$result = $conn->query("SELECT users.username, pm.* FROM pm LEFT JOIN users ON pm.from_user=users.id WHERE pm.to_user=".$_SESSION['id']." AND pm.id=".$_GET['id']);
+		if ($result->num_rows == 1)
 			{
-				$row = mysqli_fetch_assoc($result);
+				$row = $result->fetch_assoc();
 				if ($row['read_msg'] != 1)
 				{
-					mysqli_query($conn, "UPDATE pm SET read_msg=1 WHERE id=".$_GET['id']);
+					$conn->query("UPDATE pm SET read_msg=1 WHERE id=".$_GET['id']);
 				}
 				?>
 				<div class="box-outer top-box">
@@ -3403,7 +3403,7 @@ Text:<br />
 	case "/inbox/delete":
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
-			mysqli_query($conn, "DELETE FROM pm WHERE id=".$_GET['id']." AND to_user=".$_SESSION['id']);
+			$conn->query("DELETE FROM pm WHERE id=".$_GET['id']." AND to_user=".$_SESSION['id']);
 			?>
 			<script type="text/javascript">parent.nav.location.reload();</script>
 			<meta http-equiv="refresh" content="0;URL='?/inbox'" />
@@ -3440,17 +3440,17 @@ Text:<br />
 			<?php
 			require_once( "./jbbcode/Parser.php" );
 			$parser = new JBBCode\Parser();
-			$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+			$bbcode = $conn->query("SELECT * FROM bbcodes;");
 			
-			while ($row = mysqli_fetch_assoc($bbcode))
+			while ($row = $bbcode->fetch_assoc())
 			{
 				$parser->addBBCode($row['name'], $row['code']);
 			}
-			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
-			while ($board = mysqli_fetch_assoc($boards))
+			$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC");
+			while ($board = $boards->fetch_assoc())
 			{
-				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."'");
-				while ($row = mysqli_fetch_assoc($posts))
+				$posts = $conn->query("SELECT * FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."'");
+				while ($row = $posts->fetch_assoc())
 				{
 					echo "<tr><td>";
 					
@@ -3532,16 +3532,16 @@ Text:<br />
 	case "/delete_posts/yes":
 		if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
 		{
-			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
-			while ($board = mysqli_fetch_assoc($boards))
+			$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC");
+			while ($board = $boards->fetch_assoc())
 			{
-				$threads = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."' AND resto=0");
-				while ($row = mysqli_fetch_assoc($threads))
+				$threads = $conn->query("SELECT * FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."' AND resto=0");
+				while ($row = $threads->fetch_assoc())
 				{
-					mysqli_query($conn, "DELETE FROM posts_".$board['short']." WHERE resto=".$row['id']);
+					$conn->query("DELETE FROM posts_".$board['short']." WHERE resto=".$row['id']);
 					unlink("./".$board['short']."/res/".$row['id'].".html");
 				}
-				mysqli_query($conn, "DELETE FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."'");
+				$conn->query("DELETE FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."'");
 				rebuildBoardCache($conn, $row['short']);
 				?>
 	
@@ -3583,14 +3583,14 @@ Text:<br />
 			</thead>
 			<tbody>
 			<?php
-			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
+			$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC");
 			$post_array = array();
 			$num = 0;
 			
-			while ($board = mysqli_fetch_assoc($boards))
+			while ($board = $boards->fetch_assoc())
 			{
-				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." ORDER BY date DESC LIMIT 0, ".$max);
-				while ($row = mysqli_fetch_assoc($posts))
+				$posts = $conn->query("SELECT * FROM posts_".$board['short']." ORDER BY date DESC LIMIT 0, ".$max);
+				while ($row = $posts->fetch_assoc())
 				{
 					$post_array[$num] = $row;
 					$post_array[$num]['board'] = $board['short'];
@@ -3600,9 +3600,9 @@ Text:<br />
 			$dates = array();
 			require_once( "./jbbcode/Parser.php" );
 			$parser = new JBBCode\Parser();
-			$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+			$bbcode = $conn->query("SELECT * FROM bbcodes;");
 			
-			while ($row = mysqli_fetch_assoc($bbcode))
+			while ($row = $bbcode->fetch_assoc())
 			{
 				$parser->addBBCode($row['name'], $row['code']);
 			}
@@ -3713,13 +3713,13 @@ Text:<br />
 			</thead>
 			<tbody>
 			<?php
-			$boards = mysqli_query($conn, "SELECT * FROM boards ORDER BY short ASC");
+			$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC");
 			$post_array = array();
 			$num = 0;
-			while ($board = mysqli_fetch_assoc($boards))
+			while ($board = $boards->fetch_assoc())
 			{
-				$posts = mysqli_query($conn, "SELECT * FROM posts_".$board['short']." WHERE filename != '' ORDER BY date DESC LIMIT 0, ".$max);
-				while ($row = mysqli_fetch_assoc($posts))
+				$posts = $conn->query("SELECT * FROM posts_".$board['short']." WHERE filename != '' ORDER BY date DESC LIMIT 0, ".$max);
+				while ($row = $posts->fetch_assoc())
 				{
 					$post_array[$num] = $row;
 					$post_array[$num]['board'] = $board['short'];
@@ -3729,9 +3729,9 @@ Text:<br />
 			$dates = array();
 			require_once( "./jbbcode/Parser.php" );
 			$parser = new JBBCode\Parser();
-			$bbcode = mysqli_query($conn, "SELECT * FROM bbcodes;");
+			$bbcode = $conn->query("SELECT * FROM bbcodes;");
 			
-			while ($row = mysqli_fetch_assoc($bbcode))
+			while ($row = $bbcode->fetch_assoc())
 			{
 				$parser->addBBCode($row['name'], $row['code']);
 			}
@@ -3819,7 +3819,7 @@ Text:<br />
 		{
 			if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
 			{
-				mysqli_query($conn, "DELETE FROM ban_requests WHERE id=".$_GET['b']);
+				$conn->query("DELETE FROM ban_requests WHERE id=".$_GET['b']);
 			}
 		}
 	?>
@@ -3839,8 +3839,8 @@ Text:<br />
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM ban_requests ORDER BY created DESC LIMIT 0, 15;");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM ban_requests ORDER BY created DESC LIMIT 0, 15;");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".$row['ip']."</td>";
@@ -3848,10 +3848,10 @@ echo "<td>".$row['reason']."</td>";
 echo "<td>".$row['note']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
 
-$post_r = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
-if (mysqli_num_rows($post_r) == 1)
+$post_r = $conn->query("SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
+if ($post_r->num_rows == 1)
 {
-$post = mysqli_fetch_assoc($post_r);
+$post = $post_r->fetch_assoc();
 $resto = $post['resto'];
 if ($resto == 0) { $resto = $post['id']; }
 echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$post['id']."'>P</a> ]</td>";
@@ -3890,17 +3890,17 @@ Showing recent 15 ban requests. <a href="?/ban_requests/all">Show all</a>
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM ban_requests ORDER BY created DESC");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM ban_requests ORDER BY created DESC");
+while ($row = $result->fetch_assoc())
 {
 
-$post_r = mysqli_query($conn, "SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
-if (mysqli_num_rows($post_r) == 0)
+$post_r = $conn->query("SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
+if ($post_r->num_rows == 0)
 {
-	mysqli_query($conn, "DELETE FROM reports WHERE id=".$row['id']);
+	$conn->query("DELETE FROM reports WHERE id=".$row['id']);
 	continue;
 }
-$post = mysqli_fetch_assoc($post_r);
+$post = $post_r->fetch_assoc();
 
 echo "<tr>";
 echo "<td>".$row['ip']."</td>";
@@ -3932,9 +3932,9 @@ echo "</tr>";
 			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
 			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
 			else {
-				$name = mysqli_real_escape_string($conn, $_POST['name']);
-				$code = mysqli_real_escape_string($conn, $_POST['code']);
-				mysqli_query($conn, "INSERT INTO bbcodes (name, code) VALUES ('".$name."', '".$code."');");
+				$name = $conn->real_escape_string($_POST['name']);
+				$code = $conn->real_escape_string($_POST['code']);
+				$conn->query("INSERT INTO bbcodes (name, code) VALUES ('".$name."', '".$code."');");
 				$name = "";
 				$code = "";
 			}
@@ -3945,10 +3945,10 @@ echo "</tr>";
 			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
 			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
 			else {
-				$name = mysqli_real_escape_string($conn, $_POST['name']);
-				$name2 = mysqli_real_escape_string($conn, $_POST['name2']);
-				$code = mysqli_real_escape_string($conn, $_POST['code']);
-				mysqli_query($conn, "UPDATE bbcodes SET name='".$name."', code='".$code."' WHERE name='".$name2."';");
+				$name = $conn->real_escape_string($_POST['name']);
+				$name2 = $conn->real_escape_string($_POST['name2']);
+				$code = $conn->real_escape_string($_POST['code']);
+				$conn->query("UPDATE bbcodes SET name='".$name."', code='".$code."' WHERE name='".$name2."';");
 			}
 			$name = "";
 			$code = "";
@@ -3956,8 +3956,8 @@ echo "</tr>";
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
 		{
-			$n = mysqli_real_escape_string($conn, $_GET['n']);
-			mysqli_query($conn, "DELETE FROM bbcodes WHERE name='".$n."'");
+			$n = $conn->real_escape_string($_GET['n']);
+			$conn->query("DELETE FROM bbcodes WHERE name='".$n."'");
 		}
 		?>
 <b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
@@ -3975,8 +3975,8 @@ echo "</tr>";
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM bbcodes ORDER BY name ASC");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM bbcodes ORDER BY name ASC");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".$row['name']."</td>";
@@ -4010,10 +4010,10 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><
 		reqPermission(2);
 		if (!empty($_GET['n']))
 		{
-		$result = mysqli_query($conn, "SELECT * FROM bbcodes WHERE name='".mysqli_real_escape_string($conn, $_GET['n'])."'");
-		if (mysqli_num_rows($result) == 1)
+		$result = $conn->query("SELECT * FROM bbcodes WHERE name='".$conn->real_escape_string($_GET['n'])."'");
+		if ($result->num_rows == 1)
 		{
-		$binfo = mysqli_fetch_assoc($result);
+		$binfo = $result->fetch_assoc();
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
@@ -4021,7 +4021,7 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><
 <div class="boxcontent">
 <form action="?/bbcodes" method="POST">
 <input type="hidden" name="mode" value="edit">
-<input type="hidden" name="name2" value="<?php echo mysqli_real_escape_string($conn, $_GET['n']); ?>">
+<input type="hidden" name="name2" value="<?php echo $conn->real_escape_string($_GET['n']); ?>">
 Name: <input type="text" name="name" value="<?php echo $binfo['name']; ?>"/><br />
 HTML Code:<textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?>"</textarea><br />
 <input type="submit" value="Update" />
@@ -4046,10 +4046,10 @@ HTML Code:<textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?>"</t
 			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
 			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
 			else {
-				$name = mysqli_real_escape_string($conn, $_POST['name']);
-				$regex = mysqli_real_escape_string($conn, $_POST['regex']);
-				$code = mysqli_real_escape_string($conn, $_POST['code']);
-				mysqli_query($conn, "INSERT INTO embeds (name, regex, code) VALUES ('".$name."', '".$regex."', '".$code."');");
+				$name = $conn->real_escape_string($_POST['name']);
+				$regex = $conn->real_escape_string($_POST['regex']);
+				$code = $conn->real_escape_string($_POST['code']);
+				$conn->query("INSERT INTO embeds (name, regex, code) VALUES ('".$name."', '".$regex."', '".$code."');");
 				$name = "";
 				$code = "";
 			}
@@ -4061,11 +4061,11 @@ HTML Code:<textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?>"</t
 			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
 			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
 			else {
-				$name = mysqli_real_escape_string($conn, $_POST['name']);
-				$name2 = mysqli_real_escape_string($conn, $_POST['name2']);
-				$regex = mysqli_real_escape_string($conn, $_POST['regex']);
-				$code = mysqli_real_escape_string($conn, $_POST['code']);
-				mysqli_query($conn, "UPDATE embeds SET name='".$name."', code='".$code."', regex='".$regex."' WHERE name='".$name2."';");
+				$name = $conn->real_escape_string($_POST['name']);
+				$name2 = $conn->real_escape_string($_POST['name2']);
+				$regex = $conn->real_escape_string($_POST['regex']);
+				$code = $conn->real_escape_string($_POST['code']);
+				$conn->query("UPDATE embeds SET name='".$name."', code='".$code."', regex='".$regex."' WHERE name='".$name2."';");
 			}
 			$name = "";
 			$code = "";
@@ -4073,8 +4073,8 @@ HTML Code:<textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?>"</t
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
 		{
-			$n = mysqli_real_escape_string($conn, $_GET['n']);
-			mysqli_query($conn, "DELETE FROM embeds WHERE name='".$n."'");
+			$n = $conn->real_escape_string($_GET['n']);
+			$conn->query("DELETE FROM embeds WHERE name='".$n."'");
 		}
 		?>
 <b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
@@ -4092,8 +4092,8 @@ HTML Code:<textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?>"</t
 </thead>
 <tbody>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM embeds ORDER BY name ASC");
-while ($row = mysqli_fetch_assoc($result))
+$result = $conn->query("SELECT * FROM embeds ORDER BY name ASC");
+while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".$row['name']."</td>";
@@ -4128,10 +4128,10 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><
 		reqPermission(2);
 		if (!empty($_GET['n']))
 		{
-		$result = mysqli_query($conn, "SELECT * FROM embeds WHERE name='".mysqli_real_escape_string($conn, $_GET['n'])."'");
-		if (mysqli_num_rows($result) == 1)
+		$result = $conn->query("SELECT * FROM embeds WHERE name='".$conn->real_escape_string($_GET['n'])."'");
+		if ($result->num_rows == 1)
 		{
-		$binfo = mysqli_fetch_assoc($result);
+		$binfo = $result->fetch_assoc();
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
@@ -4139,7 +4139,7 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><
 <div class="boxcontent">
 <form action="?/embeds" method="POST">
 <input type="hidden" name="mode" value="edit">
-<input type="hidden" name="name2" value="<?php echo mysqli_real_escape_string($conn, $_GET['n']); ?>">
+<input type="hidden" name="name2" value="<?php echo $conn->real_escape_string($_GET['n']); ?>">
 Name: <input type="text" name="name" value="<?php echo $binfo['name']; ?>"/><br />
 Regex: <input type="text" name="regex" value="<?php echo $binfo['regex']; ?>"/><br />
 HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></textarea><br />
@@ -4164,5 +4164,5 @@ if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && ((
 </html>
 <?php
 }
-mysqli_close($conn);
+$conn->close();
 ?>

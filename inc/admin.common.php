@@ -8,13 +8,13 @@ function appendToPost($conn, $board, $postid, $text)
 {
 	if (is_numeric($postid))
 	{
-		$post = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$postid);
-		if (mysqli_num_rows($post) == 1)
+		$post = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$postid);
+		if ($post->num_rows == 1)
 		{
-			$pdata = mysqli_fetch_assoc($post);
-			$text = mysqli_real_escape_string($conn, $text);
-			$new_text = mysqli_real_escape_string($conn, $pdata['comment'])."\n\n".$text;
-			mysqli_query($conn, "UPDATE posts_".$board." SET comment='".$new_text."', raw=2 WHERE id=".$postid);
+			$pdata = $post->fetch_assoc();
+			$text = $conn->real_escape_string($text);
+			$new_text = $conn->real_escape_string($pdata['comment'])."\n\n".$text;
+			$conn->query("UPDATE posts_".$board." SET comment='".$new_text."', raw=2 WHERE id=".$postid);
 			if ($pdata['resto'] == 0)
 			{
 				generateView($conn, $board, $pdata['id']);
@@ -28,7 +28,7 @@ function appendToPost($conn, $board, $postid, $text)
 
 function logEvent($conn, $event)
 {
-	mysqli_query($conn, "INSERT INTO log (date, event, mod_id) VALUES (".time().", '".mysqli_real_escape_string($conn, $event)."', ".$_SESSION['id'].")");
+	$conn->query("INSERT INTO log (date, event, mod_id) VALUES (".time().", '".$conn->real_escape_string($event)."', ".$_SESSION['id'].")");
 }
 
 function canBoard($board)

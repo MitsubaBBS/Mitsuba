@@ -4,15 +4,15 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 	
 	if (is_numeric($postno))
 	{
-		$board = mysqli_real_escape_string($conn, $board);
+		$board = $conn->real_escape_string($board);
 		if (!isBoard($conn, $board))
 		{
 			return -16;
 		}
-		$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$postno);
-		if (mysqli_num_rows($result) == 1)
+		$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$postno);
+		if ($result->num_rows == 1)
 		{
-			$postdata = mysqli_fetch_assoc($result);
+			$postdata = $result->fetch_assoc();
 		
 			if ($onlyimgdel == 1)
 			{
@@ -29,7 +29,7 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 						unlink("./".$board."/src/".$filename);
 						unlink("./".$board."/src/thumb/".$filename);
 					}
-					mysqli_query($conn, "UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
+					$conn->query("UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
 					if ($postdata['resto'] != 0)
 					{
 						generateView($conn, $board, $postdata['resto']);
@@ -45,8 +45,8 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 			} else {
 				if ($postdata['resto'] == 0) //we'll have to delete whole thread
 				{
-					$files = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$postdata['id']);
-					while ($file = mysqli_fetch_assoc($files))
+					$files = $conn->query("SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$postdata['id']);
+					while ($file = $files->fetch_assoc())
 					{
 						$filename = $file['filename'];
 						if (substr($filename, 0, 8) == "spoiler:")
@@ -72,8 +72,8 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 							unlink("./".$board."/src/thumb/".$filename);
 						}
 					}
-					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE resto=".$postno.";");
-					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
+					$conn->query("DELETE FROM posts_".$board." WHERE resto=".$postno.";");
+					$conn->query("DELETE FROM posts_".$board." WHERE id=".$postno.";");
 					unlink("./".$board."/res/".$postno.".html");
 					//generateView($conn, $board, $postno);
 					generateView($conn, $board);
@@ -93,7 +93,7 @@ function deletePostMod($conn, $board, $postno, $onlyimgdel = 0)
 							unlink("./".$board."/src/thumb/".$filename);
 						}
 					}
-					mysqli_query($conn, "DELETE FROM posts_".$board." WHERE id=".$postno.";");
+					$conn->query("DELETE FROM posts_".$board." WHERE id=".$postno.";");
 					generateView($conn, $board, $postdata['resto']);
 					generateView($conn, $board);
 					return 2;
@@ -118,10 +118,10 @@ function generatePost($conn, $board, $id)
 	{
 		return -16;
 	}
-	$result = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$id);
-	if (mysqli_num_rows($result) == 1)
+	$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$id);
+	if ($result->num_rows == 1)
 	{
-		$post = mysqli_fetch_assoc($result);
+		$post = $result->fetch_assoc();
 		if ($post['resto'] == 0)
 		{
 			generateView($conn, $board, $post['id']);
@@ -194,20 +194,20 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 	$replies = 0;
 	if ($resto != 0)
 	{
-		$thread = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE id=".$resto);
+		$thread = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$resto);
 		
 		if (($bdata['bumplimit'] > 0) && ($nolimit == 0))
 		{
-			$replies = mysqli_query($conn, "SELECT * FROM posts_".$board." WHERE resto=".$resto);
-			$replies = mysqli_num_rows($replies);
+			$replies = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$resto);
+			$replies = $replies->num_rows;
 		}
 		
-		if (mysqli_num_rows($thread) == 0)
+		if ($thread->num_rows == 0)
 		{
 			echo "<center><h1>Error: Cannot reply to thread because thread does not exist.</h1><br /><a href='./".$board."'>RETURN</a></center>";
 			return;
 		}
-		$tinfo = mysqli_fetch_assoc($thread);
+		$tinfo = $thread->fetch_assoc();
 		
 	}
 	$lastbumped = time();
@@ -232,7 +232,7 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 		}
 		
 	}
-	$md5 = mysqli_real_escape_string($conn, $md5);
+	$md5 = $conn->real_escape_string($md5);
 	$isize = "";
 	$fsize = "";
 	if ((!empty($fname2)) && ($fname2 != "embed"))
@@ -248,8 +248,8 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 			$fsize = human_filesize(filesize("./".$board."/src/".$filename));
 		}
 	}
-	mysqli_query($conn, "INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, sticky, sage, locked, capcode, raw)".
-	"VALUES (".time().", '".$name."', '".$trip."', '".mysqli_real_escape_string($conn, $poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
+	$conn->query("INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, sticky, sage, locked, capcode, raw)".
+	"VALUES (".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
 	$id = mysqli_insert_id($conn);
 	$poster_id = "";
 	if ($bdata['ids'] == 1)
@@ -262,7 +262,7 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 	}
 	if ($poster_id != "")
 	{
-		mysqli_query($conn, "UPDATE posts_".$board." SET poster_id='".mysqli_real_escape_string($conn, $poster_id)."' WHERE id=".$id);
+		$conn->query("UPDATE posts_".$board." SET poster_id='".$conn->real_escape_string($poster_id)."' WHERE id=".$id);
 	}
 	if ($resto != 0)
 	{
@@ -270,7 +270,7 @@ function addPostMod($conn, $board, $name, $email, $subject, $comment, $password,
 		{
 		
 		} else {
-			mysqli_query($conn, "UPDATE posts_".$board." SET lastbumped=".time()." WHERE id=".$resto);
+			$conn->query("UPDATE posts_".$board." SET lastbumped=".time()." WHERE id=".$resto);
 		}
 	
 	
