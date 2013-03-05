@@ -373,11 +373,11 @@ echo "<option onClick='document.getElementById(\"all\").checked=false;' value='"
 <table>
 <thead>
 <tr>
-<td>Username</td>
-<td>Type</td>
-<td>Boards</td>
-<td>Edit</td>
-<td>Delete</td>
+<td style="width: 30%;">Username</td>
+<td style="width: 20%;">Type</td>
+<td style="width: 30%;">Boards</td>
+<td style="width: 10%;">Edit</td>
+<td style="width: 10%;">Delete</td>
 </tr>
 </thead>
 <tbody>
@@ -863,11 +863,11 @@ echo "</tr>";
 <div class="boxbar"><h2>Create new board</h2></div>
 <div class="boxcontent">
 <form action="?/boards/add" method="POST">
-Board directory (without /'s): <input type="text" name="short" maxlenght=10 /><br />
-Board name: <input type="text" name="name" maxlenght=40 /><br />
-Board short description (optional): <input type="text" name="des" maxlenght=100 /><br />
+Board directory (without /'s): <input type="text" name="short" maxlength=10 /><br />
+Board name: <input type="text" name="name" maxlength=40 /><br />
+Board short description (optional): <input type="text" name="des" maxlength=100 /><br />
 Board message (optional): <br /><textarea cols=70 rows=7 name="msg"></textarea><br />
-Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlenght=9 value="0" /><br />
+Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlength=9 value="0" /><br />
 Board special options: <input type="checkbox" name="spoilers" value="1" />Allow image spoilers <input type="checkbox" name="noname" value="1" />No name field (forced anonymity) <input type="checkbox" name="ids" value="1" />Poster IDs<br />
 <input type="checkbox" name="embeds" value="1" />Allow embeds <br />
 <input type="submit" value="Create new board" />
@@ -1124,11 +1124,11 @@ echo '</tr>';
 <div class="boxbar"><h2>Edit board /<?php echo $_GET['board']; ?>/</h2></div>
 <div class="boxcontent">
 <form action="?/boards/update&board=<?php echo $_GET['board']; ?>" method="POST">
-Board directory (without /'s): <input disabled type="text" name="short" maxlenght=10 value="<?php echo $data['short']; ?>" /><br />
-Board name: <input type="text" name="name" maxlenght=40 value="<?php echo $data['name']; ?>" /><br />
-Board short description (optional): <input type="text" name="des" maxlenght=100 value="<?php echo $data['des']; ?>" /><br />
+Board directory (without /'s): <input disabled type="text" name="short" maxlength=10 value="<?php echo $data['short']; ?>" /><br />
+Board name: <input type="text" name="name" maxlength=40 value="<?php echo $data['name']; ?>" /><br />
+Board short description (optional): <input type="text" name="des" maxlength=100 value="<?php echo $data['des']; ?>" /><br />
 Board message (optional): <br /><textarea cols=70 rows=7 name="msg"><?php echo $data['message']; ?></textarea><br />
-Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlenght=9 value="<?php echo $data['bumplimit']; ?>" /><br />
+Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlength=9 value="<?php echo $data['bumplimit']; ?>" /><br />
 Board special options: <input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> />Allow image spoilers <input type="checkbox" name="noname" value="1" <?php if ($data['noname'] == 1) { echo "checked "; } ?> />No name field (forced anonymity) <input type="checkbox" name="ids" value="1" <?php if ($data['ids'] == 1) { echo "checked "; } ?> />Poster IDs<br />
 <input type="checkbox" name="embeds" value="1" <?php if ($data['embeds'] == 1) { echo "checked "; } ?> />Allow embeds <br />
 <input type="submit" value="Update board info!" />
@@ -1141,7 +1141,7 @@ Board special options: <input type="checkbox" name="spoilers" value="1" <?php if
 <div class="boxbar"><h2>Move board /<?php echo $_GET['board']; ?>/</h2></div>
 <div class="boxcontent">
 <form action="?/boards/move&board=<?php echo $_GET['board']; ?>" method="POST">
-New board directory (without /'s): <input type="text" name="new" maxlenght=10 /><br />
+New board directory (without /'s): <input type="text" name="new" maxlength=10 /><br />
 <input type="submit" value="Move board!" />
 </form>
 </div>
@@ -3571,14 +3571,14 @@ Text:<br />
 <table>
 			<thead>
 			<tr>
-			<td>Post</td>
-			<td>Name</td>
-			<td>Email</td>
-			<td>Date</td>
-			<td>Comment</td>
-			<td>Subject</td>
-			<td>File</td>
-			<td>Delete</td>
+			<td style="width: 10%;">Post</td>
+			<td style="width: 10%;">Name</td>
+			<td style="width: 10%;">Email</td>
+			<td style="width: 10%;">Date</td>
+			<td style="width: 25%;">Comment</td>
+			<td style="width: 15%;">Subject</td>
+			<td style="width: 10%;">File</td>
+			<td style="width: 10%;">Delete</td>
 			</tr>
 			</thead>
 			<tbody>
@@ -3701,14 +3701,14 @@ Text:<br />
 			<table>
 			<thead>
 			<tr>
-			<td>Post</td>
-			<td>Name</td>
-			<td>Email</td>
-			<td>Date</td>
-			<td>Comment</td>
-			<td>Subject</td>
-			<td>File</td>
-			<td>Delete</td>
+			<td style="width: 10%;">Post</td>
+			<td style="width: 10%;">Name</td>
+			<td style="width: 10%;">Email</td>
+			<td style="width: 10%;">Date</td>
+			<td style="width: 25%;">Comment</td>
+			<td style="width: 15%;">Subject</td>
+			<td style="width: 10%;">File</td>
+			<td style="width: 10%;">Delete</td>
 			</tr>
 			</thead>
 			<tbody>

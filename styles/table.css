@@ -20,14 +20,9 @@ table tbody tr:nth-of-type(odd) {
 }
 
 table {
-    display: block;
     border-collapse:separate;
     border-spacing: 1px;
     min-width: 100%;
     width: 100% !important;
     max-width: 100%;
-}
-
-td {
-	width: 100%;
 }

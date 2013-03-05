@@ -8,6 +8,12 @@ body {
     margin-top: 5px;
     padding-left: 5px;
     padding-right: 5px;
+    word-wrap: break-all;
+    -ms-word-break: break-word;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
 }
 
 a,a:visited {

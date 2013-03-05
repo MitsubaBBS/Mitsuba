@@ -3,6 +3,16 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input
     padding: 0;
 }
 
+body {
+
+    word-wrap: break-all;
+    -ms-word-break: break-word;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;	
+}
+
 table {
     border-collapse: collapse;
     border-spacing: 0;
