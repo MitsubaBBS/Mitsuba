@@ -228,7 +228,26 @@ function generateView($conn, $board, $threadno = 0)
 			<html xmlns="http://www.w3.org/1999/xhtml">';
 		if ($threadno != 0)
 		{
-			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title><link rel='stylesheet' href='../../styles/stylesheet.css' />";
+			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
+			$style = $conn->query("SELECT * FROM styles WHERE `default`=1");
+			$first_default = 0;
+			if (mysqli_num_rows($style) > 0)
+			{
+				$sdata = $style->fetch_assoc();
+				echo '<link rel="stylesheet" title="switch" href="'.$sdata['path_thread'].'">';
+			} else {
+				$first_default = 1;
+			}
+			$styles = $conn->query("SELECT * FROM styles");
+			while ($row = $styles->fetch_assoc())
+			{
+				if ($first_default == 1)
+				{
+					echo '<link rel="stylesheet" title="switch" href="'.$sdata['path_thread'].'">';
+					$first_default = 0;
+				}
+				echo '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path_thread'].'" title="'.$sdata['name'].'">';
+			}
 			$file .= "<script type='text/javascript' src='../../js/jquery.js'></script>";
 			$file .= "<script type='text/javascript' src='../../js/common.js'></script>";
 			$file .= "<script type='text/javascript' src='../../js/jquery.cookie.js'></script>";
@@ -236,7 +255,26 @@ function generateView($conn, $board, $threadno = 0)
 			$file .= "</head><body>";
 			$file .= getBoardLinks($conn, 1);
 		} else {
-			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title><link rel='stylesheet' href='../styles/stylesheet.css' />";
+			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
+			$style = $conn->query("SELECT * FROM styles WHERE `default`=1");
+			$first_default = 0;
+			if (mysqli_num_rows($style) > 0)
+			{
+				$sdata = $style->fetch_assoc();
+				echo '<link rel="stylesheet" title="switch" href="'.$sdata['path'].'">';
+			} else {
+				$first_default = 1;
+			}
+			$styles = $conn->query("SELECT * FROM styles");
+			while ($row = $styles->fetch_assoc())
+			{
+				if ($first_default == 1)
+				{
+					echo '<link rel="stylesheet" title="switch" href="'.$sdata['path'].'">';
+					$first_default = 0;
+				}
+				echo '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path'].'" title="'.$sdata['name'].'">';
+			}
 			$file .= "<script type='text/javascript' src='../js/jquery.js'></script>";
 			$file .= "<script type='text/javascript' src='../js/common.js'></script>";
 			$file .= "<script type='text/javascript' src='../js/jquery.cookie.js'></script>";
@@ -549,7 +587,7 @@ function generateView($conn, $board, $threadno = 0)
 				$posts = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
 			} else {
 			$posts = $conn->query("SELECT COUNT(*) FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
-			$row1 = mysqli_fetch_row($posts);
+			$row1 = $posts->fetch_row();
 			if ($row1[0] == 0)
 			{
 				$file .= '</div><hr />';

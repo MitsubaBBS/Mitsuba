@@ -49,7 +49,26 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">';
-	$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title><link rel='stylesheet' href='./styles/stylesheet.css' />";
+	$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
+	$style = $conn->query("SELECT * FROM styles WHERE `default`=1");
+	$first_default = 0;
+	if ($style->num_rows > 0)
+	{
+		$sdata = $style->fetch_assoc();
+		echo '<link rel="stylesheet" title="switch" href="'.$sdata['path_index'].'">';
+	} else {
+		$first_default = 1;
+	}
+	$styles = $conn->query("SELECT * FROM styles");
+	while ($row = $styles->fetch_assoc())
+	{
+		if ($first_default == 1)
+		{
+			echo '<link rel="stylesheet" title="switch" href="'.$sdata['path_index'].'">';
+			$first_default = 0;
+		}
+		echo '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path_index'].'" title="'.$sdata['name'].'">';
+	}
 	$file .= "<script type='text/javascript' src='./js/jquery.js'></script>";
 	$file .= "<script type='text/javascript' src='./js/jquery.cookie.js'></script>";
 	$file .= "<script type='text/javascript' src='./js/common.js'></script>";
@@ -315,7 +334,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			$posts = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
 		} else {
 		$posts = $conn->query("SELECT COUNT(*) FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
-		$row1 = mysqli_fetch_row($posts);
+		$row1 = $posts->fetch_row();
 		if ($row1[0] == 0)
 		{
 			$file .= '</div><hr />';
