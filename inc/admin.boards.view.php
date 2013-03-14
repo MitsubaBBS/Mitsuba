@@ -55,7 +55,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	if ($style->num_rows > 0)
 	{
 		$sdata = $style->fetch_assoc();
-		echo '<link rel="stylesheet" title="switch" href="'.$sdata['path_index'].'">';
+		$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path_index'].'">';
 	} else {
 		$first_default = 1;
 	}
@@ -64,10 +64,10 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	{
 		if ($first_default == 1)
 		{
-			echo '<link rel="stylesheet" title="switch" href="'.$sdata['path_index'].'">';
+			$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path_index'].'">';
 			$first_default = 0;
 		}
-		echo '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path_index'].'" title="'.$sdata['name'].'">';
+		$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path_index'].'" title="'.$sdata['name'].'">';
 	}
 	$file .= "<script type='text/javascript' src='./js/jquery.js'></script>";
 	$file .= "<script type='text/javascript' src='./js/jquery.cookie.js'></script>";

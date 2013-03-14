@@ -229,12 +229,12 @@ function generateView($conn, $board, $threadno = 0)
 		if ($threadno != 0)
 		{
 			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
-			$style = $conn->query("SELECT * FROM styles WHERE `default`=1");
+			$style = $conn->query("SELECT * FROM styles WHERE `default`=1;");
 			$first_default = 0;
 			if (mysqli_num_rows($style) > 0)
 			{
 				$sdata = $style->fetch_assoc();
-				echo '<link rel="stylesheet" title="switch" href="'.$sdata['path_thread'].'">';
+				$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path_thread'].'">';
 			} else {
 				$first_default = 1;
 			}
@@ -243,10 +243,10 @@ function generateView($conn, $board, $threadno = 0)
 			{
 				if ($first_default == 1)
 				{
-					echo '<link rel="stylesheet" title="switch" href="'.$sdata['path_thread'].'">';
+					$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path_thread'].'">';
 					$first_default = 0;
 				}
-				echo '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path_thread'].'" title="'.$sdata['name'].'">';
+				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path_thread'].'" title="'.$sdata['name'].'">';
 			}
 			$file .= "<script type='text/javascript' src='../../js/jquery.js'></script>";
 			$file .= "<script type='text/javascript' src='../../js/common.js'></script>";
@@ -256,12 +256,12 @@ function generateView($conn, $board, $threadno = 0)
 			$file .= getBoardLinks($conn, 1);
 		} else {
 			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
-			$style = $conn->query("SELECT * FROM styles WHERE `default`=1");
+			$style = $conn->query("SELECT * FROM styles WHERE `default`=1;");
 			$first_default = 0;
 			if (mysqli_num_rows($style) > 0)
 			{
 				$sdata = $style->fetch_assoc();
-				echo '<link rel="stylesheet" title="switch" href="'.$sdata['path'].'">';
+				$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path'].'">';
 			} else {
 				$first_default = 1;
 			}
@@ -270,10 +270,10 @@ function generateView($conn, $board, $threadno = 0)
 			{
 				if ($first_default == 1)
 				{
-					echo '<link rel="stylesheet" title="switch" href="'.$sdata['path'].'">';
+					$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path'].'">';
 					$first_default = 0;
 				}
-				echo '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path'].'" title="'.$sdata['name'].'">';
+				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path'].'" title="'.$sdata['name'].'">';
 			}
 			$file .= "<script type='text/javascript' src='../js/jquery.js'></script>";
 			$file .= "<script type='text/javascript' src='../js/common.js'></script>";
