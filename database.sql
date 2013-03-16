@@ -176,9 +176,11 @@ CREATE TABLE IF NOT EXISTS `users` (
 );
 
 CREATE TABLE IF NOT EXISTS `wordfilter` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `search` varchar(100) NOT NULL,
   `replace` varchar(100) NOT NULL,
-  `active` int(1) NOT NULL
+  `active` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
 );
 
 INSERT INTO `bbcodes` (`name`, `code`) VALUES

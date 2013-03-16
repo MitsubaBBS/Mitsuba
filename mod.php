@@ -284,6 +284,7 @@ if ($_SESSION['type'] >= 2)
 <li><a href="?/bbcodes" target="main">Manage BBCodes</a></li>
 <li><a href="?/embeds" target="main">Manage embeds</a></li>
 <li><a href="?/styles" target="main">Manage styles</a></li>
+<li><a href="?/wordfilter" target="main">Manage wordfilter</a></li>
 <li><a href="?/range" target="main">Manage range bans</a></li>
 <li><a href="?/message" target="main">Global message</a></li>
 <li><a href="?/rebuild" target="main">Rebuild cache</a></li>
@@ -4024,6 +4025,112 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><
 <input type="hidden" name="name2" value="<?php echo $conn->real_escape_string($_GET['n']); ?>">
 Name: <input type="text" name="name" value="<?php echo $binfo['name']; ?>"/><br />
 HTML Code:<textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?>"</textarea><br />
+<input type="submit" value="Update" />
+</form>
+</div>
+</div>
+</div>
+		<?php
+		}
+		}
+		break;
+	case "/wordfilter":
+		reqPermission(2);
+		$search = "";
+		$replace = "";
+		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
+		{
+			if (empty($_POST['search'])) { echo "<b style='color: red;'>Please fill search field!</b>"; } else { $search = $_POST['search']; }
+			if (empty($_POST['replace'])) { echo "<b style='color: red;'>Please fill replace field!</b>"; } else { $replace = $_POST['replace']; }
+			$search = $conn->real_escape_string($_POST['search']);
+			$replace = $conn->real_escape_string($_POST['replace']);
+			$conn->query("INSERT INTO wordfilter (`search`, `replace`, `active`) VALUES ('".$search."', '".$replace."', 1);");
+			$search = "";
+			$replace = "";
+		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['id']))) {
+			
+			if (empty($_POST['search'])) { echo "<b style='color: red;'>Please fill search field!</b>"; } else { $search = $_POST['search']; }
+			if (empty($_POST['replace'])) { echo "<b style='color: red;'>Please fill replace field!</b>"; } else { $replace = $_POST['replace']; }
+			$search = $conn->real_escape_string($_POST['search']);
+			$id = $_POST['id'];
+			if (!is_numeric($id)) { echo "<b style='color: red;'>Don't try to fool me!</b>"; }
+			$replace = $conn->real_escape_string($_POST['replace']);
+			$conn->query("UPDATE wordfilter SET `search`='".$search."', `replace`='".$replace."' WHERE id=".$id);
+			$search = "";
+			$replace = "";
+		}
+
+		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
+		{
+			$n = $conn->real_escape_string($_GET['n']);
+			if (!is_numeric($n)) { echo "<b style='color: red;'>Don't try to fool me!</b>"; }
+			$conn->query("DELETE FROM wordfilter WHERE id=".$n);
+		}
+		?>
+<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Wordfilter</h2></div>
+<div class="boxcontent">
+<table>
+<thead>
+<tr>
+<td>Search</td>
+<td>Replace</td>
+<td>Actions</td>
+</tr>
+</thead>
+<tbody>
+<?php
+$result = $conn->query("SELECT * FROM wordfilter ORDER BY search ASC");
+while ($row = $result->fetch_assoc())
+{
+echo "<tr>";
+echo "<td>".htmlspecialchars($row['search'])."</td>";
+echo "<td>".htmlspecialchars($row['replace'])."</td>";
+echo "<td><a href='?/wordfilter&d=1&n=".$row['id']."'>Delete</a> <a href='?/wordfilter/edit&n=".$row['id']."'>Edit</a></td>";
+echo "</tr>";
+}
+?>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<br /><br />
+<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Add wordfilter</h2></div>
+<div class="boxcontent">
+<form action="?/wordfilter" method="POST">
+<input type="hidden" name="mode" value="add">
+Search: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"/><br />
+Replace: <input type="text" name="replace" value="<?php echo htmlspecialchars($replace); ?>"/><br />
+<input type="submit" value="Add" />
+</form>
+</div>
+</div>
+</div>
+		<?php
+		break;
+	case "/wordfilter/edit":
+		reqPermission(2);
+		if (!empty($_GET['n']))
+		{
+		$result = $conn->query("SELECT * FROM wordfilter WHERE id=".$conn->real_escape_string($_GET['n']));
+		if ($result->num_rows == 1)
+		{
+		$info = $result->fetch_assoc();
+		?>
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Edit wordfilter</h2></div>
+<div class="boxcontent">
+<form action="?/wordfilter" method="POST">
+<input type="hidden" name="mode" value="edit">
+<input type="hidden" name="id" value="<?php echo $_GET['n']; ?>">
+Search: <input type="text" name="search" value="<?php echo htmlspecialchars($info['search']); ?>"/><br />
+Replace: <input type="text" name="replace" value="<?php echo htmlspecialchars($info['replace']); ?>"/><br />
 <input type="submit" value="Update" />
 </form>
 </div>
