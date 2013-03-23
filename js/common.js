@@ -98,7 +98,7 @@ $(document).ready(function () {
 	});
 	$("#stylechanger").change(function (e) {
 		$("#switch").attr("href", e.target.options[e.target.selectedIndex].value);
-		$.cookie("style", e.target.options[e.target.selectedIndex].value, {expires: 31});
+		$.cookie("style", absolutizeURI(window.location.href, e.target.options[e.target.selectedIndex].value), {expires: 31});
 	});
 	
 	if (typeof $.cookie("style") !== "undefined")
