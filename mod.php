@@ -4259,6 +4259,106 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></t
 		}
 		}
 		break;
+	case "/styles":
+		reqPermission(2);
+		$search = "";
+		$replace = "";
+		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "upload"))
+		{
+			$shouldnt = 0;
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>Please fill name field!</b>"; $shouldnt = 1; }
+			if (empty($_FILES['upfile']['tmp_name'])) { echo "<b style='color: red;'>No file! ;_;</b>"; $shouldnt = 1; }
+			if (!$shouldnt)
+			{
+				$name = $conn->real_escape_string($_POST['name']);
+				$filename = strtolower(preg_replace('/[^a-zA-Z0-9_ %\[\]\.\(\)%&-]/s', '', $_FILES['upfile']['tmp_name']));
+				if(move_uploaded_file($_FILES['upfile']['tmp_name'], "./styles/".$filename)) {
+					$conn->query("INSERT INTO styles (`name`, `path`, `path_thread`, `path_index`, `default`) VALUES ('".$name."', '../styles/".$filename."', '../../styles/".$filename."', './styles/".$filename."', 0);");
+					echo "<b style='color: green;'>Upload done!</b>";
+				}
+			}
+		}
+		
+		if ((!empty($_GET['def'])) && ($_GET['def'] == 1) && (!empty($_GET['n'])))
+		{
+			$n = $conn->real_escape_string($_GET['n']);
+			if (!is_numeric($n)) { echo "<b style='color: red;'>Don't try to fool me!</b>"; }
+			$conn->query("UPDATE styles SET `default`=0");
+			$conn->query("UPDATE styles SET `default`=1 WHERE id=".$n);
+		}
+
+		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
+		{
+			$n = $conn->real_escape_string($_GET['n']);
+			if (!is_numeric($n)) { echo "<b style='color: red;'>Don't try to fool me!</b>"; }
+			$conn->query("DELETE FROM styles WHERE id=".$n);
+		}
+		
+		if ((!empty($_GET['f'])) && ($_GET['f'] == 1) && (!empty($_GET['n'])))
+		{
+			$n = $conn->real_escape_string($_GET['n']);
+			if (!is_numeric($n)) { echo "<b style='color: red;'>Don't try to fool me!</b>"; }
+			$result = $conn->query("SELECT * FROM styles WHERE id=".$n);
+			$row = $result->fetch_assoc();
+			unlink($row['path_index']);
+			$conn->query("DELETE FROM styles WHERE id=".$n);
+		}
+		?>
+<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
+		<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Stylesheets</h2></div>
+<div class="boxcontent">
+<table>
+<thead>
+<tr>
+<td>Name</td>
+<td>File</td>
+<td>Actions</td>
+</tr>
+</thead>
+<tbody>
+<?php
+$result = $conn->query("SELECT * FROM styles ORDER BY name ASC");
+while ($row = $result->fetch_assoc())
+{
+echo "<tr>";
+echo "<td>".htmlspecialchars($row['name']);
+if ($row['default'] == 1) { echo " ( <b>default</b> )"; }
+echo "</td>";
+echo "<td><a href='".htmlspecialchars($row['path_index'])."' target='_blank'>Show file</a></td>";
+echo "<td><a href='?/styles&f=1&n=".$row['id']."'>Delete</a>(<a href='?/styles&d=1&n=".$row['id']."'>No file</a>)";
+if ($row['default'] == 0)
+{
+	echo " <a href='?/styles&def=1&n=".$row['id']."'>Make default</a>";
+}
+echo "</td>";
+echo "</tr>";
+}
+?>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<br /><br />
+<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Upload stylesheet</h2></div>
+<div class="boxcontent">
+<form action="?/styles" method="POST" enctype="multipart/form-data">
+<input type="hidden" name="MAX_FILE_SIZE" value="2097152">
+<input type="hidden" name="mode" value="upload">
+File: <input id="postFile" name="upfile" type="file"><br />
+Name: <input type="text" name="name"/><br />
+<input type="submit" value="Upload" />
+</form>
+</div>
+</div>
+</div>
+		<?php
+		
+		break;
 	default:
 		echo runHooks("panel", $path);
 		break;
