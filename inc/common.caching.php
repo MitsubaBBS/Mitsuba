@@ -234,7 +234,7 @@ function generateView($conn, $board, $threadno = 0)
 			if (mysqli_num_rows($style) > 0)
 			{
 				$sdata = $style->fetch_assoc();
-				$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path_thread'].'">';
+				$file .= '<link rel="stylesheet" id="switch" href="'.$sdata['path_thread'].'">';
 			} else {
 				$first_default = 1;
 			}
@@ -243,10 +243,10 @@ function generateView($conn, $board, $threadno = 0)
 			{
 				if ($first_default == 1)
 				{
-					$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path_thread'].'">';
+					$file .= '<link rel="stylesheet" id="switch" href="'.$row['path_thread'].'">';
 					$first_default = 0;
 				}
-				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path_thread'].'" title="'.$sdata['name'].'">';
+				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$row['path_thread'].'" title="'.$row['name'].'">';
 			}
 			$file .= "<script type='text/javascript' src='../../js/jquery.js'></script>";
 			$file .= "<script type='text/javascript' src='../../js/common.js'></script>";
@@ -261,7 +261,7 @@ function generateView($conn, $board, $threadno = 0)
 			if (mysqli_num_rows($style) > 0)
 			{
 				$sdata = $style->fetch_assoc();
-				$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path'].'">';
+				$file .= '<link rel="stylesheet" id="switch" href="'.$sdata['path'].'">';
 			} else {
 				$first_default = 1;
 			}
@@ -270,10 +270,10 @@ function generateView($conn, $board, $threadno = 0)
 			{
 				if ($first_default == 1)
 				{
-					$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path'].'">';
+					$file .= '<link rel="stylesheet" id="switch" href="'.$row['path'].'">';
 					$first_default = 0;
 				}
-				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path'].'" title="'.$sdata['name'].'">';
+				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$row['path'].'" title="'.$row['name'].'">';
 			}
 			$file .= "<script type='text/javascript' src='../js/jquery.js'></script>";
 			$file .= "<script type='text/javascript' src='../js/common.js'></script>";
@@ -766,7 +766,9 @@ function generateView($conn, $board, $threadno = 0)
 			<input type="hidden" name="board" value="'.$board.'" />
 			<input type="hidden" name="mode" value="usrform" />Delete Post [<input type="checkbox" name="onlyimgdel" value="on" />File Only] Password <input type="password" id="delPassword" name="pwd" maxlength="8" /> 
 			<input type="submit" name="delete" value="Delete" /><br />
-			Reason <input type="text" name="reason" /><input type="submit" name="report" value="Report" /></div>';
+			Reason <input type="text" name="reason" /><input type="submit" name="report" value="Report" />
+			<div class="stylechanger" id="stylechangerDiv" style="display:none;">Style: <select id="stylechanger"></select></div>
+			</div>';
 		$file .= "</form>";
 		if ($threadno == 0)
 		{

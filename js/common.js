@@ -92,7 +92,13 @@ $(document).ready(function () {
 		hidePostPreview(this);
 	}
 	);
-	
+	$("#stylechangerDiv").css("display", "block");
+	$("link[rel='alternate stylesheet']").each(function () {
+		$("#stylechanger").append("<option value='"+$(this).attr("href")+"'>"+$(this).attr("title")+"</option>");
+	});
+	$("#stylechanger").change(function (e) {
+		$("#switch").attr("href", e.target.options[e.target.selectedIndex].value);
+	});
 	
 	
 });

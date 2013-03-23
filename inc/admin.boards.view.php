@@ -55,7 +55,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	if ($style->num_rows > 0)
 	{
 		$sdata = $style->fetch_assoc();
-		$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path_index'].'">';
+		$file .= '<link rel="stylesheet" id="switch" href="'.$sdata['path_index'].'">';
 	} else {
 		$first_default = 1;
 	}
@@ -64,10 +64,10 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 	{
 		if ($first_default == 1)
 		{
-			$file .= '<link rel="stylesheet" title="switch" href="'.$sdata['path_index'].'">';
+			$file .= '<link rel="stylesheet" id="switch" href="'.$row['path_index'].'">';
 			$first_default = 0;
 		}
-		$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$sdata['path_index'].'" title="'.$sdata['name'].'">';
+		$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$row['path_index'].'" title="'.$row['name'].'">';
 	}
 	$file .= "<script type='text/javascript' src='./js/jquery.js'></script>";
 	$file .= "<script type='text/javascript' src='./js/jquery.cookie.js'></script>";
@@ -481,7 +481,8 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		<input type="hidden" name="board" value="'.$board.'" />
 		<input type="hidden" name="mode" value="usrform" />Delete Post [<input type="checkbox" name="onlyimgdel" value="on" />File Only]
 		<input type="submit" name="delete" value="Delete" /><br />
-	</div>';
+		<div class="stylechanger" id="stylechangerDiv" style="display: none;">Style: <select id="stylechanger"></select></div>
+		</div>';
 	$file .= "</form>";
 	if ($threadno == 0)
 	{
