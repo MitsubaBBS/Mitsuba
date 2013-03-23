@@ -262,8 +262,8 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 				$file .= '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.' '.$poster_id.'</span>';
 			}
 		}
-		$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row['ip'].'" target="_blank">'.$row['ip'].'</a>) <b style="color: red;">[ OP ]</b></span>';
-		$file .= ' [<a href="?/info&ip='.$row['ip'].'">N</a>]';
+		$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row['ip'].'" target="_blank">'.$row['ip'].'</a>)</span>';
+		$file .= ' [<a href="?/info&ip='.$row['ip'].'">N</a>] <b style="color: red;">[ OP ]</b>';
 		$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row['date']).'</span> ';
 	
 		if ($threadno != 0)
