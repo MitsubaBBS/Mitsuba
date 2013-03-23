@@ -13,14 +13,9 @@ Planned features
 ----------------
 
 * logging actions
-* wordfilter
 * post edition
-* alt. stylesheets
-* better design
-* bbcode/spoilers
 * captcha support
 * file hash match
-* plugin support
 * catalog feature (like 4chan)
 * floodlimits/spam detector
 
