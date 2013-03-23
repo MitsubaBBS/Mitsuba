@@ -4271,7 +4271,7 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></t
 			if (!$shouldnt)
 			{
 				$name = $conn->real_escape_string($_POST['name']);
-				$filename = strtolower(preg_replace('/[^a-zA-Z0-9_ %\[\]\.\(\)%&-]/s', '', $_FILES['upfile']['tmp_name']));
+				$filename = strtolower(preg_replace('/[^a-zA-Z0-9_ %\[\]\.\(\)%&-]/s', '', $_FILES['upfile']['name']));
 				if(move_uploaded_file($_FILES['upfile']['tmp_name'], "./styles/".$filename)) {
 					$conn->query("INSERT INTO styles (`name`, `path`, `path_thread`, `path_index`, `default`) VALUES ('".$name."', '../styles/".$filename."', '../../styles/".$filename."', './styles/".$filename."', 0);");
 					echo "<b style='color: green;'>Upload done!</b>";
