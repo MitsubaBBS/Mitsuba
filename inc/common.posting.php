@@ -300,7 +300,7 @@ function reportPost($conn, $board, $id, $reason)
 			$result = $conn->query("SELECT * FROM reports WHERE reported_post=".$id." AND board='".$board."'");
 			if ($result->num_rows == 0)
 			{
-				$reason = $conn->real_escape_string($reason);
+				$reason = $conn->real_escape_string(htmlspecialchars($reason));
 				$conn->query("INSERT INTO reports (reporter_ip, reported_post, reason, created, board) VALUES ('".$_SERVER['REMOTE_ADDR']."', ".$id.", '".$reason."', ".time().", '".$board."')");
 			} else {
 				return 1;

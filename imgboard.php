@@ -224,8 +224,8 @@ loadPlugins($conn);
 			//$_POST['email']; $_POST['msg'];
 			if (!empty($_POST['msg']))
 			{
-				$msg = preprocessComment($conn, $_POST['msg']);
-				$email = $conn->real_escape_string($_POST['email']);
+				$msg = $conn->real_escape_string(htmlspecialchars($_POST['msg']));
+				$email = $conn->real_escape_string(htmlspecialchars($_POST['email']));
 				$ip = $_SERVER['REMOTE_ADDR'];
 				$ban = isBanned($conn, $ip, $_POST['board']);
 				$ban_id = $ban['id'];
