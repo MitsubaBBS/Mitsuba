@@ -83,7 +83,7 @@ function processEntry($conn, $string)
 	{
 		if (substr($line, 0, 1) != "<")
 		{
-			$new .= "<p>".strip_tags($line, "<script><style><link><meta><iframe><frame><canvas>")."</p>";
+			$new .= "<p>".strip_tags($line, "<script><style><link><meta><canvas>")."</p>";
 		}
 	}
 	return $new;
@@ -4400,9 +4400,11 @@ Name: <input type="text" name="name"/><br />
 			{
 				$row = $result->fetch_assoc();
 				$conn->query("UPDATE posts_".$_POST['b']." SET comment='".preprocessComment($conn, $_POST['text'])."' WHERE id=".$_POST['p']);
+				$resto = $row['resto'];
 				if ($row['resto'] == 0)
 				{
 					generateView($conn, $_POST['b'], $row['id']);
+					$resto = $row['id'];
 				} else {
 					generateView($conn, $_POST['b'], $row['resto']);
 				}
@@ -4414,6 +4416,7 @@ Name: <input type="text" name="name"/><br />
 	</div>
 	</div>
 	</div>
+	<meta http-equiv="refresh" content="2;URL='?/board&b=<?php echo $_POST['b']; ?>&t=<?php echo $resto; ?>#p<?php echo $row['id']; ?>'" />
 				<?php
 			}
 		}
