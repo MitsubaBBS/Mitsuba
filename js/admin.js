@@ -37,4 +37,35 @@ $(document).ready(function () {
 		
 		
 	}
+	if (window.location.href.indexOf("/board") != -1)
+	{
+		$("a.edit").click(function (event) {
+			event.preventDefault();
+			var element = this;
+			var dataString = $(this).attr("href").replace("?/edit_post", "");
+			$.ajax({
+				type: 'get',
+				url: "?/api/get_post"+dataString,
+				success: function(data, textStatus, xhr){
+					var json = $.parseJSON(xhr.responseText);
+					$(element).parents("div.post").children("blockquote").html("<textarea rows='5' cols='50' id='edit_"+json.id+"'>"+json.comment+"</textarea><input type='submit' value='Update!' id='s_"+json.id+"' />");
+					
+					$(element).replaceWith("<b>E</b>");
+					$("#s_"+json.id).click(function () {
+						$(this).attr("disabled", "disabled");
+						$.ajax({
+							type: 'post',
+							url: "?/api/update_post"+dataString,
+							data: { comment : $("#edit_"+json.id).val() },
+							success: function(data, textStatus, xhr){
+								window.location.reload();
+								
+							}
+						});
+					});
+					
+				}
+			});
+		});
+	}
 });

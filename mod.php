@@ -108,7 +108,7 @@ if ( ( (!isset($_SESSION['logged'])) || ($_SESSION['logged']==0) ) && (!( ($path
 {
 	die("NOT LOGGED IN!");
 }
-if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))))
+if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))) && (substr($path, 0, 5) != "/api/"))
 {
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -4421,11 +4421,50 @@ Name: <input type="text" name="name"/><br />
 			}
 		}
 		break;
+	case "/api/get_post":
+		reqPermission(2);
+		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['p'])))
+		{
+			$result = $conn->query("SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['p']);
+			if ($result->num_rows == 1)
+			{
+				$row = $result->fetch_assoc();
+				echo json_encode(array('comment' => htmlspecialchars($row['comment']), 'raw' => $row['raw'], 'id' => $row['id']));
+			} else {
+				echo json_encode(array('error' => 404));
+			}
+		} else {
+			echo json_encode(array('error' => 404));
+		}
+		break;
+	case "/api/update_post":
+		reqPermission(2);
+		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['p'])))
+		{
+			$result = $conn->query("SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['p']);
+			if ($result->num_rows == 1)
+			{
+				$row = $result->fetch_assoc();
+				$conn->query("UPDATE posts_".$_GET['b']." SET comment='".preprocessComment($conn, $_POST['comment'])."' WHERE id=".$_GET['p']);
+				$resto = $row['resto'];
+				if ($row['resto'] == 0)
+				{
+					generateView($conn, $_GET['b'], $row['id']);
+					$resto = $row['id'];
+				} else {
+					generateView($conn, $_GET['b'], $row['resto']);
+				}
+				generateView($conn, $_GET['b']);
+			}
+		} else {
+			echo json_encode(array('error' => 404));
+		}
+		break;
 	default:
 		echo runHooks("panel", $path);
 		break;
 }
-if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))))
+if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))) && (substr($path, 0, 5) != "/api/"))
 {
 ?>
 </div>

@@ -303,7 +303,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		}
 		if ($_SESSION['type'] >= 2)
 		{
-			$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'">E</a>]';
+			$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'" class="edit">E</a>]';
 		}
 		
 		if ($_SESSION['type'] >= 1)
@@ -416,7 +416,7 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 			}
 			if ($_SESSION['type'] >= 2)
 			{
-				$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row2['id'].'">E</a>]';
+				$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row2['id'].'" class="edit">E</a>]';
 			}
 			$file .= '</span> ';
 			$file .= '</div>';
