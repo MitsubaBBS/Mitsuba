@@ -48,15 +48,34 @@ $(document).ready(function () {
 				url: "?/api/get_post"+dataString,
 				success: function(data, textStatus, xhr){
 					var json = $.parseJSON(xhr.responseText);
-					$(element).parents("div.post").children("blockquote").html("<textarea rows='5' cols='50' id='edit_"+json.id+"'>"+json.comment+"</textarea><input type='submit' value='Update!' id='s_"+json.id+"' />");
+					var block = $(element).parents("div.post").children("blockquote");
+					var old_html = $(block).html();
+					$(block).css("display", "block");
+					var raw = "";
+					if (json.raw == 1)
+					{
+						raw = "checked='checked'";
+					}
+					$(block).html("<textarea rows='5' cols='50' id='edit_"+json.id+"'>"+json.comment+"</textarea><br /><input type='checkbox' "+raw+" value='1' id='raw_"+json.id+"' />Raw HTML<input type='submit' value='Update!' id='s_"+json.id+"' /><input type='submit' value='Cancel' id='cancel_"+json.id+"' />");
 					
 					$(element).replaceWith("<b>E</b>");
+					$("#cancel_"+json.id).click(function () {
+						event.preventDefault();
+						$(block).html(old_html);
+					});
+					
 					$("#s_"+json.id).click(function () {
+						event.preventDefault();
 						$(this).attr("disabled", "disabled");
+						var raw_n = 0;
+						if ($("#raw_"+json.id).is(':checked'))
+						{
+							raw_n = 1;
+						}
 						$.ajax({
 							type: 'post',
 							url: "?/api/update_post"+dataString,
-							data: { comment : $("#edit_"+json.id).val() },
+							data: { comment : $("#edit_"+json.id).val(), raw : raw_n },
 							success: function(data, textStatus, xhr){
 								window.location.reload();
 								

@@ -4377,7 +4377,7 @@ Name: <input type="text" name="name"/><br />
 			<input type="hidden" name="b" value="<?php echo $_GET['b']; ?>" />
 			<input type="hidden" name="p" value="<?php echo $_GET['p']; ?>" />
 			Text: <textarea cols="50" rows="7" name="text"><?php echo $row['comment']; ?></textarea><br />
-			Options: <input type="checkbox" name="raw" value="1" />Raw HTML<br />
+			Options: <input type="checkbox" name="raw" value="1" <?php if ($row['raw'] == 1) { echo "checked='checked'"; }?> />Raw HTML<br />
 			<input type="submit" value="Update!" />
 			</form>
 </div>
@@ -4399,7 +4399,12 @@ Name: <input type="text" name="name"/><br />
 			if ($result->num_rows == 1)
 			{
 				$row = $result->fetch_assoc();
-				$conn->query("UPDATE posts_".$_POST['b']." SET comment='".preprocessComment($conn, $_POST['text'])."' WHERE id=".$_POST['p']);
+				$raw = 0;
+				if ((isset($_POST['raw'])) && ($_POST['raw'] == 1))
+				{
+					$raw = 1;
+				}
+				$conn->query("UPDATE posts_".$_POST['b']." SET comment='".preprocessComment($conn, $_POST['text'])."', raw=".$raw." WHERE id=".$_POST['p']);
 				$resto = $row['resto'];
 				if ($row['resto'] == 0)
 				{
@@ -4445,7 +4450,12 @@ Name: <input type="text" name="name"/><br />
 			if ($result->num_rows == 1)
 			{
 				$row = $result->fetch_assoc();
-				$conn->query("UPDATE posts_".$_GET['b']." SET comment='".preprocessComment($conn, $_POST['comment'])."' WHERE id=".$_GET['p']);
+				$raw = 0;
+				if ((isset($_POST['raw'])) && ($_POST['raw'] == 1))
+				{
+					$raw = 1;
+				}
+				$conn->query("UPDATE posts_".$_GET['b']." SET comment='".preprocessComment($conn, $_POST['comment'])."', raw=".$raw." WHERE id=".$_GET['p']);
 				$resto = $row['resto'];
 				if ($row['resto'] == 0)
 				{
