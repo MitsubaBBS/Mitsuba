@@ -13,7 +13,6 @@ Planned features
 ----------------
 
 * logging actions
-* post edition
 * captcha support
 * file hash match
 * catalog feature (like 4chan)

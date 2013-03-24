@@ -301,6 +301,11 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 		} else {
 			$file .= ']';
 		}
+		if ($_SESSION['type'] >= 2)
+		{
+			$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'">E</a>]';
+		}
+		
 		if ($_SESSION['type'] >= 1)
 		{
 			$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
@@ -401,11 +406,17 @@ function showView($conn, $board, $mode = 0, $threadno = 0)
 				$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span>';
 			}
 			$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row2['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row2['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'">D</a>';
+			
+			
 			if (!empty($row2['filename']))
 			{
 				$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'&f=1">F</a>] ';
 			} else {
 				$file .= ']';
+			}
+			if ($_SESSION['type'] >= 2)
+			{
+				$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row2['id'].'">E</a>]';
 			}
 			$file .= '</span> ';
 			$file .= '</div>';

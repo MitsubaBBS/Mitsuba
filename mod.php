@@ -2648,6 +2648,7 @@ if ($_SESSION['type'] >= 1)
 		}
 		break;
 	case "/delete_post/yes":
+		reqPermission(1);
 		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['p'])))
 		{
 			$imageonly = 0;
@@ -4358,6 +4359,64 @@ Name: <input type="text" name="name"/><br />
 </div>
 		<?php
 		
+		break;
+	case "/edit_post":
+		reqPermission(2);
+		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['p'])))
+		{
+			$result = $conn->query("SELECT * FROM posts_".$_GET['b']." WHERE id=".$_GET['p']);
+			if ($result->num_rows == 1)
+			{
+			$row = $result->fetch_assoc();
+			?>
+<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>Edit post</h2></div>
+<div class="boxcontent">
+			<form action="?/save_post" method="POST">
+			<input type="hidden" name="b" value="<?php echo $_GET['b']; ?>" />
+			<input type="hidden" name="p" value="<?php echo $_GET['p']; ?>" />
+			Text: <textarea cols="50" rows="7" name="text"><?php echo $row['comment']; ?></textarea><br />
+			Options: <input type="checkbox" name="raw" value="1" />Raw HTML<br />
+			<input type="submit" value="Update!" />
+			</form>
+</div>
+</div>
+</div>
+			<?php
+			} else {
+			
+			}
+		} else {
+		
+		}
+		break;
+	case "/save_post":
+		reqPermission(2);
+		if ((!empty($_POST['b'])) && (!empty($_POST['p'])) && (isBoard($conn, $_POST['b'])) && (is_numeric($_POST['p'])) && (!empty($_POST['text'])))
+		{
+			$result = $conn->query("SELECT * FROM posts_".$_POST['b']." WHERE id=".$_POST['p']);
+			if ($result->num_rows == 1)
+			{
+				$row = $result->fetch_assoc();
+				$conn->query("UPDATE posts_".$_POST['b']." SET comment='".preprocessComment($conn, $_POST['text'])."' WHERE id=".$_POST['p']);
+				if ($row['resto'] == 0)
+				{
+					generateView($conn, $_POST['b'], $row['id']);
+				} else {
+					generateView($conn, $_POST['b'], $row['resto']);
+				}
+				generateView($conn, $_POST['b']);
+				?>
+				<div class="box-outer top-box">
+	<div class="box-inner">
+	<div class="boxbar"><h2>Post updated successfully</h2></div>
+	</div>
+	</div>
+	</div>
+				<?php
+			}
+		}
 		break;
 	default:
 		echo runHooks("panel", $path);
