@@ -19,6 +19,16 @@ CREATE TABLE IF NOT EXISTS `appeals` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `banfilter` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `search` varchar(100) NOT NULL,
+  `reason` varchar(100) NOT NULL,
+  `boards` text NOT NULL,
+  `expires` int(30) NOT NULL,
+  `active` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `bans` (
   `id` int(30) NOT NULL AUTO_INCREMENT,
   `ip` varchar(50) NOT NULL,
