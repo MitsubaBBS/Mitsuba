@@ -18,6 +18,7 @@ include("inc/admin.boards.links.php");
 include("inc/admin.boards.view.php");
 include("inc/admin.posting.php");
 include("inc/common.plugins.php");
+include("lang/en/lang.mod.php");
 
 
 function deleteEntry($conn, $type, $id, $validate_id = 0)
@@ -106,7 +107,7 @@ $path = rtrim($path, "/ ");
 }
 if ( ( (!isset($_SESSION['logged'])) || ($_SESSION['logged']==0) ) && (!( ($path == "/") || ($path == "/login") )) )
 {
-	die("NOT LOGGED IN!");
+	die($lang['mod/not_logged_in']);
 }
 if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))) && (substr($path, 0, 5) != "/api/"))
 {
@@ -155,10 +156,10 @@ switch ($path)
 
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Log in</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/log_in']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/login" method="POST">
-<center>Username: <input type="text" name="username" /> | Password: <input type="password" name="password" /> <input type="submit" value="Log in!" /></center>
+<center><?php echo $lang['mod/username']; ?>: <input type="text" name="username" /> | <?php echo $lang['mod/password']; ?>: <input type="password" name="password" /> <input type="submit" value="<?php echo $lang['log_in']; ?>" /></center>
 </form>
 </div>
 </div>
@@ -184,13 +185,13 @@ switch ($path)
 					$_SESSION['boards']=$data['boards'];
 					header("Location: ./mod.php");
 				} else {
-					die("BAD PASSWORD OR USERNAME");
+					die($lang['mod/bad_password']);
 				}
 			} else {
-				die("BAD PASSWORD OR USERNAME");
+				die($lang['mod/bad_password']);
 			}
 		} else {
-			die("ERROR");
+			die($lang['mod/error']);
 		}
 		break;
 	case "/logout":
@@ -229,71 +230,71 @@ function toggle(button,area) {
 </head>
 <body>
 <ul>
-<li>You are logged in as <b><?php echo $_SESSION['username']; ?></b></li>
-<li>Privileges: <b><?php if ($_SESSION['type']==2) { echo "Administrator"; } elseif ($_SESSION['type']==1) { echo "Moderator"; } elseif ($_SESSION['type']==0) { echo "Janitor"; } else { echo "Faggot"; } ?></b></li>
-<li><a href="?/logout" target="_top">[Log out]</a></li>
+<li><?php echo $lang['mod/logged_in_as']; ?><b><?php echo $_SESSION['username']; ?></b></li>
+<li><?php echo $lang['mod/privileges']; ?><b><?php if ($_SESSION['type']==2) { echo $lang['mod/administrator']; } elseif ($_SESSION['type']==1) { echo $lang['mod/moderator']; } elseif ($_SESSION['type']==0) { echo $lang['mod/janitor']; } else { echo $lang['mod/faggot']; } ?></b></li>
+<li><a href="?/logout" target="_top"><?php echo $lang['mod/logout']; ?></a></li>
 </ul>
-<h2><span class="coll" onclick="toggle(this,'gen');" title="Toggle Category">&minus;</span>General</h2>
+<h2><span class="coll" onclick="toggle(this,'gen');" title="Toggle Category">&minus;</span><?php echo $lang['mod/general']; ?></h2>
 <div id="gen" style="">
 <ul>
-<li><a href="?/announcements" target="main">Announcements</a></li>
-<li><a href="?/news" target="main">News</a></li>
-<li><a href="?/bans" target="main">Banlist</a></li>
-<li><a href="?/reports" target="main">Report queue (<?php echo $reports; ?>)</a></li>
-<li><a href="?/notes" target="main">Notes</a></li>
-<li><a href="?/ipnotes" target="main">IP notes</a></li>
-<li><a href="?/recent/posts" target="main">Recent posts</a></li>
-<li><a href="?/recent/files" target="main">Recently uploaded images</a></li>
+<li><a href="?/announcements" target="main"><?php echo $lang['mod/announcements']; ?></a></li>
+<li><a href="?/news" target="main"><?php echo $lang['mod/news']; ?></a></li>
+<li><a href="?/bans" target="main"><?php echo $lang['mod/banlist']; ?></a></li>
+<li><a href="?/reports" target="main"><?php echo $lang['mod/report_queue']; ?> (<?php echo $reports; ?>)</a></li>
+<li><a href="?/notes" target="main"><?php echo $lang['mod/notes']; ?></a></li>
+<li><a href="?/ipnotes" target="main"><?php echo $lang['mod/ip_notes']; ?></a></li>
+<li><a href="?/recent/posts" target="main"><?php echo $lang['mod/recent_posts']; ?></a></li>
+<li><a href="?/recent/files" target="main"><?php echo $lang['mod/recent_images']; ?></a></li>
 <?php
 echo runHooks("menu", null);
 if ($_SESSION['type'] >= 1)
 {
 ?>
-<li><a href="?/ban_requests" target="main">Ban requests (<?php echo $breqs; ?>)</a></li>
-<li><a href="?/announcements/add" target="main">New announcement</a></li>
-<li><a href="?/news/add" target="main">Add news entry</a></li>
-<li><a href="?/bans/add" target="main">Add new ban</a></li>
-<li><a href="?/locked" target="main">Locked threads</a></li>
-<li><a href="?/sticky" target="main">Sticky threads</a></li>
-<li><a href="?/appeals" target="main">Ban appeals (<?php echo $appeals; ?>)</a></li>
+<li><a href="?/ban_requests" target="main"><?php echo $lang['mod/ban_requests']; ?> (<?php echo $breqs; ?>)</a></li>
+<li><a href="?/announcements/add" target="main"><?php echo $lang['mod/new_announcement']; ?></a></li>
+<li><a href="?/news/add" target="main"><?php echo $lang['mod/add_news']; ?></a></li>
+<li><a href="?/bans/add" target="main"><?php echo $lang['mod/add_ban']; ?></a></li>
+<li><a href="?/locked" target="main"><?php echo $lang['mod/locked']; ?></a></li>
+<li><a href="?/sticky" target="main"><?php echo $lang['mod/sticky']; ?></a></li>
+<li><a href="?/appeals" target="main"><?php echo $lang['mod/appeals']; ?> (<?php echo $appeals; ?>)</a></li>
 <?php
 }
 ?>
 </ul></div>
-<h2><span class="coll" onclick="toggle(this,'acc');" title="Toggle Category">&minus;</span>Your account</h2>
+<h2><span class="coll" onclick="toggle(this,'acc');" title="Toggle Category">&minus;</span><?php echo $lang['mod/account']; ?></h2>
 <div id="acc" style="">
 <ul>
-<li><a href="?/password" target="main">Change password</a></li>
-<li><a href="?/inbox" target="main">Inbox (<?php echo $pms; ?>)</a></li>
-<li><a href="?/inbox/new" target="main">Send message</a></li>
+<li><a href="?/password" target="main"><?php echo $lang['mod/change_password']; ?></a></li>
+<li><a href="?/inbox" target="main"><?php echo $lang['mod/inbox']; ?> (<?php echo $pms; ?>)</a></li>
+<li><a href="?/inbox/new" target="main"><?php echo $lang['mod/send_message']; ?></a></li>
 </ul></div>
 <?php
 if ($_SESSION['type'] >= 2)
 {
 ?>
-<h2><span class="coll" onclick="toggle(this,'adm');" title="Toggle Category">&minus;</span>Administration</h2>
+<h2><span class="coll" onclick="toggle(this,'adm');" title="Toggle Category">&minus;</span><?php echo $lang['mod/administration']; ?></h2>
 <div id="adm" style="">
 <ul>
-<li><a href="?/config" target="main">Configuration</a></li>
-<li><a href="?/boards" target="main">Manage boards</a></li>
-<li><a href="?/links" target="main">Manage board links</a></li>
-<li><a href="?/users" target="main">Manage users</a></li>
-<li><a href="?/whitelist" target="main">Manage whitelist</a></li>
-<li><a href="?/news/manage" target="main">Manage news entries</a></li>
-<li><a href="?/announcements/manage" target="main">Manage announcements</a></li>
-<li><a href="?/bbcodes" target="main">Manage BBCodes</a></li>
-<li><a href="?/embeds" target="main">Manage embeds</a></li>
-<li><a href="?/styles" target="main">Manage styles</a></li>
-<li><a href="?/wordfilter" target="main">Manage wordfilter</a></li>
-<li><a href="?/range" target="main">Manage range bans</a></li>
-<li><a href="?/message" target="main">Global message</a></li>
-<li><a href="?/rebuild" target="main">Rebuild cache</a></li>
-<li><a href="?/log" target="main">Action log</a></li>
+<li><a href="?/config" target="main"><?php echo $lang['mod/configuration']; ?></a></li>
+<li><a href="?/boards" target="main"><?php echo $lang['mod/manage_boards']; ?></a></li>
+<li><a href="?/links" target="main"><?php echo $lang['mod/manage_board_links']; ?></a></li>
+<li><a href="?/users" target="main"><?php echo $lang['mod/manage_users']; ?></a></li>
+<li><a href="?/whitelist" target="main"><?php echo $lang['mod/manage_whitelist']; ?></a></li>
+<li><a href="?/news/manage" target="main"><?php echo $lang['mod/manage_news_entries']; ?></a></li>
+<li><a href="?/announcements/manage" target="main"><?php echo $lang['mod/manage_announcements']; ?></a></li>
+<li><a href="?/bbcodes" target="main"><?php echo $lang['mod/manage_bbcodes']; ?></a></li>
+<li><a href="?/embeds" target="main"><?php echo $lang['mod/manage_embeds']; ?></a></li>
+<li><a href="?/styles" target="main"><?php echo $lang['mod/manage_styles']; ?></a></li>
+<li><a href="?/wordfilter" target="main"><?php echo $lang['mod/manage_wordfilter']; ?></a></li>
+<li><a href="?/range" target="main"><?php echo $lang['mod/manage_range_bans']; ?></a></li>
+<li><a href="?/message" target="main"><?php echo $lang['mod/global_message']; ?></a></li>
+<li><a href="?/rebuild" target="main"><?php echo $lang['mod/rebuild_cache']; ?></a></li>
+<li><a href="?/log" target="main"><?php echo $lang['mod/action_log']; ?></a></li>
 </ul></div>
 <?php
 }
 ?>
-<h2><span class="coll" onclick="toggle(this,'brd');" title="Toggle Category">&minus;</span>Boards</h2>
+<h2><span class="coll" onclick="toggle(this,'brd');" title="Toggle Category">&minus;</span><?php echo $lang['mod/boards']; ?></h2>
 <div id="brd" style="">
 <ul>
 <?php
@@ -322,7 +323,7 @@ echo '<li><a href="?/board&b='.$row['short'].'" target="main">/'.$row['short'].'
 
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Announcements</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/announcements']; ?></h2></div>
 <div class="boxcontent">
 <?php
 $result = $conn->query("SELECT * FROM announcements ORDER BY date DESC;");
@@ -344,15 +345,15 @@ echo '</div>';
 	?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>New user</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/new_user']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/users/add" method="POST">
-Username: <input type="text" name="username" /><br />
-Password: <input type="password" name="password"/><br />
-Type: <select name="type"><option value="0">Janitor</option><option value="1">Moderator</option><option value="2">Administrator</option></select>
+<?php echo $lang['mod/username']; ?>: <input type="text" name="username" /><br />
+<?php echo $lang['mod/password']; ?>: <input type="password" name="password"/><br />
+<?php echo $lang['mod/type']; ?>: <select name="type"><option value="0"><?php echo $lang['mod/janitor']; ?></option><option value="1"><?php echo $lang['mod/moderator']; ?></option><option value="2"><?php echo $lang['mod/administrator']; ?></option></select>
 
 <br /><br />
-Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
+<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
 <select name="boards[]" id="boardSelect" multiple>
 <?php
 $result = $conn->query("SELECT * FROM boards;");
@@ -362,23 +363,23 @@ echo "<option onClick='document.getElementById(\"all\").checked=false;' value='"
 }
 ?>
 </select><br />
-<input type="submit" value="Add user!" />
+<input type="submit" value="<?php echo $lang['mod/add_user']; ?>" />
 </form>
 </div>
 </div>
 </div><br />
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>All users</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/all_users']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
-<td style="width: 30%;">Username</td>
-<td style="width: 20%;">Type</td>
-<td style="width: 30%;">Boards</td>
-<td style="width: 10%;">Edit</td>
-<td style="width: 10%;">Delete</td>
+<td style="width: 30%;"><?php echo $lang['mod/username']; ?></td>
+<td style="width: 20%;"><?php echo $lang['mod/type']; ?></td>
+<td style="width: 30%;"><?php echo $lang['mod/boards']; ?></td>
+<td style="width: 10%;"><?php echo $lang['mod/edit']; ?></td>
+<td style="width: 10%;"><?php echo $lang['mod/delete']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -393,24 +394,24 @@ echo "<td>";
 switch ($row['type'])
 {
 	case 0:
-		echo "Janitor";
+		echo $lang['mod/janitor'];
 		break;
 	case 1:
-		echo "Moderator";
+		echo $lang['mod/moderator'];
 		break;
 	case 2:
-		echo "Administrator";
+		echo $lang['mod/administrator'];
 		break;
 	default:
-		echo "Faggot";
+		echo $lang['mod/faggot'];
 		break;
 }
 echo "</td>";
 echo "<td>".$row['boards']."</td>";
-echo "<td><a href='?/users/edit&id=".$row['id']."'>Edit</a></td>";
+echo "<td><a href='?/users/edit&id=".$row['id']."'>".$lang['mod/edit']."</a></td>";
 if ($usern != 1)
 {
-echo "<td><a href='?/users/delete&id=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/users/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 } else {
 echo "<td></td>";
 }
