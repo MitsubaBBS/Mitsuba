@@ -2535,12 +2535,12 @@ if ($_SESSION['type'] >= 1)
 <table>
 <thead>
 <tr>
-<td>Post</td>
-<td>File</td>
-<td>Comment</td>
-<td>Reason</td>
-<td>Reporter IP</td>
-<td>Action</td>
+<td><?php echo $lang['mod/post']; ?></td>
+<td><?php echo $lang['mod/file']; ?></td>
+<td><?php echo $lang['mod/comment']; ?></td>
+<td><?php echo $lang['mod/reason']; ?></td>
+<td><?php echo $lang['mod/reporter_ip']; ?></td>
+<td><?php echo $lang['mod/actions']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -2628,7 +2628,7 @@ if ($_SESSION['type'] >= 1)
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Do you want to clear all reports?</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/want_clear_reports']; ?></h2></div>
 <div class="boxcontent"><a href="?/reports"><?php echo $lang['mod/no_big']; ?></a> <a href="?/reports/clear_all_yes"><?php echo $lang['mod/yes_big']; ?></a></div>
 </div>
 </div>
@@ -2646,7 +2646,7 @@ if ($_SESSION['type'] >= 1)
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Do you want to delete this post?</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/want_delete_post']; ?></h2></div>
 <div class="boxcontent"><a href="javascript:history.back(-1);"><?php echo $lang['mod/no_big']; ?></a> <a href="?/delete_post/yes&b=<?php echo $_GET['b']; ?>&p=<?php echo $_GET['p'].$f; ?>"><?php echo $lang['mod/yes_big']; ?></a></div>
 </div>
 </div>
@@ -2670,7 +2670,7 @@ if ($_SESSION['type'] >= 1)
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>File deleted</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/file_deleted']; ?></h2></div>
 <div class="boxcontent"><a href="?/board&b=<?php echo $_GET['b']; ?>"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -2680,7 +2680,7 @@ if ($_SESSION['type'] >= 1)
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Post deleted</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/post_deleted_short']; ?></h2></div>
 <div class="boxcontent"><a href="?/board&b=<?php echo $_GET['b']; ?>"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -2696,27 +2696,27 @@ if ($_SESSION['type'] >= 1)
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Information about <?php echo $_GET['ip']; ?></h2></div>
+<div class="boxbar"><h2><?php printf($lang['mod/ip_info'], $_GET['ip']); ?></h2></div>
 <div class="boxcontent">
 <?php
 if ($_SESSION['type']>=1)
 {
 ?>
-<a href="?/search/ip&ip=<?php echo $_GET['ip']; ?>">Search for posts by this IP</a><br />
+<a href="?/search/ip&ip=<?php echo $_GET['ip']; ?>"><?php echo $lang['mod/search_ip']; ?></a><br />
 <?php
 }
 ?>
-<b>Recent 15 bans for this IP:</b>
+<b><?php printf($lang['mod/recent_bans_ip'], 15); ?></b>
 <table>
 <thead>
 <tr>
-<td>IP</td>
-<td>Reason</td>
-<td>Staff note</td>
-<td>Created</td>
-<td>Expires</td>
-<td>Boards</td>
-<td>Delete</td>
+<td><?php echo $lang['mod/ip']; ?></td>
+<td><?php echo $lang['mod/reason']; ?></td>
+<td><?php echo $lang['mod/staff_note']; ?></td>
+<td><?php echo $lang['mod/created']; ?></td>
+<td><?php echo $lang['mod/expires']; ?></td>
+<td><?php echo $lang['mod/boards']; ?></td>
+<td><?php echo $lang['mod/delete']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -2738,7 +2738,7 @@ echo "<td><b>never</b></td>";
 echo "<td>".$row['boards']."</td>";
 if ($_SESSION['type']>=1)
 {
-echo "<td><a href='?/bans&del=1&b=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 } else {
 echo "<td></td>";
 }
@@ -2748,13 +2748,13 @@ echo "</tr>";
 </tbody>
 </table>
 <br />
-<b>Notes for this IP:</b>
+<b><?php echo $lang['mod/notes_ip']; ?></b>
 <br />
 <table>
 <thead>
-<td>Created</td>
-<td>Note</td>
-<td>Delete</td>
+<td><?php echo $lang['mod/created']; ?></td>
+<td><?php echo $lang['mod/note']; ?></td>
+<td><?php echo $lang['mod/delete']; ?></td>
 </thead>
 <tbody>
 <?php
@@ -2764,7 +2764,7 @@ while ($row = $result->fetch_assoc())
 echo "<tr>";
 echo "<td>".date("d/m/Y(D)H:i:s", $row['created'])."</td>";
 echo "<td>".$row['text']."</td>";
-echo "<td><a href='?/ipnotes/delete&id=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/ipnotes/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 echo "</td>";
 }
 ?>
@@ -2775,11 +2775,11 @@ echo "</td>";
 </div><br />
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Add note</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/add_note']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/ipnotes/add&ip=<?php echo $_GET['ip']; ?>" method="POST">
 <textarea name="note" cols=70 rows=12></textarea><br />
-<input type="submit" value="Add note!" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -2791,13 +2791,13 @@ echo "</td>";
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Latest IP notes</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/recent_ip_notes']; ?></h2></div>
 <div class="boxcontent">
 	<table>
 <thead>
-<td>Created</td>
-<td>Note</td>
-<td>Delete</td>
+<td><?php echo $lang['mod/created']; ?></td>
+<td><?php echo $lang['mod/note']; ?></td>
+<td><?php echo $lang['mod/delete']; ?></td>
 </thead>
 <tbody>
 <?php
@@ -2807,24 +2807,24 @@ while ($row = $result->fetch_assoc())
 echo "<tr>";
 echo "<td>".date("d/m/Y(D)H:i:s", $row['created'])."</td>";
 echo "<td>".$row['text']."</td>";
-echo "<td><a href='?/ipnotes/delete&id=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/ipnotes/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 echo "</tr>";
 }
 ?>
 </tbody>
 </table>
-Showing latest 15 notes. <a href="?/ipnotes/all">Show all</a>
+<?php printf($lang['mod/showing_notes'], 15); ?> <a href="?/ipnotes/all"><?php echo $lang['mod/show_all']; ?></a>
 </div>
 </div>
 </div><br />
 	<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Add IP note</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/add_ip_note']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/ipnotes/add" method="POST">
-IP: <input type="text" name="ip" /><br />
+<?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" /><br />
 <textarea name="note" cols=70 rows=12></textarea><br />
-<input type="submit" value="Add note!" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -2835,13 +2835,13 @@ IP: <input type="text" name="ip" /><br />
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>All IP notes</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/all_ip_notes']; ?></h2></div>
 <div class="boxcontent">
 	<table>
 <thead>
-<td>Created</td>
-<td>Note</td>
-<td>Delete</td>
+<td><?php echo $lang['mod/created']; ?></td>
+<td><?php echo $lang['mod/note']; ?></td>
+<td><?php echo $lang['mod/delete']; ?></td>
 </thead>
 <tbody>
 <?php
@@ -2853,7 +2853,7 @@ echo "<td>".date("d/m/Y(D)H:i:s", $row['created'])."</td>";
 echo "<td>".$row['text']."</td>";
 if ($_SESSION['type']>=1)
 {
-echo "<td><a href='?/ipnotes/delete&id=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/ipnotes/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 } else {
 echo "<td></td>";
 }
@@ -2883,7 +2883,7 @@ echo "</tr>";
 		?>
 			<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>No IP provided or IP wrong</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/no_ip']; ?></h2></div>
 <div class="boxcontent"><a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a></div>
 </div></div>
 
@@ -2896,7 +2896,7 @@ echo "</tr>";
 				?>
 				<div class="box-outer top-box">
 	<div class="box-inner">
-	<div class="boxbar"><h2>IP note added</h2></div>
+	<div class="boxbar"><h2><?php echo $lang['mod/ip_note_added']; ?></h2></div>
 	<div class="boxcontent"><a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a></div>
 	</div></div>
 
@@ -2908,7 +2908,7 @@ echo "</tr>";
 		?>
 			<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Please, fill all fields</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/fill_all_fields']; ?></h2></div>
 <div class="boxcontent"><a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a></div>
 </div></div>
 
@@ -2941,7 +2941,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Thread unstickied</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/unstickied']; ?></h2></div>
 <meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
@@ -2953,7 +2953,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Thread stickied</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/stickied']; ?></h2></div>
 <meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
@@ -2964,7 +2964,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Thread not found</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/thread_not_found']; ?></h2></div>
 </div>
 </div>
 		<?php
@@ -2989,7 +2989,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Thread unlocked</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/unlocked']; ?></h2></div>
 <meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
@@ -3001,7 +3001,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Thread locked</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/locked']; ?></h2></div>
 <meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
@@ -3012,7 +3012,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Thread not found</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/thread_not_found']; ?></h2></div>
 </div>
 </div>
 		<?php
@@ -3037,7 +3037,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Antibump off</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/ab_off']; ?></h2></div>
 <meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
@@ -3049,7 +3049,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Antibump on</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/ab_on']; ?></h2></div>
 <meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
@@ -3060,7 +3060,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Thread not found</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/thread_not_found']; ?></h2></div>
 </div>
 </div>
 		<?php
@@ -3073,14 +3073,14 @@ echo "</tr>";
 		?>
 			<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Locked threads</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/locked']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
-<td>ID</td>
-<td>Comment</td>
-<td>Unlock</td>
+<td><?php echo $lang['mod/id']; ?></td>
+<td><?php echo $lang['mod/comment']; ?></td>
+<td><?php echo $lang['mod/unlock']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -3110,7 +3110,7 @@ echo "</tr>";
 			} else {
 				echo "<td>".$thread['comment']."</td>";
 			}
-			echo "<td><a href='?/locked/toggle&b=".$row['short']."&t=".$thread['id']."'>Unlock</a></td>";
+			echo "<td><a href='?/locked/toggle&b=".$row['short']."&t=".$thread['id']."'>".$lang['mod/unlock']."</a></td>";
 			echo "</tr>";
 		}
 	}
@@ -3126,14 +3126,14 @@ echo "</tr>";
 		?>
 			<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Sticky threads</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/sticky']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
-<td>ID</td>
-<td>Comment</td>
-<td>Unstick</td>
+<td><?php echo $lang['mod/id']; ?></td>
+<td><?php echo $lang['mod/comment']; ?></td>
+<td><?php echo $lang['mod/unstick']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -3163,7 +3163,7 @@ echo "</tr>";
 			} else {
 				echo "<td>".$thread['comment']."</td>";
 			}
-			echo "<td><a href='?/sticky/toggle&b=".$row['short']."&t=".$thread['id']."'>Unstick</a></td>";
+			echo "<td><a href='?/sticky/toggle&b=".$row['short']."&t=".$thread['id']."'>".$lang['mod/unstick']."</a></td>";
 			echo "</tr>";
 		}
 	}
