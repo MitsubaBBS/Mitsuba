@@ -1210,7 +1210,7 @@ echo '</tr>';
 <?php echo $lang['mod/pwd_current']; ?>: <input type="password" name="old"><br />
 <?php echo $lang['mod/pwd_new']; ?>: <input type="password" name="new"><br />
 <?php echo $lang['mod/pwd_confirm']; ?>: <input type="password" name="new2"><br />
-<input type="submit" value="Change password"><br />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>"><br />
 </form>
 </div>
 </div>
@@ -4114,7 +4114,7 @@ echo "</tr>";
 <input type="hidden" name="mode" value="add">
 Search: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"/><br />
 Replace: <input type="text" name="replace" value="<?php echo htmlspecialchars($replace); ?>"/><br />
-<input type="submit" value="Add" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -4139,7 +4139,7 @@ Replace: <input type="text" name="replace" value="<?php echo htmlspecialchars($r
 <input type="hidden" name="id" value="<?php echo $_GET['n']; ?>">
 Search: <input type="text" name="search" value="<?php echo htmlspecialchars($info['search']); ?>"/><br />
 Replace: <input type="text" name="replace" value="<?php echo htmlspecialchars($info['replace']); ?>"/><br />
-<input type="submit" value="Update" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -4155,26 +4155,27 @@ Replace: <input type="text" name="replace" value="<?php echo htmlspecialchars($i
 		$regex = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
-			if (empty($_POST['name'])) { echo "<b style='color: red;'>Please fill name field!</b>"; } else { $name = $_POST['name']; }
-			if (empty($_POST['code'])) { echo "<b style='color: red;'>Please fill code field!</b>"; } else { $code = $_POST['code']; }
-			if (empty($_POST['regex'])) { echo "<b style='color: red;'>Please fill code field!</b>"; } else { $regex = $_POST['regex']; }
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; }
+			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; }
+			if (empty($_POST['regex'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $regex = $_POST['regex']; }
 			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
-			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
+			{ echo "<b style='color: red;'>".$lang['mod/name_error']."</b>"; }
 			else {
 				$name = $conn->real_escape_string($_POST['name']);
 				$regex = $conn->real_escape_string($_POST['regex']);
 				$code = $conn->real_escape_string($_POST['code']);
 				$conn->query("INSERT INTO embeds (name, regex, code) VALUES ('".$name."', '".$regex."', '".$code."');");
 				$name = "";
+				$regex = "";
 				$code = "";
 			}
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['name2']))) {
 			
-			if (empty($_POST['name'])) { echo "<b style='color: red;'>Please fill name field!</b>"; } else { $name = $_POST['name']; }
-			if (empty($_POST['regex'])) { echo "<b style='color: red;'>Please regex name field!</b>"; } else { $regex = $_POST['regex']; }
-			if (empty($_POST['code'])) { echo "<b style='color: red;'>Please fill code field!</b>"; } else { $code = $_POST['code']; }
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; }
+			if (empty($_POST['regex'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $regex = $_POST['regex']; }
+			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; }
 			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
-			{ echo "<b style='color: red;'>Name must consist of alphanumeric characters and it may not contain spaces!</b>"; }
+			{ echo "<b style='color: red;'>".$lang['mod/name_error']."</b>"; }
 			else {
 				$name = $conn->real_escape_string($_POST['name']);
 				$name2 = $conn->real_escape_string($_POST['name2']);
@@ -4184,6 +4185,7 @@ Replace: <input type="text" name="replace" value="<?php echo htmlspecialchars($i
 			}
 			$name = "";
 			$code = "";
+			$regex = "";
 		}
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
@@ -4195,14 +4197,14 @@ Replace: <input type="text" name="replace" value="<?php echo htmlspecialchars($i
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Embeds</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/manage_embeds']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
-<td>BBCode</td>
-<td>Regex</td>
-<td>Actions</td>
+<td><?php echo $lang['mod/name']; ?></td>
+<td><?php echo $lang['mod/regex']; ?></td>
+<td><?php echo $lang['mod/actions']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -4213,7 +4215,7 @@ while ($row = $result->fetch_assoc())
 echo "<tr>";
 echo "<td>".$row['name']."</td>";
 echo "<td>".htmlspecialchars($row['regex'])."</td>";
-echo "<td><a href='?/embeds&d=1&n=".$row['name']."'>Delete</a> <a href='?/embeds/edit&n=".$row['name']."'>Edit</a></td>";
+echo "<td><a href='?/embeds&d=1&n=".$row['name']."'>".$lang['mod/delete']."</a> <a href='?/embeds/edit&n=".$row['name']."'>".$lang['mod/edit']."</a></td>";
 echo "</tr>";
 }
 ?>
@@ -4225,14 +4227,14 @@ echo "</tr>";
 <br /><br />
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Add embed</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/add_embed']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/embeds" method="POST">
 <input type="hidden" name="mode" value="add">
-Name: <input type="text" name="name" value="<?php echo $name; ?>"/><br />
-Regex: <input type="text" name="regex" value="<?php echo $regex; ?>"/><br />
-HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><br />
-<input type="submit" value="Add" />
+<?php echo $lang['mod/name']; ?>: <input type="text" name="name" value="<?php echo $name; ?>"/><br />
+<?php echo $lang['mod/regex']; ?>: <input type="text" name="regex" value="<?php echo $regex; ?>"/><br />
+<?php echo $lang['mod/html_code']; ?>: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><br />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -4250,15 +4252,15 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Edit embed</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/edit_embed']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/embeds" method="POST">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="name2" value="<?php echo $conn->real_escape_string($_GET['n']); ?>">
-Name: <input type="text" name="name" value="<?php echo $binfo['name']; ?>"/><br />
-Regex: <input type="text" name="regex" value="<?php echo $binfo['regex']; ?>"/><br />
-HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></textarea><br />
-<input type="submit" value="Update" />
+<?php echo $lang['mod/name']; ?>: <input type="text" name="name" value="<?php echo $binfo['name']; ?>"/><br />
+<?php echo $lang['mod/regex']; ?>: <input type="text" name="regex" value="<?php echo $binfo['regex']; ?>"/><br />
+<?php echo $lang['mod/html_code']; ?>: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></textarea><br />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -4274,15 +4276,15 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></t
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "upload"))
 		{
 			$shouldnt = 0;
-			if (empty($_POST['name'])) { echo "<b style='color: red;'>Please fill name field!</b>"; $shouldnt = 1; }
-			if (empty($_FILES['upfile']['tmp_name'])) { echo "<b style='color: red;'>No file! ;_;</b>"; $shouldnt = 1; }
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; $shouldnt = 1; }
+			if (empty($_FILES['upfile']['tmp_name'])) { echo "<b style='color: red;'>".$lang['mod/no_file']."</b>"; $shouldnt = 1; }
 			if (!$shouldnt)
 			{
 				$name = $conn->real_escape_string($_POST['name']);
 				$filename = strtolower(preg_replace('/[^a-zA-Z0-9_ %\[\]\.\(\)%&-]/s', '', $_FILES['upfile']['name']));
 				if(move_uploaded_file($_FILES['upfile']['tmp_name'], "./styles/".$filename)) {
 					$conn->query("INSERT INTO styles (`name`, `path`, `path_thread`, `path_index`, `default`) VALUES ('".$name."', '../styles/".$filename."', '../../styles/".$filename."', './styles/".$filename."', 0);");
-					echo "<b style='color: green;'>Upload done!</b>";
+					echo "<b style='color: green;'>".$lang['mod/style_uploaded']."</b>";
 				}
 			}
 		}
@@ -4290,7 +4292,7 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></t
 		if ((!empty($_GET['def'])) && ($_GET['def'] == 1) && (!empty($_GET['n'])))
 		{
 			$n = $conn->real_escape_string($_GET['n']);
-			if (!is_numeric($n)) { echo "<b style='color: red;'>Don't try to fool me!</b>"; }
+			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$conn->query("UPDATE styles SET `default`=0");
 			$conn->query("UPDATE styles SET `default`=1 WHERE id=".$n);
 		}
@@ -4298,14 +4300,14 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></t
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
 		{
 			$n = $conn->real_escape_string($_GET['n']);
-			if (!is_numeric($n)) { echo "<b style='color: red;'>Don't try to fool me!</b>"; }
+			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$conn->query("DELETE FROM styles WHERE id=".$n);
 		}
 		
 		if ((!empty($_GET['f'])) && ($_GET['f'] == 1) && (!empty($_GET['n'])))
 		{
 			$n = $conn->real_escape_string($_GET['n']);
-			if (!is_numeric($n)) { echo "<b style='color: red;'>Don't try to fool me!</b>"; }
+			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$result = $conn->query("SELECT * FROM styles WHERE id=".$n);
 			$row = $result->fetch_assoc();
 			unlink($row['path_index']);
@@ -4315,14 +4317,14 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></t
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Stylesheets</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/manage_styles']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
-<td>Name</td>
-<td>File</td>
-<td>Actions</td>
+<td><?php echo $lang['mod/name']; ?></td>
+<td><?php echo $lang['mod/file']; ?></td>
+<td><?php echo $lang['mod/actions']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -4332,13 +4334,13 @@ while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td>".htmlspecialchars($row['name']);
-if ($row['default'] == 1) { echo " ( <b>default</b> )"; }
+if ($row['default'] == 1) { echo " ( <b>".$lang['mod/default']."</b> )"; }
 echo "</td>";
 echo "<td><a href='".htmlspecialchars($row['path_index'])."' target='_blank'>Show file</a></td>";
-echo "<td><a href='?/styles&f=1&n=".$row['id']."'>Delete</a>(<a href='?/styles&d=1&n=".$row['id']."'>No file</a>)";
+echo "<td><a href='?/styles&f=1&n=".$row['id']."'>".$lang['mod/delete']."</a>(<a href='?/styles&d=1&n=".$row['id']."'>".$lang['mod/delete_no_file']."</a>)";
 if ($row['default'] == 0)
 {
-	echo " <a href='?/styles&def=1&n=".$row['id']."'>Make default</a>";
+	echo " <a href='?/styles&def=1&n=".$row['id']."'>".$lang['mod/make_default']."</a>";
 }
 echo "</td>";
 echo "</tr>";
@@ -4352,14 +4354,14 @@ echo "</tr>";
 <br /><br />
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Upload stylesheet</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/upload_style']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/styles" method="POST" enctype="multipart/form-data">
 <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
 <input type="hidden" name="mode" value="upload">
-File: <input id="postFile" name="upfile" type="file"><br />
-Name: <input type="text" name="name"/><br />
-<input type="submit" value="Upload" />
+<?php echo $lang['mod/file']; ?>: <input id="postFile" name="upfile" type="file"><br />
+<?php echo $lang['mod/name']; ?>: <input type="text" name="name"/><br />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -4378,14 +4380,14 @@ Name: <input type="text" name="name"/><br />
 			?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Edit post</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/edit_post']; ?></h2></div>
 <div class="boxcontent">
 			<form action="?/save_post" method="POST">
 			<input type="hidden" name="b" value="<?php echo $_GET['b']; ?>" />
 			<input type="hidden" name="p" value="<?php echo $_GET['p']; ?>" />
-			Text: <textarea cols="50" rows="7" name="text"><?php echo $row['comment']; ?></textarea><br />
-			Options: <input type="checkbox" name="raw" value="1" <?php if ($row['raw'] == 1) { echo "checked='checked'"; }?> />Raw HTML<br />
-			<input type="submit" value="Update!" />
+			<?php echo $lang['mod/text']; ?>: <textarea cols="50" rows="7" name="text"><?php echo $row['comment']; ?></textarea><br />
+			<?php echo $lang['mod/options']; ?>: <input type="checkbox" name="raw" value="1" <?php if ($row['raw'] == 1) { echo "checked='checked'"; }?> /><?php echo $lang['mod/raw_html']; ?><br />
+			<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 			</form>
 </div>
 </div>
@@ -4424,7 +4426,7 @@ Name: <input type="text" name="name"/><br />
 				?>
 				<div class="box-outer top-box">
 	<div class="box-inner">
-	<div class="boxbar"><h2>Post updated successfully</h2></div>
+	<div class="boxbar"><h2><?php echo $lang['mod/post_updated']; ?></h2></div>
 	</div>
 	</div>
 	</div>

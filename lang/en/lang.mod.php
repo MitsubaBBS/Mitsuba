@@ -266,11 +266,19 @@ $lang['mod/bbcode'] = "BBCode";
 $lang['mod/html_code'] = "HTML Code";
 $lang['mod/add_bbcode'] = "Add BBCode";
 $lang['mod/edit_bbcode'] = "Edit BBCode";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
+$lang['mod/regex'] = "Regex";
+$lang['mod/add_embed'] = "Add embed";
+$lang['mod/edit_embed'] = "Edit embed";
+$lang['mod/no_file'] = "No file selected ;_;";
+$lang['mod/style_uploaded'] = "Stylesheet uploaded.";
+$lang['mod/fool'] = "Don't try to fool me!";
+$lang['mod/default'] = "default";
+$lang['mod/delete_no_file'] = "No file"; //in context - without file/excluding file
+$lang['mod/make_default'] = "Make default";
+$lang['mod/upload_style'] = "Upload stylesheet";
+$lang['mod/edit_post'] = "Edit post";
+$lang['mod/options'] = "Options";
+$lang['mod/raw_html'] = "Raw HTML";
 
 //$lang['mod/'] = "";
 ?>
