@@ -122,22 +122,30 @@ $lang['mod/board_updated'] = "Board updated successfully!";
 $lang['mod/some_error'] = "Some sort of error happened ;_;";
 $lang['mod/board_moved'] = "Board moved!";
 $lang['mod/board_exists'] = "The board /%s/ does exist!";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
-$lang['mod/'] = "";
+$lang['mod/edit_board'] = "Edit board /%s/";
+$lang['mod/move_board'] = "Move board /%s/";
+$lang['mod/board_new_dir'] = "New board directory (without /'s)";
+
+
+$lang['mod/pwd_no_match'] = "Password does not match the password in database!";
+$lang['mod/pwd_updated'] = "Password updated";
+$lang['mod/pwd_wrong'] = "Passwords don't match!";
+$lang['mod/pwd_change'] = "Change your password";
+$lang['mod/pwd_current'] = "Current password";
+$lang['mod/pwd_new'] = "New password";
+$lang['mod/pwd_confirm'] = "Confirm new password";
+
+
+$lang['mod/board_links'] = "Board links";
+$lang['mod/board_styles'] = "Board styles";
+$lang['mod/all_static'] = "All static pages";
+$lang['mod/rebuild_static'] = "Rebuild static pages";
+$lang['mod/frontpage'] = "Frontpage";
+$lang['mod/news_page'] = "News page";
+$lang['mod/rebuilding_done'] = "Rebuilding done";
+$lang['mod/rebuild_notice'] = "You'll have to <a href=\"?/rebuild\">rebuild board cache</a> after modifying settings here.";
+$lang['mod/add_link_category'] = "Add link category";
+$lang['mod/category'] = "Category";
 $lang['mod/'] = "";
 $lang['mod/'] = "";
 $lang['mod/'] = "";

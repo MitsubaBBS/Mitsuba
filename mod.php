@@ -1123,28 +1123,28 @@ echo '</tr>';
 			?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Edit board /<?php echo $_GET['board']; ?>/</h2></div>
+<div class="boxbar"><h2><?php printf($lang['mod/edit_board'], $_GET['board']); ?></h2></div>
 <div class="boxcontent">
 <form action="?/boards/update&board=<?php echo $_GET['board']; ?>" method="POST">
-Board directory (without /'s): <input disabled type="text" name="short" maxlength=10 value="<?php echo $data['short']; ?>" /><br />
-Board name: <input type="text" name="name" maxlength=40 value="<?php echo $data['name']; ?>" /><br />
-Board short description (optional): <input type="text" name="des" maxlength=100 value="<?php echo $data['des']; ?>" /><br />
-Board message (optional): <br /><textarea cols=70 rows=7 name="msg"><?php echo $data['message']; ?></textarea><br />
-Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlength=9 value="<?php echo $data['bumplimit']; ?>" /><br />
-Board special options: <input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> />Allow image spoilers <input type="checkbox" name="noname" value="1" <?php if ($data['noname'] == 1) { echo "checked "; } ?> />No name field (forced anonymity) <input type="checkbox" name="ids" value="1" <?php if ($data['ids'] == 1) { echo "checked "; } ?> />Poster IDs<br />
-<input type="checkbox" name="embeds" value="1" <?php if ($data['embeds'] == 1) { echo "checked "; } ?> />Allow embeds <br />
-<input type="submit" value="Update board info!" />
+<?php echo $lang['mod/board_directory']; ?>: <input disabled type="text" name="short" maxlength=10 value="<?php echo $data['short']; ?>" /><br />
+<?php echo $lang['mod/board_name']; ?>: <input type="text" name="name" maxlength=40 value="<?php echo $data['name']; ?>" /><br />
+<?php echo $lang['mod/board_short']; ?>: <input type="text" name="des" maxlength=100 value="<?php echo $data['des']; ?>" /><br />
+<?php echo $lang['mod/board_msg']; ?>: <br /><textarea cols=70 rows=7 name="msg"><?php echo $data['message']; ?></textarea><br />
+<?php echo $lang['mod/board_limit']; ?>: <input type="text" name="limit" maxlength=9 value="<?php echo $data['bumplimit']; ?>" /><br />
+<?php echo $lang['mod/board_options']; ?>: <input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_spoilers']; ?> <input type="checkbox" name="noname" value="1" <?php if ($data['noname'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_no_name']; ?> <input type="checkbox" name="ids" value="1" <?php if ($data['ids'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_ids']; ?><br />
+<input type="checkbox" name="embeds" value="1" <?php if ($data['embeds'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_embeds']; ?> <br />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
 </div><br />
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Move board /<?php echo $_GET['board']; ?>/</h2></div>
+<div class="boxbar"><h2><?php printf($lang['mod/move_board'], $_GET['board']); ?></h2></div>
 <div class="boxcontent">
 <form action="?/boards/move&board=<?php echo $_GET['board']; ?>" method="POST">
-New board directory (without /'s): <input type="text" name="new" maxlength=10 /><br />
-<input type="submit" value="Move board!" />
+<?php echo $lang['mod/new_dir']; ?>: <input type="text" name="new" maxlength=10 /><br />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -1154,7 +1154,7 @@ New board directory (without /'s): <input type="text" name="new" maxlength=10 />
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>This board does not exist!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
 <div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -1174,7 +1174,7 @@ New board directory (without /'s): <input type="text" name="new" maxlength=10 />
 							?>
 			<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Password does not match with the password in database!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/pwd_no_match']; ?></h2></div>
 <div class="boxcontent"><a href="?/password"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -1184,7 +1184,7 @@ New board directory (without /'s): <input type="text" name="new" maxlength=10 />
 				?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Password updated!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/pwd_updated']; ?></h2></div>
 <div class="boxcontent"><a href="?/password"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -1194,7 +1194,7 @@ New board directory (without /'s): <input type="text" name="new" maxlength=10 />
 				?>
 			<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Passwords don't match!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/pwd_wrong']; ?></h2></div>
 <div class="boxcontent"><a href="?/password"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -1204,12 +1204,12 @@ New board directory (without /'s): <input type="text" name="new" maxlength=10 />
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Change your password</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/pwd_change']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/password" method="POST">
-Current password: <input type="password" name="old"><br />
-New password: <input type="password" name="new"><br />
-Confirm new password: <input type="password" name="new2"><br />
+<?php echo $lang['mod/pwd_current']; ?>: <input type="password" name="old"><br />
+<?php echo $lang['mod/pwd_new']; ?>: <input type="password" name="new"><br />
+<?php echo $lang['mod/pwd_confirm']; ?>: <input type="password" name="new2"><br />
 <input type="submit" value="Change password"><br />
 </form>
 </div>
@@ -1224,26 +1224,26 @@ Confirm new password: <input type="password" name="new2"><br />
 	?>
 			<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Rebuild cache</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/rebuild_cache']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/cache" method="POST">
-<input type="checkbox" name="links" value=1>Board links</input><br />
-<input type="checkbox" name="styles" value=1>Board styles</input><br />
-<input type="checkbox" name="boards" value=1>All boards</input><br />
-<input type="checkbox" name="static" value=1>All static pages</input><br />
-<input type="submit" value="Rebuild"><br />
+<input type="checkbox" name="links" value=1><?php echo $lang['mod/board_links']; ?></input><br />
+<input type="checkbox" name="styles" value=1><?php echo $lang['mod/board_styles']; ?></input><br />
+<input type="checkbox" name="boards" value=1><?php echo $lang['mod/all_boards']; ?></input><br />
+<input type="checkbox" name="static" value=1><?php echo $lang['mod/all_static']; ?></input><br />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>"><br />
 </form>
 </div>
 </div>
 </div>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Rebuild static pages</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/rebuild_static']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/static" method="POST">
-<input type="checkbox" name="frontpage" value=1>Frontpage (./<?php echo $config['frontpage_url']; ?>)</input><br />
-<input type="checkbox" name="news" value=1>News page (./<?php echo $config['news_url']; ?>)</input><br />
-<input type="submit" value="Rebuild"><br />
+<input type="checkbox" name="frontpage" value=1><?php echo $lang['mod/frontpage']; ?> (./<?php echo $config['frontpage_url']; ?>)</input><br />
+<input type="checkbox" name="news" value=1><?php echo $lang['mod/news_page']; ?> (./<?php echo $config['news_url']; ?>)</input><br />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>"><br />
 </form>
 </div>
 </div>
@@ -1281,7 +1281,7 @@ Confirm new password: <input type="password" name="new2"><br />
 		?>
 					<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Rebuilding done</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/rebuilding_done']; ?></h2></div>
 <div class="boxcontent">
 <a href="?/rebuild"><?php echo $lang['mod/back']; ?></a>
 </div>
@@ -1303,7 +1303,7 @@ Confirm new password: <input type="password" name="new2"><br />
 		?>
 					<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Rebuilding done</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/rebuilding_done']; ?></h2></div>
 <div class="boxcontent">
 <a href="?/rebuild"><?php echo $lang['mod/back']; ?></a>
 </div>
@@ -1316,9 +1316,9 @@ Confirm new password: <input type="password" name="new2"><br />
 		?>
 				<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Manage board links</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/manage_board_links']; ?></h2></div>
 <div class="boxcontent">
-<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
+<b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <?php
 echo getLinkTable($conn, -1);
 ?>
@@ -1327,11 +1327,11 @@ echo getLinkTable($conn, -1);
 </div>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Add link category</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/add_link_category']; ?></h2></div>
 <div class="boxcontent">
-<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
+<b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links/category" method="POST">
-Title: <input type="text" name="title" value="Category" /><input type="submit" value="Add category!" />
+<?php echo $lang['mod/name']; ?>: <input type="text" name="title" value="<?php echo $lang['mod/category']; ?>" /><input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -1365,7 +1365,7 @@ Title: <input type="text" name="title" value="Category" /><input type="submit" v
 <div class="box-inner">
 <div class="boxbar"><h2>Edit link</h2></div>
 <div class="boxcontent">
-<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after updating link.</b><br />
+<b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links/edit&i=<?php echo $id; ?>" method="POST">
 Short: <input type="text" name="short" value="<?php echo $data['short']; ?>" /><br />
 URL (board index): <input type="text" name="url" value="<?php echo $data['url']; ?>" /><br />
@@ -3963,7 +3963,7 @@ echo "</tr>";
 			$conn->query("DELETE FROM bbcodes WHERE name='".$n."'");
 		}
 		?>
-<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
+<b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 		<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>BBCodes</h2></div>
@@ -4069,7 +4069,7 @@ HTML Code:<textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?>"</t
 			$conn->query("DELETE FROM wordfilter WHERE id=".$n);
 		}
 		?>
-<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
+<b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 		<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Wordfilter</h2></div>
@@ -4186,7 +4186,7 @@ Replace: <input type="text" name="replace" value="<?php echo htmlspecialchars($i
 			$conn->query("DELETE FROM embeds WHERE name='".$n."'");
 		}
 		?>
-<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
+<b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 		<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Embeds</h2></div>
@@ -4306,7 +4306,7 @@ HTML Code: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></t
 			$conn->query("DELETE FROM styles WHERE id=".$n);
 		}
 		?>
-<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after modifying settings here.</b><br />
+<b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 		<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Stylesheets</h2></div>
