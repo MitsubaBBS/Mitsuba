@@ -1363,16 +1363,16 @@ echo getLinkTable($conn, -1);
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Edit link</h2></div>
+<div class="boxbar"><h2></h2></div>
 <div class="boxcontent">
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links/edit&i=<?php echo $id; ?>" method="POST">
-Short: <input type="text" name="short" value="<?php echo $data['short']; ?>" /><br />
-URL (board index): <input type="text" name="url" value="<?php echo $data['url']; ?>" /><br />
-URL in-thread (optional): <input type="text" name="url_thread" value="<?php echo $data['url_thread']; ?>" /><br />
-URL on frontpage (optional): <input type="text" name="url_index" value="<?php echo $data['url_index']; ?>" /><br />
-Title: <input type="text" name="title" value="<?php echo $data['title']; ?>" /><br />
-<br /><input type="submit" value="Update link!" />
+<?php echo $lang['mod/short']; ?>: <input type="text" name="short" value="<?php echo $data['short']; ?>" /><br />
+<?php echo $lang['mod/url']; ?>: <input type="text" name="url" value="<?php echo $data['url']; ?>" /><br />
+<?php echo $lang['mod/url_thread']; ?>: <input type="text" name="url_thread" value="<?php echo $data['url_thread']; ?>" /><br />
+<?php echo $lang['mod/url_index']; ?>: <input type="text" name="url_index" value="<?php echo $data['url_index']; ?>" /><br />
+<?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $data['title']; ?>" /><br />
+<br /><input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -1441,16 +1441,16 @@ Title: <input type="text" name="title" value="<?php echo $data['title']; ?>" /><
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Add link</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/add_link']; ?></h2></div>
 <div class="boxcontent">
-<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after adding link.</b><br />
+<b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links/add&p=<?php echo $id; ?>" method="POST">
-Short: <input type="text" name="short" value="" /><br />
-URL: <input type="text" name="url" value="../" /><br />
-URL in-thread (optional): <input type="text" name="url_thread" value="../../" /><br />
-URL on frontpage (optional): <input type="text" name="url_index" value="./" /><br />
-Title: <input type="text" name="title" value="" /><br />
-<br /><input type="submit" value="Add link!" />
+<?php echo $lang['mod/short']; ?>: <input type="text" name="short" value="" /><br />
+<?php echo $lang['mod/url']; ?>: <input type="text" name="url" value="../" /><br />
+<?php echo $lang['mod/url_thread']; ?>: <input type="text" name="url_thread" value="../../" /><br />
+<?php echo $lang['mod/url_index']; ?>: <input type="text" name="url_index" value="./" /><br />
+<?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="" /><br />
+<br /><input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -1483,9 +1483,9 @@ Title: <input type="text" name="title" value="" /><br />
 		?>
 							<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Global message updated</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/global_message_updated']; ?></h2></div>
 <div class="boxcontent">
-<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after updating message.</b><br />
+<b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <a href="?/message"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
@@ -1498,12 +1498,12 @@ Title: <input type="text" name="title" value="" /><br />
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Edit global message</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/edit_global_message']; ?></h2></div>
 <div class="boxcontent">
-<b>You'll have to <a href="?/rebuild">rebuild board cache</a> after updating message.</b><br />
+<b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 		<form action="?/message" method="POST">
 		<textarea cols=70 rows=14 name="message"><?php echo $msg; ?></textarea><br />
-		<input type="submit" value="Update">
+		<input type="submit" value="<?php echo $lang['mod/submit']; ?>">
 		</form>
 		</div>
 		</div>
@@ -1525,18 +1525,18 @@ Title: <input type="text" name="title" value="" /><br />
 	?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Bans</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/bans']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
-<td>IP</td>
-<td>Reason</td>
-<td>Staff note</td>
-<td>Created</td>
-<td>Expires</td>
-<td>Boards</td>
-<td>Delete</td>
+<td><?php echo $lang['mod/ip']; ?></td>
+<td><?php echo $lang['mod/reason']; ?></td>
+<td><?php echo $lang['mod/staff_note']; ?></td>
+<td><?php echo $lang['mod/created']; ?></td>
+<td><?php echo $lang['mod/expires']; ?></td>
+<td><?php echo $lang['mod/boards']; ?></td>
+<td><?php echo $lang['mod/delete']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -1558,7 +1558,7 @@ echo "<td><b>never</b></td>";
 echo "<td>".$row['boards']."</td>";
 if ($_SESSION['type']>=1)
 {
-echo "<td><a href='?/bans&del=1&b=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 } else {
 echo "<td></td>";
 }
@@ -1567,7 +1567,7 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-Showing recent 15 bans. <a href="?/bans/all">Show all</a> <a href="?/bans/recent&c=100">Show recent 100</a>
+<?php printf($lang['mod/showing_bans'], 15); ?> <a href="?/bans/all"><?php echo $lang['mod/show_all']; ?></a> <a href="?/bans/recent&c=100"><?php printf($lang['mod/show_recent'], 100); ?></a>
 </div>
 </div>
 </div>
@@ -1577,18 +1577,18 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a> <a href="?/bans/recent
 	?>
 	<div class="box-outer top-box">
 	<div class="box-inner">
-	<div class="boxbar"><h2>All bans</h2></div>
+	<div class="boxbar"><h2><?php echo $lang['mod/all_bans']; ?></h2></div>
 	<div class="boxcontent">
 	<table>
 	<thead>
 	<tr>
-	<td>IP</td>
-	<td>Reason</td>
-	<td>Staff note</td>
-	<td>Created</td>
-	<td>Expires</td>
-	<td>Boards</td>
-	<td>Delete</td>
+	<td><?php echo $lang['mod/ip']; ?></td>
+	<td><?php echo $lang['mod/reason']; ?></td>
+	<td><?php echo $lang['mod/staff_note']; ?></td>
+	<td><?php echo $lang['mod/created']; ?></td>
+	<td><?php echo $lang['mod/expires']; ?></td>
+	<td><?php echo $lang['mod/boards']; ?></td>
+	<td><?php echo $lang['mod/delete']; ?></td>
 	</tr>
 	</thead>
 	<tbody>
@@ -1610,7 +1610,7 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a> <a href="?/bans/recent
 	echo "<td>".$row['boards']."</td>";
 	if ($_SESSION['type']>=1)
 	{
-	echo "<td><a href='?/bans&del=1&b=".$row['id']."'>Delete</a></td>";
+	echo "<td><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 	} else {
 	echo "<td></td>";
 	}
@@ -1630,18 +1630,18 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a> <a href="?/bans/recent
 	?>
 	<div class="box-outer top-box">
 	<div class="box-inner">
-	<div class="boxbar"><h2>All bans</h2></div>
+	<div class="boxbar"><h2><?php printf($lang['mod/recent_bans'], $_GET['c']); ?></h2></div>
 	<div class="boxcontent">
 	<table>
 	<thead>
 	<tr>
-	<td>IP</td>
-	<td>Reason</td>
-	<td>Staff note</td>
-	<td>Created</td>
-	<td>Expires</td>
-	<td>Boards</td>
-	<td>Delete</td>
+	<td><?php echo $lang['mod/ip']; ?></td>
+	<td><?php echo $lang['mod/reason']; ?></td>
+	<td><?php echo $lang['mod/staff_note']; ?></td>
+	<td><?php echo $lang['mod/created']; ?></td>
+	<td><?php echo $lang['mod/expires']; ?></td>
+	<td><?php echo $lang['mod/boards']; ?></td>
+	<td><?php echo $lang['mod/delete']; ?></td>
 	</tr>
 	</thead>
 	<tbody>
@@ -1663,7 +1663,7 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a> <a href="?/bans/recent
 	echo "<td>".$row['boards']."</td>";
 	if ($_SESSION['type']>=1)
 	{
-	echo "<td><a href='?/bans&del=1&b=".$row['id']."'>Delete</a></td>";
+	echo "<td><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 	} else {
 	echo "<td></td>";
 	}
@@ -1705,18 +1705,18 @@ Showing recent 15 bans. <a href="?/bans/all">Show all</a> <a href="?/bans/recent
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Add ban <?php if ($_SESSION['type']==0) { echo "request"; } ?></h2></div>
+<div class="boxbar"><h2><?php if ($_SESSION['type']>=1) { echo $lang['mod/add_ban']; } else { echo $lang['mod/add_ban_request']; } ?></h2></div>
 <div class="boxcontent">
 <form action="?/bans/add" method="POST">
-IP: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
-Reason: <input type="text" name="reason" /><br />
-Staff note: <input type="text" name="note" /><br />
+<?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
+<?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" /><br />
+<?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />
 <?php
 if ($_SESSION['type']>=1) {
 ?>
-Expires (e.g. 1d, 20s): <input type="text" name="expires" /><br />
+<?php echo $lang['mod/expires_eg']; ?>: <input type="text" name="expires" /><br />
 <br /><br />
-Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
+<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
 <select name="boards[]" id="boardSelect" multiple>
 <?php
 $result = $conn->query("SELECT * FROM boards;");
@@ -1739,18 +1739,18 @@ if ($_SESSION['type']>=1) {
 if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 {
 ?>
-<input type="hidden" name="delete" value="1" /><b>POST WILL BE DELETED</b>
+<input type="hidden" name="delete" value="1" /><b><?php echo $lang['mod/will_delete']; ?></b>
 <?php
 } else {
 ?>
-Append text to post: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/><?php echo $lang['mod/yes']; ?><br/>
+<?php echo $lang['mod/append_text']; ?>: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/><?php echo $lang['mod/yes']; ?><br/>
 <?php
 }
 }
 }
 ?>
 <br />
-<input type="submit" value="<?php if ($_SESSION['type']==0) { echo "Add request"; } else { echo "Ban"; } ?>" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -1762,7 +1762,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>IP syntax wrong!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/ip_syntax_wrong']; ?></h2></div>
 <div class="boxcontent"><a href="?/bans/add"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -1839,7 +1839,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>User banned!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/user_banned']; ?></h2></div>
 <div class="boxcontent"><a href="?/bans"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -1849,7 +1849,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Request added!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/request_sent']; ?></h2></div>
 <div class="boxcontent"><a href="javascript:history.go(-2);"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -1858,7 +1858,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Form filled wrong</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/filled_wrong']; ?></h2></div>
 <div class="boxcontent"><a href="javascript:history.back(-1);"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -1887,15 +1887,15 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 					?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Add ban <?php if ($_SESSION['type']==0) { echo "request"; } ?></h2></div>
+<div class="boxbar"><h2><?php if ($_SESSION['type']>=1) { echo $lang['mod/add_ban']; } else { echo $lang['mod/add_ban_request']; } ?></h2></div>
 <div class="boxcontent">
 <form action="?/bans/add" method="POST">
-IP: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
-Reason: <input type="text" name="reason" value="<?php echo $request['reason']; ?>"/><br />
-Staff note: <input type="text" name="note" value="<?php echo $request['note']; ?>"/><br />
-Expires (e.g. 1d, 20s): <input type="text" name="expires" /><br />
+<?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
+<?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo $request['reason']; ?>"/><br />
+<?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" value="<?php echo $request['note']; ?>"/><br />
+<?php echo $lang['mod/expires_eg']; ?>: <input type="text" name="expires" /><br />
 <br /><br />
-Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
+<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
 <select name="boards[]" id="boardSelect" multiple>
 <?php
 $result = $conn->query("SELECT * FROM boards;");
@@ -1916,17 +1916,17 @@ if (!empty($postinfo))
 if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 {
 ?>
-<input type="hidden" name="delete" value="1" /><b>POST WILL BE DELETED</b>
+<input type="hidden" name="delete" value="1" /><b><?php echo $lang['mod/will_delete']; ?></b>
 <?php
 } else {
 ?>
-Append text to post: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/><?php echo $lang['mod/yes']; ?><br/>
+<?php echo $lang['mod/append_text']; ?>: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/><?php echo $lang['mod/yes']; ?><br/>
 <?php
 }
 }
 ?>
 <br />
-<input type="submit" value="Ban" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -1947,7 +1947,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 					?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>User deleted!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/user_deleted']; ?></h2></div>
 <div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -1957,7 +1957,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 					?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>This user does not exist!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/user_not_exists']; ?></h2></div>
 <div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -1973,7 +1973,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 					?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Do you want to delete this user?</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/user_want_delete']; ?></h2></div>
 <div class="boxcontent"><a href="?/users"><?php echo $lang['mod/no_big']; ?></a> <a href="?/users/delete_yes&id=<?php echo $_GET['id']; ?>"><?php echo $lang['mod/yes_big']; ?></a></div>
 </div>
 </div>
@@ -1982,7 +1982,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 						?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>This user does not exist!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/user_not_exists']; ?></h2></div>
 <div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -2012,7 +2012,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 			?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>User added!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/user_added']; ?></h2></div>
 <div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -2021,7 +2021,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 			?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>User already exists!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/user_exists']; ?></h2></div>
 <div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -2031,7 +2031,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Please, fill all fields!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/fill_all_fields']; ?></h2></div>
 <div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
@@ -2064,7 +2064,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 					?>
 					<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>User updated</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/user_updated']; ?></h2></div>
 <div class="boxcontent">
 <a href="?/users"><?php echo $lang['mod/back']; ?></a>
 </div>
@@ -2079,11 +2079,11 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 		?>
 				<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Edit user</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/edit_user']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/users/edit&id=<?php echo $id; ?>" method="POST">
-Username: <input type="text" name="username" value="<?php echo $data['username']; ?>"/><br />
-Password (leave blank to not change): <input type="password" name="password"/><br />
+<?php echo $lang['mod/username']; ?>: <input type="text" name="username" value="<?php echo $data['username']; ?>"/><br />
+<?php echo $lang['mod/password_leave_blank']; ?>: <input type="password" name="password"/><br />
 <?php
 $janitor = "";
 $moderator = "";
@@ -2102,19 +2102,19 @@ switch ($data['type'])
 		break;
 }
 ?>
-Type: <select name="type"><option value="0"<?php echo $janitor; ?>>Janitor</option><option value="1"<?php echo $moderator; ?>>Moderator</option><option value="2"<?php echo $administrator; ?>>Administrator</option></select>
+<?php echo $lang['mod/type']; ?>: <select name="type"><option value="0"<?php echo $janitor; ?>><?php echo $lang['mod/janitor']; ?></option><option value="1"<?php echo $moderator; ?>><?php echo $lang['mod/moderator']; ?></option><option value="2"<?php echo $administrator; ?>><?php echo $lang['mod/administrator']; ?></option></select>
 
 <br /><br />
 <?php
 if ($boards == "*")
 {
 ?>
-Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1 checked/> All<br/>
+<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1 checked/> <?php echo $lang['mod/all']; ?><br/>
 <select name="boards[]" id="boardSelect" multiple style="display: none;">
 <?php
 } else {
 ?>
-Boards: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> All<br/>
+<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
 <select name="boards[]" id="boardSelect" multiple>
 <?php
 }
@@ -2135,7 +2135,7 @@ echo "<option onClick='document.getElementById(\"all\").checked=false;' value='"
 }
 ?>
 </select><br />
-<input type="submit" value="Update user!" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -2166,11 +2166,11 @@ echo '</div>';
 </div><br />
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Add note</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/add_note']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/notes/add" method="POST">
 <textarea name="note" cols=70 rows=12></textarea><br />
-<input type="submit" value="Add note!" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -2185,7 +2185,7 @@ echo '</div>';
 		?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Note added</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/note_added']; ?></h2></div>
 <div class="boxcontent">
 <a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
@@ -2196,7 +2196,7 @@ echo '</div>';
 				?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Please, fill all fields!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/fill_all_fields']; ?></h2></div>
 <div class="boxcontent">
 <a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
@@ -2218,7 +2218,7 @@ echo '</div>';
 					?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Note deleted!</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/note_deleted']; ?></h2></div>
 <div class="boxcontent">
 <a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
@@ -2229,7 +2229,7 @@ echo '</div>';
 				?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Error</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/error']; ?></h2></div>
 <div class="boxcontent">
 <a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
@@ -2241,7 +2241,7 @@ echo '</div>';
 			?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Error</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/error']; ?></h2></div>
 <div class="boxcontent">
 <a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
@@ -2253,7 +2253,7 @@ echo '</div>';
 				?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Error</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/error']; ?></h2></div>
 <div class="boxcontent">
 <a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
@@ -2304,11 +2304,11 @@ echo '</div>';
 				
 	<html>
 	<head>
-	<title>Error</title>
+	<title><?php echo $lang['mod/error']; ?></title>
 	</head>
 	<body>
 				<?php
-					echo "<center><h1>No board selected!</h1></center></body></html>";
+					echo "<center><h1>".$lang['mod/no_board']."</h1></center></body></html>";
 					exit;
 				}
 				$board = $_POST['board'];
@@ -2316,17 +2316,17 @@ echo '</div>';
 				?>
 	<html>
 	<head>
-	<title>Updating index</title>
+	<title><?php echo $lang['mod/updating_index']; ?></title>
 	</head>
 	<body>
-	<center><h1>Updating Index...</h1></center>
+	<center><h1><?php echo $lang['mod/updating_index']; ?></h1></center>
 				<?php
 				
 				$md5 = "";
 				$bdata = getBoardData($conn, $_POST['board']);
 				if ((!empty($_POST['embed'])) && (!empty($_FILES['upfile']['tmp_name'])))
 				{
-					echo "<center><h1>Choose one: image or embed! ;_;</h1></center></body></html>";
+					echo "<center><h1>".$lang['mod/choose_one']."</h1></center></body></html>";
 					exit;
 				}
 				if (!empty($_POST['embed']))
@@ -2341,13 +2341,13 @@ echo '</div>';
 					{
 						$filename = "embed:".$_POST['embed'];
 					} else {
-						echo "<center><h1>Embed not supported!</h1></center></body></html>";
+						echo "<center><h1>".$lang['mod/embed_not_supported']."</h1></center></body></html>";
 						exit;
 					}
 				} else {
 					if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 					{
-						echo "<h1>File size too big!</h1></body></html>";
+						echo "<h1>".$lang['mod/file_too_big']."</h1></body></html>";
 						exit;
 					}
 					if (!empty($_FILES['upfile']['tmp_name']))
@@ -2360,19 +2360,19 @@ echo '</div>';
 						$file_size = $_FILES['upfile']['size'];
 						if ($file_size > 2097152)
 						{
-							echo "<h1>File size too big!</h1></body></html>";
+							echo "<h1>".$lang['mod/file_too_big']."</h1></body></html>";
 							exit;
 						}
 						if (!isImage($_FILES['upfile']['tmp_name']))
 						{
-							echo "<h1>File is not an image!</h1></body></html>";
+							echo "<h1>".$lang['mod/file_not_img']."</h1></body></html>";
 							exit;
 						}
 						$md5 = md5_file($_FILES['upfile']['tmp_name']);
 						if(move_uploaded_file($_FILES['upfile']['tmp_name'], $target_path)) {
-							echo "The file ".basename( $_FILES['upfile']['name'])." has been uploaded";
+							printf($lang['mod/file_uploaded'], basename( $_FILES['upfile']['name']));
 						} else {
-							echo "There was an error uploading the file, please try again!";
+							echo $lang['mod/upload_error'];
 							$filename = "";
 						}
 					}
@@ -2401,12 +2401,12 @@ echo '</div>';
 						{
 							if (thumb($board, $fileid.".".$ext, 125) < 0)
 							{
-								echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
+								echo "<h1>".$lang['no_thumb']."</h1></body></html>"; exit;
 							}
 						} else {
 							if (thumb($board, $fileid.".".$ext) < 0)
 							{
-								echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
+								echo "<h1>".$lang['no_thumb']."</h1></body></html>"; exit;
 							}
 						}
 					}
@@ -2460,7 +2460,7 @@ echo '</div>';
 				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler, $embed, $capcode, $raw, $sticky, $lock, $nolimit);
 				if ($is == -16)
 				{
-					echo "<h1>This board does not exist!</h1></body></html>"; exit;
+					echo "<h1>".$lang['mod/board_not_found']."</h1></body></html>"; exit;
 				}
 				break;
 			case "usrform":
@@ -2469,7 +2469,7 @@ echo '</div>';
 					$onlyimgdel = 0;
 					if (empty($_POST['board']))
 					{
-						echo "<h1>No board selected!</h1></body></html>";
+						echo "<h1>".$lang['mod/no_board']."</h1></body></html>";
 						exit;
 					}
 					$board = $_POST['board'];
@@ -2480,19 +2480,24 @@ echo '</div>';
 						{
 							$done = deletePostMod($conn, $_POST['board'], $key, $onlyimgdel);
 							if ($done == -1) {
-								echo "Bad password for post ".$key.".<br />";
+								printf($lang['mod/post_bad_password'], $key);
+								echo "<br />";
 							} elseif ($done == -2) {
-								echo "Post ".$key." not found.<br />";
+								printf($lang['mod/post_not_found'], $key);
+								echo "<br />";
 							} elseif ($done == -3) {
-								echo "Post ".$key." has no image.<br />";
+								printf($lang['mod/post_no_image'], $key);
+								echo "<br />";
 							} elseif ($done == 1) {
-								echo "Deleted image from post ".$key.".<br />";
+								printf($lang['mod/post_deleted_image'], $key);
+								echo "<br />";
 							} elseif ($done == 2) {
-								echo "Deleted post ".$key.".<br />";
+								printf($lang['mod/post_deleted'], $key);
+								echo "<br />";
 							}
 							if ($done == -16)
 							{
-								echo "<h1>This board does not exist!</h1></body></html>"; exit;
+								echo "<h1>".$lang['mod/board_not_found']."</h1></body></html>"; exit;
 							}
 						}
 					}
