@@ -66,4 +66,37 @@ $lang['mod/type'] = "Type";
 $lang['mod/all'] = "All";
 $lang['mod/add_user'] = "Add user";
 $lang['mod/all_users'] = "All users";
+
+$lang['mod/by'] = "By";
+$lang['mod/title'] = "Title";
+$lang['mod/text'] = "Text";
+$lang['mod/submit'] = "Submit";
+$lang['mod/your_entries'] = "Your entries";
+$lang['mod/date'] = "Date";
+$lang['mod/post_added'] = "Post added";
+$lang['mod/back'] = "[ BACK ]";
+$lang['mod/edit_announcement'] = "Edit announcement";
+$lang['mod/post_updated'] = "Post updated";
+$lang['mod/post_deleted'] = "Post deleted";
+$lang['mod/all_announcements'] = "All announcements";
+$lang['mod/news'] = "News";
+$lang['mod/edit_news_entry'] = "Edit news entry";
+$lang['mod/all_news_entries'] = "All news entries";
+
+$lang['mod/board_created'] = "Board created";
+$lang['mod/board_exists_mysql_error'] = "Board exists or MySQL error";
+$lang['mod/fill_all_fields'] = "Please, fill all fields!";
+$lang['mod/create_new_board'] = "Create new board";
+
+$lang['mod/board_directory'] = "Board directory (without /'s)";
+$lang['mod/board_name'] = "Board name";
+$lang['mod/board_short'] = "Board short description (optional)";
+$lang['mod/board_msg'] = "Board message (optional)";
+$lang['mod/board_limit'] = "Board bumplimit (optional, 0 for no limit)";
+$lang['mod/board_options'] = "Board special options";
+$lang['mod/board_spoilers'] = "Allow image spoilers";
+$lang['mod/board_no_name'] = "No name field (forced anonymity)";
+$lang['mod/board_ids'] = "Poster IDs";
+$lang['mod/board_embeds'] = "Allow embeds";
+$lang['mod/manage_boards'] = "Manage boards";
 ?>

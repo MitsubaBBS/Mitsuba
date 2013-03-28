@@ -159,7 +159,7 @@ switch ($path)
 <div class="boxbar"><h2><?php echo $lang['mod/log_in']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/login" method="POST">
-<center><?php echo $lang['mod/username']; ?>: <input type="text" name="username" /> | <?php echo $lang['mod/password']; ?>: <input type="password" name="password" /> <input type="submit" value="<?php echo $lang['log_in']; ?>" /></center>
+<center><?php echo $lang['mod/username']; ?>: <input type="text" name="username" /> | <?php echo $lang['mod/password']; ?>: <input type="password" name="password" /> <input type="submit" value="<?php echo $lang['mod/log_in']; ?>" /></center>
 </form>
 </div>
 </div>
@@ -432,29 +432,29 @@ echo "</tr>";
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>New announcement</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/new_announcement']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/announcements/add" method="POST">
-By: <input type="text" name="who" value="<?php echo $_SESSION['username']; ?>" /><br />
-Title: <input type="text" name="title"/><br />
-Text: <br />
+<?php echo $lang['mod/by']; ?>: <input type="text" name="who" value="<?php echo $_SESSION['username']; ?>" /><br />
+<?php echo $lang['mod/title']; ?>: <input type="text" name="title"/><br />
+<?php echo $lang['mod/text']; ?>: <br />
 <textarea name="text" cols="70" rows="10"></textarea>
-<input type="submit" value="Add new announcement" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
 </div><br />
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Your announcements</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/your_entries']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
-<td>Title</td>
-<td>Date</td>
-<td>Edit</td>
-<td>Delete</td>
+<td><?php echo $lang['mod/title']; ?></td>
+<td><?php echo $lang['mod/date']; ?></td>
+<td><?php echo $lang['mod/edit']; ?></td>
+<td><?php echo $lang['mod/delete']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -465,8 +465,8 @@ while ($row = $result->fetch_assoc())
 echo "<tr>";
 echo "<td>".$row['title']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
-echo "<td><a href='?/announcements/edit&b=".$row['id']."'>Edit</a></td>";
-echo "<td><a href='?/announcements/delete&b=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/announcements/edit&b=".$row['id']."'>".$lang['mod/edit']."</a></td>";
+echo "<td><a href='?/announcements/delete&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 echo "</tr>";
 }
 ?>
@@ -484,8 +484,8 @@ echo "</tr>";
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Post added!</h2></div>
-<div class="boxcontent"><a href="?/announcements">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/post_added']; ?></h2></div>
+<div class="boxcontent"><a href="?/announcements"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -505,14 +505,14 @@ echo "</tr>";
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Edit announcement</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/edit_announcement']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/announcements/edit&b=<?php echo $_GET['b']; ?>" method="POST">
-By: <input type="text" name="who" value="<?php echo $data['who']; ?>" /><br />
-Title: <input type="text" name="title" value="<?php echo $data['title']; ?>"/><br />
-Text: <br />
+<?php echo $lang['mod/by']; ?>: <input type="text" name="who" value="<?php echo $data['who']; ?>" /><br />
+<?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $data['title']; ?>"/><br />
+<?php echo $lang['mod/text']; ?>: <br />
 <textarea name="text" cols="70" rows="10"><?php echo $data['text']; ?></textarea>
-<input type="submit" value="Update announcement" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -528,8 +528,8 @@ Text: <br />
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Entry updated!</h2></div>
-<div class="boxcontent"><a href="?/announcements">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/post_updated']; ?></h2></div>
+<div class="boxcontent"><a href="?/announcements"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -559,8 +559,8 @@ Text: <br />
 	?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Entry deleted!</h2></div>
-<div class="boxcontent"><a href="?/announcements">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/post_deleted']; ?></h2></div>
+<div class="boxcontent"><a href="?/announcements"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -571,15 +571,15 @@ Text: <br />
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>All announcements</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/all_announcements']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
-<td>Title</td>
-<td>Date</td>
-<td>Edit</td>
-<td>Delete</td>
+<td><?php echo $lang['mod/title']; ?></td>
+<td><?php echo $lang['mod/date']; ?></td>
+<td><?php echo $lang['mod/edit']; ?></td>
+<td><?php echo $lang['mod/delete']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -590,8 +590,8 @@ while ($row = $result->fetch_assoc())
 echo "<tr>";
 echo "<td>".$row['title']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
-echo "<td><a href='?/announcements/edit&b=".$row['id']."'>Edit</a></td>";
-echo "<td><a href='?/announcements/delete&b=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/announcements/edit&b=".$row['id']."'>".$lang['mod/edit']."</a></td>";
+echo "<td><a href='?/announcements/delete&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 echo "</tr>";
 }
 ?>
@@ -607,7 +607,7 @@ echo "</tr>";
 
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>News</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/news']; ?></h2></div>
 <div class="boxcontent">
 <?php
 $result = $conn->query("SELECT * FROM news ORDER BY date DESC;");
@@ -631,29 +631,29 @@ echo '</div>';
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>New news entry</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/add_news']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/news/add" method="POST">
-By: <input type="text" name="who" value="<?php echo $_SESSION['username']; ?>" /><br />
-Title: <input type="text" name="title"/><br />
-Text: <br />
+<?php echo $lang['mod/by']; ?>: <input type="text" name="who" value="<?php echo $_SESSION['username']; ?>" /><br />
+<?php echo $lang['mod/title']; ?>: <input type="text" name="title"/><br />
+<?php echo $lang['mod/text']; ?>: <br />
 <textarea name="text" cols="70" rows="10"></textarea>
-<input type="submit" value="Add new entry" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
 </div><br />
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Your entries</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/your_entries']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
-<td>Title</td>
-<td>Date</td>
-<td>Edit</td>
-<td>Delete</td>
+<td><?php echo $lang['mod/title']; ?></td>
+<td><?php echo $lang['mod/date']; ?></td>
+<td><?php echo $lang['mod/edit']; ?></td>
+<td><?php echo $lang['mod/delete']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -664,8 +664,8 @@ while ($row = $result->fetch_assoc())
 echo "<tr>";
 echo "<td>".$row['title']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
-echo "<td><a href='?/news/edit&b=".$row['id']."'>Edit</a></td>";
-echo "<td><a href='?/news/delete&b=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/news/edit&b=".$row['id']."'>".$lang['mod/edit']."</a></td>";
+echo "<td><a href='?/news/delete&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 echo "</td>";
 }
 generateNews($conn);
@@ -686,8 +686,8 @@ generateNews($conn);
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Post added!</h2></div>
-<div class="boxcontent"><a href="?/news">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/post_added']; ?></h2></div>
+<div class="boxcontent"><a href="?/news"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -706,14 +706,14 @@ generateNews($conn);
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Edit news entry</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/edit_news_entry']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/news/edit&b=<?php echo $_GET['b']; ?>" method="POST">
-By: <input type="text" name="who" value="<?php echo $data['who']; ?>" /><br />
-Title: <input type="text" name="title" value="<?php echo $data['title']; ?>"/><br />
-Text: <br />
+<?php echo $lang['mod/by']; ?>: <input type="text" name="who" value="<?php echo $data['who']; ?>" /><br />
+<?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $data['title']; ?>"/><br />
+<?php echo $lang['mod/text']; ?>: <br />
 <textarea name="text" cols="70" rows="10"><?php echo $data['text']; ?></textarea>
-<input type="submit" value="Update entry" />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
@@ -729,8 +729,8 @@ Text: <br />
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Entry updated!</h2></div>
-<div class="boxcontent"><a href="?/news">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/post_updated']; ?></h2></div>
+<div class="boxcontent"><a href="?/news"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -759,8 +759,8 @@ Text: <br />
 	?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Entry deleted!</h2></div>
-<div class="boxcontent"><a href="?/news">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/post_deleted']; ?></h2></div>
+<div class="boxcontent"><a href="?/news"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -771,15 +771,15 @@ Text: <br />
 		?>
 	<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>All news entries</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/all_news_entries']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
-<td>Title</td>
-<td>Date</td>
-<td>Edit</td>
-<td>Delete</td>
+<td><?php echo $lang['mod/title']; ?></td>
+<td><?php echo $lang['mod/date']; ?></td>
+<td><?php echo $lang['mod/edit']; ?></td>
+<td><?php echo $lang['mod/delete']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -790,8 +790,8 @@ while ($row = $result->fetch_assoc())
 echo "<tr>";
 echo "<td>".$row['title']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
-echo "<td><a href='?/news/edit&b=".$row['id']."'>Edit</a></td>";
-echo "<td><a href='?/news/delete&b=".$row['id']."'>Delete</a></td>";
+echo "<td><a href='?/news/edit&b=".$row['id']."'>".$lang['mod/edit']."</a></td>";
+echo "<td><a href='?/news/delete&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 echo "</tr>";
 }
 ?>
@@ -831,8 +831,8 @@ echo "</tr>";
 				?>
 							<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Board created!</h2></div>
-<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_created']; ?></h2></div>
+<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -840,8 +840,8 @@ echo "</tr>";
 			?>
 						<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>MySQL error or board exists!</h2></div>
-<div class="boxcontent"><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_exists_mysql_error']; ?></h2></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 			<?php
@@ -850,8 +850,8 @@ echo "</tr>";
 	?>
 			<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Please, fill all fields!</h2></div>
-<div class="boxcontent"><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/fill_all_fields']; ?></h2></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 	<?php
@@ -862,17 +862,17 @@ echo "</tr>";
 ?>
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Create new board</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/create_new_board']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/boards/add" method="POST">
-Board directory (without /'s): <input type="text" name="short" maxlength=10 /><br />
-Board name: <input type="text" name="name" maxlength=40 /><br />
-Board short description (optional): <input type="text" name="des" maxlength=100 /><br />
-Board message (optional): <br /><textarea cols=70 rows=7 name="msg"></textarea><br />
-Board bumplimit (optional, 0 for no limit): <input type="text" name="limit" maxlength=9 value="0" /><br />
-Board special options: <input type="checkbox" name="spoilers" value="1" />Allow image spoilers <input type="checkbox" name="noname" value="1" />No name field (forced anonymity) <input type="checkbox" name="ids" value="1" />Poster IDs<br />
-<input type="checkbox" name="embeds" value="1" />Allow embeds <br />
-<input type="submit" value="Create new board" />
+<?php echo $lang['mod/board_directory']; ?>: <input type="text" name="short" maxlength=10 /><br />
+<?php echo $lang['mod/board_name']; ?>: <input type="text" name="name" maxlength=40 /><br />
+<?php echo $lang['mod/board_short']; ?>: <input type="text" name="des" maxlength=100 /><br />
+<?php echo $lang['mod/board_msg']; ?>: <br /><textarea cols=70 rows=7 name="msg"></textarea><br />
+<?php echo $lang['mod/board_limit']; ?>: <input type="text" name="limit" maxlength=9 value="0" /><br />
+<?php echo $lang['mod/board_options']; ?>: <input type="checkbox" name="spoilers" value="1" /><?php echo $lang['mod/board_spoilers']; ?> <input type="checkbox" name="noname" value="1" /><?php echo $lang['mod/board_no_name']; ?> <input type="checkbox" name="ids" value="1" /><?php echo $lang['mod/board_ids']; ?><br />
+<input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?> <br />
+<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
