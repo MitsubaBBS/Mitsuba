@@ -880,21 +880,21 @@ echo "</tr>";
 <br />
 <div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Manage boards</h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/manage_boards']; ?></h2></div>
 <div class="boxcontent">
-All boards: <br />
+<?php echo $lang['mod/all_boards']; ?>: <br />
 <table>
 <thead>
 <tr>
-<td>Directory</td>
-<td>Name</td>
-<td>Description</td>
-<td>Bump limit</td>
-<td>Message</td>
-<td>Special</td>
-<td>Edit</td>
-<td>Delete</td>
-<td>Rebuild cache</td>
+<td><?php echo $lang['mod/directory']; ?></td>
+<td><?php echo $lang['mod/name']; ?></td>
+<td><?php echo $lang['mod/description']; ?></td>
+<td><?php echo $lang['mod/bump_limit']; ?></td>
+<td><?php echo $lang['mod/message']; ?></td>
+<td><?php echo $lang['mod/special']; ?></td>
+<td><?php echo $lang['mod/edit']; ?></td>
+<td><?php echo $lang['mod/delete']; ?></td>
+<td><?php echo $lang['mod/rebuild_cache']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -909,19 +909,19 @@ echo "<td>".$row['des']."</td>";
 echo "<td>".$row['bumplimit']."</td>";
 if (!empty($row['message']))
 {
-echo "<td>Yes</td>";
+echo "<td>".$lang['mod/yes']."</td>";
 } else {
-echo "<td>No</td>";
+echo "<td>".$lang['mod/no']."</td>";
 }
 echo "<td>";
-if ($row['spoilers']==1) { echo "<b>Spoilers</b><br />"; }
-if ($row['noname']==1) { echo "<b>No name</b><br />"; }
-if ($row['ids']==1) { echo "<b>Poster IDs</b><br />"; }
-if ($row['embeds']==1) { echo "<b>Embeds</b><br />"; }
+if ($row['spoilers']==1) { echo "<b>".$lang['mod/spoilers']."</b><br />"; }
+if ($row['noname']==1) { echo "<b>".$lang['mod/noname']."</b><br />"; }
+if ($row['ids']==1) { echo "<b>".$lang['mod/ids']."</b><br />"; }
+if ($row['embeds']==1) { echo "<b>".$lang['mod/embeds']."</b><br />"; }
 echo "</td>";
-echo "<td><a href='?/boards/edit&board=".$row['short']."'>Edit</a></td>";
-echo "<td><a href='?/boards/delete&board=".$row['short']."'>Delete</a></td>";
-echo "<td><a href='?/boards/rebuild&board=".$row['short']."'>Rebuild cache</a></td>";
+echo "<td><a href='?/boards/edit&board=".$row['short']."'>".$lang['mod/edit']."</a></td>";
+echo "<td><a href='?/boards/delete&board=".$row['short']."'>".$lang['mod/delete']."</a></td>";
+echo "<td><a href='?/boards/rebuild&board=".$row['short']."'>".$lang['mod/rebuild_cache']."</a></td>";
 echo '</tr>';
 }
 ?>
@@ -940,8 +940,8 @@ echo '</tr>';
 		?>
 							<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Board's cache rebuilded!</h2></div>
-<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_cache_rebuilded']; ?></h2></div>
+<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -949,8 +949,8 @@ echo '</tr>';
 		?>
 							<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Board not found!</h2></div>
-<div class="boxcontent"><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -967,8 +967,8 @@ echo '</tr>';
 					?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Board deleted!</h2></div>
-<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_deleted']; ?></h2></div>
+<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -977,8 +977,8 @@ echo '</tr>';
 					?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>This board does not exist!</h2></div>
-<div class="boxcontent"><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -993,8 +993,8 @@ echo '</tr>';
 					?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Do you want to delete /<?php echo $_GET['board']; ?>/?</h2></div>
-<div class="boxcontent"><a href="?/boards">[ NO ]</a> <a href="?/boards/delete_yes&board=<?php echo $_GET['board']; ?>">[ YES ]</a></div>
+<div class="boxbar"><h2><?php printf($lang['mod/want_delete_board'], $_GET['board']); ?></h2></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/no_big']; ?></a> <a href="?/boards/delete_yes&board=<?php echo $_GET['board']; ?>"><?php echo $lang['mod/yes_big']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1002,8 +1002,8 @@ echo '</tr>';
 						?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>This board does not exist!</h2></div>
-<div class="boxcontent"><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1040,8 +1040,8 @@ echo '</tr>';
 				?>
 							<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Board updated successfully!</h2></div>
-<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_updated']; ?></h2></div>
+<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1049,8 +1049,8 @@ echo '</tr>';
 				?>
 							<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Some sort of error happened ;_;</h2></div>
-<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/some_error']; ?></h2></div>
+<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1060,8 +1060,8 @@ echo '</tr>';
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>This board does not exist!</h2></div>
-<div class="boxcontent"><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1079,8 +1079,8 @@ echo '</tr>';
 				?>
 							<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Board moved successfully!</h2></div>
-<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_moved']; ?></h2></div>
+<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1088,8 +1088,8 @@ echo '</tr>';
 				?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>This board does not exist!</h2></div>
-<div class="boxcontent"><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1097,8 +1097,8 @@ echo '</tr>';
 				?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>The board /<?php echo $_POST['new']; ?>/ does exist!</h2></div>
-<div class="boxcontent"><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php printf($lang['mod/board_exists'], $_POST['new']); ?></h2></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1108,8 +1108,8 @@ echo '</tr>';
 		?>
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>This board does not exist!</h2></div>
-<div class="boxcontent"><a href="?/boards">[ BACK ]</a></div>
+<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1155,7 +1155,7 @@ New board directory (without /'s): <input type="text" name="new" maxlength=10 />
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>This board does not exist!</h2></div>
-<div class="boxcontent"><a href="?/boards">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1175,7 +1175,7 @@ New board directory (without /'s): <input type="text" name="new" maxlength=10 />
 			<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Password does not match with the password in database!</h2></div>
-<div class="boxcontent"><a href="?/password">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/password"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 			<?php
@@ -1185,7 +1185,7 @@ New board directory (without /'s): <input type="text" name="new" maxlength=10 />
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Password updated!</h2></div>
-<div class="boxcontent"><a href="?/password">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/password"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1195,7 +1195,7 @@ New board directory (without /'s): <input type="text" name="new" maxlength=10 />
 			<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Passwords don't match!</h2></div>
-<div class="boxcontent"><a href="?/password">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/password"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 			<?php
@@ -1283,7 +1283,7 @@ Confirm new password: <input type="password" name="new2"><br />
 <div class="box-inner">
 <div class="boxbar"><h2>Rebuilding done</h2></div>
 <div class="boxcontent">
-<a href="?/rebuild">[ BACK ]</a>
+<a href="?/rebuild"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
@@ -1305,7 +1305,7 @@ Confirm new password: <input type="password" name="new2"><br />
 <div class="box-inner">
 <div class="boxbar"><h2>Rebuilding done</h2></div>
 <div class="boxcontent">
-<a href="?/rebuild">[ BACK ]</a>
+<a href="?/rebuild"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
@@ -1486,7 +1486,7 @@ Title: <input type="text" name="title" value="" /><br />
 <div class="boxbar"><h2>Global message updated</h2></div>
 <div class="boxcontent">
 <b>You'll have to <a href="?/rebuild">rebuild board cache</a> after updating message.</b><br />
-<a href="?/message">[ BACK ]</a>
+<a href="?/message"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
@@ -1743,7 +1743,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 <?php
 } else {
 ?>
-Append text to post: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/>Yes<br/>
+Append text to post: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/><?php echo $lang['mod/yes']; ?><br/>
 <?php
 }
 }
@@ -1763,7 +1763,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>IP syntax wrong!</h2></div>
-<div class="boxcontent"><a href="?/bans/add">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/bans/add"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 </div>
@@ -1840,7 +1840,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>User banned!</h2></div>
-<div class="boxcontent"><a href="?/bans">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/bans"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1850,7 +1850,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Request added!</h2></div>
-<div class="boxcontent"><a href="javascript:history.go(-2);">[ BACK ]</a></div>
+<div class="boxcontent"><a href="javascript:history.go(-2);"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1859,7 +1859,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Form filled wrong</h2></div>
-<div class="boxcontent"><a href="javascript:history.back(-1);">[ BACK ]</a></div>
+<div class="boxcontent"><a href="javascript:history.back(-1);"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1920,7 +1920,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 <?php
 } else {
 ?>
-Append text to post: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/>Yes<br/>
+Append text to post: <input type="text" name="append_text" value='<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>' style="width: 400px;"/><input type="checkbox" name="append" value="1" checked=1/><?php echo $lang['mod/yes']; ?><br/>
 <?php
 }
 }
@@ -1948,7 +1948,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>User deleted!</h2></div>
-<div class="boxcontent"><a href="?/users">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1958,7 +1958,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>This user does not exist!</h2></div>
-<div class="boxcontent"><a href="?/users">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1974,7 +1974,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Do you want to delete this user?</h2></div>
-<div class="boxcontent"><a href="?/users">[ NO ]</a> <a href="?/users/delete_yes&id=<?php echo $_GET['id']; ?>">[ YES ]</a></div>
+<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/no_big']; ?></a> <a href="?/users/delete_yes&id=<?php echo $_GET['id']; ?>"><?php echo $lang['mod/yes_big']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -1983,7 +1983,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>This user does not exist!</h2></div>
-<div class="boxcontent"><a href="?/users">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -2013,7 +2013,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>User added!</h2></div>
-<div class="boxcontent"><a href="?/users">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -2022,7 +2022,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>User already exists!</h2></div>
-<div class="boxcontent"><a href="?/users">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -2032,7 +2032,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Please, fill all fields!</h2></div>
-<div class="boxcontent"><a href="?/users">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 				<?php
@@ -2066,7 +2066,7 @@ Append text to post: <input type="text" name="append_text" value='<b style="colo
 <div class="box-inner">
 <div class="boxbar"><h2>User updated</h2></div>
 <div class="boxcontent">
-<a href="?/users">[ BACK ]</a>
+<a href="?/users"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
@@ -2187,7 +2187,7 @@ echo '</div>';
 <div class="box-inner">
 <div class="boxbar"><h2>Note added</h2></div>
 <div class="boxcontent">
-<a href="?/notes">[ BACK ]</a>
+<a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
@@ -2198,7 +2198,7 @@ echo '</div>';
 <div class="box-inner">
 <div class="boxbar"><h2>Please, fill all fields!</h2></div>
 <div class="boxcontent">
-<a href="?/notes">[ BACK ]</a>
+<a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
@@ -2220,7 +2220,7 @@ echo '</div>';
 <div class="box-inner">
 <div class="boxbar"><h2>Note deleted!</h2></div>
 <div class="boxcontent">
-<a href="?/notes">[ BACK ]</a>
+<a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
@@ -2231,7 +2231,7 @@ echo '</div>';
 <div class="box-inner">
 <div class="boxbar"><h2>Error</h2></div>
 <div class="boxcontent">
-<a href="?/notes">[ BACK ]</a>
+<a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
@@ -2243,7 +2243,7 @@ echo '</div>';
 <div class="box-inner">
 <div class="boxbar"><h2>Error</h2></div>
 <div class="boxcontent">
-<a href="?/notes">[ BACK ]</a>
+<a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
@@ -2255,7 +2255,7 @@ echo '</div>';
 <div class="box-inner">
 <div class="boxbar"><h2>Error</h2></div>
 <div class="boxcontent">
-<a href="?/notes">[ BACK ]</a>
+<a href="?/notes"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
@@ -2624,7 +2624,7 @@ if ($_SESSION['type'] >= 1)
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Do you want to clear all reports?</h2></div>
-<div class="boxcontent"><a href="?/reports">[ NO ]</a> <a href="?/reports/clear_all_yes">[ YES ]</a></div>
+<div class="boxcontent"><a href="?/reports"><?php echo $lang['mod/no_big']; ?></a> <a href="?/reports/clear_all_yes"><?php echo $lang['mod/yes_big']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -2642,7 +2642,7 @@ if ($_SESSION['type'] >= 1)
 		<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Do you want to delete this post?</h2></div>
-<div class="boxcontent"><a href="javascript:history.back(-1);">[ NO ]</a> <a href="?/delete_post/yes&b=<?php echo $_GET['b']; ?>&p=<?php echo $_GET['p'].$f; ?>">[ YES ]</a></div>
+<div class="boxcontent"><a href="javascript:history.back(-1);"><?php echo $lang['mod/no_big']; ?></a> <a href="?/delete_post/yes&b=<?php echo $_GET['b']; ?>&p=<?php echo $_GET['p'].$f; ?>"><?php echo $lang['mod/yes_big']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -2666,7 +2666,7 @@ if ($_SESSION['type'] >= 1)
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>File deleted</h2></div>
-<div class="boxcontent"><a href="?/board&b=<?php echo $_GET['b']; ?>">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/board&b=<?php echo $_GET['b']; ?>"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -2676,7 +2676,7 @@ if ($_SESSION['type'] >= 1)
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Post deleted</h2></div>
-<div class="boxcontent"><a href="?/board&b=<?php echo $_GET['b']; ?>">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/board&b=<?php echo $_GET['b']; ?>"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -2879,7 +2879,7 @@ echo "</tr>";
 			<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>No IP provided or IP wrong</h2></div>
-<div class="boxcontent"><a href="?/ipnotes">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a></div>
 </div></div>
 
 			<?php
@@ -2892,7 +2892,7 @@ echo "</tr>";
 				<div class="box-outer top-box">
 	<div class="box-inner">
 	<div class="boxbar"><h2>IP note added</h2></div>
-	<div class="boxcontent"><a href="?/ipnotes">[ BACK ]</a></div>
+	<div class="boxcontent"><a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a></div>
 	</div></div>
 
 				<?php
@@ -2904,7 +2904,7 @@ echo "</tr>";
 			<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Please, fill all fields</h2></div>
-<div class="boxcontent"><a href="?/ipnotes">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a></div>
 </div></div>
 
 			<?php
@@ -3264,7 +3264,7 @@ while ($row = $appeals->fetch_assoc())
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Do you want to clear all appeals?</h2></div>
-<div class="boxcontent"><a href="?/appeals">[ NO ]</a> <a href="?/appeals/clear_all_yes">[ YES ]</a></div>
+<div class="boxcontent"><a href="?/appeals"><?php echo $lang['mod/no_big']; ?></a> <a href="?/appeals/clear_all_yes"><?php echo $lang['mod/yes_big']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -3342,7 +3342,7 @@ while ($row = $appeals->fetch_assoc())
 			<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Message sent</h2></div>
-<div class="boxcontent"><a href="?/inbox/new">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/inbox/new"><?php echo $lang['mod/back']; ?></a></div>
 </div></div>
 			<?php
 			} else {
@@ -3350,7 +3350,7 @@ while ($row = $appeals->fetch_assoc())
 			<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>User not found</h2></div>
-<div class="boxcontent"><a href="?/inbox/new">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/inbox/new"><?php echo $lang['mod/back']; ?></a></div>
 </div></div>
 			<?php
 			}
@@ -3526,7 +3526,7 @@ Text:<br />
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Do you want to delete posts from IP <?php echo $_GET['ip']; ?>?</h2></div>
-<div class="boxcontent"><a href="?/info&ip=<?php echo $_GET['ip']; ?>">[ NO ]</a> <a href="?/delete_posts/yes&ip=<?php echo $_GET['ip']; ?>">[ YES ]</a></div>
+<div class="boxcontent"><a href="?/info&ip=<?php echo $_GET['ip']; ?>"><?php echo $lang['mod/no_big']; ?></a> <a href="?/delete_posts/yes&ip=<?php echo $_GET['ip']; ?>"><?php echo $lang['mod/yes_big']; ?></a></div>
 </div>
 </div>
 		<?php
@@ -3551,7 +3551,7 @@ Text:<br />
 								<div class="box-outer top-box">
 <div class="box-inner">
 <div class="boxbar"><h2>Posts deleted.</h2></div>
-<div class="boxcontent"><a href="?/info&ip=<?php echo $_GET['ip']; ?>">[ BACK ]</a></div>
+<div class="boxcontent"><a href="?/info&ip=<?php echo $_GET['ip']; ?>"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>
 		<?php
