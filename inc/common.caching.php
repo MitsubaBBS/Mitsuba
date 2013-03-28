@@ -185,9 +185,11 @@ function urlCallback($match)
 	}
 }
 
-function generateView($conn, $board, $threadno = 0)
+function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm_type = 0)
 {
-	$pages = 15;
+	$max_pages = 15;
+	$pages = $max_pages;
+	$page = 0;
 	$config = getConfig($conn);
 	$board = $conn->real_escape_string($board);
 	if (!isBoard($conn, $board))
@@ -199,7 +201,18 @@ function generateView($conn, $board, $threadno = 0)
 	{
 		return -15; //error
 	}
-	
+	if ($return == 1)
+	{
+		if (!is_numeric($mode))
+		{
+			return -15; //error
+		}
+		if (($mode == 0) && ($threadno != 0))
+		{
+			$page = $threadno;
+			$threadno = 0;
+		}
+	}
 	if ($threadno != 0)
 	{
 		$pages = 0;
@@ -220,13 +233,49 @@ function generateView($conn, $board, $threadno = 0)
 	{
 		$embed_table[] = $row;
 	}
-	
-	for ($pg = 0; $pg <= $pages; $pg++)
+	if ($return == 1)
+	{
+		$pages = $page;
+	}
+	for ($pg = $page; $pg <= $pages; $pg++)
 	{
 		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 			<html xmlns="http://www.w3.org/1999/xhtml">';
-		if ($threadno != 0)
+		
+		if ($return == 1)
+		{
+			$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+				<html xmlns="http://www.w3.org/1999/xhtml">';
+			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
+			$style = $conn->query("SELECT * FROM styles WHERE `default`=1");
+			$first_default = 0;
+			if ($style->num_rows > 0)
+			{
+				$sdata = $style->fetch_assoc();
+				$file .= '<link rel="stylesheet" id="switch" href="'.$sdata['path_index'].'">';
+			} else {
+				$first_default = 1;
+			}
+			$styles = $conn->query("SELECT * FROM styles");
+			while ($row = $styles->fetch_assoc())
+			{
+				if ($first_default == 1)
+				{
+					$file .= '<link rel="stylesheet" id="switch" href="'.$row['path_index'].'">';
+					$first_default = 0;
+				}
+				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$row['path_index'].'" title="'.$row['name'].'">';
+			}
+			$file .= "<script type='text/javascript' src='./js/jquery.js'></script>";
+			$file .= "<script type='text/javascript' src='./js/jquery.cookie.js'></script>";
+			$file .= "<script type='text/javascript' src='./js/common.js'></script>";
+			$file .= "<script type='text/javascript' src='./js/admin.js'></script>";
+			$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+			$file .= "</head><body>";
+			$file .= getBoardLinks($conn, 2);
+		} elseif ($threadno != 0)
 		{
 			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
 			$style = $conn->query("SELECT * FROM styles WHERE `default`=1;");
@@ -286,7 +335,10 @@ function generateView($conn, $board, $threadno = 0)
 		$imagesDir = './rnd/';
 		$images = glob($imagesDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
 		$randomImage = $images[array_rand($images)]; 
-		if ($threadno != 0)
+		if ($return == 1)
+		{
+			$file .= '<img class="title" src="'.$randomImage.'" alt="Mitsuba" />';
+		} elseif ($threadno != 0)
 		{
 			$file .= '<img class="title" src="../.'.$randomImage.'" alt="Mitsuba" />';
 		} else {
@@ -300,7 +352,12 @@ function generateView($conn, $board, $threadno = 0)
 			
 		$locked = 0;
 		
-		if ($threadno != 0)
+		
+		
+		if (($return == 1) && ($adm_type >= 1))
+		{
+			
+		} elseif ($threadno != 0)
 		{
 			$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$threadno.";");
 			if ($result->num_rows == 1)
@@ -313,17 +370,25 @@ function generateView($conn, $board, $threadno = 0)
 		}
 		
 		
-
-		
 		if ($locked == 0)
 		{
 			if ($threadno != 0)
 		{
 				$file .= '<div class="postingMode">Posting mode: Reply</div>';
 				$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>]</div>';
-				$file .= '<form action="../../imgboard.php" method="post" enctype="multipart/form-data">';
+				if ($return == 1)
+				{
+					$file .= '<form action="?/board/action" method="post" enctype="multipart/form-data">';
+				} else {
+					$file .= '<form action="../../imgboard.php" method="post" enctype="multipart/form-data">';
+				}
 			} else {
-				$file .= '<form action="../imgboard.php" method="post" enctype="multipart/form-data">';
+				if ($return == 1)
+				{
+					$file .= '<form action="?/board/action" method="post" enctype="multipart/form-data">';
+				} else {
+					$file .= '<form action="../imgboard.php" method="post" enctype="multipart/form-data">';
+				}
 			}
 			$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
 				<input type="hidden" name="mode" value="regist" />
@@ -370,8 +435,14 @@ function generateView($conn, $board, $threadno = 0)
 				<tr>
 				<td>Password</td>
 				<td><input id="postPassword" name="pwd" type="password" maxlength="8" /> <span class="password">(Password used for deletion)</span></td>
-				</tr>
-				<tr class="rules">
+				</tr>';
+			if ($adm_type >= 1)
+			{
+				$file .='<tr>
+					<td>Mod</td>
+					<td><input type="checkbox" name="capcode" value=1" />Capcode<input type="checkbox" name="raw" value=1" />Raw HTML<input type="checkbox" name="sticky" value=1" />Sticky<input type="checkbox" name="lock" value=1" />Lock<input type="checkbox" name="nolimit" value=1" />Ignore bumplimit</td>';
+			}
+			$file .= '<tr class="rules">
 				<td colspan="2">
 				<ul class="rules">
 				<li>Supported file types are: GIF, JPG, PNG</li>
@@ -402,7 +473,10 @@ function generateView($conn, $board, $threadno = 0)
 			$file .= '</div>';
 		}
 		$file .= '<hr />';
-		if ($threadno != 0)
+		if ($return == 1)
+		{
+			$file .= '<form id="delform" action="?/board/action" method="post"><div class="board">';
+		} elseif ($threadno != 0)
 		{
 			$file .= '<form id="delform" action="../../imgboard.php" method="post"><div class="board">';
 		} else {
@@ -425,15 +499,12 @@ function generateView($conn, $board, $threadno = 0)
 			if ($row['filename'] == "deleted")
 			{
 				$file .= '<div class="file" id="f'.$row['id'].'">';
-				$file .= '<div class="fileInfo">';
-				if ($threadno != 0)
-				{
-					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>deleted</b></span>';
-				} else {
-					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>deleted</b></span>';
-				}
+				$file .= '<div class="fileInfo">';$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>deleted</b></span>';
 				$file .= '</div>';
-				if ($threadno != 0)
+				if ($return == 1)
+				{
+					$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted"/></a>';
+				} elseif ($threadno != 0)
 				{
 					$file .= '<a class="fileThumb" target="_blank"><img src="../../img/deleted.gif" alt="Deleted"/></a>';
 				} else {
@@ -444,7 +515,11 @@ function generateView($conn, $board, $threadno = 0)
 			{
 				$file .= '<div class="file" id="f'.$row['id'].'">';
 				$file .= '<div class="fileInfo">';
-				if ($threadno != 0)
+				if ($return == 1)
+				{
+					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./'.$board.'/src/'.substr($row['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+				
+				} elseif ($threadno != 0)
 				{
 					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="../src/'.substr($row['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
 				} else {
@@ -471,14 +546,20 @@ function generateView($conn, $board, $threadno = 0)
 			} else {
 				$file .= '<div class="file" id="f'.$row['id'].'">';
 				$file .= '<div class="fileInfo">';
-				if ($threadno != 0)
+				if ($return == 1)
+				{
+					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./'.$board.'/src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a> -('.$row['filesize'].', '.$row['imagesize'].', <span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
+				} elseif ($threadno != 0)
 				{
 					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="../src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a> -('.$row['filesize'].', '.$row['imagesize'].', <span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
 				} else {
 					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a> -('.$row['filesize'].', '.$row['imagesize'].', <span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
 				}
 				$file .= '</div>';
-				if ($threadno != 0)
+				if ($return == 1)
+				{
+					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row['filename'].'" alt="Thumbnail"/></a>';
+				} elseif ($threadno != 0)
 				{
 					$file .= '<a class="fileThumb" href="../src/'.$row['filename'].'" target="_blank"><img src="../src/thumb/'.$row['filename'].'" alt="Thumbnail"/></a>';
 				} else {
@@ -503,7 +584,10 @@ function generateView($conn, $board, $threadno = 0)
 			$c_image = "";
 			if ($row['capcode'] == 1)
 			{
-				if ($threadno != 0)
+				if ($return == 1)
+				{
+					$c_image = ' <img src="./img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+				} elseif ($threadno != 0)
 				{
 					$c_image = ' <img src="../../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
 				} else {
@@ -511,7 +595,11 @@ function generateView($conn, $board, $threadno = 0)
 				}
 			} elseif ($row['capcode'] == 2)
 			{
-				if ($threadno != 0)
+				
+				if ($return == 1)
+				{
+					$c_image = ' <img src="./img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+				} elseif ($threadno != 0)
 				{
 					$c_image = ' <img src="../../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
 				} else {
@@ -536,7 +624,40 @@ function generateView($conn, $board, $threadno = 0)
 			}
 			$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row['date']).'</span> ';
 		
-			if ($threadno != 0)
+			if ($return == 1)
+			{
+				$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'#q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a></span>';
+				if ($row['locked']==1)
+				{
+					$file .= '<img src="./img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
+				}
+				if ($row['sticky']==1)
+				{
+					$file .= '<img src="./img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
+				}
+				if ($row['sage']==1)
+				{
+					$file .= ' <span style="color: red;">[A]</a> ';
+				}
+				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'">D</a>';
+				if (!empty($row['filename']))
+				{
+					$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'&f=1">F</a>]';
+				} else {
+					$file .= ']';
+				}
+				if ($_SESSION['type'] >= 2)
+				{
+					$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'" class="edit">E</a>]';
+				}
+				
+				if ($_SESSION['type'] >= 1)
+				{
+					$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
+				}
+				
+				$file .= '</span>';
+			} elseif ($threadno != 0)
 			{
 				$file .= '<span class="postNum"><a href="./res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row['id'].'.html#q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a>';
 				if ($row['locked']==1)
@@ -565,13 +686,24 @@ function generateView($conn, $board, $threadno = 0)
 			
 			
 			$file .= '<blockquote class="postMessage" id="m'.$row['id'].'">';
+			
 			if ($row['raw'] != 1)
 			{
 				if ($row['raw'] == 2)
 				{
-					$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 0);
+					if ($return == 1)
+					{
+						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0);
+					} else {
+						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0);
+					}
 				} else {
-					$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0);
+					if ($return == 1)
+					{
+						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0);
+					} else {
+						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0);
+					}
 				}
 			} else {
 				$file .= $row['comment'];
@@ -595,7 +727,12 @@ function generateView($conn, $board, $threadno = 0)
 			}
 			if ($row1[0] > 3)
 			{
-				$file .= '<span class="summary">'.($row1[0]-3).' posts omitted. Click <a href="./res/'.$row['id'].'.html" class="replylink">here</a> to view.</span>';
+				if ($return == 1)
+				{
+					$file .= '<span class="summary">'.($row1[0]-3).' posts omitted. Click <a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">here</a> to view.</span>';
+				} else {
+					$file .= '<span class="summary">'.($row1[0]-3).' posts omitted. Click <a href="./res/'.$row['id'].'.html" class="replylink">here</a> to view.</span>';
+				}
 			}
 			$offset = 0;
 			if ($row1[0] > 3)
@@ -627,7 +764,10 @@ function generateView($conn, $board, $threadno = 0)
 				$c_image = "";
 				if ($row2['capcode'] == 1)
 				{
-					if ($threadno != 0)
+					if ($return == 1)
+					{
+						$c_image = ' <img src="./img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+					} elseif ($threadno != 0)
 					{
 						$c_image = ' <img src="../../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
 					} else {
@@ -635,7 +775,10 @@ function generateView($conn, $board, $threadno = 0)
 					}
 				} elseif ($row2['capcode'] == 2)
 				{
-					if ($threadno != 0)
+					if ($return == 1)
+					{
+						$c_image = ' <img src="./img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+					} elseif ($threadno != 0)
 					{
 						$c_image = ' <img src="../../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
 					} else {
@@ -659,7 +802,24 @@ function generateView($conn, $board, $threadno = 0)
 					}
 				}
 				$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row2['date']).'</span> ' ;
-				if ($threadno != 0)
+				if ($return == 1)
+				{
+					$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span>';
+					$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row2['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row2['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'">D</a>';
+					
+					
+					if (!empty($row2['filename']))
+					{
+						$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'&f=1">F</a>] ';
+					} else {
+						$file .= ']';
+					}
+					if ($_SESSION['type'] >= 2)
+					{
+						$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row2['id'].'" class="edit">E</a>]';
+					}
+					$file .= "</span>";
+				} elseif ($threadno != 0)
 				{
 					$file .= '<span class="postNum"><a href="../res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="../res/'.$row2['resto'].'.html#q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
 				} else {
@@ -672,14 +832,12 @@ function generateView($conn, $board, $threadno = 0)
 					{
 						$file .= '<div class="file" id="f'.$row2['id'].'">';
 						$file .= '<div class="fileInfo">';
-						if ($threadno != 0)
-						{
-							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>deleted</b></span>';
-						} else {
-							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>deleted</b></span>';
-						}
+						$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>deleted</b></span>';
 						$file .= '</div>';
-						if ($threadno != 0)
+						if ($return == 1)
+						{
+							$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted" /></a>';
+						} elseif ($threadno != 0)
 						{
 							$file .= '<a class="fileThumb" target="_blank"><img src="../../img/deleted.gif" alt="Deleted" /></a>';
 						} else {
@@ -691,7 +849,10 @@ function generateView($conn, $board, $threadno = 0)
 					{
 						$file .= '<div class="file" id="f'.$row2['id'].'">';
 						$file .= '<div class="fileInfo">';
-						if ($threadno != 0)
+						if ($return == 1)
+						{
+							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./'.$board.'/src/'.substr($row2['filename'], 8).'" target="_blank"><b>Spoiler image</b></a></span>';
+						} elseif ($threadno != 0)
 						{
 							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="../src/'.substr($row2['filename'], 8).'" target="_blank"><b>Spoiler image</b></a></span>';
 						} else {
@@ -718,7 +879,10 @@ function generateView($conn, $board, $threadno = 0)
 					} else {
 						$file .= '<div class="file" id="f'.$row2['id'].'">';
 						$file .= '<div class="fileInfo">';
-						if ($threadno != 0)
+						if ($return == 1)
+						{
+							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./'.$board.'/src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> -('.$row2['filesize'].', '.$row2['imagesize'].', <span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
+						} elseif ($threadno != 0)
 						{
 							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="../src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> -('.$row2['filesize'].', '.$row2['imagesize'].', <span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
 						} else {
@@ -726,7 +890,10 @@ function generateView($conn, $board, $threadno = 0)
 						}
 						$file .= '</div>';
 						
-						if ($threadno != 0)
+						if ($return == 1)
+						{
+							$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row2['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row2['filename'].'" alt="Thumbnail"/></a>';
+						} elseif ($threadno != 0)
 						{
 							$file .= '<a class="fileThumb" href="../src/'.$row2['filename'].'" target="_blank"><img src="../src/thumb/'.$row2['filename'].'" alt="Thumbnail"/></a>';
 						} else {
@@ -742,17 +909,26 @@ function generateView($conn, $board, $threadno = 0)
 				{
 					if ($row2['raw'] == 2)
 					{
-						$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0);
+						if ($return == 1)
+						{
+							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 0);
+						} else {
+							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0);
+						}
 					} else {
-						$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0);
+						if ($return == 1)
+						{
+							$file .= processComment($board, $conn, $row2['comment'], $parser, 2);
+						} else {
+							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0);
+						}
 					}
 				} else {
 					$file .= $row2['comment'];
 				}
 				$file .= '</blockquote>';
 				
-				$file .= '</div>';
-				
+				$file .= "</div>";
 				
 				
 				$file .= '</div>';
@@ -765,12 +941,48 @@ function generateView($conn, $board, $threadno = 0)
 		$file .= '<div class="deleteform">
 			<input type="hidden" name="board" value="'.$board.'" />
 			<input type="hidden" name="mode" value="usrform" />Delete Post [<input type="checkbox" name="onlyimgdel" value="on" />File Only] Password <input type="password" id="delPassword" name="pwd" maxlength="8" /> 
-			<input type="submit" name="delete" value="Delete" /><br />
-			Reason <input type="text" name="reason" /><input type="submit" name="report" value="Report" />
-			<div class="stylechanger" id="stylechangerDiv" style="display:none;">Style: <select id="stylechanger"></select></div>
+			<input type="submit" name="delete" value="Delete" /><br />';
+		if ($adm_type == 0)
+		{
+		$file .= 'Reason <input type="text" name="reason" /><input type="submit" name="report" value="Report" />';
+		}
+		$file .= '<div class="stylechanger" id="stylechangerDiv" style="display:none;">Style: <select id="stylechanger"></select></div>
 			</div>';
 		$file .= "</form>";
-		if ($threadno == 0)
+		if ($return == 1)
+		{
+			$file .= '<div class="pagelist desktop">';
+			$file .= '<div class="prev">';
+			if ($page != 0)
+			{
+				
+				$file .= '<form action="?/board&b='.$board.'&p='.($page-1).'" onsubmit="location=this.action; return false;"><input type="submit" value="Previous" /></form>';
+				
+			} else {
+				$file .= '<span>Previous</span>';
+			}
+			$file .= ' </div>';
+			$file .= '<div class="pages">';
+			for ($i = 0; $i <= $max_pages; $i++)
+			{
+				if ($i == $page)
+				{
+					$file .= "[<strong>".$i."</strong>] ";
+				} else {
+					$file .= "[<a href='?/board&b=".$board."&p=".$i."'>".$i."</a>] ";
+				}
+			}
+			$file .= '</div>';
+			$file .= ' <div class="next">';
+			if ($page != $max_pages)
+			{
+				$file .= '<form action="?/board&b='.$board.'&p='.($page+1).'" onsubmit="location=this.action; return false;"><input type="submit" value="Next" /></form>';
+			} else {
+				$file .= '<span>Next</span>';
+			}
+			$file .= '</div>';
+			$file .= '</div>';
+		} elseif ($threadno == 0)
 		{
 			$file .= '<div class="pagelist desktop">';
 			$file .= '<div class="prev">';
@@ -813,19 +1025,24 @@ function generateView($conn, $board, $threadno = 0)
 			$file .= '</div>';
 		}
 		$file .= "</body></html>";
-		if ($threadno != 0)
+		if ($return != 1)
 		{
-			$handle = fopen("./".$board."/res/".$threadno.".html", "w");
-		} else {
-			if ($pg != 0)
+			if ($threadno != 0)
 			{
-				$handle = fopen("./".$board."/".$pg.".html", "w");
+				$handle = fopen("./".$board."/res/".$threadno.".html", "w");
 			} else {
-				$handle = fopen("./".$board."/index.html", "w");
+				if ($pg != 0)
+				{
+					$handle = fopen("./".$board."/".$pg.".html", "w");
+				} else {
+					$handle = fopen("./".$board."/index.html", "w");
+				}
 			}
+			fwrite($handle, $file);
+			fclose($handle);
+		} else {
+			return $file;
 		}
-		fwrite($handle, $file);
-		fclose($handle);
 	}
 }
 

@@ -15,7 +15,6 @@ include("inc/admin.bans.php");
 include("inc/admin.caching.php");
 include("inc/admin.boards.php");
 include("inc/admin.boards.links.php");
-include("inc/admin.boards.view.php");
 include("inc/admin.posting.php");
 include("inc/common.plugins.php");
 include("lang/en/lang.mod.php");
@@ -2272,15 +2271,15 @@ echo '</div>';
 			if ((!empty($_GET['p'])) && (is_numeric($_GET['p'])) && ($_GET['p'] >= 0) && ($_GET['p'] <= 15))
 			{
 				$page = $_GET['p'];
-				showView($conn, $_GET['b'], 0, $page);
+				echo generateView($conn, $_GET['b'], $page, 1, 0, $_SESSION['type']);
 			} elseif ((!empty($_GET['t'])) && (is_numeric($_GET['t'])))
 			{
 				$mode = "thread";
 				$page = $_GET['t'];
-				showView($conn, $_GET['b'], 1, $page);
+				echo generateView($conn, $_GET['b'], $page, 1, 1, $_SESSION['type']);
 			} else {
 			
-				showView($conn, $_GET['b'], 0, 0);
+				echo generateView($conn, $_GET['b'], 0, 1, 0, $_SESSION['type']);
 			}
 			
 			
