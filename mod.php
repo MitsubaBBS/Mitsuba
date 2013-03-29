@@ -127,6 +127,7 @@ if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && ((
 <link rel="stylesheet" href="./styles/table.css" />
 <script type="text/javascript" src="./js/jquery.js"></script>
 <script type="text/javascript" src="./js/admin.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
 <div id="doc">
