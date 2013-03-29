@@ -79,7 +79,7 @@ if (!empty($_POST['mode']))
 						$filename = $fileid . "." . $ext; 
 						$target_path .= $filename;
 						$file_size = $_FILES['upfile']['size'];
-						if (($file_size > $bdata['filesize']) || ($ignoresizelimit))
+						if (($file_size > $bdata['filesize']) && ($ignoresizelimit != 1))
 						{
 							echo "<h1>".$lang['mod/file_too_big']."</h1></body></html>";
 							exit;
