@@ -1,7 +1,12 @@
 <?php
 
-function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
+function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_type = -1)
 {
+	
+	if (!is_numeric($adm_type))
+	{
+		$adm_type = -1;
+	}
 	
 	if (is_numeric($postno))
 	{
@@ -14,7 +19,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 		if ($result->num_rows == 1)
 		{
 			$postdata = $result->fetch_assoc();
-			if (md5($password) == $postdata['password'])
+			if ((md5($password) == $postdata['password']) || ($adm_type >= 1))
 			{
 				if ($onlyimgdel == 1)
 				{
@@ -112,7 +117,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0)
 	}
 }
 
-function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $spoiler = 0, $embed = 0)
+function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
 {
 	if (!isBoard($conn, $board))
 	{
@@ -122,6 +127,35 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	{
 		$resto = 0;
 	}
+	
+	if (!is_numeric($adm_type))
+	{
+		$adm_type = -1;
+	}
+	
+	if ((!is_numeric($raw)) || ($adm_type <= 0))
+	{
+		$raw = 0;
+	}
+	if ((!is_numeric($capcode)) || ($adm_type <= 0))
+	{
+		$capcode = 0;
+	}
+	if ((!is_numeric($sticky)) || ($adm_type <= 0))
+	{
+		$sticky = 0;
+	}
+	if ((!is_numeric($locked)) || ($adm_type <= 0))
+	{
+		$locked = 0;
+	}
+	
+	if ($resto != 0)
+	{
+		$sticky = 0;
+		$locked = 0;
+	}
+	
 	if (($resto == 0) && (empty($filename)))
 	{
 		echo "<center><h1>Error: No file selected.</h1><br /><a href='./".$board."'>RETURN</a></center>";
@@ -166,7 +200,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		}
 		
 		$tinfo = $thread->fetch_assoc();
-		if ($tinfo['locked'] == 1)
+		if (($tinfo['locked'] == 1) && ($adm_type <= 0))
 		{
 			echo "<center><h1>Error: This thread is locked.</h1><br /><a href='./".$board."'>RETURN</a></center>";
 			return;
@@ -175,7 +209,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	}
 	$lastbumped = time();
 	$trip = "";
-	if ($bdata['noname'] == 0)
+	if (($bdata['noname'] == 0) || ($adm_type >= 1))
 	{
 		$name = processString($conn, $name, 1);
 		if (isset($name['trip']))
@@ -234,7 +268,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		}
 	}
 	$conn->query("INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, sticky, sage, locked, capcode, raw)".
-	"VALUES (".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', 0, 0, 0, 0, 0)");
+	"VALUES (".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
 	$id = mysqli_insert_id($conn);
 	$poster_id = "";
 	if ($bdata['ids'] == 1)
@@ -261,17 +295,34 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	
 	
 	}
-	if (($email == "nonoko") || ($email == "nonokosage"))
+	if ($adm_type >= 0)
 	{
-		echo '<meta http-equiv="refresh" content="2;URL='."'./".$board."/index.html'".'">';
-		
-	} else {
-		if ($resto != 0)
+		if (($email == "nonoko") || ($email == "nonokosage"))
 		{
-			echo '<meta http-equiv="refresh" content="2;URL='."'./".$board."/res/".$resto.".html#p".$id."".'">';
-		} else {
-			echo '<meta http-equiv="refresh" content="2;URL='."'./".$board."/res/".$id.".html'".'">';
+			echo '<meta http-equiv="refresh" content="2;URL='."'?/board&b=".$board."'".'">';
 			
+		} else {
+			if ($resto != 0)
+			{
+				echo '<meta http-equiv="refresh" content="2;URL='."'?/board&b=".$board."&t=".$resto."#p".$id."".'">';
+			} else {
+				echo '<meta http-equiv="refresh" content="2;URL='."'?/board&b=".$board."&t=".$id."'".'">';
+				
+			}
+		}
+	} else {
+		if (($email == "nonoko") || ($email == "nonokosage"))
+		{
+			echo '<meta http-equiv="refresh" content="2;URL='."'./".$board."/index.html'".'">';
+			
+		} else {
+			if ($resto != 0)
+			{
+				echo '<meta http-equiv="refresh" content="2;URL='."'./".$board."/res/".$resto.".html#p".$id."".'">';
+			} else {
+				echo '<meta http-equiv="refresh" content="2;URL='."'./".$board."/res/".$id.".html'".'">';
+				
+			}
 		}
 	}
 	pruneOld($conn, $board);

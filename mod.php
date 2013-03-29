@@ -15,7 +15,6 @@ include("inc/admin.bans.php");
 include("inc/admin.caching.php");
 include("inc/admin.boards.php");
 include("inc/admin.boards.links.php");
-include("inc/admin.posting.php");
 include("inc/common.plugins.php");
 include("lang/en/lang.mod.php");
 
@@ -1824,7 +1823,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 			{
 				if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
 				{
-					deletePostMod($conn, $board, $post);
+					deletePost($conn, $board, $post, 0, $_SESSION['type']);
 				} else {
 					if ((!empty($post)) && (!empty($_POST['append'])) && ($_POST['append'] == 1))
 					{
@@ -2456,7 +2455,7 @@ echo '</div>';
 					$embed = 1;
 					$fname = "embed";
 				}
-				$is = addPostMod($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler, $embed, $capcode, $raw, $sticky, $lock, $nolimit);
+				$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler, $embed, $_SESSION['type'], $capcode, $raw, $sticky, $lock, $nolimit);
 				if ($is == -16)
 				{
 					echo "<h1>".$lang['mod/board_not_found']."</h1></body></html>"; exit;
@@ -2477,7 +2476,7 @@ echo '</div>';
 					{
 						if ($value == "delete")
 						{
-							$done = deletePostMod($conn, $_POST['board'], $key, $onlyimgdel);
+							$done = deletePost($conn, $_POST['board'], $key, $onlyimgdel, $_SESSION['type']);
 							if ($done == -1) {
 								printf($lang['mod/post_bad_password'], $key);
 								echo "<br />";
@@ -2662,7 +2661,7 @@ if ($_SESSION['type'] >= 1)
 			{
 				$imageonly = 1;
 			}
-			deletePostMod($conn, $_GET['b'], $_GET['p'], $imageonly);
+			deletePost($conn, $_GET['b'], $_GET['p'], $imageonly, $_SESSION['type']);
 			if ($imageonly == 1)
 			{
 			?>
