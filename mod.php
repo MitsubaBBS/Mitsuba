@@ -16,7 +16,7 @@ include("inc/admin.caching.php");
 include("inc/admin.boards.php");
 include("inc/admin.boards.links.php");
 include("inc/common.plugins.php");
-include("lang/en/lang.mod.php");
+include("inc/strings/mod.strings.php");
 
 
 function deleteEntry($conn, $type, $id, $validate_id = 0)
