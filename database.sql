@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `filesize` int(20) NOT NULL,
   `pages` int(4) NOT NULL,
   PRIMARY KEY (`short`)
-)
+);
 
 CREATE TABLE IF NOT EXISTS `config` (
   `name` varchar(100) NOT NULL,
