@@ -248,13 +248,14 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 	{
 		$cnt = $conn->query("SELECT id FROM posts_".$board." WHERE resto=0");
 		$all_pages = ceil(($cnt->num_rows)/10);
+		if ($all_pages == 0) { $all_pages = 1; }
 		if (($max_pages+1) < $all_pages)
 		{
 			$all_pages = $max_pages;
 		}
 		if ($return == 0)
 		{
-			$pages = $all_pages;
+			$pages = $all_pages - 1;
 		}
 	}
 	
@@ -411,7 +412,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					$file .= '<form action="../imgboard.php" method="post" enctype="multipart/form-data">';
 				}
 			}
-			if ($adm_type >= 1)
+			if ($adm_type <= 0)
 			{
 				$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="'.$boarddata['filesize'].'" />';
 			}
@@ -550,11 +551,14 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./src/'.substr($row['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
 				}
 				$file .= '</div>';
-				if ($threadno != 0)
+				if ($return == 1)
 				{
-					$file .= '<a class="fileThumb" href="../src/'.substr($row['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Deleted"/></a>';
+					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row['filename'],8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image"/></a>';
+				} elseif ($threadno != 0)
+				{
+					$file .= '<a class="fileThumb" href="../src/'.substr($row['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image"/></a>';
 				} else {
-					$file .= '<a class="fileThumb" href="./src/'.substr($row['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Deleted"/></a>';
+					$file .= '<a class="fileThumb" href="./src/'.substr($row['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image"/></a>';
 				}
 				$file .= '</div>';
 			} elseif (substr($row['filename'], 0, 6) == "embed:")
@@ -679,7 +683,10 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				{
 					$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
 				}
-				
+				if ($threadno == 0)
+				{
+					$file .= '&nbsp; <span>[<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">Reply</a>]</span>';
+				}
 				$file .= '</span>';
 			} elseif ($threadno != 0)
 			{
@@ -977,7 +984,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		$file .= '<div class="stylechanger" id="stylechangerDiv" style="display:none;">Style: <select id="stylechanger"></select></div>
 			</div>';
 		$file .= "</form>";
-		if ($return == 1)
+		if (($return == 1) && ($threadno == 0))
 		{
 			$file .= '<div class="pagelist desktop">';
 			$file .= '<div class="prev">';
