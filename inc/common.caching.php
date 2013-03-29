@@ -411,8 +411,11 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					$file .= '<form action="../imgboard.php" method="post" enctype="multipart/form-data">';
 				}
 			}
-			$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="'.$boarddata['filesize'].'" />
-				<input type="hidden" name="mode" value="regist" />
+			if ($adm_type >= 1)
+			{
+				$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="'.$boarddata['filesize'].'" />';
+			}
+			$file .= '<input type="hidden" name="mode" value="regist" />
 				<table class="postForm" id="postForm">
 				<tbody>';
 			if (($boarddata['noname'] == 0) || ($adm_type >= 1))
