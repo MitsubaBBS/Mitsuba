@@ -3,7 +3,6 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-?>
 if (!empty($_POST['note']))
 		{
 			$note = $conn->real_escape_string($_POST['note']);
