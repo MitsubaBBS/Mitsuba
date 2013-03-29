@@ -143,6 +143,7 @@ $lang['mod/rebuilding_done'] = "Rebuilding done";
 $lang['mod/rebuild_notice'] = "You'll have to <a href=\"?/rebuild\">rebuild board cache</a> after modifying settings here.";
 $lang['mod/add_link_category'] = "Add link category";
 $lang['mod/category'] = "Category";
+$lang['mod/add_link'] = "Add link";
 $lang['mod/edit_link'] = "Edit link";
 $lang['mod/short'] = "Short";
 $lang['mod/url'] = "URL (board index)";
@@ -278,7 +279,7 @@ $lang['mod/board_bbcode'] = "Allow BBCode";
 $lang['mod/board_pages'] = "Board pages";
 $lang['mod/board_time_between_posts'] = "Time between posts (seconds)";
 $lang['mod/board_time_to_delete'] = "Time user has wait to delete post (seconds)";
-$lang['mod/board_filesize'] = "Maximum filesize";
+$lang['mod/board_filesize'] = "Maximum filesize (bytes)";
 
 //$lang['mod/'] = "";
 ?>
