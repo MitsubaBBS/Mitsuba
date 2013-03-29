@@ -21,6 +21,11 @@ include("inc/admin.boards.links.php");
 include("inc/common.plugins.php");
 include("inc/strings/mod.strings.php");
 
+function logAction($conn, $text)
+{
+	$text = $conn->real_escape_string($text);
+	$conn->query("INSERT INTO log (date, event, mod_id) VALUES (".time().", '".$text."', ".$_SESSION['id'].")");
+}
 
 function deleteEntry($conn, $type, $id, $validate_id = 0)
 {

@@ -198,9 +198,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('frontpage_url', 'index.html'),
 ('global_message', ''),
 ('news_url', 'news.html'),
-('sitename', 'Mitsuba'),
-('styles', ''),
-('styles_thread', '');
+('sitename', 'Mitsuba');
 
 INSERT INTO `embeds` (`name`, `regex`, `code`) VALUES
 ('dailymotion', '/http(s)?:\\/\\/(www\\.)?dailymotion\\.com\\/video\\/([^&]+)/', '<iframe width="%1$s" height=""%1$s" src="http://www.dailymotion.com/embed/video/"%4$s" frameborder="0" allowfullscreen></iframe>'),

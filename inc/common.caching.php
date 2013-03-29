@@ -199,6 +199,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 	}
 	$boarddata = getBoardData($conn, $board);
 	$max_pages = $boarddata['pages'];
+	$all_pages = $max_pages;
 	$pages = $max_pages;
 	$page = 0;
 	if (!is_numeric($threadno))
@@ -215,6 +216,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		{
 			$page = $threadno;
 			$threadno = 0;
+			$pages = 0;
 		}
 	}
 	if ($threadno != 0)
@@ -241,6 +243,21 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 	{
 		$pages = $page;
 	}
+	
+	if ($threadno == 0)
+	{
+		$cnt = $conn->query("SELECT id FROM posts_".$board." WHERE resto=0");
+		$all_pages = ceil(($cnt->num_rows)/10);
+		if (($max_pages+1) < $all_pages)
+		{
+			$all_pages = $max_pages;
+		}
+		if ($return == 0)
+		{
+			$pages = $all_pages;
+		}
+	}
+	
 	for ($pg = $page; $pg <= $pages; $pg++)
 	{
 		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -398,7 +415,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				<input type="hidden" name="mode" value="regist" />
 				<table class="postForm" id="postForm">
 				<tbody>';
-			if ($boarddata['noname'] == 0)
+			if (($boarddata['noname'] == 0) || ($adm_type >= 1))
 			{
 				$file .= '<tr>
 					<td>Name</td>
@@ -944,9 +961,13 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		$file .= "</div>";
 		$file .= '<div class="deleteform">
 			<input type="hidden" name="board" value="'.$board.'" />
-			<input type="hidden" name="mode" value="usrform" />Delete Post [<input type="checkbox" name="onlyimgdel" value="on" />File Only] Password <input type="password" id="delPassword" name="pwd" maxlength="8" /> 
-			<input type="submit" name="delete" value="Delete" /><br />';
-		if ($adm_type == 0)
+			<input type="hidden" name="mode" value="usrform" />Delete Post [<input type="checkbox" name="onlyimgdel" value="on" />File Only] ';
+		if ($adm_type <= 0)
+		{
+		$file .= 'Password <input type="password" id="delPassword" name="pwd" maxlength="8" /> ';
+		}
+		$file .= '<input type="submit" name="delete" value="Delete" /><br />';
+		if ($adm_type <= 0)
 		{
 		$file .= 'Reason <input type="text" name="reason" /><input type="submit" name="report" value="Report" />';
 		}
@@ -969,16 +990,21 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= '<div class="pages">';
 			for ($i = 0; $i <= $max_pages; $i++)
 			{
-				if ($i == $page)
+				if (($i+1) > $all_pages)
 				{
-					$file .= "[<strong>".$i."</strong>] ";
+					$file .= "[".$i."] ";
 				} else {
-					$file .= "[<a href='?/board&b=".$board."&p=".$i."'>".$i."</a>] ";
+					if ($i == $page)
+					{
+						$file .= "[<strong>".$i."</strong>] ";
+					} else {
+						$file .= "[<a href='?/board&b=".$board."&p=".$i."'>".$i."</a>] ";
+					}
 				}
 			}
 			$file .= '</div>';
 			$file .= ' <div class="next">';
-			if ($page != $max_pages)
+			if ($page != ($all_pages-1))
 			{
 				$file .= '<form action="?/board&b='.$board.'&p='.($page+1).'" onsubmit="location=this.action; return false;"><input type="submit" value="Next" /></form>';
 			} else {
@@ -1003,23 +1029,28 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			}
 			$file .= ' </div>';
 			$file .= '<div class="pages">';
-			for ($i = 0; $i <= $pages; $i++)
+			for ($i = 0; $i <= $max_pages; $i++)
 			{
 				if ($i == $pg)
 				{
 					$file .= "[<strong>".$i."</strong>] ";
 				} else {
-					if ($i != 0)
+					if (($i+1) > $all_pages)
 					{
-						$file .= "[<a href='./".$i.".html'>".$i."</a>] ";
+						$file .= "[".$i."] ";
 					} else {
-						$file .= "[<a href='./index.html'>".$i."</a>] ";
+						if ($i != 0)
+						{
+							$file .= "[<a href='./".$i.".html'>".$i."</a>] ";
+						} else {
+							$file .= "[<a href='./index.html'>".$i."</a>] ";
+						}
 					}
 				}
 			}
 			$file .= '</div>';
 			$file .= ' <div class="next">';
-			if ($pg != $pages)
+			if ($pg != ($all_pages-1))
 			{
 				$file .= '<form action="./'.($pg+1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="Next" /></form>';
 			} else {

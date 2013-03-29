@@ -51,7 +51,7 @@ loadPlugins($conn);
 				exit;
 			}
 			
-			$lastdate = $conn->query("SELECT date FROM posts_".$_POST['board']." WHERE ip='"$_SERVER['REMOTE_ADDR']."' ORDER BY date DESC LIMIT 0, 1");
+			$lastdate = $conn->query("SELECT date FROM posts_".$_POST['board']." WHERE ip='".$_SERVER['REMOTE_ADDR']."' ORDER BY date DESC LIMIT 0, 1");
 			if ($lastdate->num_rows == 1)
 			{
 				$pdate = $lastdate->fetch_assoc();

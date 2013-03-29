@@ -2,12 +2,10 @@
 
 function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_type = -1)
 {
-	
 	if (!is_numeric($adm_type))
 	{
 		$adm_type = -1;
 	}
-	
 	if (is_numeric($postno))
 	{
 		$board = $conn->real_escape_string($board);
@@ -20,101 +18,103 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 		if ($result->num_rows == 1)
 		{
 			$postdata = $result->fetch_assoc();
-			if ((time() > ($postdata['date'] + $bdata['time_to_delete'])) || ($adm_type >= 1))
+			if ($adm_type <= 0)
 			{
-				if ((md5($password) == $postdata['password']) || ($adm_type >= 1))
+				if (time() <= ($postdata['date'] + $bdata['time_to_delete']))
 				{
-					if ($onlyimgdel == 1)
+					return -4;
+				}
+				if (md5($password) != $postdata['password'])
+				{
+					return -1;
+				}
+			}
+			if ($onlyimgdel == 1)
+			{
+				if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
+				{
+						
+					$filename = $postdata['filename'];
+					if (substr($filename, 0, 8) == "spoiler:")
 					{
-						if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
-						{
-								
-							$filename = $postdata['filename'];
-							if (substr($filename, 0, 8) == "spoiler:")
-							{
-								$filename = substr($filename, 8);
-							}
-							if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
-							{
-								unlink("./".$board."/src/".$filename);
-								unlink("./".$board."/src/thumb/".$filename);
-							}
-							$conn->query("UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
-							if ($postdata['resto'] != 0)
-							{
-								generateView($conn, $board, $postdata['resto']);
-								generateView($conn, $board);
-							} else {
-								generateView($conn, $board, $postno);
-								generateView($conn, $board);
-							}
-							return 1; //done-image
-						} else {
-							return -3;
-						}
-					} else {
-						if ($postdata['resto'] == 0) //we'll have to delete whole thread
-						{
-							$files = $conn->query("SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$postdata['id']);
-							while ($file = $files->fetch_assoc())
-							{
-								$filename = $file['filename'];
-								if (substr($filename, 0, 8) == "spoiler:")
-								{
-									$filename = substr($filename, 8);
-								}
-								if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
-								{
-									unlink("./".$board."/src/".$filename);
-									unlink("./".$board."/src/thumb/".$filename);
-								}
-							}
-							if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
-							{
-								$filename = $postdata['filename'];
-								if (substr($filename, 0, 8) == "spoiler:")
-								{
-									$filename = substr($filename, 8);
-								}
-								if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
-								{
-									unlink("./".$board."/src/".$filename);
-									unlink("./".$board."/src/thumb/".$filename);
-								}
-							}
-							$conn->query("DELETE FROM posts_".$board." WHERE resto=".$postno.";");
-							$conn->query("DELETE FROM posts_".$board." WHERE id=".$postno.";");
-							unlink("./".$board."/res/".$postno.".html");
-							//generateView($conn, $board, $postno);
-							generateView($conn, $board);
-							return 2; //done post
-						} else {
-							if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
-							{
-								
-								$filename = $postdata['filename'];
-								if (substr($filename, 0, 8) == "spoiler:")
-								{
-									$filename = substr($filename, 8);
-								}
-								if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
-								{
-									unlink("./".$board."/src/".$filename);
-									unlink("./".$board."/src/thumb/".$filename);
-								}
-							}
-							$conn->query("DELETE FROM posts_".$board." WHERE id=".$postno.";");
-							generateView($conn, $board, $postdata['resto']);
-							generateView($conn, $board);
-							return 2;
-						}
+						$filename = substr($filename, 8);
 					}
+					if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
+					{
+						unlink("./".$board."/src/".$filename);
+						unlink("./".$board."/src/thumb/".$filename);
+					}
+					$conn->query("UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
+					if ($postdata['resto'] != 0)
+					{
+						generateView($conn, $board, $postdata['resto']);
+						generateView($conn, $board);
+					} else {
+						generateView($conn, $board, $postno);
+						generateView($conn, $board);
+					}
+					return 1; //done-image
 				} else {
-					return -1; //wrong password
+					return -3;
 				}
 			} else {
-				return -4;
+				if ($postdata['resto'] == 0) //we'll have to delete whole thread
+				{
+					$files = $conn->query("SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$postdata['id']);
+					while ($file = $files->fetch_assoc())
+					{
+						$filename = $file['filename'];
+						if (substr($filename, 0, 8) == "spoiler:")
+						{
+							$filename = substr($filename, 8);
+						}
+						if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
+						{
+							unlink("./".$board."/src/".$filename);
+							unlink("./".$board."/src/thumb/".$filename);
+						}
+					}
+					if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
+					{
+						$filename = $postdata['filename'];
+						if (substr($filename, 0, 8) == "spoiler:")
+						{
+							$filename = substr($filename, 8);
+						}
+						if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
+						{
+							unlink("./".$board."/src/".$filename);
+							unlink("./".$board."/src/thumb/".$filename);
+						}
+					}
+					$conn->query("DELETE FROM posts_".$board." WHERE resto=".$postno.";");
+					$conn->query("DELETE FROM posts_".$board." WHERE id=".$postno.";");
+					unlink("./".$board."/res/".$postno.".html");
+					//generateView($conn, $board, $postno);
+					generateView($conn, $board);
+					return 2; //done post
+				} else {
+					if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
+					{
+						
+						$filename = $postdata['filename'];
+						if (substr($filename, 0, 8) == "spoiler:")
+						{
+							$filename = substr($filename, 8);
+						}
+						if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
+						{
+							unlink("./".$board."/src/".$filename);
+							unlink("./".$board."/src/thumb/".$filename);
+						}
+					}
+					$conn->query("DELETE FROM posts_".$board." WHERE id=".$postno.";");
+					generateView($conn, $board, $postdata['resto']);
+					generateView($conn, $board);
+					return 2;
+				}
 			}
+				
 		} else {
 			return -2;
 		}

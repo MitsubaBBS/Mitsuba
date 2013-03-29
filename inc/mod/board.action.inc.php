@@ -189,12 +189,13 @@ if (!empty($_POST['mode']))
 						exit;
 					}
 					$board = $_POST['board'];
+					$adm_type = $_SESSION['type'];
 					if ((isset($_POST['onlyimgdel']) && ($_POST['onlyimgdel'] == "on"))) { $onlyimgdel = 1; }
 					foreach ($_POST as $key => $value)
 					{
 						if ($value == "delete")
 						{
-							$done = deletePost($conn, $_POST['board'], $key, $onlyimgdel, $_SESSION['type']);
+							$done = deletePost($conn, $_POST['board'], $key, "", $onlyimgdel, 2);
 							if ($done == -1) {
 								printf($lang['mod/post_bad_password'], $key);
 								echo "<br />";

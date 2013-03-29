@@ -15,7 +15,7 @@ reqPermission(1);
 	?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/post_deleted']; ?></h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/post_deleted_short']; ?></h2></div>
 <div class="boxcontent"><a href="?/announcements"><?php echo $lang['mod/back']; ?></a></div>
 </div>
 </div>

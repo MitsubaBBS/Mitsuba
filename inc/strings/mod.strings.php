@@ -76,7 +76,6 @@ $lang['mod/post_added'] = "Post added";
 $lang['mod/back'] = "[ BACK ]";
 $lang['mod/edit_announcement'] = "Edit announcement";
 $lang['mod/post_updated'] = "Post updated";
-$lang['mod/post_deleted'] = "Post deleted";
 $lang['mod/all_announcements'] = "All announcements";
 $lang['mod/edit_news_entry'] = "Edit news entry";
 $lang['mod/all_news_entries'] = "All news entries";
