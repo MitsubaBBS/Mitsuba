@@ -892,6 +892,9 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 						$file .= '</div>';
 						if ($threadno != 0)
 						{
+							$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row2['filename'], 8).'" target="_blank"><img src="./img/spoiler.png" alt="Deleted"/></a>';
+						} elseif ($threadno != 0)
+						{
 							$file .= '<a class="fileThumb" href="../src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../../img/spoiler.png" alt="Deleted"/></a>';
 						} else {
 							$file .= '<a class="fileThumb" href="./src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../img/spoiler.png" alt="Deleted"/></a>';
