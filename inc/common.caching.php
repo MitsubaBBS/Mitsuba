@@ -461,7 +461,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			{
 				$file .='<tr>
 					<td>Mod</td>
-					<td><input type="checkbox" name="capcode" value=1" />Capcode<input type="checkbox" name="raw" value=1" />Raw HTML<input type="checkbox" name="sticky" value=1" />Sticky<input type="checkbox" name="lock" value=1" />Lock<input type="checkbox" name="nolimit" value=1" />Ignore bumplimit</td>';
+					<td><input type="checkbox" name="capcode" value=1" />Capcode<input type="checkbox" name="raw" value=1" />Raw HTML<input type="checkbox" name="sticky" value=1" />Sticky<input type="checkbox" name="lock" value=1" />Lock<input type="checkbox" name="nolimit" value=1" />Ignore bumplimit<input type="checkbox" name="ignoresizelimit" value=1" />Ignore filesize limit</td>';
 			}
 			$file .= '<tr class="rules">
 				<td colspan="2">

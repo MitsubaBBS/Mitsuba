@@ -28,6 +28,11 @@ if (!empty($_POST['mode']))
 					exit;
 				}
 				$board = $_POST['board'];
+				$ignoresizelimit = 0
+				if ((!empty($_POST['ignoresizelimit'])) && ($_POST['ignoresizelimit']==1) && ($_SESSION['type'] >= 1))
+				{
+					$ignoresizelimit = 1;
+				}
 				canBoard($board);
 				?>
 	<html>
@@ -74,7 +79,7 @@ if (!empty($_POST['mode']))
 						$filename = $fileid . "." . $ext; 
 						$target_path .= $filename;
 						$file_size = $_FILES['upfile']['size'];
-						if ($file_size > 2097152)
+						if (($file_size > $bdata['filesize']) || ($ignoresizelimit))
 						{
 							echo "<h1>".$lang['mod/file_too_big']."</h1></body></html>";
 							exit;
