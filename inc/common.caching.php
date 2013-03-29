@@ -65,7 +65,7 @@ function getBoardLinks($conn, $in_thread = 0)
 	}
 }
 
-function processComment($board, $conn, $string, $parser, $thread = 0, $specialchars = 1)
+function processComment($board, $conn, $string, $parser, $thread = 0, $specialchars = 1, $bbcode = 1)
 {
 	$new = $string;
 	if ($specialchars == 1)
@@ -168,8 +168,11 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 	$rexPath     = '(/[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]*?)?';
 	$rexQuery    = '(\?[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
 	$rexFragment = '(#[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
-	$parser->parse($new);
-	$new = $parser->getAsHtml();
+	if ($bbcode == 1)
+	{
+		$parser->parse($new);
+		$new = $parser->getAsHtml();
+	}
 	$rurl = "&\\b$rexProtocol$rexDomain$rexPort$rexPath$rexQuery$rexFragment(?=[?.!,;:\"]?(\s|$))&";
 	$new = preg_replace_callback($rurl, "urlCallback", $new);
 	return $new;
@@ -187,9 +190,7 @@ function urlCallback($match)
 
 function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm_type = 0)
 {
-	$max_pages = 15;
-	$pages = $max_pages;
-	$page = 0;
+	
 	$config = getConfig($conn);
 	$board = $conn->real_escape_string($board);
 	if (!isBoard($conn, $board))
@@ -197,6 +198,9 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		return -16;
 	}
 	$boarddata = getBoardData($conn, $board);
+	$max_pages = $boarddata['pages'];
+	$pages = $max_pages;
+	$page = 0;
 	if (!is_numeric($threadno))
 	{
 		return -15; //error
@@ -390,7 +394,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					$file .= '<form action="../imgboard.php" method="post" enctype="multipart/form-data">';
 				}
 			}
-			$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
+			$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="'.$boarddata['filesize'].'" />
 				<input type="hidden" name="mode" value="regist" />
 				<table class="postForm" id="postForm">
 				<tbody>';
@@ -693,16 +697,16 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				{
 					if ($return == 1)
 					{
-						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0);
+						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0, $boarddata['bbcode']);
 					} else {
-						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0);
+						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode']);
 					}
 				} else {
 					if ($return == 1)
 					{
-						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0);
+						$file .= processComment($board, $conn, $row['comment'], $parser, 2, $boarddata['bbcode']);
 					} else {
-						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0);
+						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, $boarddata['bbcode']);
 					}
 				}
 			} else {

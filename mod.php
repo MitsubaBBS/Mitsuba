@@ -11,6 +11,7 @@ include("config.php");
 include("version.php");
 include("inc/common.php");
 include("inc/common.caching.php");
+include("inc/common.posting.php");
 include("inc/admin.common.php");
 include("inc/admin.users.php");
 include("inc/admin.bans.php");

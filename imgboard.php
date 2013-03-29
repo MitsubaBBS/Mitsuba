@@ -50,15 +50,37 @@ loadPlugins($conn);
 				echo "<center><h1>Choose one: image or embed! ;_;</h1></center></body></html>";
 				exit;
 			}
+			
+			$lastdate = $conn->query("SELECT date FROM posts_".$_POST['board']." WHERE ip='"$_SERVER['REMOTE_ADDR']."' ORDER BY date DESC LIMIT 0, 1");
+			if ($lastdate->num_rows == 1)
+			{
+				$pdate = $lastdate->fetch_assoc();
+				$pdate = $pdate['date'];
+				
+				if (($pdate + $bdata['time_between_posts']) > time())
+				{
+					if ($bdata['embeds']==0)
+					{
+						echo "<center><h1>You'll have to wait more between posts!</h1></center></body></html>";
+						exit;
+					}
+				}
+			}
 			if (!empty($_POST['embed']))
 			{
+				if ($bdata['embeds']==0)
+				{
+					echo "<center><h1>Embed not supported!</h1></center></body></html>";
+					exit;
+				}
+				
 				$embed_table = array();
 				$result = $conn->query("SELECT * FROM embeds;");
 				while ($row = $result->fetch_assoc())
 				{
 					$embed_table[] = $row;
 				}
-				if ((isEmbed($_POST['embed'], $embed_table)) && ($bdata['embeds']==1))
+				if (isEmbed($_POST['embed'], $embed_table))
 				{
 					$filename = "embed:".$_POST['embed'];
 				} else {
@@ -186,6 +208,8 @@ loadPlugins($conn);
 							echo "Post ".$key." not found.<br />";
 						} elseif ($done == -3) {
 							echo "Post ".$key." has no image.<br />";
+						} elseif ($done == -4) {
+							echo "You'll have to wait more before deleting post ".$key.".<br />";
 						} elseif ($done == 1) {
 							echo "Deleted image from post ".$key.".<br />";
 						} elseif ($done == 2) {

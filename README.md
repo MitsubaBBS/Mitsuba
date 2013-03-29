@@ -16,7 +16,6 @@ Planned features
 * captcha support
 * file hash match
 * catalog feature (like 4chan)
-* floodlimits/spam detector
 
 Credits
 -------

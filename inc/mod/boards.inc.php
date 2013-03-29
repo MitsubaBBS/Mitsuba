@@ -15,8 +15,12 @@ reqPermission(2);
 <?php echo $lang['mod/board_short']; ?>: <input type="text" name="des" maxlength=100 /><br />
 <?php echo $lang['mod/board_msg']; ?>: <br /><textarea cols=70 rows=7 name="msg"></textarea><br />
 <?php echo $lang['mod/board_limit']; ?>: <input type="text" name="limit" maxlength=9 value="0" /><br />
+<?php echo $lang['mod/board_pages']; ?>: <input type="text" name="pages" maxlength=9 value="15" /><br />
+<?php echo $lang['mod/board_time_between_posts']; ?>: <input type="text" name="time_between_posts" maxlength=9 value="20" /><br />
+<?php echo $lang['mod/board_time_to_delete']; ?>: <input type="text" name="time_to_delete" maxlength=9 value="120" /><br />
+<?php echo $lang['mod/board_filesize']; ?>: <input type="text" name="filesize" maxlength=9 value="2097152" /><br />
 <?php echo $lang['mod/board_options']; ?>: <input type="checkbox" name="spoilers" value="1" /><?php echo $lang['mod/board_spoilers']; ?> <input type="checkbox" name="noname" value="1" /><?php echo $lang['mod/board_no_name']; ?> <input type="checkbox" name="ids" value="1" /><?php echo $lang['mod/board_ids']; ?><br />
-<input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?> <br />
+<input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?> <input type="checkbox" name="bbcode" value="1" checked/><?php echo $lang['mod/board_bbcode']; ?><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
@@ -63,6 +67,7 @@ if ($row['spoilers']==1) { echo "<b>".$lang['mod/spoilers']."</b><br />"; }
 if ($row['noname']==1) { echo "<b>".$lang['mod/noname']."</b><br />"; }
 if ($row['ids']==1) { echo "<b>".$lang['mod/ids']."</b><br />"; }
 if ($row['embeds']==1) { echo "<b>".$lang['mod/embeds']."</b><br />"; }
+if ($row['bbcode']==1) { echo "<b>".$lang['mod/board_bbcode']."</b><br />"; }
 echo "</td>";
 echo "<td><a href='?/boards/edit&board=".$row['short']."'>".$lang['mod/edit']."</a></td>";
 echo "<td><a href='?/boards/delete&board=".$row['short']."'>".$lang['mod/delete']."</a></td>";

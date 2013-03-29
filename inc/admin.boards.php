@@ -53,7 +53,7 @@ function createDirectories($board)
 	}
 }
 
-function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0)
+function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_to_delete = 120, $filesize = 2097152, $pages = 15)
 {
 	$short = $conn->real_escape_string(trim($short, "/ "));
 	$name = $conn->real_escape_string($name);
@@ -79,7 +79,27 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 	{
 		$embeds = 0;
 	}
-	$result = $conn->query("INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname, ids, embeds) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.")");
+	if (!is_numeric($bbcode))
+	{
+		$bbcode = 1;
+	}
+	if (!is_numeric($time_between_posts))
+	{
+		$time_between_posts = 20;
+	}
+	if (!is_numeric($time_to_delete))
+	{
+		$time_to_delete = 120;
+	}
+	if (!is_numeric($filesize))
+	{
+		$filesize = 2097152;
+	}
+	if (!is_numeric($pages))
+	{
+		$pages = 15;
+	}
+	$result = $conn->query("INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname, ids, embeds, bbcode, time_between_posts, time_to_delete, filesize, pages) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.", ".$bbcode.", ".$time_between_posts.", ".$time_to_delete.", ".$filesize.", ".$pages.")");
 	if ($result)
 	{
 		$conn->query("CREATE TABLE IF NOT EXISTS `posts_".$short."` (
@@ -122,7 +142,7 @@ function deleteBoard($conn, $short)
 	delTree("./".$short);
 }
 
-function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 0, $new_spoilers = 0, $new_noname = 0, $new_ids = 0, $new_embeds = 0)
+function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 0, $new_spoilers = 0, $new_noname = 0, $new_ids = 0, $new_embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_to_delete = 120, $filesize = 2097152, $pages = 15)
 {
 	if (isBoard($conn, $short))
 	{
@@ -146,7 +166,27 @@ function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 
 		{
 			$new_embeds = 0;
 		}
-		$conn->query("UPDATE boards SET name='".$conn->real_escape_string($new_name)."', des='".$conn->real_escape_string($new_des)."', message='".$conn->real_escape_string($new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers.", noname=".$new_noname.", ids=".$new_ids.", embeds=".$new_embeds." WHERE short='".$conn->real_escape_string($short)."'");
+		if (!is_numeric($bbcode))
+		{
+			$bbcode = 1;
+		}
+		if (!is_numeric($time_between_posts))
+		{
+			$time_between_posts = 20;
+		}
+		if (!is_numeric($time_to_delete))
+		{
+			$time_to_delete = 120;
+		}
+		if (!is_numeric($filesize))
+		{
+			$filesize = 2097152;
+		}
+		if (!is_numeric($pages))
+		{
+			$pages = 15;
+		}
+		$conn->query("UPDATE boards SET name='".$conn->real_escape_string($new_name)."', des='".$conn->real_escape_string($new_des)."', message='".$conn->real_escape_string($new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers.", noname=".$new_noname.", ids=".$new_ids.", embeds=".$new_embeds.", bbcode=".$bbcode.", time_between_posts=".$time_between_posts.", time_to_delete=".$time_to_delete.", filesize=".$filesize.", pages=".$pages." WHERE short='".$conn->real_escape_string($short)."'");
 		rebuildBoardCache($conn, $short);
 		return 1;
 	} else {

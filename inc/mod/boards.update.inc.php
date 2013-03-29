@@ -28,7 +28,32 @@ reqPermission(2);
 				{
 					$embeds = 1;
 				}
-				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds))
+				$bbcode = 1;
+				if ((!empty($_POST['bbcode'])) && ($_POST['bbcode'] == 1))
+				{
+					$bbcode = 1;
+				}
+				$filesize = 2097152;
+				if ((!empty($_POST['filesize'])) && (is_numeric($_POST['filesize'])))
+				{
+					$filesize = $_POST['filesize'];
+				}
+				$time_to_delete = 120;
+				if ((!empty($_POST['time_to_delete'])) && (is_numeric($_POST['time_to_delete'])))
+				{
+					$time_to_delete = $_POST['time_to_delete'];
+				}
+				$time_between_posts = 20;
+				if ((!empty($_POST['time_between_posts'])) && (is_numeric($_POST['time_between_posts'])))
+				{
+					$time_between_posts = $_POST['time_between_posts'];
+				}
+				$pages = 15;
+				if ((!empty($_POST['pages'])) && (is_numeric($_POST['pages'])))
+				{
+					$pages = $_POST['pages'];
+				}
+				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_to_delete, $filesize, $pages))
 				{
 				?>
 							<div class="box-outer top-box">
