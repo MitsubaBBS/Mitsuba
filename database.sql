@@ -19,16 +19,6 @@ CREATE TABLE IF NOT EXISTS `appeals` (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `banfilter` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `search` varchar(100) NOT NULL,
-  `reason` varchar(100) NOT NULL,
-  `boards` text NOT NULL,
-  `expires` int(30) NOT NULL,
-  `active` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
-);
-
 CREATE TABLE IF NOT EXISTS `bans` (
   `id` int(30) NOT NULL AUTO_INCREMENT,
   `ip` varchar(50) NOT NULL,
@@ -70,8 +60,13 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `noname` int(1) NOT NULL,
   `ids` int(1) NOT NULL,
   `embeds` int(1) NOT NULL,
+  `bbcode` int(1) NOT NULL,
+  `time_between_posts` int(20) NOT NULL,
+  `time_to_delete` int(20) NOT NULL,
+  `filesize` int(20) NOT NULL,
+  `pages` int(4) NOT NULL,
   PRIMARY KEY (`short`)
-);
+)
 
 CREATE TABLE IF NOT EXISTS `config` (
   `name` varchar(100) NOT NULL,
@@ -186,11 +181,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 );
 
 CREATE TABLE IF NOT EXISTS `wordfilter` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
   `search` varchar(100) NOT NULL,
   `replace` varchar(100) NOT NULL,
-  `active` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
+  `active` int(1) NOT NULL
 );
 
 INSERT INTO `bbcodes` (`name`, `code`) VALUES
@@ -213,9 +206,8 @@ INSERT INTO `embeds` (`name`, `regex`, `code`) VALUES
 ('dailymotion', '/http(s)?:\\/\\/(www\\.)?dailymotion\\.com\\/video\\/([^&]+)/', '<iframe width="%1$s" height=""%1$s" src="http://www.dailymotion.com/embed/video/"%4$s" frameborder="0" allowfullscreen></iframe>'),
 ('liveleak', '/http(s)?:\\/\\/(www\\.)?liveleak\\.com\\/view\\?i=([^&]+)/', '<iframe width="%1$s" height="%1$s" src="http://www.liveleak.com/e/%4$s" frameborder="0" allowfullscreen></iframe>\r\n	'),
 ('vimeo', '/http(s)?:\\/\\/(www\\.)?vimeo\\.com\\/([0-9]+)/', '<iframe width="%1$s" height="%1$s" src="http://player.vimeo.com/video/%4$s" frameborder="0" allowfullscreen></iframe>'),
-('youtube', '/http(s)?:\\/\\/(www\\.)?youtube\\.com\\/watch\\?v=([^&]+)/', '<iframe width="%1$s" height="%1$s" src="http://www.youtube.com/embed/%4$s" frameborder="0" allowfullscreen></iframe>'),
+('youtube', '/http(s)?:\\/\\/(www\\.)?youtube\\.com\\/watch\\?v=([^&]+)/', '<iframe width="%1$s" height="%1$s" src="http://www.youtube.com/embed/%4$s" frameborder="0" allowfullscreen></iframe>');
 ('youtu.be', '/http(s)?:\\/\\/(www\\.)?youtu\\.be\\/([^&]+)/', '<iframe width="%1$s" height="%1$s" src="http://www.youtube.com/embed/%4$s" frameborder="0" allowfullscreen></iframe>');
 
-INSERT INTO `styles` (`name`, `path`, `path_thread`, `path_index`, `default`) VALUES 
-('Yotsuba', '../styles/stylesheet.css', '../../styles/stylesheet.css', './styles/stylesheet.css', '1');
-('Yotsuba Blue', '../styles/yotsubablue.css', '../../styles/yotsubablue.css', './styles/yotsubablue.css', '0');
+INSERT INTO `chan`.`styles` (`id`, `name`, `path`, `path_thread`, `path_index`, `default`) VALUES 
+(NULL, 'Yotsuba', '../styles/stylesheet.css', '../../styles/stylesheet.css', './styles/stylesheet.css', '1');
