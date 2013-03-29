@@ -59,11 +59,8 @@ loadPlugins($conn);
 				
 				if (($pdate + $bdata['time_between_posts']) > time())
 				{
-					if ($bdata['embeds']==0)
-					{
-						echo "<center><h1>You'll have to wait more between posts!</h1></center></body></html>";
-						exit;
-					}
+					echo "<center><h1>You'll have to wait more between posts!</h1></center></body></html>";
+					exit;
 				}
 			}
 			if (!empty($_POST['embed']))
