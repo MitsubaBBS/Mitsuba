@@ -1311,6 +1311,42 @@ echo '</tr>';
 		break;
 	case '/links':
 	reqPermission(2);
+	if (!empty($_GET['m']))
+	{
+		if ($_GET['m'] == "del")
+		{
+			if (!empty($_GET['i']))
+			{
+				$id = $conn->real_escape_string($_GET['i']);
+				deleteBoardLink($conn, $id);
+			}
+		}
+		if ($_GET['m'] == "addc")
+		{
+			if (!empty($_POST['title']))
+			{
+				addLinkCategory($conn, $_POST['title']);
+			}
+		}
+		
+		if ($_GET['m'] == "up")
+		{
+			if (!empty($_GET['l']))
+			{
+				$id = $conn->real_escape_string($_GET['l']);
+				moveUpCategory($conn, $id);
+			}
+		}
+		
+		if ($_GET['m'] == "down")
+		{
+			if (!empty($_GET['l']))
+			{
+				$id = $conn->real_escape_string($_GET['l']);
+				moveDownCategory($conn, $id);
+			}
+		}
+	}
 		?>
 				<div class="box-outer top-box">
 <div class="box-inner">
@@ -1328,23 +1364,12 @@ echo getLinkTable($conn, -1);
 <div class="boxbar"><h2><?php echo $lang['mod/add_link_category']; ?></h2></div>
 <div class="boxcontent">
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
-<form action="?/links/category" method="POST">
+<form action="?/links&m=addc" method="POST">
 <?php echo $lang['mod/name']; ?>: <input type="text" name="title" value="<?php echo $lang['mod/category']; ?>" /><input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>
 </div>
 </div>
-		<?php
-		break;
-	case "/links/delete":
-	reqPermission(2);
-		if (!empty($_GET['i']))
-		{
-			$id = $conn->real_escape_string($_GET['i']);
-			deleteBoardLink($conn, $id);
-		}
-		?>
-		<meta http-equiv="refresh" content="0;URL='?/links'" />
 		<?php
 		break;
 	case "/links/edit":
@@ -1393,38 +1418,6 @@ echo getLinkTable($conn, -1);
 		<meta http-equiv="refresh" content="0;URL='?/links'" />
 		<?php
 		}
-		break;
-	case "/links/category":
-	reqPermission(2);
-		if (!empty($_POST['title']))
-		{
-			addLinkCategory($conn, $_POST['title']);
-		}
-		?>
-		<meta http-equiv="refresh" content="0;URL='?/links'" />
-		<?php
-		break;
-	case "/links/up":
-	reqPermission(2);
-		if (!empty($_GET['l']))
-		{
-			$id = $conn->real_escape_string($_GET['l']);
-			moveUpCategory($conn, $id);
-		}
-		?>
-		<meta http-equiv="refresh" content="0;URL='?/links'" />
-		<?php
-		break;
-	case "/links/down":
-	reqPermission(2);
-		if (!empty($_GET['l']))
-		{
-			$id = $conn->real_escape_string($_GET['l']);
-			moveDownCategory($conn, $id);
-		}
-		?>
-		<meta http-equiv="refresh" content="0;URL='?/links'" />
-		<?php
 		break;
 	case "/links/add":
 	reqPermission(2);
@@ -2987,7 +2980,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/unlocked']; ?></h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/t_unlocked']; ?></h2></div>
 <meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>
@@ -2999,7 +2992,7 @@ echo "</tr>";
 	
 								<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/locked']; ?></h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/t_locked']; ?></h2></div>
 <meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
 </div>
 </div>

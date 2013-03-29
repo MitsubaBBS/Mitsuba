@@ -127,13 +127,13 @@ while ($row = $result->fetch_assoc())
 {
 $table .= "<tr>";
 if (empty($row['url'])){
-$table .= "<td colspan=2 style='text-align: center;'><b>".$row['title']."</b> <a href='?/links/up&l=".$row['id']."'>Up</a> <a href='?/links/down&l=".$row['id']."'>Down</a> <a href='?/links/add&p=".$row['id']."'>Add child</a></td>";
+$table .= "<td colspan=2 style='text-align: center;'><b>".$row['title']."</b> <a href='?/links&m=up&l=".$row['id']."'>Up</a> <a href='?/links&m=down&l=".$row['id']."'>Down</a> <a href='?/links/add&p=".$row['id']."'>Add child</a></td>";
 } else {
 $table .= "<td>".$row['short']."</td>";
 $table .= "<td>".$row['title']."</td>";
 }
 $table .= "<td><a href='?/links/edit&i=".$row['id']."'>Edit</a></td>";
-$table .= "<td><a href='?/links/delete&i=".$row['id']."'>Delete</a></td>";
+$table .= "<td><a href='?/links&m=del&i=".$row['id']."'>Delete</a></td>";
 $table .= "</tr>";
 $t2 = getLinkTable($conn, $row['id']);
 if (!empty($t2))
