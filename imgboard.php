@@ -101,7 +101,7 @@ loadPlugins($conn);
 					$filename = $fileid . "." . $ext; 
 					$target_path .= $filename;
 					$file_size = $_FILES['upfile']['size'];
-					if ($file_size > 2097152)
+					if ($file_size > $bdata['filesize'])
 					{
 						echo "<h1>File size too big!</h1></body></html>";
 						exit;
