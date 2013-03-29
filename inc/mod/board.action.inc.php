@@ -28,7 +28,7 @@ if (!empty($_POST['mode']))
 					exit;
 				}
 				$board = $_POST['board'];
-				$ignoresizelimit = 0
+				$ignoresizelimit = 0;
 				if ((!empty($_POST['ignoresizelimit'])) && ($_POST['ignoresizelimit']==1) && ($_SESSION['type'] >= 1))
 				{
 					$ignoresizelimit = 1;
