@@ -26,7 +26,7 @@ if (!defined("IN_MOD"))
 	{
 		$parser->addBBCode($row['name'], $row['code']);
 	}
-	$threads = $conn->query("SELECT * FROM posts WHERE locked=1 AND resto=0 AND board='".$thread['board']."' ORDER BY lastbumped DESC;");
+	$threads = $conn->query("SELECT * FROM posts WHERE locked=1 AND resto=0 ORDER BY lastbumped DESC;");
 	while ($thread = $threads->fetch_assoc())
 	{
 		echo "<tr>";
