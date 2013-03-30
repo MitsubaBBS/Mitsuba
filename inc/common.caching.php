@@ -65,7 +65,7 @@ function getBoardLinks($conn, $in_thread = 0)
 	}
 }
 
-function processComment($board, $conn, $string, $parser, $thread = 0, $specialchars = 1, $bbcode = 1)
+function processComment($board, $conn, $string, $parser, $thread = 0, $specialchars = 1, $bbcode = 1, $id = 0, $resto = 0)
 {
 	$new = $string;
 	if ($specialchars == 1)
@@ -79,7 +79,7 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 	$new = strtr($new, $replace_array);
 	$lines = explode("\n", $new);
 	$new = "";
-	
+	$c_lines = 0;
 	foreach ($lines as $line)
 	{
 		if (substr($line, 0, 8) == "&gt;&gt;")
@@ -161,6 +161,11 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 			$new .= $line." <br />";
 			
 		}
+		$c_lines++;
+		if (($c_lines > 15) && ($thread == 0) && (is_numeric($id)) && ($id > 0))
+		{
+			break;
+		}
 	}
 	$rexProtocol = '(https?://)?';
 	$rexDomain   = '((?:[-a-zA-Z0-9]{1,63}\.)+[-a-zA-Z0-9]{2,63}|(?:[0-9]{1,3}\.){3}[0-9]{1,3})';
@@ -175,6 +180,15 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 	}
 	$rurl = "&\\b$rexProtocol$rexDomain$rexPort$rexPath$rexQuery$rexFragment(?=[?.!,;:\"]?(\s|$))&";
 	$new = preg_replace_callback($rurl, "urlCallback", $new);
+	if (($c_lines > 15) && ($thread == 0) && (is_numeric($id)) && ($id > 0))
+	{
+		if ($resto == 0)
+		{
+			$new .= '<br/><span class="abbr">Comment too long. Click <a href="./res/'.$id.'.html#p'.$id.'">here</a> to view the full text.</span>';
+		} else {
+			$new .= '<br/><span class="abbr">Comment too long. Click <a href="./res/'.$resto.'.html#p'.$id.'">here</a> to view the full text.</span>';
+		}
+	}
 	return $new;
 }
 
@@ -725,16 +739,16 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				{
 					if ($return == 1)
 					{
-						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0, $boarddata['bbcode']);
+						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0, $boarddata['bbcode'], $row['id'], $row['resto']);
 					} else {
-						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode']);
+						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row['id'], $row['resto']);
 					}
 				} else {
 					if ($return == 1)
 					{
-						$file .= processComment($board, $conn, $row['comment'], $parser, 2, $boarddata['bbcode']);
+						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 1, $boarddata['bbcode'], $row['id'], $row['resto']);
 					} else {
-						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, $boarddata['bbcode']);
+						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row['id'], $row['resto']);
 					}
 				}
 			} else {
@@ -946,16 +960,16 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					{
 						if ($return == 1)
 						{
-							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 0);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 0, $row2['id'], $row2['resto']);
 						} else {
-							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0, $row2['id'], $row2['resto']);
 						}
 					} else {
 						if ($return == 1)
 						{
-							$file .= processComment($board, $conn, $row2['comment'], $parser, 2);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 1, $row2['id'], $row2['resto']);
 						} else {
-							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 1, $row2['id'], $row2['resto']);
 						}
 					}
 				} else {
