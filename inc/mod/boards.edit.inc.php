@@ -20,6 +20,7 @@ reqPermission(2);
 <?php echo $lang['mod/board_limit']; ?>: <input type="text" name="limit" maxlength=9 value="<?php echo $data['bumplimit']; ?>" /><br />
 <?php echo $lang['mod/board_pages']; ?>: <input type="text" name="pages" maxlength=9 value="<?php echo $data['pages']; ?>" /><br />
 <?php echo $lang['mod/board_time_between_posts']; ?>: <input type="text" name="time_between_posts" maxlength=9 value="<?php echo $data['time_between_posts']; ?>" /><br />
+<?php echo $lang['mod/board_time_between_threads']; ?>: <input type="text" name="time_between_threads" maxlength=9 value="<?php echo $data['time_between_threads']; ?>" /><br />
 <?php echo $lang['mod/board_time_to_delete']; ?>: <input type="text" name="time_to_delete" maxlength=9 value="<?php echo $data['time_to_delete']; ?>" /><br />
 <?php echo $lang['mod/board_filesize']; ?>: <input type="text" name="filesize" maxlength=9 value="<?php echo $data['filesize']; ?>" /><br />
 <?php echo $lang['mod/board_options']; ?>: <input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_spoilers']; ?> <input type="checkbox" name="noname" value="1" <?php if ($data['noname'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_no_name']; ?> <input type="checkbox" name="ids" value="1" <?php if ($data['ids'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_ids']; ?><br />

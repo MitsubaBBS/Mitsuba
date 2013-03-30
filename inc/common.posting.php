@@ -123,7 +123,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 	}
 }
 
-function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
+function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
 {
 	if (!isBoard($conn, $board))
 	{
@@ -331,7 +331,11 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 			}
 		}
 	}
-	pruneOld($conn, $board);
+	if ($resto == 0)
+	{
+		pruneOld($conn, $board);
+	}
+	
 	if ($resto == 0)
 	{
 		generateView($conn, $board, $id);

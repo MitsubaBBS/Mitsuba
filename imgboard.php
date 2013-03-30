@@ -64,7 +64,20 @@ loadPlugins($conn);
 				
 				if (($pdate + $bdata['time_between_posts']) > time())
 				{
-					echo "<center><h1>You'll have to wait more between posts! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
+					echo "<center><h1>You'll have to wait more before posting a new post! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
+					exit;
+				}
+			}
+			
+			$lastdate = $conn->query("SELECT date FROM posts_".$_POST['board']." WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND resto=0 ORDER BY date DESC LIMIT 0, 1");
+			if ($lastdate->num_rows == 1)
+			{
+				$pdate = $lastdate->fetch_assoc();
+				$pdate = $pdate['date'];
+				
+				if (($pdate + $bdata['time_between_threads']) > time())
+				{
+					echo "<center><h1>You'll have to wait more before posting a new thread! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
 					exit;
 				}
 			}
@@ -139,21 +152,29 @@ loadPlugins($conn);
 			} else {
 				$password = $_POST['pwd'];
 			}
+			$thumb_w = 0;
+			$thumb_h = 0;
 			if (substr($filename, 0, 6) != "embed:")
 			{
 				if (!empty($_FILES['upfile']['tmp_name']))
 				{
 					if ($resto != 0)
 					{
-						if (thumb($board, $fileid.".".$ext, 125) < 0)
+						$returned = thumb($board, $fileid.".".$ext, 125);
+						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
 							echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
 						}
+						$thumb_w = $returned['width'];
+						$thumb_h = $returned['height'];
 					} else {
-						if (thumb($board, $fileid.".".$ext) < 0)
+						$returned = thumb($board, $fileid.".".$ext);
+						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
 							echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
 						}
+						$thumb_w = $returned['width'];
+						$thumb_h = $returned['height'];
 					}
 				}
 			}
@@ -178,7 +199,7 @@ loadPlugins($conn);
 				$embed = 1;
 				$fname = "embed";
 			}
-			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler, $embed);
+			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed);
 			if ($is == -16)
 			{
 					echo "<h1>This board does not exist!</h1></body></html>"; exit;

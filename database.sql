@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `embeds` int(1) NOT NULL,
   `bbcode` int(1) NOT NULL,
   `time_between_posts` int(20) NOT NULL,
+  `time_between_threads` int(20) NOT NULL,
   `time_to_delete` int(20) NOT NULL,
   `filesize` int(20) NOT NULL,
   `pages` int(4) NOT NULL,

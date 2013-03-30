@@ -277,6 +277,7 @@ $lang['mod/raw_html'] = "Raw HTML";
 $lang['mod/board_bbcode'] = "Allow BBCode";
 $lang['mod/board_pages'] = "Board pages";
 $lang['mod/board_time_between_posts'] = "Time between posts (seconds)";
+$lang['mod/board_time_between_threads'] = "Time between threads (seconds)";
 $lang['mod/board_time_to_delete'] = "Time user has wait to delete post (seconds)";
 $lang['mod/board_filesize'] = "Maximum filesize (bytes)";
 

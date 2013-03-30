@@ -46,12 +46,17 @@ reqPermission(2);
 			{
 				$time_between_posts = $_POST['time_between_posts'];
 			}
+			$time_between_threads = 60;
+			if ((!empty($_POST['time_between_threads'])) && (is_numeric($_POST['time_between_threads'])))
+			{
+				$time_between_threads = $_POST['time_between_threads'];
+			}
 			$pages = 15;
 			if ((!empty($_POST['pages'])) && (is_numeric($_POST['pages'])))
 			{
 				$pages = $_POST['pages'];
 			}
-			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_to_delete, $filesize, $pages) > 0)
+			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages) > 0)
 			{
 				?>
 							<div class="box-outer top-box">

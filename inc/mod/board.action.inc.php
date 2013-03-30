@@ -120,15 +120,21 @@ if (!empty($_POST['mode']))
 					{
 						if ($resto != 0)
 						{
-							if (thumb($board, $fileid.".".$ext, 125) < 0)
+							$returned = thumb($board, $fileid.".".$ext, 125);
+							if ((empty($returned['width'])) || (empty($returned['height'])))
 							{
 								echo "<h1>".$lang['no_thumb']."</h1></body></html>"; exit;
 							}
+							$thumb_w = $returned['width'];
+							$thumb_h = $returned['height'];
 						} else {
-							if (thumb($board, $fileid.".".$ext) < 0)
+							$returned = thumb($board, $fileid.".".$ext);
+							if ((empty($returned['width'])) || (empty($returned['height'])))
 							{
 								echo "<h1>".$lang['no_thumb']."</h1></body></html>"; exit;
 							}
+							$thumb_w = $returned['width'];
+							$thumb_h = $returned['height'];
 						}
 					}
 				}
@@ -178,7 +184,7 @@ if (!empty($_POST['mode']))
 					$embed = 1;
 					$fname = "embed";
 				}
-				$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler, $embed, $_SESSION['type'], $capcode, $raw, $sticky, $lock, $nolimit);
+				$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $_SESSION['type'], $capcode, $raw, $sticky, $lock, $nolimit);
 				if ($is == -16)
 				{
 					echo "<h1>".$lang['mod/board_not_found']."</h1></body></html>"; exit;

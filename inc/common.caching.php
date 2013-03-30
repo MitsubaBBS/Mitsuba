@@ -554,12 +554,12 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$file .= '</div>';
 				if ($return == 1)
 				{
-					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row['filename'],8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image"/></a>';
+					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row['filename'],8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
 				} elseif ($threadno != 0)
 				{
-					$file .= '<a class="fileThumb" href="../src/'.substr($row['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image"/></a>';
+					$file .= '<a class="fileThumb" href="../src/'.substr($row['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
 				} else {
-					$file .= '<a class="fileThumb" href="./src/'.substr($row['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image"/></a>';
+					$file .= '<a class="fileThumb" href="./src/'.substr($row['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
 				}
 				$file .= '</div>';
 			} elseif (substr($row['filename'], 0, 6) == "embed:")
@@ -587,12 +587,12 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$file .= '</div>';
 				if ($return == 1)
 				{
-					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row['filename'].'" alt="Thumbnail"/></a>';
+					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row['filename'].'" alt="Thumbnail" style="width: '.$row['t_w'].'px; height: '.$row['t_h'].'px"/></a>';
 				} elseif ($threadno != 0)
 				{
-					$file .= '<a class="fileThumb" href="../src/'.$row['filename'].'" target="_blank"><img src="../src/thumb/'.$row['filename'].'" alt="Thumbnail"/></a>';
+					$file .= '<a class="fileThumb" href="../src/'.$row['filename'].'" target="_blank"><img src="../src/thumb/'.$row['filename'].'" alt="Thumbnail" style="width: '.$row['t_w'].'px; height: '.$row['t_h'].'px"/></a>';
 				} else {
-					$file .= '<a class="fileThumb" href="./src/'.$row['filename'].'" target="_blank"><img src="./src/thumb/'.$row['filename'].'" alt="Thumbnail"/></a>';
+					$file .= '<a class="fileThumb" href="./src/'.$row['filename'].'" target="_blank"><img src="./src/thumb/'.$row['filename'].'" alt="Thumbnail" style="width: '.$row['t_w'].'px; height: '.$row['t_h'].'px"/></a>';
 				}
 				
 				$file .= '</div>';
@@ -893,12 +893,12 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 						$file .= '</div>';
 						if ($return == 1)
 						{
-							$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row2['filename'], 8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image"/></a>';
+							$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row2['filename'], 8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
 						} elseif ($threadno != 0)
 						{
-							$file .= '<a class="fileThumb" href="../src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image"/></a>';
+							$file .= '<a class="fileThumb" href="../src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
 						} else {
-							$file .= '<a class="fileThumb" href="./src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image"/></a>';
+							$file .= '<a class="fileThumb" href="./src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
 						}
 						$file .= '</div>';
 					} elseif (substr($row2['filename'], 0, 6) == "embed:")
@@ -927,12 +927,12 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 						
 						if ($return == 1)
 						{
-							$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row2['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row2['filename'].'" alt="Thumbnail"/></a>';
+							$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row2['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row2['filename'].'" style="width: '.$row2['t_w'].'px; height: '.$row2['t_h'].'px" alt="Thumbnail"/></a>';
 						} elseif ($threadno != 0)
 						{
-							$file .= '<a class="fileThumb" href="../src/'.$row2['filename'].'" target="_blank"><img src="../src/thumb/'.$row2['filename'].'" alt="Thumbnail"/></a>';
+							$file .= '<a class="fileThumb" href="../src/'.$row2['filename'].'" target="_blank"><img src="../src/thumb/'.$row2['filename'].'" style="width: '.$row2['t_w'].'px; height: '.$row2['t_h'].'px" alt="Thumbnail"/></a>';
 						} else {
-							$file .= '<a class="fileThumb" href="./src/'.$row2['filename'].'" target="_blank"><img src="./src/thumb/'.$row2['filename'].'" alt="Thumbnail"/></a>';
+							$file .= '<a class="fileThumb" href="./src/'.$row2['filename'].'" target="_blank"><img src="./src/thumb/'.$row2['filename'].'" style="width: '.$row2['t_w'].'px; height: '.$row2['t_h'].'px" alt="Thumbnail"/></a>';
 						}
 					
 						$file .= '</div>';
@@ -1117,7 +1117,7 @@ function regenThumbnails($conn, $board)
 	{
 		return -16;
 	}
-	$result = $conn->query("SELECT filename, resto FROM posts_".$board);
+	$result = $conn->query("SELECT filename, resto, id FROM posts_".$board);
 	while ($row = $result->fetch_assoc())
 	{
 		if ((!empty($row['filename'])) && ($row['filename'] != "deleted"))
@@ -1126,16 +1126,32 @@ function regenThumbnails($conn, $board)
 			{
 				if ($row['resto'] != 0)
 				{
-					thumb($board, substr($row['filename'], 8), 125);
+					$info = thumb($board, substr($row['filename'], 8), 125);
+					if (!empty($info['width']))
+					{
+						$conn->query("UPDATE posts_".$board." SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']);
+					}
 				} else {
-					thumb($board, substr($row['filename'], 8));
+					$info = thumb($board, substr($row['filename'], 8));
+					if (!empty($info['width']))
+					{
+						$conn->query("UPDATE posts_".$board." SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']);
+					}
 				}
 			} elseif (substr($row['filename'], 0, 6) != "embed:") {
 				if ($row['resto'] != 0)
 				{
-					thumb($board, $row['filename'], 125);
+					$info = thumb($board, $row['filename'], 125);
+					if (!empty($info['width']))
+					{
+						$conn->query("UPDATE posts_".$board." SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']);
+					}
 				} else {
-					thumb($board, $row['filename']);
+					$info = thumb($board, $row['filename']);
+					if (!empty($info['width']))
+					{
+						$conn->query("UPDATE posts_".$board." SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']);
+					}
 				}
 			}
 		}
