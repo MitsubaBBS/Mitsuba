@@ -156,6 +156,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `ip` varchar(50) NOT NULL,
   `lastbumped` int(20) NOT NULL,
   `filehash` varchar(80) NOT NULL,
+  `orig_filesize` int(30) NOT NULL,
   `filesize` varchar(15) NOT NULL,
   `imagesize` varchar(20) NOT NULL,
   `t_w` int(4) NOT NULL,

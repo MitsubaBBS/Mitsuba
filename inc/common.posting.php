@@ -269,6 +269,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		
 	}
 	$isize = "";
+	$osize = 0;
 	$fsize = "";
 	if ((!empty($fname2)) && ($fname2 != "embed"))
 	{
@@ -276,15 +277,17 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		{
 			$d = getimagesize("./".$board."/src/".substr($filename, 8));
 			$isize = $d[0]."x".$d[1];
-			$fsize = human_filesize(filesize("./".$board."/src/".substr($filename, 8)));
+			$osize = filesize("./".$board."/src/".substr($filename, 8));
+			$fsize = human_filesize($osize);
 		} else {
 			$d = getimagesize("./".$board."/src/".$filename);
 			$isize = $d[0]."x".$d[1];
-			$fsize = human_filesize(filesize("./".$board."/src/".$filename));
+			$osize = filesize("./".$board."/src/".$filename);
+			$fsize = human_filesize($osize);
 		}
 	}
-	$conn->query("INSERT INTO posts (board, date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, t_w, t_h, sticky, sage, locked, capcode, raw)".
-	"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', ".$t_w.", ".$t_h.",".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
+	$conn->query("INSERT INTO posts (board, date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, t_w, t_h, sticky, sage, locked, capcode, raw)".
+	"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', ".$t_w.", ".$t_h.",".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
 	$id = mysqli_insert_id($conn);
 	$poster_id = "";
 	if ($bdata['ids'] == 1)
