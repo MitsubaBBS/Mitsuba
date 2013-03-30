@@ -8,13 +8,13 @@ function appendToPost($conn, $board, $postid, $text)
 {
 	if (is_numeric($postid))
 	{
-		$post = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$postid);
+		$post = $conn->query("SELECT * FROM posts WHERE id=".$postid." AND board='".$board."'");
 		if ($post->num_rows == 1)
 		{
 			$pdata = $post->fetch_assoc();
 			$text = $conn->real_escape_string($text);
 			$new_text = $conn->real_escape_string($pdata['comment'])."\n\n".$text;
-			$conn->query("UPDATE posts_".$board." SET comment='".$new_text."', raw=2 WHERE id=".$postid);
+			$conn->query("UPDATE posts SET comment='".$new_text."', raw=2 WHERE id=".$postid." AND board='".$board."'");
 			if ($pdata['resto'] == 0)
 			{
 				generateView($conn, $board, $pdata['id']);
@@ -47,6 +47,14 @@ function checkForUpdates()
 	if ((defined(MITSUBA_VERSION)) && (MITSUBA_VERSION != "disabled"))
 	{
 		//magic here
+	}
+}
+
+function updateConfig($conn, $config)
+{
+	foreach ($config as $key => $value)
+	{
+		$conn->query("UPDATE config SET value='".$conn->real_escape_string($value)."' WHERE name='".$key."';");
 	}
 }
 ?>

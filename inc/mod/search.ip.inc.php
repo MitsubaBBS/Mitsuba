@@ -37,7 +37,7 @@ reqPermission(1);
 			$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC");
 			while ($board = $boards->fetch_assoc())
 			{
-				$posts = $conn->query("SELECT * FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."'");
+				$posts = $conn->query("SELECT * FROM posts WHERE ip='".$_GET['ip']."' AND board='".$board['short']."'");
 				while ($row = $posts->fetch_assoc())
 				{
 					echo "<tr><td>";

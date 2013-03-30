@@ -36,7 +36,7 @@ if ((!empty($_GET['max'])) && (is_numeric($_GET['max'])))
 			
 			while ($board = $boards->fetch_assoc())
 			{
-				$posts = $conn->query("SELECT * FROM posts_".$board['short']." ORDER BY date DESC LIMIT 0, ".$max);
+				$posts = $conn->query("SELECT * FROM posts WHERE board='".$board['short']."' ORDER BY date DESC LIMIT 0, ".$max);
 				while ($row = $posts->fetch_assoc())
 				{
 					$post_array[$num] = $row;

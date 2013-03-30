@@ -14,7 +14,7 @@ function regenIDs($conn, $board)
 		$bdata = getBoardData($conn, $board);
 		if ($bdata['ids'] == 1)
 		{
-			$result = $conn->query("SELECT * FROM posts_".$board);
+			$result = $conn->query("SELECT * FROM posts WHERE board='".$board."'");
 			while ($row = $result->fetch_assoc())
 			{
 				$poster_id = "";
@@ -24,10 +24,10 @@ function regenIDs($conn, $board)
 				} else {
 					$poster_id = mkid($row['ip'], $row['id'], $board);
 				}
-				$conn->query("UPDATE posts_".$board." SET poster_id='".$poster_id."' WHERE id=".$row['id']);
+				$conn->query("UPDATE posts SET poster_id='".$poster_id."' WHERE id=".$row['id']." AND board='".$board."'");
 			}
 		} else {
-			$conn->query("UPDATE posts_".$board." SET poster_id=''");
+			$conn->query("UPDATE posts SET poster_id='' WHERE board='".$board."'");
 		}
 	}
 }
@@ -105,33 +105,6 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 	$result = $conn->query("INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname, ids, embeds, bbcode, time_between_posts, time_between_threads, time_to_delete, filesize, pages) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.", ".$bbcode.", ".$time_between_posts.", ".$time_between_threads.", ".$time_to_delete.", ".$filesize.", ".$pages.")");
 	if ($result)
 	{
-		$conn->query("CREATE TABLE IF NOT EXISTS `posts_".$short."` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
-  `date` int(30) NOT NULL,
-  `name` varchar(60) NOT NULL,
-  `trip` varchar(11) NOT NULL,
-  `poster_id` varchar(8) NOT NULL,
-  `email` varchar(60) NOT NULL,
-  `subject` varchar(100) NOT NULL,
-  `comment` text NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `orig_filename` varchar(80) NOT NULL,
-  `filename` varchar(100) NOT NULL,
-  `resto` int(20) NOT NULL,
-  `ip` varchar(50) NOT NULL,
-  `lastbumped` int(20) NOT NULL,
-  `filehash` varchar(80) NOT NULL,
-  `filesize` varchar(15) NOT NULL,
-  `imagesize` varchar(20) NOT NULL,
-  `t_w` int(4) NOT NULL,
-  `t_h` int(4) NOT NULL,
-  `sticky` int(1) NOT NULL,
-  `sage` int(1) NOT NULL,
-  `locked` int(1) NOT NULL,
-  `capcode` int(1) NOT NULL,
-  `raw` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
-);");
 		createDirectories($short);
 		generateView($conn,$short);
 		return 1;
@@ -143,7 +116,7 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 function deleteBoard($conn, $short)
 {
 	$conn->query("DELETE FROM boards WHERE short='".$conn->real_escape_string($short)."'");
-	$conn->query("DROP TABLE posts_".$short.";");
+	$conn->query("DELETE FROM posts WHERE board='".$conn->real_escape_string($short)."';");
 	delTree("./".$short);
 }
 
@@ -212,7 +185,7 @@ function moveBoard($conn, $short, $new)
 		if (!isBoard($conn, $new))
 		{
 			$conn->query("UPDATE boards SET short='".$conn->real_escape_string($new)."' WHERE short='".$conn->real_escape_string($short)."'");
-			$conn->query("RENAME TABLE posts_".$conn->real_escape_string($short)." TO posts_".$conn->real_escape_string($new));
+			$conn->query("UPDATE posts SET board='".$conn->real_escape_string($new)."' WHERE board='".$conn->real_escape_string($short))."'";
 			rename("./".$short, "./".$new);
 			rebuildBoardCache($conn, $new);
 			return 1;

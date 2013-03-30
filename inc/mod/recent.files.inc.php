@@ -36,7 +36,7 @@ if (!defined("IN_MOD"))
 			$num = 0;
 			while ($board = $boards->fetch_assoc())
 			{
-				$posts = $conn->query("SELECT * FROM posts_".$board['short']." WHERE filename != '' ORDER BY date DESC LIMIT 0, ".$max);
+				$posts = $conn->query("SELECT * FROM posts WHERE filename != '' AND board='".$board['short']."' ORDER BY date DESC LIMIT 0, ".$max);
 				while ($row = $posts->fetch_assoc())
 				{
 					$post_array[$num] = $row;

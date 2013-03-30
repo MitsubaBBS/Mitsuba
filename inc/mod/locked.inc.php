@@ -29,7 +29,7 @@ if (!defined("IN_MOD"))
 	$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
 	while ($row = $boards->fetch_assoc())
 	{
-		$threads = $conn->query("SELECT * FROM posts_".$row['short']." WHERE locked=1 AND resto=0 ORDER BY lastbumped DESC;");
+		$threads = $conn->query("SELECT * FROM posts WHERE locked=1 AND resto=0 AND board='".$row['short']."' ORDER BY lastbumped DESC;");
 		while ($thread = $threads->fetch_assoc())
 		{
 			echo "<tr>";

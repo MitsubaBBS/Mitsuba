@@ -14,7 +14,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 			return -16;
 		}
 		$bdata = getBoardData($conn, $board);
-		$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$postno);
+		$result = $conn->query("SELECT * FROM posts WHERE id=".$postno." AND board='".$board."'");
 		if ($result->num_rows == 1)
 		{
 			$postdata = $result->fetch_assoc();
@@ -44,7 +44,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 						unlink("./".$board."/src/".$filename);
 						unlink("./".$board."/src/thumb/".$filename);
 					}
-					$conn->query("UPDATE posts_".$board." SET filename='deleted' WHERE id=".$postno.";");
+					$conn->query("UPDATE posts SET filename='deleted' WHERE id=".$postno." AND board='".$board."';");
 					if ($postdata['resto'] != 0)
 					{
 						generateView($conn, $board, $postdata['resto']);
@@ -60,7 +60,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 			} else {
 				if ($postdata['resto'] == 0) //we'll have to delete whole thread
 				{
-					$files = $conn->query("SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$postdata['id']);
+					$files = $conn->query("SELECT * FROM posts WHERE filename != '' AND resto=".$postdata['id']." AND board='".$board."'");
 					while ($file = $files->fetch_assoc())
 					{
 						$filename = $file['filename'];
@@ -87,8 +87,8 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 							unlink("./".$board."/src/thumb/".$filename);
 						}
 					}
-					$conn->query("DELETE FROM posts_".$board." WHERE resto=".$postno.";");
-					$conn->query("DELETE FROM posts_".$board." WHERE id=".$postno.";");
+					$conn->query("DELETE FROM posts WHERE resto=".$postno." AND board='".$board."';");
+					$conn->query("DELETE FROM posts WHERE id=".$postno." AND board='".$board."';");
 					unlink("./".$board."/res/".$postno.".html");
 					//generateView($conn, $board, $postno);
 					generateView($conn, $board);
@@ -108,7 +108,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 							unlink("./".$board."/src/thumb/".$filename);
 						}
 					}
-					$conn->query("DELETE FROM posts_".$board." WHERE id=".$postno.";");
+					$conn->query("DELETE FROM posts WHERE id=".$postno." AND board='".$board."';");
 					generateView($conn, $board, $postdata['resto']);
 					generateView($conn, $board);
 					return 2;
@@ -125,6 +125,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 
 function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0)
 {
+	$config = getConfig($conn);
 	if (!isBoard($conn, $board))
 	{
 		return -16;
@@ -200,11 +201,11 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	$replies = 0;
 	if ($resto != 0)
 	{
-		$thread = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$resto);
+		$thread = $conn->query("SELECT * FROM posts WHERE id=".$resto." AND board='".$board."'");
 		
 		if ($bdata['bumplimit'] > 0)
 		{
-			$replies = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$resto);
+			$replies = $conn->query("SELECT * FROM posts WHERE resto=".$resto." AND board='".$board."'");
 			$replies = $replies->num_rows;
 		}
 		
@@ -282,8 +283,8 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 			$fsize = human_filesize(filesize("./".$board."/src/".$filename));
 		}
 	}
-	$conn->query("INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, t_w, t_h, sticky, sage, locked, capcode, raw)".
-	"VALUES (".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', ".$t_w.", ".$t_h.",".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
+	$conn->query("INSERT INTO posts (board, date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, t_w, t_h, sticky, sage, locked, capcode, raw)".
+	"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', ".$t_w.", ".$t_h.",".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
 	$id = mysqli_insert_id($conn);
 	$poster_id = "";
 	if ($bdata['ids'] == 1)
@@ -296,7 +297,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	}
 	if ($poster_id != "")
 	{
-		$conn->query("UPDATE posts_".$board." SET poster_id='".$conn->real_escape_string($poster_id)."' WHERE id=".$id);
+		$conn->query("UPDATE posts SET poster_id='".$conn->real_escape_string($poster_id)."' WHERE id=".$id." AND board='".$board."'");
 	}
 	$email = $old_email;
 	if ($resto != 0)
@@ -305,7 +306,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		{
 		
 		} else {
-			$conn->query("UPDATE posts_".$board." SET lastbumped=".time()." WHERE id=".$resto);
+			$conn->query("UPDATE posts SET lastbumped=".time()." WHERE id=".$resto." AND board='".$board."'");
 		}
 	
 	
@@ -352,6 +353,11 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		generateView($conn, $board, $resto);
 	}
 	generateView($conn, $board);
+	
+	if ($config['frontpage_style'] == 1)
+	{
+		generateFrontpage($conn);
+	}
 }
 
 function reportPost($conn, $board, $id, $reason)
@@ -363,7 +369,7 @@ function reportPost($conn, $board, $id, $reason)
 		{
 			return -16;
 		}
-		$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$id);
+		$result = $conn->query("SELECT * FROM posts WHERE id=".$id." AND board='".$board."'");
 		if ($result->num_rows == 1)
 		{
 			$postdata = $result->fetch_assoc();

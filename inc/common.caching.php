@@ -87,7 +87,7 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 			$space = explode(" ", $line, 2);
 			if (is_numeric(substr($space[0], 8)))
 			{
-				$result = $conn->query("SELECT * FROM posts_".$board." WHERE id='".substr($space[0], 8)."';");
+				$result = $conn->query("SELECT * FROM posts WHERE id='".substr($space[0], 8)."' WHERE board='".$board."';");
 				if (empty($space[1])) { $space[1] = ""; }
 				if ($result->num_rows == 1)
 				{
@@ -120,7 +120,7 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 				$parts = explode("/", $space[0]);
 				if ((isBoard($conn, $parts[1])) && (is_numeric($parts[2])))
 				{
-					$result = $conn->query("SELECT * FROM posts_".$parts[1]." WHERE id='".$parts[2]."';");
+					$result = $conn->query("SELECT * FROM posts WHERE id='".$parts[2]."' AND board='".$parts[1]."';");
 					if (empty($space[1])) { $space[1] = ""; }
 					if ($result->num_rows == 1)
 					{
@@ -260,7 +260,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 	
 	if ($threadno == 0)
 	{
-		$cnt = $conn->query("SELECT id FROM posts_".$board." WHERE resto=0");
+		$cnt = $conn->query("SELECT id FROM posts WHERE resto=0 AND board='".$board."'");
 		$all_pages = ceil(($cnt->num_rows)/10);
 		if ($all_pages == 0) { $all_pages = 1; }
 		if (($max_pages+1) < $all_pages)
@@ -395,7 +395,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			
 		} elseif ($threadno != 0)
 		{
-			$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$threadno.";");
+			$result = $conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."';");
 			if ($result->num_rows == 1)
 			{
 				$tdata = $result->fetch_assoc();
@@ -525,10 +525,10 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 
 		if ($threadno != 0)
 		{
-			$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$threadno.";");
+			$result = $conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."';");
 		} else {
 			
-			$result = $conn->query("SELECT * FROM posts_".$board." WHERE resto=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
+			$result = $conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
 		}
 
 		while ($row = $result->fetch_assoc())
@@ -762,9 +762,9 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= '</div>';
 			if ($threadno != 0)
 			{
-				$posts = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
+				$posts = $conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC");
 			} else {
-			$posts = $conn->query("SELECT COUNT(*) FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC");
+			$posts = $conn->query("SELECT COUNT(*) FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC");
 			$row1 = $posts->fetch_row();
 			if ($row1[0] == 0)
 			{
@@ -786,7 +786,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$offset = $row1[0] - 3;
 				
 			}
-			$posts = $conn->query("SELECT * FROM posts_".$board." WHERE resto=".$row['id']." ORDER BY id ASC LIMIT ".$offset.",3");
+			$posts = $conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC LIMIT ".$offset.",3");
 				
 			}
 			while ($row2 = $posts->fetch_assoc())
@@ -1116,7 +1116,7 @@ function updateThreads($conn, $board)
 	{
 		return -16;
 	}
-	$result = $conn->query("SELECT id FROM posts_".$board." WHERE resto=0");
+	$result = $conn->query("SELECT id FROM posts WHERE resto=0 AND board='".$board."'");
 	while ($row = $result->fetch_assoc())
 	{
 		generateView($conn, $board, $row['id']);
@@ -1131,7 +1131,7 @@ function regenThumbnails($conn, $board)
 	{
 		return -16;
 	}
-	$result = $conn->query("SELECT filename, resto, id FROM posts_".$board);
+	$result = $conn->query("SELECT filename, resto, id FROM posts WHERE board='".$board."'");
 	while ($row = $result->fetch_assoc())
 	{
 		if ((!empty($row['filename'])) && ($row['filename'] != "deleted"))
@@ -1143,13 +1143,13 @@ function regenThumbnails($conn, $board)
 					$info = thumb($board, substr($row['filename'], 8), 125);
 					if (!empty($info['width']))
 					{
-						$conn->query("UPDATE posts_".$board." SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']);
+						$conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
 					}
 				} else {
 					$info = thumb($board, substr($row['filename'], 8));
 					if (!empty($info['width']))
 					{
-						$conn->query("UPDATE posts_".$board." SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']);
+						$conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
 					}
 				}
 			} elseif (substr($row['filename'], 0, 6) != "embed:") {
@@ -1158,13 +1158,13 @@ function regenThumbnails($conn, $board)
 					$info = thumb($board, $row['filename'], 125);
 					if (!empty($info['width']))
 					{
-						$conn->query("UPDATE posts_".$board." SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']);
+						$conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
 					}
 				} else {
 					$info = thumb($board, $row['filename']);
 					if (!empty($info['width']))
 					{
-						$conn->query("UPDATE posts_".$board." SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']);
+						$conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
 					}
 				}
 			}
@@ -1242,34 +1242,7 @@ function generateFrontpage($conn)
 		
 		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-		$file .= '<html>
-			<head>
-			<title>'.$config['sitename'].'</title>
-			<link rel="stylesheet" href="./index.css" />
-			<link rel="stylesheet" href="./global.css" />
-			<link rel="stylesheet" href="./table.css" />
-			</head>
-			<body>';
-		$file .= '<div id="doc">
-			<br /><br />';
-		$file .= '<div class="box-outer top-box">
-			<div class="box-inner">
-			<div class="boxbar"><h2>News</h2></div>
-			<div class="boxcontent">';
-		$result = $conn->query("SELECT * FROM news ORDER BY date DESC;");
-		while ($row = $result->fetch_assoc())
-		{
-			$file .= '<div class="content">';
-			$file .= '<h3><span class="newssub">'.$row['title'].' by '.$row['who'].' - '.date("d/m/Y @ H:i", $row['date']).'</span></span></h3>';
-			$file .= $row['text'];
-			$file .= '</div>';
-		}
-		$file .= '</div>
-			</div>
-			</div>
-			</div>
-			</body>
-			</html>';
+		
 		$handle = fopen("./".$config['frontpage_url'], "w");
 		fwrite($handle, $file);
 		fclose($handle);

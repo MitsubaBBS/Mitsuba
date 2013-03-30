@@ -47,7 +47,7 @@ if ($_SESSION['type'] >= 1)
 		$result = $conn->query("SELECT * FROM reports ORDER BY created DESC");
 		while ($row = $result->fetch_assoc())
 		{
-			$post = $conn->query("SELECT * FROM posts_".$row['board']." WHERE id=".$row['reported_post']);
+			$post = $conn->query("SELECT * FROM posts WHERE id=".$row['reported_post']." AND board='".$row['board']."'");
 			if ($post->num_rows == 0)
 			{
 				$conn->query("DELETE FROM reports WHERE id=".$row['id']);

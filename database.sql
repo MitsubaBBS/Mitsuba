@@ -139,6 +139,35 @@ CREATE TABLE IF NOT EXISTS `pm` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `posts` (
+  `board` varchar(10) NOT NULL,
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `date` int(30) NOT NULL,
+  `name` varchar(60) NOT NULL,
+  `trip` varchar(11) NOT NULL,
+  `poster_id` varchar(8) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `subject` varchar(100) NOT NULL,
+  `comment` text NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `orig_filename` varchar(80) NOT NULL,
+  `filename` varchar(100) NOT NULL,
+  `resto` int(20) NOT NULL,
+  `ip` varchar(50) NOT NULL,
+  `lastbumped` int(20) NOT NULL,
+  `filehash` varchar(80) NOT NULL,
+  `filesize` varchar(15) NOT NULL,
+  `imagesize` varchar(20) NOT NULL,
+  `t_w` int(4) NOT NULL,
+  `t_h` int(4) NOT NULL,
+  `sticky` int(1) NOT NULL,
+  `sage` int(1) NOT NULL,
+  `locked` int(1) NOT NULL,
+  `capcode` int(1) NOT NULL,
+  `raw` int(1) NOT NULL,
+  PRIMARY KEY (`board`, `id`)
+) ENGINE=MyISAM;
+
 CREATE TABLE IF NOT EXISTS `rangebans` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` int(30) NOT NULL,

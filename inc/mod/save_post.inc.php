@@ -6,7 +6,7 @@ if (!defined("IN_MOD"))
 reqPermission(2);
 		if ((!empty($_POST['b'])) && (!empty($_POST['p'])) && (isBoard($conn, $_POST['b'])) && (is_numeric($_POST['p'])) && (!empty($_POST['text'])))
 		{
-			$result = $conn->query("SELECT * FROM posts_".$_POST['b']." WHERE id=".$_POST['p']);
+			$result = $conn->query("SELECT * FROM posts WHERE id=".$_POST['p']." AND board='".$_POST['b']."'");
 			if ($result->num_rows == 1)
 			{
 				$row = $result->fetch_assoc();
@@ -15,7 +15,7 @@ reqPermission(2);
 				{
 					$raw = 1;
 				}
-				$conn->query("UPDATE posts_".$_POST['b']." SET comment='".preprocessComment($conn, $_POST['text'])."', raw=".$raw." WHERE id=".$_POST['p']);
+				$conn->query("UPDATE posts SET comment='".preprocessComment($conn, $_POST['text'])."', raw=".$raw." WHERE id=".$_POST['p']." AND board='".$_POST['b']."'");
 				$resto = $row['resto'];
 				if ($row['resto'] == 0)
 				{

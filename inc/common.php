@@ -80,7 +80,7 @@ function getConfig($conn)
 	return $array;
 }
 
-function updateConfig($conn, $name, $value)
+function updateConfigValue($conn, $name, $value)
 {
 	$name = $conn->real_escape_string($name);
 	$value = $conn->real_escape_string($value);
@@ -421,10 +421,10 @@ function pruneOld($conn, $board)
 	{
 		return -16;
 	}
-	$threads = $conn->query("SELECT * FROM posts_".$board." WHERE resto=0 ORDER BY sticky DESC, lastbumped DESC LIMIT 160, 2000");
+	$threads = $conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT 160, 2000");
 	while ($row = $threads->fetch_assoc())
 	{
-		$files = $conn->query("SELECT * FROM posts_".$board." WHERE filename != '' AND resto=".$row['id']);
+		$files = $conn->query("SELECT * FROM posts WHERE filename != '' AND resto=".$row['id']." AND board='".$board."'");
 		while ($file = $files->fetch_assoc())
 		{
 			unlink("./".$board."/src/".$file['filename']);
@@ -433,8 +433,8 @@ function pruneOld($conn, $board)
 		unlink("./".$board."/src/".$row['filename']);
 		unlink("./".$board."/src/thumb/".$row['filename']);
 		
-		$conn->query("DELETE FROM posts_".$board." WHERE resto=".$row['id']);
-		$conn->query("DELETE FROM posts_".$board." WHERE id=".$row['id']);
+		$conn->query("DELETE FROM posts WHERE resto=".$row['id']." AND board='".$board."'");
+		$conn->query("DELETE FROM posts WHERE id=".$row['id']." AND board='".$board."'");
 		unlink("./".$board."/res/".$row['id'].".html");
 	}
 }

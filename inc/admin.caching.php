@@ -22,7 +22,7 @@ function generatePost($conn, $board, $id)
 	{
 		return -16;
 	}
-	$result = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$id);
+	$result = $conn->query("SELECT * FROM posts WHERE id=".$id." AND board='".$board."'");
 	if ($result->num_rows == 1)
 	{
 		$post = $result->fetch_assoc();

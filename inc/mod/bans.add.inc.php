@@ -16,7 +16,7 @@ if (empty($_GET['r']))
 			$board = $conn->real_escape_string($_GET['b']);
 			$post = $_GET['p'];
 			//<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>
-			$postdata = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$post);
+			$postdata = $conn->query("SELECT * FROM posts WHERE id=".$post." AND board='".$board."'");
 			if ($postdata->num_rows == 1)
 			{
 				$postinfo = $postdata->fetch_assoc();
@@ -104,7 +104,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 			$board = $conn->real_escape_string($_POST['board']);
 			$post = $_POST['post'];
 			//<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>
-			$postdata = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$post);
+			$postdata = $conn->query("SELECT * FROM posts WHERE id=".$post." AND board='".$board."'");
 			if ($postdata->num_rows == 0)
 			{
 				$post = "";
@@ -199,7 +199,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 				$board = $request['board'];
 				$post = $request['post'];
 				//<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>
-				$postdata = $conn->query("SELECT * FROM posts_".$board." WHERE id=".$post);
+				$postdata = $conn->query("SELECT * FROM posts WHERE id=".$post." AND board='".$board."'");
 				if ($postdata->num_rows == 1)
 				{
 					$postinfo = $postdata->fetch_assoc();

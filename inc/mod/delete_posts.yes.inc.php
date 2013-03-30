@@ -8,16 +8,16 @@ if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
 			$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC");
 			while ($board = $boards->fetch_assoc())
 			{
-				$threads = $conn->query("SELECT * FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."' AND resto=0");
+				$threads = $conn->query("SELECT * FROM posts WHERE ip='".$_GET['ip']."' AND resto=0 AND board='".$board['short']."'");
 				while ($row = $threads->fetch_assoc())
 				{
-					$conn->query("DELETE FROM posts_".$board['short']." WHERE resto=".$row['id']);
+					$conn->query("DELETE FROM posts WHERE resto=".$row['id']." AND board='".$board['short']."'");
 					if ($row['resto'] == 0)
 					{
 						unlink("./".$board['short']."/res/".$row['id'].".html");
 					}
 				}
-				$conn->query("DELETE FROM posts_".$board['short']." WHERE ip='".$_GET['ip']."'");
+				$conn->query("DELETE FROM posts WHERE ip='".$_GET['ip']."' AND board='".$board['short']."'");
 				rebuildBoardCache($conn, $row['short']);
 				?>
 	

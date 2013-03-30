@@ -397,6 +397,12 @@ switch ($path)
 	case "/cleaner/do":
 		include("inc/mod/cleaner.do.inc.php");
 		break;
+	case "/config/update":
+		include("inc/mod/config.update.inc.php");
+		break;
+	case "/config/reset":
+		include("inc/mod/config.reset.inc.php");
+		break;
 	default:
 		echo runHooks("panel", $path);
 		break;

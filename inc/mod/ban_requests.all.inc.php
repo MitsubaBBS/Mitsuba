@@ -25,7 +25,7 @@ $result = $conn->query("SELECT * FROM ban_requests ORDER BY created DESC");
 while ($row = $result->fetch_assoc())
 {
 
-$post_r = $conn->query("SELECT * FROM posts_".$row['board']." WHERE id=".$row['post']);
+$post_r = $conn->query("SELECT * FROM posts WHERE id=".$row['post']." AND board='".$row['board']."'");
 if ($post_r->num_rows == 0)
 {
 	$conn->query("DELETE FROM reports WHERE id=".$row['id']);
