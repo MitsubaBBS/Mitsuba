@@ -68,7 +68,7 @@ if (!empty($_POST['mode']))
 				} else {
 					if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 					{
-						echo "<h1>".$lang['mod/file_too_big']." 1</h1></body></html>";
+						echo "<h1>".$lang['mod/file_too_big']."</h1></body></html>";
 						exit;
 					}
 					if (!empty($_FILES['upfile']['tmp_name']))
@@ -81,7 +81,7 @@ if (!empty($_POST['mode']))
 						$file_size = $_FILES['upfile']['size'];
 						if (($file_size > $bdata['filesize']) && ($ignoresizelimit != 1))
 						{
-							echo "<h1>".$lang['mod/file_too_big']." 2</h1></body></html>";
+							echo "<h1>".$lang['mod/file_too_big']."</h1></body></html>";
 							exit;
 						}
 						if (!isImage($_FILES['upfile']['tmp_name']))

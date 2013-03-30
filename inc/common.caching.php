@@ -413,7 +413,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					$file .= '<form action="../imgboard.php" method="post" enctype="multipart/form-data">';
 				}
 			}
-			if ($adm_type >= 1)
+			if ($adm_type <= 0)
 			{
 				$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="'.$boarddata['filesize'].'" />';
 			}
@@ -891,14 +891,14 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./src/'.substr($row2['filename'], 8).'" target="_blank"><b>Spoiler image</b></a></span>';
 						}
 						$file .= '</div>';
-						if ($threadno != 0)
+						if ($return == 1)
 						{
-							$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row2['filename'], 8).'" target="_blank"><img src="./img/spoiler.png" alt="Deleted"/></a>';
+							$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row2['filename'], 8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image"/></a>';
 						} elseif ($threadno != 0)
 						{
-							$file .= '<a class="fileThumb" href="../src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../../img/spoiler.png" alt="Deleted"/></a>';
+							$file .= '<a class="fileThumb" href="../src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image"/></a>';
 						} else {
-							$file .= '<a class="fileThumb" href="./src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../img/spoiler.png" alt="Deleted"/></a>';
+							$file .= '<a class="fileThumb" href="./src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image"/></a>';
 						}
 						$file .= '</div>';
 					} elseif (substr($row2['filename'], 0, 6) == "embed:")

@@ -34,6 +34,11 @@ loadPlugins($conn);
 			}
 			$board = $_POST['board'];
 			banMessage($conn, $board);
+			
+			if (!isBoard($_POST['board']))
+			{
+				echo "<h1>This board does not exist!</h1></body></html>"; exit;
+			}
 			?>
 <html>
 <head>
@@ -67,7 +72,7 @@ loadPlugins($conn);
 			{
 				if ($bdata['embeds']==0)
 				{
-					echo "<center><h1>Embed not supported!</h1></center></body></html>";
+					echo "<center><h1>Embed not supported! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
 					exit;
 				}
 				
@@ -81,13 +86,13 @@ loadPlugins($conn);
 				{
 					$filename = "embed:".$_POST['embed'];
 				} else {
-					echo "<center><h1>Embed not supported!</h1></center></body></html>";
+					echo "<center><h1>Embed not supported! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
 					exit;
 				}
 			} else {
 				if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 				{
-					echo "<h1>File size too big!</h1></body></html>";
+					echo "<h1>File size too big! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
 					exit;
 				}
 				if (!empty($_FILES['upfile']['tmp_name']))
@@ -100,12 +105,12 @@ loadPlugins($conn);
 					$file_size = $_FILES['upfile']['size'];
 					if ($file_size > $bdata['filesize'])
 					{
-						echo "<h1>File size too big!</h1></body></html>";
+						echo "<h1>File size too big! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
 						exit;
 					}
 					if (!isImage($_FILES['upfile']['tmp_name']))
 					{
-						echo "<h1>File is not an image!</h1></body></html>";
+						echo "<h1>File is not an image! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
 						exit;
 					}
 					$md5 = md5_file($_FILES['upfile']['tmp_name']);
@@ -176,7 +181,7 @@ loadPlugins($conn);
 			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $spoiler, $embed);
 			if ($is == -16)
 			{
-						echo "<h1>This board does not exist!</h1></body></html>"; exit;
+					echo "<h1>This board does not exist!</h1></body></html>"; exit;
 			}
 			break;
 		case "usrform":

@@ -172,6 +172,7 @@ function thumb($board,$filename,$s=250){
 		// created image is destroyed
 		ImageDestroy($im_in);
 		ImageDestroy($im_out);
+		return array("width" => $out_w, "height" => $out_h);
 	} elseif ($extension == "imagick")
 	{
 		$fname='./'.$board.'/src/'.$filename;
@@ -185,7 +186,9 @@ function thumb($board,$filename,$s=250){
 		}
 		$img->setImageCompressionQuality(60); 
 		$img->writeImages($thumb_dir.$filename, true);
+		$ig = $img->getImageGeometry();
 		$img->destroy();
+		return $ig;
 	}
 }
 
