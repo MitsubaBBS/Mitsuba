@@ -35,7 +35,7 @@ loadPlugins($conn);
 			$board = $_POST['board'];
 			banMessage($conn, $board);
 			
-			if (!isBoard($_POST['board']))
+			if (!isBoard($conn, $_POST['board']))
 			{
 				echo "<h1>This board does not exist!</h1></body></html>"; exit;
 			}
