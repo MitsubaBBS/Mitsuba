@@ -59,7 +59,7 @@ loadPlugins($conn);
 				
 				if (($pdate + $bdata['time_between_posts']) > time())
 				{
-					echo "<center><h1>You'll have to wait more between posts!</h1></center></body></html>";
+					echo "<center><h1>You'll have to wait more between posts! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
 					exit;
 				}
 			}

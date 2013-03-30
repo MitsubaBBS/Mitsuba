@@ -397,11 +397,12 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			if ($threadno != 0)
 		{
 				$file .= '<div class="postingMode">Posting mode: Reply</div>';
-				$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>]</div>';
 				if ($return == 1)
 				{
+					$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">Return</a>]</div>';
 					$file .= '<form action="?/board/action" method="post" enctype="multipart/form-data">';
 				} else {
+					$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>]</div>';
 					$file .= '<form action="../../imgboard.php" method="post" enctype="multipart/form-data">';
 				}
 			} else {
@@ -412,7 +413,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					$file .= '<form action="../imgboard.php" method="post" enctype="multipart/form-data">';
 				}
 			}
-			if ($adm_type <= 0)
+			if ($adm_type >= 1)
 			{
 				$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="'.$boarddata['filesize'].'" />';
 			}

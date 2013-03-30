@@ -149,7 +149,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 			{
 				if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
 				{
-					deletePost($conn, $board, $post, 0, $_SESSION['type']);
+					deletePost($conn, $board, $post, "", 0, $_SESSION['type']);
 				} else {
 					if ((!empty($post)) && (!empty($_POST['append'])) && ($_POST['append'] == 1))
 					{
