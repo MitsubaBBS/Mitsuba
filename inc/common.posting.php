@@ -139,6 +139,15 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		$adm_type = -1;
 	}
 	
+	if (!is_numeric($t_w))
+	{
+		$t_w = 0;
+	}
+	if (!is_numeric($t_h))
+	{
+		$t_h = 0;
+	}
+	
 	if ((!is_numeric($raw)) || ($adm_type <= 0))
 	{
 		$raw = 0;
@@ -273,8 +282,8 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 			$fsize = human_filesize(filesize("./".$board."/src/".$filename));
 		}
 	}
-	$conn->query("INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, sticky, sage, locked, capcode, raw)".
-	"VALUES (".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
+	$conn->query("INSERT INTO posts_".$board." (date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, filesize, imagesize, t_w, t_h, sticky, sage, locked, capcode, raw)".
+	"VALUES (".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', '".$fsize."', '".$isize."', ".$t_w.", ".$t_h.",".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
 	$id = mysqli_insert_id($conn);
 	$poster_id = "";
 	if ($bdata['ids'] == 1)

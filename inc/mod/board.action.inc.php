@@ -114,6 +114,8 @@ if (!empty($_POST['mode']))
 				} else {
 					$password = $_POST['pwd'];
 				}
+				$thumb_w = 0;
+				$thumb_h = 0;
 				if (substr($filename, 0, 6) != "embed:")
 				{
 					if (!empty($_FILES['upfile']['tmp_name']))
