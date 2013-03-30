@@ -87,7 +87,7 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 			$space = explode(" ", $line, 2);
 			if (is_numeric(substr($space[0], 8)))
 			{
-				$result = $conn->query("SELECT * FROM posts WHERE id='".substr($space[0], 8)."' WHERE board='".$board."';");
+				$result = $conn->query("SELECT * FROM posts WHERE id='".substr($space[0], 8)."' AND board='".$board."';");
 				if (empty($space[1])) { $space[1] = ""; }
 				if ($result->num_rows == 1)
 				{

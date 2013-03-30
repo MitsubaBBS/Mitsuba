@@ -37,7 +37,7 @@ echo "<td>".$row['reason']."</td>";
 echo "<td>".$row['note']."</td>";
 echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
 
-$post_r = $conn->query("SELECT * FROM posts WHERE id=".$row['post']." board='".$row['board']."'");
+$post_r = $conn->query("SELECT * FROM posts WHERE id=".$row['post']." AND board='".$row['board']."'");
 if ($post_r->num_rows == 1)
 {
 $post = $post_r->fetch_assoc();
