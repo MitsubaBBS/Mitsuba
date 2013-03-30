@@ -43,24 +43,24 @@ function toggle(button,area) {
 <ul>
 <li><a href="?/announcements" target="main"><?php echo $lang['mod/announcements']; ?></a></li>
 <li><a href="?/news" target="main"><?php echo $lang['mod/news']; ?></a></li>
-<li><a href="?/bans" target="main"><?php echo $lang['mod/banlist']; ?></a></li>
-<li><a href="?/reports" target="main"><?php echo $lang['mod/report_queue']; ?> (<?php echo $reports; ?>)</a></li>
 <li><a href="?/notes" target="main"><?php echo $lang['mod/notes']; ?></a></li>
 <li><a href="?/ipnotes" target="main"><?php echo $lang['mod/ip_notes']; ?></a></li>
 <li><a href="?/recent/posts" target="main"><?php echo $lang['mod/recent_posts']; ?></a></li>
 <li><a href="?/recent/files" target="main"><?php echo $lang['mod/recent_images']; ?></a></li>
+<li><a href="?/reports" target="main"><?php echo $lang['mod/report_queue']; ?> (<?php echo $reports; ?>)</a></li>
+<li><a href="?/bans" target="main"><?php echo $lang['mod/banlist']; ?></a></li>
 <?php
 echo runHooks("menu", null);
 if ($_SESSION['type'] >= 1)
 {
 ?>
+<li><a href="?/bans/add" target="main"><?php echo $lang['mod/add_ban']; ?></a></li>
 <li><a href="?/ban_requests" target="main"><?php echo $lang['mod/ban_requests']; ?> (<?php echo $breqs; ?>)</a></li>
+<li><a href="?/appeals" target="main"><?php echo $lang['mod/appeals']; ?> (<?php echo $appeals; ?>)</a></li>
 <li><a href="?/announcements/add" target="main"><?php echo $lang['mod/new_announcement']; ?></a></li>
 <li><a href="?/news/add" target="main"><?php echo $lang['mod/add_news']; ?></a></li>
-<li><a href="?/bans/add" target="main"><?php echo $lang['mod/add_ban']; ?></a></li>
 <li><a href="?/locked" target="main"><?php echo $lang['mod/locked']; ?></a></li>
 <li><a href="?/sticky" target="main"><?php echo $lang['mod/sticky']; ?></a></li>
-<li><a href="?/appeals" target="main"><?php echo $lang['mod/appeals']; ?> (<?php echo $appeals; ?>)</a></li>
 <?php
 }
 ?>
@@ -68,9 +68,9 @@ if ($_SESSION['type'] >= 1)
 <h2><span class="coll" onclick="toggle(this,'acc');" title="Toggle Category">&minus;</span><?php echo $lang['mod/account']; ?></h2>
 <div id="acc" style="">
 <ul>
-<li><a href="?/password" target="main"><?php echo $lang['mod/change_password']; ?></a></li>
 <li><a href="?/inbox" target="main"><?php echo $lang['mod/inbox']; ?> (<?php echo $pms; ?>)</a></li>
 <li><a href="?/inbox/new" target="main"><?php echo $lang['mod/send_message']; ?></a></li>
+<li><a href="?/password" target="main"><?php echo $lang['mod/change_password']; ?></a></li>
 </ul></div>
 <?php
 if ($_SESSION['type'] >= 2)
@@ -83,7 +83,6 @@ if ($_SESSION['type'] >= 2)
 <li><a href="?/boards" target="main"><?php echo $lang['mod/manage_boards']; ?></a></li>
 <li><a href="?/links" target="main"><?php echo $lang['mod/manage_board_links']; ?></a></li>
 <li><a href="?/users" target="main"><?php echo $lang['mod/manage_users']; ?></a></li>
-<li><a href="?/whitelist" target="main"><?php echo $lang['mod/manage_whitelist']; ?></a></li>
 <li><a href="?/news/manage" target="main"><?php echo $lang['mod/manage_news_entries']; ?></a></li>
 <li><a href="?/announcements/manage" target="main"><?php echo $lang['mod/manage_announcements']; ?></a></li>
 <li><a href="?/bbcodes" target="main"><?php echo $lang['mod/manage_bbcodes']; ?></a></li>
@@ -91,6 +90,7 @@ if ($_SESSION['type'] >= 2)
 <li><a href="?/styles" target="main"><?php echo $lang['mod/manage_styles']; ?></a></li>
 <li><a href="?/wordfilter" target="main"><?php echo $lang['mod/manage_wordfilter']; ?></a></li>
 <li><a href="?/range" target="main"><?php echo $lang['mod/manage_range_bans']; ?></a></li>
+<li><a href="?/whitelist" target="main"><?php echo $lang['mod/manage_whitelist']; ?></a></li>
 <li><a href="?/message" target="main"><?php echo $lang['mod/global_message']; ?></a></li>
 <li><a href="?/rebuild" target="main"><?php echo $lang['mod/rebuild_cache']; ?></a></li>
 <li><a href="?/cleaner" target="main"><?php echo $lang['mod/cleaner']; ?></a></li>

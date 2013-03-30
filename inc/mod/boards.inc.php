@@ -21,7 +21,7 @@ reqPermission(2);
 <?php echo $lang['mod/board_time_to_delete']; ?>: <input type="text" name="time_to_delete" maxlength=9 value="120" /><br />
 <?php echo $lang['mod/board_filesize']; ?>: <input type="text" name="filesize" maxlength=9 value="2097152" /><br />
 <?php echo $lang['mod/board_options']; ?>: <input type="checkbox" name="spoilers" value="1" /><?php echo $lang['mod/board_spoilers']; ?> <input type="checkbox" name="noname" value="1" /><?php echo $lang['mod/board_no_name']; ?> <input type="checkbox" name="ids" value="1" /><?php echo $lang['mod/board_ids']; ?><br />
-<input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?> <input type="checkbox" name="bbcode" value="1" checked/><?php echo $lang['mod/board_bbcode']; ?> <input type="checkbox" name="hidden" value="1"/><?php echo $lang['mod/board_hidden']; ?><br />
+<input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?> <input type="checkbox" name="bbcode" value="1" checked/><?php echo $lang['mod/board_bbcode']; ?> <input type="checkbox" name="hidden" value="1"/><?php echo $lang['mod/board_hidden']; ?> <input type="checkbox" name="nodup" value="1"/><?php echo $lang['mod/board_nodup']; ?><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>

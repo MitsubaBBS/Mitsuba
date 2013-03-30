@@ -36,6 +36,11 @@ reqPermission(2);
 			{
 				$hidden = 1;
 			}
+			$nodup = 0;
+			if ((!empty($_POST['nodup'])) && ($_POST['nodup'] == 1))
+			{
+				$nodup = 1;
+			}
 			$filesize = 2097152;
 			if ((!empty($_POST['filesize'])) && (is_numeric($_POST['filesize'])))
 			{
@@ -61,7 +66,7 @@ reqPermission(2);
 			{
 				$pages = $_POST['pages'];
 			}
-			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden) > 0)
+			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup) > 0)
 			{
 				?>
 							<div class="box-outer top-box">

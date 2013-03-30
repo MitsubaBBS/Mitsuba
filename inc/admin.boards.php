@@ -52,7 +52,7 @@ function createDirectories($board)
 	}
 }
 
-function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0)
+function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0, $nodup = 0)
 {
 	$short = $conn->real_escape_string(trim($short, "/ "));
 	$name = $conn->real_escape_string($name);
@@ -84,7 +84,11 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 	}
 	if (!is_numeric($hidden))
 	{
-		$hidden = 1;
+		$hidden = 0;
+	}
+	if (!is_numeric($nodup))
+	{
+		$nodup = 0;
 	}
 	if (!is_numeric($time_between_posts))
 	{
@@ -106,7 +110,7 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 	{
 		$pages = 15;
 	}
-	$result = $conn->query("INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname, ids, embeds, bbcode, time_between_posts, time_between_threads, time_to_delete, filesize, pages, hidden) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.", ".$bbcode.", ".$time_between_posts.", ".$time_between_threads.", ".$time_to_delete.", ".$filesize.", ".$pages.", ".$hidden.")");
+	$result = $conn->query("INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname, ids, embeds, bbcode, time_between_posts, time_between_threads, time_to_delete, filesize, pages, hidden, nodup) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.", ".$bbcode.", ".$time_between_posts.", ".$time_between_threads.", ".$time_to_delete.", ".$filesize.", ".$pages.", ".$hidden.", ".$nodup.")");
 	if ($result)
 	{
 		createDirectories($short);
@@ -124,7 +128,7 @@ function deleteBoard($conn, $short)
 	delTree("./".$short);
 }
 
-function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 0, $new_spoilers = 0, $new_noname = 0, $new_ids = 0, $new_embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0)
+function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 0, $new_spoilers = 0, $new_noname = 0, $new_ids = 0, $new_embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0, $nodup = 0)
 {
 	if (isBoard($conn, $short))
 	{
@@ -154,7 +158,11 @@ function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 
 		}
 		if (!is_numeric($hidden))
 		{
-			$hidden = 1;
+			$hidden = 0;
+		}
+		if (!is_numeric($nodup))
+		{
+			$nodup = 0;
 		}
 		if (!is_numeric($time_between_posts))
 		{
@@ -176,7 +184,7 @@ function updateBoard($conn, $short, $new_name, $new_des, $new_msg, $new_limit = 
 		{
 			$pages = 15;
 		}
-		$conn->query("UPDATE boards SET name='".$conn->real_escape_string($new_name)."', des='".$conn->real_escape_string($new_des)."', message='".$conn->real_escape_string($new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers.", noname=".$new_noname.", ids=".$new_ids.", embeds=".$new_embeds.", bbcode=".$bbcode.", time_between_posts=".$time_between_posts.", time_between_threads=".$time_between_threads.", time_to_delete=".$time_to_delete.", filesize=".$filesize.", pages=".$pages.", hidden=".$hidden." WHERE short='".$conn->real_escape_string($short)."'");
+		$conn->query("UPDATE boards SET name='".$conn->real_escape_string($new_name)."', des='".$conn->real_escape_string($new_des)."', message='".$conn->real_escape_string($new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers.", noname=".$new_noname.", ids=".$new_ids.", embeds=".$new_embeds.", bbcode=".$bbcode.", time_between_posts=".$time_between_posts.", time_between_threads=".$time_between_threads.", time_to_delete=".$time_to_delete.", filesize=".$filesize.", pages=".$pages.", hidden=".$hidden.", nodup=".$nodup." WHERE short='".$conn->real_escape_string($short)."'");
 		rebuildBoardCache($conn, $short);
 		return 1;
 	} else {

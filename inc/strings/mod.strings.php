@@ -288,6 +288,7 @@ $lang['mod/cleaning_done'] = "Cleaning done";
 
 $lang['mod/config_updated'] = "Configuration updated";
 $lang['mod/board_hidden'] = "Secret board";
+$lang['mod/board_nodup'] = "No duplicate files";
 
 //$lang['mod/'] = "";
 ?>

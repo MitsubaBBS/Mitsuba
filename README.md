@@ -14,7 +14,6 @@ Planned features
 
 * logging actions
 * captcha support
-* file hash match
 * catalog feature (like 4chan)
 
 Credits
