@@ -212,6 +212,10 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		return -16;
 	}
 	$boarddata = getBoardData($conn, $board);
+	if (($boarddata['hidden'] == 1) && ($return == 0))
+	{
+		return -666;
+	}
 	$max_pages = $boarddata['pages'];
 	$all_pages = $max_pages;
 	$pages = $max_pages;

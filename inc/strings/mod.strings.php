@@ -287,6 +287,7 @@ $lang['mod/delete_expired_bans'] = "Delete expired bans";
 $lang['mod/cleaning_done'] = "Cleaning done";
 
 $lang['mod/config_updated'] = "Configuration updated";
+$lang['mod/board_hidden'] = "Secret board";
 
 //$lang['mod/'] = "";
 ?>

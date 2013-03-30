@@ -33,6 +33,25 @@ reqPermission(2);
 				{
 					$bbcode = 1;
 				}
+				$hidden = 1;
+				if ((!empty($_POST['hidden'])) && ($_POST['hidden'] == 1))
+				{
+					$hidden = 1;
+					foreach(glob('./'.$_GET['board'].'/*.html') as $file)
+					{
+						if(is_file($file))
+						{
+							unlink($file);
+						}
+					}
+					foreach(glob('./'.$_GET['board'].'/res/*.html') as $file)
+					{
+						if(is_file($file))
+						{
+							unlink($file);
+						}
+					}
+				}
 				$filesize = 2097152;
 				if ((!empty($_POST['filesize'])) && (is_numeric($_POST['filesize'])))
 				{
@@ -58,7 +77,7 @@ reqPermission(2);
 				{
 					$pages = $_POST['pages'];
 				}
-				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages))
+				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden))
 				{
 				?>
 							<div class="box-outer top-box">

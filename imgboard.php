@@ -50,6 +50,11 @@ loadPlugins($conn);
 			
 			$md5 = "";
 			$bdata = getBoardData($conn, $_POST['board']);
+			if ($bdata['hidden'] == 1)
+			{
+				echo "<h1>This board does not exist!</h1></body></html>"; exit;
+			}
+			
 			if ((!empty($_POST['embed'])) && (!empty($_FILES['upfile']['tmp_name'])))
 			{
 				echo "<center><h1>Choose one: image or embed! ;_;</h1></center></body></html>";
