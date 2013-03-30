@@ -25,6 +25,15 @@ reqPermission(2);
 			}
 		}
 		
+		if ((!empty($_POST['thumbs'])) && ($_POST['thumbs']==1))
+		{
+			$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
+			while ($row = $result->fetch_assoc())
+			{
+				regenThumbnails($conn, $row['short']);
+			}
+		}
+		
 		if ((!empty($_POST['static'])) && ($_POST['static']==1))
 		{
 			generateFrontpage($conn);

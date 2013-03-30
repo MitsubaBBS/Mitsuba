@@ -4,7 +4,6 @@ function rebuildBoardCache($conn, $board)
 {
 generateView($conn, $board);
 updateThreads($conn, $board);
-regenThumbnails($conn, $board);
 regenIDs($conn, $board);
 }
 

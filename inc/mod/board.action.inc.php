@@ -125,7 +125,7 @@ if (!empty($_POST['mode']))
 							$returned = thumb($board, $fileid.".".$ext, 125);
 							if ((empty($returned['width'])) || (empty($returned['height'])))
 							{
-								echo "<h1>".$lang['no_thumb']."</h1></body></html>"; exit;
+								echo "<h1>".$lang['mod/no_thumb']."</h1></body></html>"; exit;
 							}
 							$thumb_w = $returned['width'];
 							$thumb_h = $returned['height'];

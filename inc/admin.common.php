@@ -26,11 +26,6 @@ function appendToPost($conn, $board, $postid, $text)
 	}
 }
 
-function logEvent($conn, $event)
-{
-	$conn->query("INSERT INTO log (date, event, mod_id) VALUES (".time().", '".$conn->real_escape_string($event)."', ".$_SESSION['id'].")");
-}
-
 function canBoard($board)
 {
 	if (($_SESSION['boards'] != "*") && ($_SESSION['type'] != 2))

@@ -280,6 +280,7 @@ $lang['mod/board_time_between_posts'] = "Time between posts (seconds)";
 $lang['mod/board_time_between_threads'] = "Time between threads (seconds)";
 $lang['mod/board_time_to_delete'] = "Time user has wait to delete post (seconds)";
 $lang['mod/board_filesize'] = "Maximum filesize (bytes)";
+$lang['mod/thumbnails'] = "Thumbnails";
 
 //$lang['mod/'] = "";
 ?>
