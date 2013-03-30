@@ -282,5 +282,9 @@ $lang['mod/board_time_to_delete'] = "Time user has wait to delete post (seconds)
 $lang['mod/board_filesize'] = "Maximum filesize (bytes)";
 $lang['mod/thumbnails'] = "Thumbnails";
 
+$lang['mod/cleaner'] = "Cleaner";
+$lang['mod/delete_expired_bans'] = "Delete expired bans";
+$lang['mod/cleaning_done'] = "Cleaning done";
+
 //$lang['mod/'] = "";
 ?>

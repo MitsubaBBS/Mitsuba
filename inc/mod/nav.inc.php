@@ -93,6 +93,7 @@ if ($_SESSION['type'] >= 2)
 <li><a href="?/range" target="main"><?php echo $lang['mod/manage_range_bans']; ?></a></li>
 <li><a href="?/message" target="main"><?php echo $lang['mod/global_message']; ?></a></li>
 <li><a href="?/rebuild" target="main"><?php echo $lang['mod/rebuild_cache']; ?></a></li>
+<li><a href="?/cleaner" target="main"><?php echo $lang['mod/cleaner']; ?></a></li>
 <li><a href="?/log" target="main"><?php echo $lang['mod/action_log']; ?></a></li>
 </ul></div>
 <?php

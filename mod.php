@@ -391,6 +391,12 @@ switch ($path)
 	case "/log":
 		include("inc/mod/log.inc.php");
 		break;
+	case "/cleaner":
+		include("inc/mod/cleaner.inc.php");
+		break;
+	case "/cleaner/do":
+		include("inc/mod/cleaner.do.inc.php");
+		break;
 	default:
 		echo runHooks("panel", $path);
 		break;
