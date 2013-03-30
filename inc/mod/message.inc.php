@@ -6,7 +6,7 @@ if (!defined("IN_MOD"))
 reqPermission(2);
 		if (isset($_POST['message']))
 		{
-			updateConfig($conn, "global_message", $_POST['message']);
+			updateConfigValue($conn, "global_message", $_POST['message']);
 		?>
 							<div class="box-outer top-box">
 <div class="box-inner">
