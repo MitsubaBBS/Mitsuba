@@ -12,7 +12,7 @@ reqPermission(1);
 			{
 				$imageonly = 1;
 			}
-			deletePost($conn, $_GET['b'], $_GET['p'], $imageonly, $_SESSION['type']);
+			deletePost($conn, $_GET['b'], $_GET['p'], "", $imageonly, $_SESSION['type']);
 			if ($imageonly == 1)
 			{
 			?>
