@@ -67,11 +67,11 @@ if ($_SESSION['type'] >= 1)
 				{
 					echo "<td><img src='./img/deleted.gif' /></td>";
 				} elseif (substr($pdata['filename'], 0, 8) == "spoiler:") {
-					echo "<td><a href='./".$row['board']."/src/".substr($pdata['filename'], 8)." target='_blank'><img src='./".$row['board']."/src/thumb/".substr($pdata['filename'], 8)."' /></a></td>";
+					echo "<td><a href='./".$row['board']."/src/".substr($pdata['filename'], 8)."' target='_blank'><img src='./".$row['board']."/src/thumb/".substr($pdata['filename'], 8)."' /></a></td>";
 				} elseif (substr($pdata['filename'], 0, 6) == "embed:") {
 					echo "<td><a href='".substr($pdata['filename'], 6)."'>Embed</a></td>";
 				} else {
-					echo "<td><a href='./".$row['board']."/src/".$pdata['filename']." target='_blank'><img src='./".$row['board']."/src/thumb/".$pdata['filename']."' /></a></td>";
+					echo "<td><a href='./".$row['board']."/src/".$pdata['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$pdata['filename']."' /></a></td>";
 				}
 			} else {
 				echo "<td></td>";

@@ -26,26 +26,22 @@ if (!defined("IN_MOD"))
 	{
 		$parser->addBBCode($row['name'], $row['code']);
 	}
-	$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
-	while ($row = $boards->fetch_assoc())
+	$threads = $conn->query("SELECT * FROM posts WHERE sticky=1 AND resto=0 ORDER BY lastbumped DESC;");
+	while ($thread = $threads->fetch_assoc())
 	{
-		$threads = $conn->query("SELECT * FROM posts WHERE sticky=1 AND resto=0 AND board='".$row['short']."' ORDER BY lastbumped DESC;");
-		while ($thread = $threads->fetch_assoc())
+		echo "<tr>";
+		echo "<td><a href='?/board&b=".$thread['board']."&t=".$thread['id']."#p".$thread['id']."'>/".$thread['board']."/".$thread['id']."</a></td>";
+		if ($thread['raw'] == 0)
 		{
-			echo "<tr>";
-			echo "<td><a href='?/board&b=".$row['short']."&t=".$thread['id']."#p".$thread['id']."'>/".$row['short']."/".$thread['id']."</a></td>";
-			if ($thread['raw'] == 0)
-			{
-				echo "<td>".processComment($row['short'], $conn, $thread['comment'], $parser, 2)."</td>";
-			} elseif ($thread['raw'] == 2)
-			{
-				echo "<td>".processComment($row['short'], $conn, $thread['comment'], $parser, 2, 0)."</td>";
-			} else {
-				echo "<td>".$thread['comment']."</td>";
-			}
-			echo "<td><a href='?/sticky/toggle&b=".$row['short']."&t=".$thread['id']."'>".$lang['mod/unstick']."</a></td>";
-			echo "</tr>";
+			echo "<td>".processComment($thread['board'], $conn, $thread['comment'], $parser, 2)."</td>";
+		} elseif ($thread['raw'] == 2)
+		{
+			echo "<td>".processComment($thread['board'], $conn, $thread['comment'], $parser, 2, 0)."</td>";
+		} else {
+			echo "<td>".$thread['comment']."</td>";
 		}
+		echo "<td><a href='?/sticky/toggle&b=".$thread['board']."&t=".$thread['id']."'>".$lang['mod/unstick']."</a></td>";
+		echo "</tr>";
 	}
 	?>
 </tbody>

@@ -3,22 +3,20 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
+		if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
 		{
-			$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC");
-			while ($board = $boards->fetch_assoc())
+			
+			$threads = $conn->query("SELECT * FROM posts WHERE ip='".$_GET['ip']."' AND resto=0");
+			while ($row = $threads->fetch_assoc())
 			{
-				$threads = $conn->query("SELECT * FROM posts WHERE ip='".$_GET['ip']."' AND resto=0 AND board='".$board['short']."'");
-				while ($row = $threads->fetch_assoc())
+				$conn->query("DELETE FROM posts WHERE resto=".$row['id']." AND board='".$row['board']."'");
+				if ($row['resto'] == 0)
 				{
-					$conn->query("DELETE FROM posts WHERE resto=".$row['id']." AND board='".$board['short']."'");
-					if ($row['resto'] == 0)
-					{
-						unlink("./".$board['short']."/res/".$row['id'].".html");
-					}
+					unlink("./".$row['board']."/res/".$row['id'].".html");
 				}
-				$conn->query("DELETE FROM posts WHERE ip='".$_GET['ip']."' AND board='".$board['short']."'");
-				rebuildBoardCache($conn, $row['short']);
+			}
+			$conn->query("DELETE FROM posts WHERE ip='".$_GET['ip']."'");
+			rebuildBoardCache($conn, $row['short']);
 				?>
 	
 								<div class="box-outer top-box">
@@ -28,6 +26,5 @@ if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
 </div>
 </div>
 		<?php
-			}
 		}
 ?>

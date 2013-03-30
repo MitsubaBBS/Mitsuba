@@ -31,20 +31,8 @@ if (!defined("IN_MOD"))
 			</thead>
 			<tbody>
 			<?php
-			$boards = $conn->query("SELECT * FROM boards ORDER BY short ASC");
 			$post_array = array();
 			$num = 0;
-			while ($board = $boards->fetch_assoc())
-			{
-				$posts = $conn->query("SELECT * FROM posts WHERE filename != '' AND board='".$board['short']."' ORDER BY date DESC LIMIT 0, ".$max);
-				while ($row = $posts->fetch_assoc())
-				{
-					$post_array[$num] = $row;
-					$post_array[$num]['board'] = $board['short'];
-					$num++;
-				}
-			}
-			$dates = array();
 			require_once( "./jbbcode/Parser.php" );
 			$parser = new JBBCode\Parser();
 			$bbcode = $conn->query("SELECT * FROM bbcodes;");
@@ -53,18 +41,9 @@ if (!defined("IN_MOD"))
 			{
 				$parser->addBBCode($row['name'], $row['code']);
 			}
-			foreach ($post_array as $key => $row)
+			$posts = $conn->query("SELECT * FROM posts WHERE filename != '' ORDER BY date DESC LIMIT 0, ".$max);
+			while ($row = $posts->fetch_assoc())
 			{
-				$dates[$key] = $row['date'];
-			}
-			array_multisort($dates, SORT_DESC, $post_array);
-			if (count($post_array) < $max)
-			{
-				$max = count($post_array);
-			}
-			for ($i = 0; $i < $max; $i++)
-			{
-				$row = $post_array[$i];
 				echo "<tr><td>";
 				$resto = $row['resto'];
 				$op = 0;

@@ -13,7 +13,7 @@ reqPermission(2);
 <div class="box-inner">
 <div class="boxbar"><h2><?php echo $lang['mod/cleaning_done']; ?></h2></div>
 <div class="boxcontent">
-<a href="?/rebuild"><?php echo $lang['mod/back']; ?></a>
+<a href="?/cleaner"><?php echo $lang['mod/back']; ?></a>
 </div>
 </div>
 </div>
