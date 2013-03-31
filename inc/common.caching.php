@@ -374,6 +374,11 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		$file .= '<div class="boardBanner">';
 		$imagesDir = './rnd/';
 		$images = glob($imagesDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+		$imagesDirBoard = './rnd/'.$board.'/';
+		if (is_dir($imagesDirBoard))
+		{
+			$images = array_merge($images, glob($imagesDirBoard . '*.{jpg,jpeg,png,gif}', GLOB_BRACE));
+		}
 		$randomImage = $images[array_rand($images)]; 
 		if ($return == 1)
 		{

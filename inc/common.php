@@ -207,7 +207,7 @@ function isWhitelisted($conn, $ip)
 	if ($whitelist->num_rows >= 1)
 	{
 		$wlistdata = $whitelist->fetch_assoc();
-		if ($wlistdata['nolimit'] == 1)
+		if ($wlistdata['nolimits'] == 1)
 		{
 			return 2;
 		}
@@ -442,7 +442,7 @@ function pruneOld($conn, $board)
 	{
 		return -16;
 	}
-	$bdata = getBoardData($board);
+	$bdata = getBoardData($conn, $board);
 	$threads = $conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT ".(($bdata['pages']+1)*100).", 2000");
 	while ($row = $threads->fetch_assoc())
 	{

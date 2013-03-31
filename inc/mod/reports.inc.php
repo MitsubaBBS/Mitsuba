@@ -10,6 +10,24 @@ if ((!empty($_GET['cl'])) && ($_GET['cl']==1))
 			$conn->query("DELETE FROM reports WHERE id=".$_GET['id']);
 		}
 	}
+	if ((!empty($_GET['m'])) && (!empty($_GET['i'])) && (is_numeric($_GET['i'])))
+	{
+		reqPermission(1);
+		switch($_GET['m'])
+		{
+			case "wtr":
+				$rpinfo = $conn->query("SELECT * FROM reports WHERE id=".$_GET['i']);
+				$rpinfo = $rpinfo->fetch_assoc();
+				$conn->query("DELETE FROM reports WHERE reason='".$conn->real_escape_string($rpinfo['reason'])."'");
+				break;
+			case "ip":
+				$rpinfo = $conn->query("SELECT * FROM reports WHERE id=".$_GET['i']);
+				$rpinfo = $rpinfo->fetch_assoc();
+				$conn->query("DELETE FROM reports WHERE ip='".$rpinfo['reporter_ip']."'");
+				break;
+		
+		}
+	}
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
@@ -91,7 +109,9 @@ if ($_SESSION['type'] >= 1)
 			if ($_SESSION['type']>=1)
 			{
 				echo "/ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."&d=1'>&</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."'>D</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."&f=1'>F</a> ]"; 
-				echo "[ <a href='?/info&ip=".$pdata['ip']."'>N</a> ]</td>";
+				echo "[ <a href='?/info&ip=".$pdata['ip']."'>N</a> ] ";
+				echo "[ <a href='?/reports&m=wtr&i=".$row['id']."'>D_WTR</a> / <a href='?/reports&m=ip&i=".$row['id']."'>D_WTIP</a> ]";
+				echo "</td>";
 			} else {
 				echo "]</td>";
 			}

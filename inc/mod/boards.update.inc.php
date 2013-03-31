@@ -28,12 +28,12 @@ reqPermission(2);
 				{
 					$embeds = 1;
 				}
-				$bbcode = 1;
+				$bbcode = 0;
 				if ((!empty($_POST['bbcode'])) && ($_POST['bbcode'] == 1))
 				{
 					$bbcode = 1;
 				}
-				$hidden = 1;
+				$hidden = 0;
 				if ((!empty($_POST['hidden'])) && ($_POST['hidden'] == 1))
 				{
 					$hidden = 1;

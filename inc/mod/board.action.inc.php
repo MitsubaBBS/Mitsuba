@@ -51,7 +51,7 @@ if (!empty($_POST['mode']))
 					exit;
 				}
 				
-				if (($_SESION['type'] == 0) || (isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) != 2))
+				if (($_SESSION['type'] == 0) || (isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) != 2))
 				{
 					$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
 					if ($lastdate->num_rows == 1)
