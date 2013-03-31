@@ -60,30 +60,32 @@ loadPlugins($conn);
 				echo "<center><h1>Choose one: image or embed! ;_;</h1></center></body></html>";
 				exit;
 			}
-			
-			$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
-			if ($lastdate->num_rows == 1)
+			if (isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) != 2)
 			{
-				$pdate = $lastdate->fetch_assoc();
-				$pdate = $pdate['date'];
-				
-				if (($pdate + $bdata['time_between_posts']) > time())
+				$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
+				if ($lastdate->num_rows == 1)
 				{
-					echo "<center><h1>You'll have to wait more before posting a new post! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
-					exit;
+					$pdate = $lastdate->fetch_assoc();
+					$pdate = $pdate['date'];
+					
+					if (($pdate + $bdata['time_between_posts']) > time())
+					{
+						echo "<center><h1>You'll have to wait more before posting a new post! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
+						exit;
+					}
 				}
-			}
-			
-			$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND resto=0 AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
-			if ($lastdate->num_rows == 1)
-			{
-				$pdate = $lastdate->fetch_assoc();
-				$pdate = $pdate['date'];
 				
-				if (($pdate + $bdata['time_between_threads']) > time())
+				$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND resto=0 AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
+				if ($lastdate->num_rows == 1)
 				{
-					echo "<center><h1>You'll have to wait more before posting a new thread! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
-					exit;
+					$pdate = $lastdate->fetch_assoc();
+					$pdate = $pdate['date'];
+					
+					if (($pdate + $bdata['time_between_threads']) > time())
+					{
+						echo "<center><h1>You'll have to wait more before posting a new thread! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
+						exit;
+					}
 				}
 			}
 			if (!empty($_POST['embed']))

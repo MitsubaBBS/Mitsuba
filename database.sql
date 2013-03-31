@@ -19,6 +19,16 @@ CREATE TABLE IF NOT EXISTS `appeals` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `banfilter` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `search` varchar(100) NOT NULL,
+  `reason` varchar(100) NOT NULL,
+  `boards` text NOT NULL,
+  `expires` int(30) NOT NULL,
+  `active` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `bans` (
   `id` int(30) NOT NULL AUTO_INCREMENT,
   `ip` varchar(50) NOT NULL,
@@ -69,6 +79,12 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `hidden` int(1) NOT NULL,
   `nodup` int(1) NOT NULL,
   PRIMARY KEY (`short`)
+);
+
+CREATE TABLE IF NOT EXISTS `captcha_wordlist` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `word` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `config` (
@@ -213,10 +229,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `username` (`username`)
 );
 
+CREATE TABLE IF NOT EXISTS `whitelist` (
+  `id` int(30) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(50) NOT NULL,
+  `mod_id` int(10) NOT NULL,
+  `note` text NOT NULL,
+  `nolimits` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `wordfilter` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `search` varchar(100) NOT NULL,
   `replace` varchar(100) NOT NULL,
-  `active` int(1) NOT NULL
+  `active` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
 );
 
 INSERT INTO `bbcodes` (`name`, `code`) VALUES

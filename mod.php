@@ -403,6 +403,9 @@ switch ($path)
 	case "/config/reset":
 		include("inc/mod/config.reset.inc.php");
 		break;
+	case "/whitelist":
+		include("inc/mod/whitelist.inc.php");
+		break;
 	default:
 		echo runHooks("panel", $path);
 		break;

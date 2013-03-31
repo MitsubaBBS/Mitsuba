@@ -201,8 +201,29 @@ function delTree($dir) {
   } 
 
 
+function isWhitelisted($conn, $ip)
+{
+	$whitelist = $conn->query("SELECT * FROM whitelist WHERE ip='".$ip."' ORDER BY id DESC LIMIT 0, 1");
+	if ($whitelist->num_rows >= 1)
+	{
+		$wlistdata = $whitelist->fetch_assoc();
+		if ($wlistdata['nolimit'] == 1)
+		{
+			return 2;
+		}
+		return 1;
+	} else {
+		return 0;
+	}
+}
+  
 function isBanned($conn, $ip, $board)
 {
+	if (isWhitelisted($conn, $ip) >= 1)
+	{
+		return 0;
+	}
+	
 	$ipbans = $conn->query("SELECT * FROM bans WHERE ip='".$ip."' AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
 	$rangebans = $conn->query("SELECT * FROM rangebans WHERE INET_ATON('".$ip."') BETWEEN start_ip AND end_ip AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
 	$ipbandata = null;

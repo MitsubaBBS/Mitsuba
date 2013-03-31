@@ -50,6 +50,36 @@ if (!empty($_POST['mode']))
 					echo "<center><h1>".$lang['mod/choose_one']."</h1></center></body></html>";
 					exit;
 				}
+				
+				if (($_SESION['type'] == 0) || (isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) != 2))
+				{
+					$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
+					if ($lastdate->num_rows == 1)
+					{
+						$pdate = $lastdate->fetch_assoc();
+						$pdate = $pdate['date'];
+						
+						if (($pdate + $bdata['time_between_posts']) > time())
+						{
+							echo "<center><h1>".$lang['mod/wait_post']."</h1></center></body></html>";
+							exit;
+						}
+					}
+					
+					$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND resto=0 AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
+					if ($lastdate->num_rows == 1)
+					{
+						$pdate = $lastdate->fetch_assoc();
+						$pdate = $pdate['date'];
+						
+						if (($pdate + $bdata['time_between_threads']) > time())
+						{
+							echo "<center><h1>".$lang['mod/wait_thread']."</h1></center></body></html>";
+							exit;
+						}
+					}
+				}
+				
 				if (!empty($_POST['embed']))
 				{
 					$embed_table = array();
