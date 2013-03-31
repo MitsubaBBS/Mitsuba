@@ -669,6 +669,12 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					$file .= '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.' '.$poster_id.'</span>';
 				}
 			}
+			$opip = $row['ip'];
+			if (($adm_type >= 1) && ($return == 1))
+			{
+				$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row['ip'].'" target="_blank">'.$row['ip'].'</a>)</span>';
+				$file .= ' [<a href="?/info&ip='.$row['ip'].'">N</a>] <b style="color: red;">[ OP ]</b>';
+			}
 			$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row['date']).'</span> ';
 		
 			if ($return == 1)
@@ -686,18 +692,22 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				{
 					$file .= ' <span style="color: red;">[A]</a> ';
 				}
-				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'">D</a>';
-				if (!empty($row['filename']))
+				if ($adm_type >= 1)
 				{
-					$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'&f=1">F</a>]';
+					$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'">D</a>';
+					if (!empty($row['filename']))
+					{
+						$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'&f=1">F</a>]';
+					} else {
+						$file .= ']';
+					}
+					if ($_SESSION['type'] >= 2)
+					{
+						$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'" class="edit">E</a>]';
+					}
 				} else {
-					$file .= ']';
+					$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a></span>';
 				}
-				if ($_SESSION['type'] >= 2)
-				{
-					$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'" class="edit">E</a>]';
-				}
-				
 				if ($_SESSION['type'] >= 1)
 				{
 					$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
@@ -849,6 +859,14 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
 					} else {
 						$file .= '<span class="nameBlock"><span class="name">'.$row2['name'].'</span>'.$trip.' '.$poster_id.'</span>';
+					}
+				}
+				if (($adm_type >= 1) && ($return == 1))
+				{
+					$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row2['ip'].'" target="_blank">'.$row2['ip'].'</a>) [<a href="?/info&ip='.$row2['ip'].'">N</a>] '; 
+					if ($row2['ip'] == $opip)
+					{
+						$file .= '<b style="color: red;">[ OP ]</b>';
 					}
 				}
 				$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row2['date']).'</span> ' ;

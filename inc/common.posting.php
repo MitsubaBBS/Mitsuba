@@ -89,7 +89,10 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 					}
 					$conn->query("DELETE FROM posts WHERE resto=".$postno." AND board='".$board."';");
 					$conn->query("DELETE FROM posts WHERE id=".$postno." AND board='".$board."';");
-					unlink("./".$board."/res/".$postno.".html");
+					if ($bdata['hidden'] == 0)
+					{
+						unlink("./".$board."/res/".$postno.".html");
+					}
 					//generateView($conn, $board, $postno);
 					generateView($conn, $board);
 					return 2; //done post

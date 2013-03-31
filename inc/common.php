@@ -350,7 +350,7 @@ function banMessage($conn, $board)
 $bandata = isBanned($conn, $_SERVER['REMOTE_ADDR'], $board);
 			if ($bandata != 0)
 			{
-			if ($bandata['boards']="*")
+			if ($bandata['boards']=="*")
 			{
 			$boards = 1;
 			} else {
@@ -421,7 +421,8 @@ function pruneOld($conn, $board)
 	{
 		return -16;
 	}
-	$threads = $conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT 160, 2000");
+	$bdata = getBoardData($board);
+	$threads = $conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT ".(($bdata['pages']+1)*100).", 2000");
 	while ($row = $threads->fetch_assoc())
 	{
 		$files = $conn->query("SELECT * FROM posts WHERE filename != '' AND resto=".$row['id']." AND board='".$board."'");
@@ -435,7 +436,10 @@ function pruneOld($conn, $board)
 		
 		$conn->query("DELETE FROM posts WHERE resto=".$row['id']." AND board='".$board."'");
 		$conn->query("DELETE FROM posts WHERE id=".$row['id']." AND board='".$board."'");
-		unlink("./".$board."/res/".$row['id'].".html");
+		if ($bdata['hidden'] == 0)
+		{
+			unlink("./".$board."/res/".$row['id'].".html");
+		}
 	}
 }
 ?>
