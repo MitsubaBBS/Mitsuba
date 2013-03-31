@@ -495,7 +495,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				<td colspan="2">
 				<ul class="rules">
 				<li>Supported file types are: GIF, JPG, PNG</li>
-				<li>Maximum file size allowed is 2048 KB.</li>
+				<li>Maximum file size allowed is '.$boarddata['filesize'].' bytes.</li>
 				<li>Images greater than 250x250 pixels will be thumbnailed.</li>
 				</ul>
 				</td>
@@ -711,7 +711,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 						$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'" class="edit">E</a>]';
 					}
 				} else {
-					$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a></span>';
+					$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a>]</span>';
 				}
 				if ($_SESSION['type'] >= 1)
 				{

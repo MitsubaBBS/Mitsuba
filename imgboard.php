@@ -55,6 +55,11 @@ loadPlugins($conn);
 				echo "<h1>This board does not exist!</h1></body></html>"; exit;
 			}
 			
+			if (strlen($_POST['com']) > $bdata['maxchars'])
+			{
+				echo "<h1>Comment too long (".strlen($_POST['com'])."/".$bdata['maxchars'].")!</h1></body></html>"; exit;
+			}
+			
 			if ((!empty($_POST['embed'])) && (!empty($_FILES['upfile']['tmp_name'])))
 			{
 				echo "<center><h1>Choose one: image or embed! ;_;</h1></center></body></html>";
