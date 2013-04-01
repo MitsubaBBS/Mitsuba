@@ -141,7 +141,7 @@ loadPlugins($conn);
 					$md5 = md5_file($_FILES['upfile']['tmp_name']);
 					if ($bdata['nodup'] == 1)
 					{
-						$isit = $conn->query("SELECT * FROM posts WHERE md5='".$md5."' AND board='".$_POST['board']."'");
+						$isit = $conn->query("SELECT * FROM posts WHERE filehash='".$md5."' AND board='".$_POST['board']."'");
 						if ($isit->num_rows >= 1)
 						{
 							echo "<h1>Duplicate file detected! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
