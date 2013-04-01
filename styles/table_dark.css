@@ -1,0 +1,28 @@
+
+
+table>thead>tr>td {
+    background-color: #444;
+    color: #FFF;
+    font-weight: bold;
+    border: 1px solid #FFF;
+    font-size: 10pt;
+    padding: 5px;
+    text-align: center;
+}
+
+td {
+    padding: 2px;
+    font-size: 9pt;
+}
+
+table tbody tr:nth-of-type(odd) {
+    background-color: #666;
+}
+
+table {
+    border-collapse:separate;
+    border-spacing: 1px;
+    min-width: 100%;
+    width: 100% !important;
+    max-width: 100%;
+}
