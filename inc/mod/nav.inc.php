@@ -54,6 +54,7 @@ echo runHooks("menu", null);
 if ($_SESSION['type'] >= 1)
 {
 ?>
+<li><a href="?/whitelist" target="main"><?php echo $lang['mod/manage_whitelist']; ?></a></li>
 <li><a href="?/bans/add" target="main"><?php echo $lang['mod/add_ban']; ?></a></li>
 <li><a href="?/ban_requests" target="main"><?php echo $lang['mod/ban_requests']; ?> (<?php echo $breqs; ?>)</a></li>
 <li><a href="?/appeals" target="main"><?php echo $lang['mod/appeals']; ?> (<?php echo $appeals; ?>)</a></li>
@@ -90,7 +91,6 @@ if ($_SESSION['type'] >= 2)
 <li><a href="?/styles" target="main"><?php echo $lang['mod/manage_styles']; ?></a></li>
 <li><a href="?/wordfilter" target="main"><?php echo $lang['mod/manage_wordfilter']; ?></a></li>
 <li><a href="?/range" target="main"><?php echo $lang['mod/manage_range_bans']; ?></a></li>
-<li><a href="?/whitelist" target="main"><?php echo $lang['mod/manage_whitelist']; ?></a></li>
 <li><a href="?/message" target="main"><?php echo $lang['mod/global_message']; ?></a></li>
 <li><a href="?/rebuild" target="main"><?php echo $lang['mod/rebuild_cache']; ?></a></li>
 <li><a href="?/cleaner" target="main"><?php echo $lang['mod/cleaner']; ?></a></li>
