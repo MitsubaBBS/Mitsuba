@@ -216,26 +216,25 @@ h3 {
 }
 
 h1 a {
-    color: #800;
-    text-decoration: none;
+	color: #9F0;
+	text-decoration: none;
 }
 
 html {
-    background: #444;
+	background-image: url(http://i.imgur.com/03u3t8g.gif);
 }
 
 body {
-    background: #444 url('/image/fp/fade.png') top repeat-x;
-    color: #DDD;
+    background-image: url(http://i.imgur.com/03u3t8g.gif);
 }
 
 .boxbar {
-    background: #333;
-    color: #555;
+	color: #FFF;
+	background-color: #444444;
 }
 
 .top-box {
-    background: #777;
+    background: #554f4f;
 }
 
 .top-box .menubutton {
@@ -285,7 +284,7 @@ body {
 }
 
 a:visited {
-    color: blue;
+	color: #CC9900;
 }
 
 strong {
@@ -326,8 +325,8 @@ blockquote {
 
 .content h3 {
     background: #ffe;
-    border: 1px solid #000;
-    color: #AAA;
+    border: 1px solid #800;
+    color: #800;
     font-size: 116%;
     height: 2em;
     line-height: 2em;
@@ -373,14 +372,10 @@ div p {
     margin: 1.5em 0;
 }
 
-input, textarea {
-	background-color: #999;
-}
-
 hr {
     border: 0;
-    color: #FFF;
-    background: #222;
+    color: #800;
+    background: #800;
     height: 1px;
     margin-top: 0;
     margin-bottom: 1.5em;
@@ -400,8 +395,8 @@ span.nameBlock {
 }
 
 span.name {
-    color: #117743;
-    font-weight: bold;
+	color: #CC9900;
+	font-weight: bold;
 }
 
 span.postertrip {

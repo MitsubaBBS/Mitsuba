@@ -16,7 +16,7 @@ td {
 }
 
 table tbody tr:nth-of-type(odd) {
-    background-color: #666;
+    background-color: #363636;
 }
 
 table {
@@ -25,4 +25,19 @@ table {
     min-width: 100%;
     width: 100% !important;
     max-width: 100%;
+}
+a:link {
+color: #CC9900
+}
+
+a:visited {
+color: #CC9900
+}
+
+a:hover {
+color: #CC9900
+}
+
+a:active {
+color: #CC9900
 }
