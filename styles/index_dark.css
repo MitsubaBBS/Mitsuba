@@ -60,6 +60,8 @@ input,textarea,select {
 	font-size: inherit;
 	font-weight: inherit;
 	background-color: #FFF;
+	border-radius: 6px;
+	border: 2px solid #000;
 }
 
 legend {
@@ -79,7 +81,7 @@ body {
 	font-family: arial, helvetica, clean, sans-serif;
 	font-size: 13px;
 	line-height: 1.231;
-	color: #FFF;
+	color: #fff;
 }
 
 
