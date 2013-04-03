@@ -192,7 +192,7 @@ br.clear-bug {
 }
 
 .boxcontent,#ft,#whatis {
-    font-size: 93%;
+	font-size: 93%;
 }
 
 h1 {
@@ -242,8 +242,8 @@ body {
 }
 
 #boards a {
-    color: #800;
-    text-decoration: none;
+	color: #FFF;
+	text-decoration: none;
 }
 
 #boards a:hover {
@@ -317,21 +317,21 @@ blockquote {
 }
 
 .content {
-    line-height: 1.5em;
-    padding: 3em;
-    color: black;
-    padding-top: 0;
+	line-height: 1.5em;
+	padding: 3em;
+	color: #FFFFFF;
+	padding-top: 0;
 }
 
 .content h3 {
-    background: #ffe;
-    border: 1px solid #800;
-    color: #800;
-    font-size: 116%;
-    height: 2em;
-    line-height: 2em;
-    padding-left: .5em;
-    padding-right: .5em;
+	border: 1px solid #FFF;
+	color: #CCCCCC;
+	font-size: 116%;
+	height: 2em;
+	line-height: 2em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	background-color: #444;
 }
 
 .newssub {
@@ -373,12 +373,12 @@ div p {
 }
 
 hr {
-    border: 0;
-    color: #800;
-    background: #800;
-    height: 1px;
-    margin-top: 0;
-    margin-bottom: 1.5em;
+	border: 0;
+	color: #FFF;
+	background: #FFF;
+	height: 1px;
+	margin-top: 0;
+	margin-bottom: 1.5em;
 }
 
 textarea {
