@@ -5,6 +5,9 @@ function getEmbed($url, $embed_table = null, $s = 250) {
 		if (preg_match($row['regex'], $url, $vresult))
 		{
 			$vresult[0] = $s;
+			foreach($vresult as $k => $v) {
+				$vresult[$k] = htmlspecialchars($v);
+			}
 			return vsprintf($row['code'], $vresult);
 		}
 	}
@@ -294,7 +297,7 @@ function processString($conn, $string, $name = 0)
 	$new = $string;
 	$new = $conn->real_escape_string($new);
 	$new = htmlspecialchars($new);
-	
+
 	if ($name == 1)
 	{
 		$new = str_replace("##", "#", $new);
