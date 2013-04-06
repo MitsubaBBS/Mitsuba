@@ -18,14 +18,14 @@ if ((!empty($_GET['max'])) && (is_numeric($_GET['max'])))
 <table>
 			<thead>
 			<tr>
-			<td style="width: 14%;"><?php echo $lang['mod/post']; ?></td>
-			<td style="width: 10%;"><?php echo $lang['mod/name']; ?></td>
-			<td style="width: 8%;"><?php echo $lang['mod/e_mail']; ?></td>
-			<td style="width: 9%;"><?php echo $lang['mod/date']; ?></td>
-			<td style="width: 30%;"><?php echo $lang['mod/comment']; ?></td>
-			<td style="width: 20%;"><?php echo $lang['mod/subject']; ?></td>
-			<td style="width: 1%;"><?php echo $lang['mod/file']; ?></td>
-			<td style="width: 8%;"><?php echo $lang['mod/delete']; ?></td>
+			<td><?php echo $lang['mod/post']; ?></td>
+			<td><?php echo $lang['mod/name']; ?></td>
+			<td><?php echo $lang['mod/e_mail']; ?></td>
+			<td><?php echo $lang['mod/date']; ?></td>
+			<td><?php echo $lang['mod/comment']; ?></td>
+			<td><?php echo $lang['mod/subject']; ?></td>
+			<td><?php echo $lang['mod/file']; ?></td>
+			<td><?php echo $lang['mod/delete']; ?></td>
 			</tr>
 			</thead>
 			<tbody>
