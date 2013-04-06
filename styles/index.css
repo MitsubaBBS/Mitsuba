@@ -10,7 +10,7 @@ body {
     word-break: break-word;
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
-    hyphens: auto;	
+    hyphens: auto;
 }
 
 table {
@@ -85,11 +85,13 @@ body {
 }
 
 #doc,#doc2,#doc3,#doc4,.yui-t1,.yui-t2,.yui-t3,.yui-t4,.yui-t5,.yui-t6,.yui-t7 {
-    margin: auto;
     text-align: left;
-    width: 57.69em;
+	width: auto;
     *width: 56.301em;
-    min-width: 750px;
+	min-width: 750px;
+	margin-left: 5%;
+	margin-right: 5%;
+	display: table;
 }
 
 #doc2 {
