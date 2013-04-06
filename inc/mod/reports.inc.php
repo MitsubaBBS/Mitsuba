@@ -44,12 +44,12 @@ if ($_SESSION['type'] >= 1)
 <table>
 <thead>
 <tr>
-<td><?php echo $lang['mod/post']; ?></td>
-<td><?php echo $lang['mod/file']; ?></td>
-<td><?php echo $lang['mod/comment']; ?></td>
-<td><?php echo $lang['mod/reason']; ?></td>
-<td><?php echo $lang['mod/reporter_ip']; ?></td>
-<td><?php echo $lang['mod/actions']; ?></td>
+<td style="width: 5%;"><?php echo $lang['mod/post']; ?></td>
+<td style="width: 15%;"><?php echo $lang['mod/file']; ?></td>
+<td style="width: 37%;"><?php echo $lang['mod/comment']; ?></td>
+<td style="width: 20%;"><?php echo $lang['mod/reason']; ?></td>
+<td style="width: 7%;"><?php echo $lang['mod/reporter_ip']; ?></td>
+<td style="width: 16%;"><?php echo $lang['mod/actions']; ?></td>
 </tr>
 </thead>
 <tbody>
