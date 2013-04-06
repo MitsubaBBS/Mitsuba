@@ -26,3 +26,6 @@ table {
     width: 100% !important;
     max-width: 100%;
 }
+	td.comments {
+	min-width: 250px!important;
+	}

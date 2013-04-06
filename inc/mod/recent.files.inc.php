@@ -23,7 +23,7 @@ if (!defined("IN_MOD"))
 			<td><?php echo $lang['mod/name']; ?></td>
 			<td><?php echo $lang['mod/e_mail']; ?></td>
 			<td><?php echo $lang['mod/date']; ?></td>
-			<td><?php echo $lang['mod/comment']; ?></td>
+			<td class="comments"><?php echo $lang['mod/comment']; ?></td>
 			<td><?php echo $lang['mod/subject']; ?></td>
 			<td><?php echo $lang['mod/file']; ?></td>
 			<td><?php echo $lang['mod/delete']; ?></td>
