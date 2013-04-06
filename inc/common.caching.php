@@ -1090,7 +1090,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				{
 					$file .= "[<strong>".$i."</strong>] ";
 				} else {
-					if (($i+1) > $all_pages)
+					if ($i > $all_pages)
 					{
 						$file .= "[".$i."] ";
 					} else {

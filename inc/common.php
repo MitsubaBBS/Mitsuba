@@ -297,7 +297,7 @@ function processString($conn, $string, $name = 0)
 	$new = $string;
 	$new = $conn->real_escape_string($new);
 	$new = htmlspecialchars($new);
-
+	
 	if ($name == 1)
 	{
 		$new = str_replace("##", "#", $new);
@@ -446,7 +446,7 @@ function pruneOld($conn, $board)
 		return -16;
 	}
 	$bdata = getBoardData($conn, $board);
-	$threads = $conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT ".(($bdata['pages']+1)*100).", 2000");
+	$threads = $conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT ".(($bdata['pages']+2)*10).", 2000");
 	while ($row = $threads->fetch_assoc())
 	{
 		$files = $conn->query("SELECT * FROM posts WHERE filename != '' AND resto=".$row['id']." AND board='".$board."'");
