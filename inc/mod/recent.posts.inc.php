@@ -18,14 +18,14 @@ if ((!empty($_GET['max'])) && (is_numeric($_GET['max'])))
 <table>
 			<thead>
 			<tr>
-			<td style="width: 10%;"><?php echo $lang['mod/post']; ?></td>
-			<td style="width: 10%;"><?php echo $lang['mod/name']; ?></td>
-			<td style="width: 10%;"><?php echo $lang['mod/e_mail']; ?></td>
-			<td style="width: 10%;"><?php echo $lang['mod/date']; ?></td>
-			<td style="width: 25%;"><?php echo $lang['mod/comment']; ?></td>
-			<td style="width: 15%;"><?php echo $lang['mod/subject']; ?></td>
-			<td style="width: 10%;"><?php echo $lang['mod/file']; ?></td>
-			<td style="width: 10%;"><?php echo $lang['mod/delete']; ?></td>
+			<td style="width: 5%;"><?php echo $lang['mod/post']; ?></td>
+			<td style="width: 5%;"><?php echo $lang['mod/name']; ?></td>
+			<td style="width: 8%;"><?php echo $lang['mod/e_mail']; ?></td>
+			<td style="width: 5%;"><?php echo $lang['mod/date']; ?></td>
+			<td style="width: 37%;"><?php echo $lang['mod/comment']; ?></td>
+			<td style="width: 9%;"><?php echo $lang['mod/subject']; ?></td>
+			<td style="width: 15%;"><?php echo $lang['mod/file']; ?></td>
+			<td style="width: 16%;"><?php echo $lang['mod/delete']; ?></td>
 			</tr>
 			</thead>
 			<tbody>
