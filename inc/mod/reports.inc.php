@@ -105,13 +105,13 @@ if ($_SESSION['type'] >= 1)
 			}
 			echo "<td>".$row['reason']."</td>";
 			echo "<td>".$row['reporter_ip']."</td>";
-			echo "<td>[ <a href='?/reports&cl=1&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> "; 
+			echo "<td><center>[ <a href='?/reports&cl=1&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> "; 
 			if ($_SESSION['type']>=1)
 			{
 				echo "/ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."&d=1'>&</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."'>D</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."&f=1'>F</a> ]"; 
 				echo "[ <a href='?/info&ip=".$pdata['ip']."'>N</a> ] ";
 				echo "[ <a href='?/reports&m=wtr&i=".$row['id']."'>D_WTR</a> / <a href='?/reports&m=ip&i=".$row['id']."'>D_WTIP</a> ]";
-				echo "</td>";
+				echo "</center></td>";
 			} else {
 				echo "]</td>";
 			}
