@@ -651,3 +651,10 @@ div.backlink {
 .backlink span {
   padding: 0;
 }
+
+.hider {
+	margin-left: 1px;
+}
+.hider2 {
+	margin-left: 5px!important;
+	}

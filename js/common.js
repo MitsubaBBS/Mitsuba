@@ -34,7 +34,7 @@ $(document).ready(function () {
 					var html = xhr.responseText;
 					var nodes = $.parseHTML( html );
 					$(tid).html($(tid, nodes).html());
-					$('<a href="javascript:;" class="hider" id="ht'+tid.substr(2)+'">[-]</a>').appendTo($(tid+" div.op div.postInfo")).click(function () {
+					$('<a href="javascript:;" class="hider2" id="ht'+tid.substr(2)+'">[-]</a>').appendTo($(tid+" div.op div.postInfo")).click(function () {
 						var id = $(this).attr("id").substr(2);
 						thread_toggle(id);
 					});
