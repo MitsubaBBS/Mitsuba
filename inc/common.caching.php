@@ -244,13 +244,15 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 	
 	require_once( "./jbbcode/Parser.php" );
 	$parser = new JBBCode\Parser();
-	$bbcode = $conn->query("SELECT * FROM bbcodes;");
-	
-	while ($row = $bbcode->fetch_assoc())
+	if ($boarddata['bbcode']==1)
 	{
-		$parser->addBBCode($row['name'], $row['code']);
+		$bbcode = $conn->query("SELECT * FROM bbcodes;");
+		
+		while ($row = $bbcode->fetch_assoc())
+		{
+			$parser->addBBCode($row['name'], $row['code']);
+		}
 	}
-	
 	$embed_table = array();
 	$result = $conn->query("SELECT * FROM embeds;");
 	while ($row = $result->fetch_assoc())
@@ -987,16 +989,16 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					{
 						if ($return == 1)
 						{
-							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 0, $row2['id'], $row2['resto']);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 0, $boarddata['bbcode'], $row2['id'], $row2['resto']);
 						} else {
-							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0, $row2['id'], $row2['resto']);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row2['id'], $row2['resto']);
 						}
 					} else {
 						if ($return == 1)
 						{
-							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 1, $row2['id'], $row2['resto']);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 1, $boarddata['bbcode'], $row2['id'], $row2['resto']);
 						} else {
-							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 1, $row2['id'], $row2['resto']);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row2['id'], $row2['resto']);
 						}
 					}
 				} else {
