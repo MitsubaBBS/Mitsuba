@@ -46,7 +46,7 @@ if ($_SESSION['type'] >= 1)
 <tr>
 <td><?php echo $lang['mod/post']; ?></td>
 <td><?php echo $lang['mod/file']; ?></td>
-<td><?php echo $lang['mod/comment']; ?></td>
+<td class="comments"><?php echo $lang['mod/comment']; ?></td>
 <td><?php echo $lang['mod/reason']; ?></td>
 <td><?php echo $lang['mod/reporter_ip']; ?></td>
 <td><?php echo $lang['mod/actions']; ?></td>

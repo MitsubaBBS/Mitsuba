@@ -42,3 +42,6 @@ color: #CC9900
 a:active {
 color: #CC9900
 }
+	td.comments {
+	min-width: 250px!important;
+	}
