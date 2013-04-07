@@ -823,3 +823,6 @@ input[type="text"],input[type="password"],textarea {
 .hider2 {
 	margin-left: 5px!important;
 	}
+a.expander {
+	margin-left: 5px;
+	}
