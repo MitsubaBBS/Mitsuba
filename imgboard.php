@@ -285,7 +285,7 @@ loadPlugins($conn);
 						}
 					}
 				}
-				echo '<meta http-equiv="refresh" content="2;URL='."'./".$_POST['board']."/index.html'".'">';
+				echo '<meta http-equiv="refresh" content="1;URL='."'./".$_POST['board']."/index.html'".'">';
 			}
 			break;
 		case "usrapp":
