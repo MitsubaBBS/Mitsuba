@@ -6,69 +6,73 @@ function strStartsWith(str, prefix) {
 
 
 $(document).ready(function () {
-	//ready
 	
-	
-
-	
-	if (window.location.href.indexOf("res") == -1)
+	if ($(".postingMode").length == 0) //outside thread
 	{
-		$(".op .postInfo").each(function () {
-			var id = $(this).attr("id").substr(2);
-			$(this).append(' <a href="javascript:;" class="hider" id="ht'+id+'">[-]</a>');
-		});
-	
-		$(".hider").click(function () {
-			var id = $(this).attr("id").substr(2);
-			thread_toggle(id);
-		});
-		
-		$(".thread").each(function () {
-			$('<a href="javascript:;" class="expander" id="e'+$(this).attr("id")+'">[+]</a>').insertAfter($("div#"+$(this).attr("id")+" > span.summary")).click(function () {
-				var tid = "#"+$(this).attr("id").substr(1);
-				var href = absolutizeURI(window.location.href, $(tid).find(".replylink").attr("href"));
-				$.ajax({
-				type: 'get',
-				url: href,
-				success: function(data, textStatus, xhr){
-					var html = xhr.responseText;
-					var nodes = $.parseHTML( html );
-					$(tid).html($(tid, nodes).html());
-					$('<a href="javascript:;" class="hider2" id="ht'+tid.substr(2)+'">[-]</a>').appendTo($(tid+" div.op div.postInfo")).click(function () {
-						var id = $(this).attr("id").substr(2);
-						thread_toggle(id);
-					});
-					$('<span> &nbsp; [<a href="'+href+'" class="replylink">Reply</a>] </span>').insertAfter($(tid+" div.op span.postNum"));
-					$(tid).find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
-					$(tid).find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
-					$(tid+" .postInfo").each(function () {
-						
-						$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'">&nbsp;</div>');
-						
-					});
-					$(tid+" .quotelink:not(cross)").each(function () {
-						var hr = $(this).attr("href");
-						var postid = hr.substr(hr.indexOf('#')+2);
-						//here
-						try {
-						$("#bl"+postid).append("<span><a href='#p"+$(this).parent(".postMessage").attr("id").substr(1)+"' class='quotelink'>>>"+$(this).parent(".postMessage").attr("id").substr(1)+"</a> </span>");
-						} catch(ex) {
-							
-						}
-					});
-					$(tid).find(".quotelink").hover(function () {
-						showPostPreview(this);
-					}, function () {
-						hidePostPreview(this);
-					});
-					
-					}
-				});
-			});
-		});
+		addThreadHider();
+		addThreadExpander();
 		hideThreads();
+	} else { //in thread
+		addThreadUpdater();
 	}
 	
+	
+	addBacklinks();
+	addPostpreview();
+	addStylechanger();
+	addQuotelinks();
+	
+});
+
+function addThreadUpdater()
+{
+	
+}
+
+function addQuotelinks()
+{
+	$(".quotePost").click(function () {
+		try {
+			event.preventDefault();
+			var id = $(this).attr("id").substr(1);
+			var textarea = $("#postForm textarea[name='com']")[0];
+			$(textarea).val($(textarea).val()+'>>'+id+'\n'); 
+		} catch (ex) {
+			
+		}
+	});
+}
+
+function addStylechanger()
+{
+	$("#stylechangerDiv").css("display", "block");
+	$("link[rel='alternate stylesheet']").each(function () {
+		$("#stylechanger").append("<option value='"+$(this).attr("href")+"'>"+$(this).attr("title")+"</option>");
+	});
+	$("#stylechanger").change(function (e) {
+		$("#switch").attr("href", e.target.options[e.target.selectedIndex].value);
+		$.cookie("style", absolutizeURI(window.location.href, e.target.options[e.target.selectedIndex].value), {expires: 31, path: '/'});
+	});
+	
+	if (typeof $.cookie("style") !== "undefined")
+	{
+		$("#switch").attr("href", $.cookie("style"));
+	}
+}
+
+function addPostpreview()
+{
+	$("body").append('<div id="quote-preview" class="post preview" style="display: none; position: absolute; z-index:999;"></div>');
+	$(".quotelink").hover(function () {
+		showPostPreview(this);
+	}, function () {
+		hidePostPreview(this);
+	}
+	);
+}
+
+function addBacklinks()
+{
 	$(".postInfo").each(function () {
 		
 		$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'">&nbsp;</div>');
@@ -84,30 +88,68 @@ $(document).ready(function () {
 			
 		}
 	});
+}
+
+function addThreadExpander()
+{
 	
-	$("body").append('<div id="quote-preview" class="post preview" style="display: none; position: absolute; z-index:999;"></div>');
-	$(".quotelink").hover(function () {
-		showPostPreview(this);
-	}, function () {
-		hidePostPreview(this);
-	}
-	);
-	$("#stylechangerDiv").css("display", "block");
-	$("link[rel='alternate stylesheet']").each(function () {
-		$("#stylechanger").append("<option value='"+$(this).attr("href")+"'>"+$(this).attr("title")+"</option>");
+	$(".thread").each(function () {
+		$('<a href="javascript:;" class="expander" id="e'+$(this).attr("id")+'">[+]</a>').insertAfter($("div#"+$(this).attr("id")+" > span.summary")).click(function () {
+			var tid = "#"+$(this).attr("id").substr(1);
+			var href = absolutizeURI(window.location.href, $(tid).find(".replylink").attr("href"));
+			$.ajax({
+			type: 'get',
+			url: href,
+			success: function(data, textStatus, xhr){
+				var html = xhr.responseText;
+				var nodes = $.parseHTML( html );
+				$(tid).html($(tid, nodes).html());
+				$('<a href="javascript:;" class="hider" id="ht'+tid.substr(2)+'">[-]</a>').appendTo($(tid+" div.op div.postInfo")).click(function () {
+					var id = $(this).attr("id").substr(2);
+					thread_toggle(id);
+				});
+				$('<span> &nbsp; [<a href="'+href+'" class="replylink">Reply</a>] </span>').insertAfter($(tid+" div.op span.postNum"));
+				$(tid).find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
+				$(tid).find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
+				$(tid+" .postInfo").each(function () {
+					
+					$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'">&nbsp;</div>');
+					
+				});
+				$(tid+" .quotelink:not(cross)").each(function () {
+					var hr = $(this).attr("href");
+					var postid = hr.substr(hr.indexOf('#')+2);
+					//here
+					try {
+					$("#bl"+postid).append("<span><a href='#p"+$(this).parent(".postMessage").attr("id").substr(1)+"' class='quotelink'>>>"+$(this).parent(".postMessage").attr("id").substr(1)+"</a> </span>");
+					} catch(ex) {
+						
+					}
+				});
+				$(tid).find(".quotelink").hover(function () {
+					showPostPreview(this);
+				}, function () {
+					hidePostPreview(this);
+				});
+				
+				}
+			});
+		});
 	});
-	$("#stylechanger").change(function (e) {
-		$("#switch").attr("href", e.target.options[e.target.selectedIndex].value);
-		$.cookie("style", absolutizeURI(window.location.href, e.target.options[e.target.selectedIndex].value), {expires: 31, path: '/'});
+}
+
+function addThreadHider()
+{
+	$(".op .postInfo").each(function () {
+		var id = $(this).attr("id").substr(2);
+		$(this).append(' <a href="javascript:;" class="hider" id="ht'+id+'">[-]</a>');
 	});
-	
-	if (typeof $.cookie("style") !== "undefined")
-	{
-		$("#switch").attr("href", $.cookie("style"));
-	}
-	
-	
-});
+
+	$(".hider").click(function () {
+		var id = $(this).attr("id").substr(2);
+		thread_toggle(id);
+	});
+}
 
 function showPostPreview( el )
 {
