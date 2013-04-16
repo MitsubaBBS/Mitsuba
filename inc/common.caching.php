@@ -631,7 +631,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$trip = "<span class='postertrip'>!".$row['trip']."</span>";
 			}
 			$poster_id = "";
-			if ((!empty($row['poster_id'])) && ($boarddata['ids']==1))
+			if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && ($row['capcode']<1))
 			{
 				$poster_id = '<span class="posteruid">(ID: '.$row['poster_id'].')</span>';
 			}
