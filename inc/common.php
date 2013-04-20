@@ -292,23 +292,39 @@ function randomPassword() {
 	return implode($pass);
 }
 
-function processString($conn, $string, $name = 0)
+function processName($conn, $string)
+{
+	$arr = array();
+	$new = $string;
+	$new = str_replace("##", "#", $new);
+	$exploded = explode("#", $new, 2);
+	if (count($exploded)>1)
+	{
+		$arr['name'] = $exploded[0];
+		$arr['trip'] = mktripcode($exploded[1]);
+	} else {
+		$arr['name'] = $new;
+		$arr['trip'] = "";
+	}
+	$arr['name'] = $conn->real_escape_string($arr['name']);
+	$arr['name'] = htmlspecialchars($arr['name']);
+	return $arr;
+}
+
+function processString($conn, $string)
 {
 	$new = $string;
 	$new = $conn->real_escape_string($new);
 	$new = htmlspecialchars($new);
 	
-	if ($name == 1)
+	$new = str_replace("##", "#", $new);
+	$exploded = explode("#", $new, 2);
+	if (count($exploded)>1)
 	{
-		$new = str_replace("##", "#", $new);
-		$exploded = explode("#", $new, 2);
-		if (count($exploded)>1)
-		{
-			$arr = array();
-			$arr['name'] = $exploded[0];
-			$arr['trip'] = mktripcode($exploded[1]);
-			return $arr;
-		}
+		$arr = array();
+		$arr['name'] = $exploded[0];
+		$arr['trip'] = mktripcode($exploded[1]);
+		return $arr;
 	}
 	return $new;
 }

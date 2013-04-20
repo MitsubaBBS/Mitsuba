@@ -547,80 +547,113 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= '<div class="thread" id="t'.$row['id'].'">';
 			$file .= '<div class="postContainer opContainer" id="pc'.$row['id'].'">';
 			$file .= '<div id="p'.$row['id'].'" class="post op">';
-			if ($row['filename'] == "deleted")
+			$files = array();
+			if (substr($row['filename'], 0, 6) == "multi;")
 			{
-				$file .= '<div class="file" id="f'.$row['id'].'">';
-				$file .= '<div class="fileInfo">';$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>deleted</b></span>';
-				$file .= '</div>';
-				if ($return == 1)
+				$filenames = explode(";", $row['filename']);
+				$orig_filenames = explode(";", $row['orig_filename']);
+				$filesizes = explode(";", $row['filesize']);
+				$imagesizes = explode(";", $row['imagesize']);
+				$t_ws = explode(";", $row['t_w']);
+				$t_hs = explode(";", $row['t_h']);
+				$num = 0;
+				foreach($filenames as $filename)
 				{
-					$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted"/></a>';
-				} elseif ($threadno != 0)
-				{
-					$file .= '<a class="fileThumb" target="_blank"><img src="../../img/deleted.gif" alt="Deleted"/></a>';
-				} else {
-					$file .= '<a class="fileThumb" target="_blank"><img src="../img/deleted.gif" alt="Deleted"/></a>';
+					$files[$num]['filename'] = $filenames[$num+1];
+					$files[$num]['orig_filename'] = $orig_filenames[$num];
+					$files[$num]['filesize'] = $filesizes[$num];
+					$files[$num]['imagesize'] = $imagesizes[$num];
+					$files[$num]['t_w'] = $t_ws[$num];
+					$files[$num]['t_h'] = $t_hs[$num];
+					$num++;
 				}
-				$file .= '</div>';
-			} elseif (substr($row['filename'], 0, 8) == "spoiler:")
-			{
-				$file .= '<div class="file" id="f'.$row['id'].'">';
-				$file .= '<div class="fileInfo">';
-				if ($return == 1)
-				{
-					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./'.$board.'/src/'.substr($row['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
-				
-				} elseif ($threadno != 0)
-				{
-					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="../src/'.substr($row['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
-				} else {
-					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./src/'.substr($row['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
-				}
-				$file .= '</div>';
-				if ($return == 1)
-				{
-					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row['filename'],8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-				} elseif ($threadno != 0)
-				{
-					$file .= '<a class="fileThumb" href="../src/'.substr($row['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-				} else {
-					$file .= '<a class="fileThumb" href="./src/'.substr($row['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-				}
-				$file .= '</div>';
-			} elseif (substr($row['filename'], 0, 6) == "embed:")
-			{
-				$file .= '<div class="file" id="f'.$row['id'].'">';
-				$file .= '<div class="fileInfo">';
-				$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <b>Embed</b></span>';
-				
-				$file .= '</div>';
-				$file .= '<a class="fileThumb">'.getEmbed(substr($row['filename'], 6), $embed_table).'</a>';
-				
-				$file .= '</div>';
 			} else {
-				$file .= '<div class="file" id="f'.$row['id'].'">';
-				$file .= '<div class="fileInfo">';
-				if ($return == 1)
+				$files[0]['filename'] = $row['filename'];
+				$files[0]['orig_filename'] = $row['orig_filename'];
+				$files[0]['filesize'] = $row['filesize'];
+				$files[0]['imagesize'] = $row['imagesize'];
+				$files[0]['t_w'] = $row['t_w'];
+				$files[0]['t_h'] = $row['t_h'];
+			}
+			$filenum = 0;
+			foreach($files as $fileinfo)
+			{
+				if ($fileinfo['filename'] == "deleted")
 				{
-					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./'.$board.'/src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a> -('.$row['filesize'].', '.$row['imagesize'].', <span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
-				} elseif ($threadno != 0)
+					$file .= '<div class="file" id="f'.$row['id']."_".$filenum.'">';
+					$file .= '<div class="fileInfo">';$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <b>deleted</b></span>';
+					$file .= '</div>';
+					if ($return == 1)
+					{
+						$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted"/></a>';
+					} elseif ($threadno != 0)
+					{
+						$file .= '<a class="fileThumb" target="_blank"><img src="../../img/deleted.gif" alt="Deleted"/></a>';
+					} else {
+						$file .= '<a class="fileThumb" target="_blank"><img src="../img/deleted.gif" alt="Deleted"/></a>';
+					}
+					$file .= '</div>';
+				} elseif (substr($fileinfo['filename'], 0, 8) == "spoiler:")
 				{
-					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="../src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a> -('.$row['filesize'].', '.$row['imagesize'].', <span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
+					$file .= '<div class="file" id="f'.$row['id']."_".$filenum.'">';
+					$file .= '<div class="fileInfo">';
+					if ($return == 1)
+					{
+						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+					
+					} elseif ($threadno != 0)
+					{
+						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="../src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+					} else {
+						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+					}
+					$file .= '</div>';
+					if ($return == 1)
+					{
+						$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+					} elseif ($threadno != 0)
+					{
+						$file .= '<a class="fileThumb" href="../src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+					} else {
+						$file .= '<a class="fileThumb" href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+					}
+					$file .= '</div>';
+				} elseif (substr($fileinfo['filename'], 0, 6) == "embed:")
+				{
+					$file .= '<div class="file" id="f'.$row['id']."_".$filenum.'">';
+					$file .= '<div class="fileInfo">';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <b>Embed</b></span>';
+					
+					$file .= '</div>';
+					$file .= '<a class="fileThumb">'.getEmbed(substr($fileinfo['filename'], 6), $embed_table).'</a>';
+					
+					$file .= '</div>';
 				} else {
-					$file .= '<span class="fileText" id="fT'.$row['id'].'">File: <a href="./src/'.$row['filename'].'" target="_blank">'.$row['filename'].'</a> -('.$row['filesize'].', '.$row['imagesize'].', <span title="'.$row['orig_filename'].'">'.$row['orig_filename'].'</span>)</span>';
+					$file .= '<div class="file" id="f'.$row['id']."_".$filenum.'">';
+					$file .= '<div class="fileInfo">';
+					if ($return == 1)
+					{
+						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank">'.$fileinfo['filename'].'</a> -('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+					} elseif ($threadno != 0)
+					{
+						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="../src/'.$fileinfo['filename'].'" target="_blank">'.$fileinfo['filename'].'</a> -('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+					} else {
+						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./src/'.$fileinfo['filename'].'" target="_blank">'.$fileinfo['filename'].'</a> -('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+					}
+					$file .= '</div>';
+					if ($return == 1)
+					{
+						$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+					} elseif ($threadno != 0)
+					{
+						$file .= '<a class="fileThumb" href="../src/'.$fileinfo['filename'].'" target="_blank"><img src="../src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+					} else {
+						$file .= '<a class="fileThumb" href="./src/'.$fileinfo['filename'].'" target="_blank"><img src="./src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+					}
+					
+					$file .= '</div>';
 				}
-				$file .= '</div>';
-				if ($return == 1)
-				{
-					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row['filename'].'" alt="Thumbnail" style="width: '.$row['t_w'].'px; height: '.$row['t_h'].'px"/></a>';
-				} elseif ($threadno != 0)
-				{
-					$file .= '<a class="fileThumb" href="../src/'.$row['filename'].'" target="_blank"><img src="../src/thumb/'.$row['filename'].'" alt="Thumbnail" style="width: '.$row['t_w'].'px; height: '.$row['t_h'].'px"/></a>';
-				} else {
-					$file .= '<a class="fileThumb" href="./src/'.$row['filename'].'" target="_blank"><img src="./src/thumb/'.$row['filename'].'" alt="Thumbnail" style="width: '.$row['t_w'].'px; height: '.$row['t_h'].'px"/></a>';
-				}
-				
-				$file .= '</div>';
+				$filenum++;
 			}
 			$file .= '<div class="postInfo" id="pi'.$row['id'].'">';
 			$file .= '<input type="checkbox" name="'.$row['id'].'" value="delete" />';
@@ -631,7 +664,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$trip = "<span class='postertrip'>!".$row['trip']."</span>";
 			}
 			$poster_id = "";
-			if ((!empty($row['poster_id'])) && ($boarddata['ids']==1))
+			if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && ($row['capcode']<1))
 			{
 				$poster_id = '<span class="posteruid">(ID: '.$row['poster_id'].')</span>';
 			}
@@ -901,84 +934,115 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					$file .= '<span class="postNum"><a href="./res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
 				}
 				$file .= '</div>';
-				if (!empty($row2['filename']))
+								if (!empty($row2['filename']))
 				{
-					if ($row2['filename'] == "deleted")
+					$files = array();
+					if (substr($row2['filename'], 0, 6) == "multi;")
 					{
-						$file .= '<div class="file" id="f'.$row2['id'].'">';
-						$file .= '<div class="fileInfo">';
-						$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>deleted</b></span>';
-						$file .= '</div>';
-						if ($return == 1)
+						$filenames = explode(";", $row2['filename']);
+						$orig_filenames = explode(";", $row2['orig_filename']);
+						$filesizes = explode(";", $row2['filesize']);
+						$imagesizes = explode(";", $row2['imagesize']);
+						$t_ws = explode(";", $row2['t_w']);
+						$t_hs = explode(";", $row2['t_h']);
+						$num = 0;
+						foreach($filenames as $filename)
 						{
-							$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted" /></a>';
-						} elseif ($threadno != 0)
-						{
-							$file .= '<a class="fileThumb" target="_blank"><img src="../../img/deleted.gif" alt="Deleted" /></a>';
-						} else {
-							$file .= '<a class="fileThumb" target="_blank"><img src="../img/deleted.gif" alt="Deleted" /></a>';
+							$files[$num]['filename'] = $filenames[$num+1];
+							$files[$num]['orig_filename'] = $orig_filenames[$num];
+							$files[$num]['filesize'] = $filesizes[$num];
+							$files[$num]['imagesize'] = $imagesizes[$num];
+							$files[$num]['t_w'] = $t_ws[$num];
+							$files[$num]['t_h'] = $t_hs[$num];
+							$num++;
 						}
-					
-						$file .= '</div>';
-					} elseif (substr($row2['filename'], 0, 8) == "spoiler:")
-					{
-						$file .= '<div class="file" id="f'.$row2['id'].'">';
-						$file .= '<div class="fileInfo">';
-						if ($return == 1)
-						{
-							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./'.$board.'/src/'.substr($row2['filename'], 8).'" target="_blank"><b>Spoiler image</b></a></span>';
-						} elseif ($threadno != 0)
-						{
-							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="../src/'.substr($row2['filename'], 8).'" target="_blank"><b>Spoiler image</b></a></span>';
-						} else {
-							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./src/'.substr($row2['filename'], 8).'" target="_blank"><b>Spoiler image</b></a></span>';
-						}
-						$file .= '</div>';
-						if ($return == 1)
-						{
-							$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($row2['filename'], 8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-						} elseif ($threadno != 0)
-						{
-							$file .= '<a class="fileThumb" href="../src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-						} else {
-							$file .= '<a class="fileThumb" href="./src/'.substr($row2['filename'], 8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-						}
-						$file .= '</div>';
-					} elseif (substr($row2['filename'], 0, 6) == "embed:")
-					{
-						$file .= '<div class="file" id="f'.$row2['id'].'">';
-						$file .= '<div class="fileInfo">';
-						$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <b>Embed</b></span>';
-						
-						$file .= '</div>';
-						$file .= '<a class="fileThumb">'.getEmbed(substr($row2['filename'], 6), $embed_table).'</a>';
-						
-						$file .= '</div>';
 					} else {
-						$file .= '<div class="file" id="f'.$row2['id'].'">';
-						$file .= '<div class="fileInfo">';
-						if ($return == 1)
+						$files[0]['filename'] = $row2['filename'];
+						$files[0]['orig_filename'] = $row2['orig_filename'];
+						$files[0]['filesize'] = $row2['filesize'];
+						$files[0]['imagesize'] = $row2['imagesize'];
+						$files[0]['t_w'] = $row2['t_w'];
+						$files[0]['t_h'] = $row2['t_h'];
+					}
+					$filenum = 0;
+					foreach($files as $fileinfo)
+					{
+						if ($fileinfo['filename'] == "deleted")
 						{
-							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./'.$board.'/src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> -('.$row2['filesize'].', '.$row2['imagesize'].', <span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
-						} elseif ($threadno != 0)
+							$file .= '<div class="file" id="f'.$row2['id']."_".$filenum.'">';
+							$file .= '<div class="fileInfo">';$file .= '<span class="fileText" id="fT'.$row2['id']."_".$filenum.'">File: <b>deleted</b></span>';
+							$file .= '</div>';
+							if ($return == 1)
+							{
+								$file .= '<a class="fileThumb" target="_blank"><img src="./img/deleted.gif" alt="Deleted"/></a>';
+							} elseif ($threadno != 0)
+							{
+								$file .= '<a class="fileThumb" target="_blank"><img src="../../img/deleted.gif" alt="Deleted"/></a>';
+							} else {
+								$file .= '<a class="fileThumb" target="_blank"><img src="../img/deleted.gif" alt="Deleted"/></a>';
+							}
+							$file .= '</div>';
+						} elseif (substr($fileinfo['filename'], 0, 8) == "spoiler:")
 						{
-							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="../src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> -('.$row2['filesize'].', '.$row2['imagesize'].', <span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
+							$file .= '<div class="file" id="f'.$row2['id']."_".$filenum.'">';
+							$file .= '<div class="fileInfo">';
+							if ($return == 1)
+							{
+								$file .= '<span class="fileText" id="fT'.$row2['id']."_".$filenum.'">File: <a href="./'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+							
+							} elseif ($threadno != 0)
+							{
+								$file .= '<span class="fileText" id="fT'.$row2['id']."_".$filenum.'">File: <a href="../src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+							} else {
+								$file .= '<span class="fileText" id="fT'.$row2['id']."_".$filenum.'">File: <a href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+							}
+							$file .= '</div>';
+							if ($return == 1)
+							{
+								$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+							} elseif ($threadno != 0)
+							{
+								$file .= '<a class="fileThumb" href="../src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+							} else {
+								$file .= '<a class="fileThumb" href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+							}
+							$file .= '</div>';
+						} elseif (substr($fileinfo['filename'], 0, 6) == "embed:")
+						{
+							$file .= '<div class="file" id="f'.$row2['id']."_".$filenum.'">';
+							$file .= '<div class="fileInfo">';
+							$file .= '<span class="fileText" id="fT'.$row2['id']."_".$filenum.'">File: <b>Embed</b></span>';
+							
+							$file .= '</div>';
+							$file .= '<a class="fileThumb">'.getEmbed(substr($fileinfo['filename'], 6), $embed_table).'</a>';
+							
+							$file .= '</div>';
 						} else {
-							$file .= '<span class="fileText" id="fT'.$row2['id'].'">File: <a href="./src/'.$row2['filename'].'" target="_blank">'.$row2['filename'].'</a> -('.$row2['filesize'].', '.$row2['imagesize'].', <span title="'.$row2['orig_filename'].'">'.$row2['orig_filename'].'</span>)</span>';
+							$file .= '<div class="file" id="f'.$row2['id']."_".$filenum.'">';
+							$file .= '<div class="fileInfo">';
+							if ($return == 1)
+							{
+								$file .= '<span class="fileText" id="fT'.$row2['id']."_".$filenum.'">File: <a href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank">'.$fileinfo['filename'].'</a> -('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+							} elseif ($threadno != 0)
+							{
+								$file .= '<span class="fileText" id="fT'.$row2['id']."_".$filenum.'">File: <a href="../src/'.$fileinfo['filename'].'" target="_blank">'.$fileinfo['filename'].'</a> -('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+							} else {
+								$file .= '<span class="fileText" id="fT'.$row2['id']."_".$filenum.'">File: <a href="./src/'.$fileinfo['filename'].'" target="_blank">'.$fileinfo['filename'].'</a> -('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+							}
+							$file .= '</div>';
+							if ($return == 1)
+							{
+								$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+							} elseif ($threadno != 0)
+							{
+								$file .= '<a class="fileThumb" href="../src/'.$fileinfo['filename'].'" target="_blank"><img src="../src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+							} else {
+								$file .= '<a class="fileThumb" href="./src/'.$fileinfo['filename'].'" target="_blank"><img src="./src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+							}
+							
+							$file .= '</div>';
 						}
-						$file .= '</div>';
-						
-						if ($return == 1)
-						{
-							$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$row2['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$row2['filename'].'" style="width: '.$row2['t_w'].'px; height: '.$row2['t_h'].'px" alt="Thumbnail"/></a>';
-						} elseif ($threadno != 0)
-						{
-							$file .= '<a class="fileThumb" href="../src/'.$row2['filename'].'" target="_blank"><img src="../src/thumb/'.$row2['filename'].'" style="width: '.$row2['t_w'].'px; height: '.$row2['t_h'].'px" alt="Thumbnail"/></a>';
-						} else {
-							$file .= '<a class="fileThumb" href="./src/'.$row2['filename'].'" target="_blank"><img src="./src/thumb/'.$row2['filename'].'" style="width: '.$row2['t_w'].'px; height: '.$row2['t_h'].'px" alt="Thumbnail"/></a>';
-						}
-					
-						$file .= '</div>';
+						$filenum++;
 					}
 				}
 				
