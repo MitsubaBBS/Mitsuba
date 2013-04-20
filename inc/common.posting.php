@@ -230,12 +230,9 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	$trip = "";
 	if (($bdata['noname'] == 0) || ($adm_type >= 1))
 	{
-		$name = processString($conn, $name, 1);
-		if (isset($name['trip']))
-		{
-			$trip = $name['trip'];
-			$name = $name['name'];
-		}
+		$arr = processName($conn, $name);
+		$trip = $array['trip'];
+		$name = $array['name'];
 	} else {
 		$name = "Anonymous";
 		if (($email != "nonoko") || ($email != "nonokosage") || ($email != "noko") || ($email != "nokosage") || ($email != "sage"))
