@@ -12,7 +12,6 @@ reqPermission(2);
 <div class="boxcontent">
 <form action="?/cache" method="POST">
 <input type="checkbox" name="links" value=1><?php echo $lang['mod/board_links']; ?></input><br />
-<input type="checkbox" name="styles" value=1><?php echo $lang['mod/board_styles']; ?></input><br />
 <input type="checkbox" name="boards" value=1><?php echo $lang['mod/all_boards']; ?></input><br />
 <input type="checkbox" name="boards" value=1><?php echo $lang['mod/thumbnails']; ?></input><br />
 <input type="checkbox" name="static" value=1><?php echo $lang['mod/all_static']; ?></input><br />

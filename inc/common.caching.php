@@ -1,9 +1,4 @@
 <?php
-function generateStyles($conn, $in_thread = 0)
-{
-
-}
-
 function generateBoardLinks($conn, $in_thread = 0)
 {
 	$links = '<div id="boardLinks">';

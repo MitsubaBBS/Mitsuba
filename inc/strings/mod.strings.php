@@ -133,7 +133,6 @@ $lang['mod/pwd_confirm'] = "Confirm new password";
 
 
 $lang['mod/board_links'] = "Board links";
-$lang['mod/board_styles'] = "Board styles";
 $lang['mod/all_static'] = "All static pages";
 $lang['mod/rebuild_static'] = "Rebuild static pages";
 $lang['mod/frontpage'] = "Frontpage";

@@ -10,12 +10,6 @@ reqPermission(2);
 			rebuildBoardLinks($conn);
 		}
 		
-		if ((!empty($_POST['styles'])) && ($_POST['styles']==1))
-		{
-			rebuildStyles($conn);
-		}
-		
-		
 		if ((!empty($_POST['boards'])) && ($_POST['boards']==1))
 		{
 			$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");

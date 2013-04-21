@@ -6,12 +6,6 @@ function rebuildBoardLinks($conn)
 	updateConfigValue($conn, "boardLinks_index", generateBoardLinks($conn, 2));
 }
 
-function rebuildStyles($conn)
-{
-	updateConfigValue($conn, "styles", generateStyles($conn));
-	updateConfigValue($conn, "styles_thread", generateStyles($conn, 1));
-}
-
 function generatePost($conn, $board, $id)
 {
 	if ((empty($id)) || (!is_numeric($id)))
