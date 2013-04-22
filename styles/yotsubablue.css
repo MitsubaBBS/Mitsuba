@@ -129,7 +129,6 @@ div.pContainer {
 }
 
 div.opContainer {
-    display: inline;
 }
 
 div.sideArrows {
@@ -141,7 +140,8 @@ div.sideArrows {
 }
 
 div.thread {
-    margin: 0px;
+    margin-left: 30px;
+    margin-right: 30px;
     clear: both;
 }
 
@@ -155,14 +155,13 @@ div.thread>div:nth-of-type(2)>div.reply {
 }
 
 div.op {
-    display: inline;
+    background-color: #F9F9F9;
+    border: 1px solid #B7C5D9;
 }
 
 div.reply {
     background-color: #D6DAF0;
     border: 1px solid #B7C5D9;
-    border-left: none;
-    border-top: none;
     display: table;
     padding: 2px;
 }
@@ -173,6 +172,10 @@ div.reply input {
 
 div.post div.postInfo {
     display: block;
+    display: block;
+    position: relative;
+    padding: 5px;
+    background-color: #D6DAF0;
     width: 100%;
 }
 

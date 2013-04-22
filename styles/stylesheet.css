@@ -95,7 +95,6 @@ div#boardLinks a {
 }
 
 div.opContainer {
-    display: inline;
 }
 
 div.sideArrows {
@@ -107,7 +106,8 @@ div.sideArrows {
 }
 
 div.thread {
-    margin: 0px;
+    margin-left: 30px;
+    margin-right: 30px;
     clear: both;
 }
 
@@ -121,14 +121,13 @@ div.thread>div:nth-of-type(2)>div.reply {
 }
 
 div.op {
-    display: inline;
+    background-color: #f1e1d7;
+    border: 1px solid #D9BFB7;
 }
 
 div.reply {
     background-color: #f0e0d6;
     border: 1px solid #D9BFB7;
-    border-left: none;
-    border-top: none;
     display: table;
     padding: 2px;
 }
@@ -153,6 +152,13 @@ div.post div.postInfo span.postNum a:hover,.posteruid .hand:hover {
 
 div.post div.postInfo span.nameBlock {
     display: inline-block;
+}
+
+div.op div.postInfo {
+    display: block;
+    position: relative;
+    padding: 5px;
+    background-color: #FFCCAA;
 }
 
 div.post div.postInfo span.nameBlock span.name {
