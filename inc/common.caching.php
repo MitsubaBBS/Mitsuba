@@ -400,7 +400,6 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		$locked = 0;
 		
 		
-		
 		if (($return == 1) && ($adm_type >= 1))
 		{
 			
@@ -542,6 +541,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$result = $conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
 		}
 
+		$api_posts = array();
 		while ($row = $result->fetch_assoc())
 		{
 			$file .= '<div class="thread" id="t'.$row['id'].'">';
@@ -704,6 +704,12 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			
 			$file .= '</div>';
 			$file .= '</div>';
+			
+			if ($config['enable_api']==1)
+			{
+				$api_posts[] = serializePost($row, $boarddata, $parser, $conn);
+			}
+			
 			if ($threadno != 0)
 			{
 				$posts = $conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC");
@@ -853,6 +859,11 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				
 				
 				$file .= '</div>';
+				
+				if ($config['enable_api']==1)
+				{
+					$api_posts[] = serializePost($row2, $boarddata, $parser, $conn);
+				}
 			}
 			
 			$file .= '</div>';
@@ -969,6 +980,13 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			if ($threadno != 0)
 			{
 				$handle = fopen("./".$board."/res/".$threadno.".html", "w");
+				if ($config['enable_api']==1)
+				{
+					$api_handle = fopen("./".$board."/res/".$threadno.".json", "w");
+					$api['posts'] = $api_posts;
+					fwrite($api_handle, json_encode($api));
+					fclose($api_handle);
+				}
 			} else {
 				if ($pg != 0)
 				{
@@ -1292,5 +1310,164 @@ function getFiles($row, $board, $return, $threadno)
 		}
 	}
 	return $file;
+}
+
+function serializePost($row, $boarddata, $parser, $conn)
+{
+	$post = array();
+	$post['no'] = $row['id'];
+	$post['resto'] = $row['resto'];
+	if ($row['sticky'] == 1)
+	{
+		$post['sticky'] = 1;
+	}
+	if ($row['locked'] == 1)
+	{
+		$post['closed'] = 1;
+	}
+	$post['now'] = date("d/m/Y(D)H:i:s", $row['date']);
+	$post['time'] = $row['date'];
+	$post['name'] = $row['name'];
+	if (!empty($row['trip']))
+	{
+		$post['trip'] = "!".$row['trip'];
+	}
+	if ($row['capcode'] == 2)
+	{
+		$post['id'] = "Admin";
+	} elseif ($row['capcode'] == 1) {
+		$post['id'] = "Mod";
+	} else {
+		if ((!empty($row['poster_id'])) && ($boarddata['ids']==1))
+		{
+			$post['id'] = $row['poster_id'];
+		}
+	}
+	if ($row['capcode'] == 2)
+	{
+		$post['capcode'] = "admin";
+	} elseif ($row['capcode'] == 1) {
+		$post['capcode'] = "mod";
+	}
+	if (!empty($row['email']))
+	{
+		$post['email'] = $row['email'];
+	}
+	if (!empty($row['subject']))
+	{
+		$post['sub'] = $row['subject'];
+	}
+	if ($row['raw'] != 1)
+	{
+		if ($row['raw'] == 2)
+		{
+			$post['com'] = processComment($boarddata['short'], $conn, $row['comment'], $parser, 2, 0, $boarddata['bbcode'], $row['id'], $row['resto']);
+		} else {
+			$post['com'] = processComment($boarddata['short'], $conn, $row['comment'], $parser, 2, 1, $boarddata['bbcode'], $row['id'], $row['resto']);
+		}
+	} else {
+		$post['com'] = $row['comment'];
+	}
+	if (!empty($row['filename']))
+	{
+		if (substr($row['filename'], 0, 6) == "multi;")
+		{
+			$files = array();
+			$filenames = explode(";", $row['filename']);
+			$orig_filenames = explode(";", $row['orig_filename']);
+			$filesizes = explode(";", $row['orig_filesize']);
+			$imagesizes = explode(";", $row['imagesize']);
+			$t_ws = explode(";", $row['t_w']);
+			$t_hs = explode(";", $row['t_h']);
+			$num = 0;
+			foreach($filenames as $filename)
+			{
+				$files[$num]['filename'] = $filenames[$num+1];
+				$files[$num]['orig_filename'] = $orig_filenames[$num];
+				$files[$num]['filesize'] = $filesizes[$num];
+				$files[$num]['imagesize'] = $imagesizes[$num];
+				$files[$num]['t_w'] = $t_ws[$num];
+				$files[$num]['t_h'] = $t_hs[$num];
+				$num++;
+			}
+			$filenum = 0;
+			foreach($files as $fileinfo)
+			{
+				if ($row['filename'] != "deleted")
+				{
+					if (substr($row['filename'], 0, 8 == "spoiler:"))
+					{
+						$pinfo = pathinfo(substr($row['filename'], 8));
+						$pinfoo = pathinfo($row['orig_filename']);
+						$file = array();
+						$file['tim'] = $pinfo['basename'];
+						$file['filename'] = $pinfoo['basename'];
+						$file['ext'] = ".".$pinfo['extension'];
+						$file['fsize'] = $row['orig_filesize'];
+						$sze = explode("x", $row['imagesize']);
+						$file['w'] = $sze[0];
+						$file['h'] = $sze[1];
+						$file['t_w'] = $row['t_w'];
+						$file['t_h'] = $row['t_h'];
+						$file['spoiler'] = 1;
+						$post['files'][] = $file;
+					} else {
+						$pinfo = pathinfo($row['filename']);
+						$pinfoo = pathinfo($row['orig_filename']);
+						$file = array();
+						$file['tim'] = $pinfo['basename'];
+						$file['filename'] = $pinfoo['basename'];
+						$file['ext'] = ".".$pinfo['extension'];
+						$file['fsize'] = $row['orig_filesize'];
+						$sze = explode("x", $row['imagesize']);
+						$file['w'] = $sze[0];
+						$file['h'] = $sze[1];
+						$file['t_w'] = $row['t_w'];
+						$file['t_h'] = $row['t_h'];
+						$post['files'][] = $file;
+					}
+				} else {
+					$file = array();
+					$file['filedeleted'] = 1;
+					$post['files'][] = $file;
+				}
+			}
+		} else {
+			if ($row['filename'] != "deleted")
+			{
+				if (substr($row['filename'], 0, 8 == "spoiler:"))
+				{
+					$pinfo = pathinfo(substr($row['filename'], 8));
+					$pinfoo = pathinfo($row['orig_filename']);
+					$post['tim'] = $pinfo['basename'];
+					$post['filename'] = $pinfoo['basename'];
+					$post['ext'] = ".".$pinfo['extension'];
+					$post['fsize'] = $row['orig_filesize'];
+					$sze = explode("x", $row['imagesize']);
+					$post['w'] = $sze[0];
+					$post['h'] = $sze[1];
+					$post['t_w'] = $row['t_w'];
+					$post['t_h'] = $row['t_h'];
+					$post['spoiler'] = 1;
+				} else {
+					$pinfo = pathinfo($row['filename']);
+					$pinfoo = pathinfo($row['orig_filename']);
+					$post['tim'] = $pinfo['basename'];
+					$post['filename'] = $pinfoo['basename'];
+					$post['ext'] = ".".$pinfo['extension'];
+					$post['fsize'] = $row['orig_filesize'];
+					$sze = explode("x", $row['imagesize']);
+					$post['w'] = $sze[0];
+					$post['h'] = $sze[1];
+					$post['t_w'] = $row['t_w'];
+					$post['t_h'] = $row['t_h'];
+				}
+			} else {
+				$post['filedeleted'] = 1;
+			}
+			
+		}
+	}
+return $post;
 }
 ?>

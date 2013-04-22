@@ -40,6 +40,13 @@ if (!empty($_POST['sitename']))
 	$config['sitename'] = $_POST['sitename'];
 }
 
+if (!empty($_POST['enable_api']))
+{
+	$config['enable_api'] = 1;
+} else {
+	$config['enable_api'] = 0;
+}
+
 updateConfig($conn, $config);
 
 ?>

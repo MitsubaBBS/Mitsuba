@@ -19,6 +19,7 @@ $config = getConfig($conn);
 		<?php echo $lang['mod/frontpage_menu_url']; ?>: <input type="text" name="frontpage_menu_url"  value="<?php echo $config['frontpage_menu_url']; ?>" /><br />
 		<?php echo $lang['mod/news_url']; ?>: <input type="text" name="news_url" value="<?php echo $config['news_url']; ?>" /><br />
 		<?php echo $lang['mod/sitename']; ?>: <input type="text" name="sitename" value="<?php echo $config['sitename']; ?>"  /><br />
+		<?php echo $lang['mod/enable_api']; ?>: <input type="checkbox" name="enable_api" value="1" <?php if ($config['enable_api']==1) { echo "checked"; } ?> /><br />
 		<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 		</form>
 		</div>

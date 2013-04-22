@@ -12,6 +12,7 @@ $config['frontpage_url'] = "index.html";
 $config['frontpage_menu_url'] = "menu.html";
 $config['news_url'] = "news.html";
 $config['sitename'] = "Mitsuba";
+$config['enable_api'] = 0;
 
 updateConfig($conn, $config);
 
