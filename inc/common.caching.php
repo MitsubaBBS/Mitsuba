@@ -861,7 +861,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		$file .= "</div>";
 		if ($threadno != 0)
 		{
-			$file .= '<div class="navLinks">[<a href="../" accesskey="a">Return</a>] <!--[<a href="../catalog.html">Catalog</a>]--> [<a href="#top">Top</a>] <span></span></div>';
+			$file .= '<div class="navLinks">[<a href="../" accesskey="a">Return</a>] <!--[<a href="../catalog.html">Catalog</a>]--> [<a href="#bottom">Bottom</a>] <span></span></div>';
 		}
 		$file .= '<div class="deleteform">
 			<input type="hidden" name="board" value="'.$board.'" />
@@ -937,9 +937,9 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			{
 				if ($i == $pg)
 				{
-					$file .= "[<strong>".$i."</strong>] ";
+					$file .= "[<a href='./".$i.".html'><strong>".$i."</strong></a>] ";
 				} else {
-					if ($i > $all_pages)
+					if ($i >= $all_pages)
 					{
 						$file .= "[".$i."] ";
 					} else {
