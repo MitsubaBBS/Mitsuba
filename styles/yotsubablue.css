@@ -821,11 +821,42 @@ input[type="text"],input[type="password"],textarea {
 }
 
 .hider {
-	margin-left: 5px;
-}
-.hider2 {
 	margin-left: 5px!important;
-	}
+}
 a.expander {
 	margin-left: 5px;
 	}
+	
+	#quote-preview iframe,#quote-preview .filter-preview {
+    display: none;
+}
+
+#quote-preview .linkfade {
+    opacity: 1.0;
+}
+
+#quote-preview {
+    display: block;
+    position: absolute;
+    padding: 3px 6px 6px 3px;
+    margin: 0;
+    background-color: #D6DAF0;
+    border: 1px solid #B7C5D9;
+    max-width: 70%;
+}
+
+#quote-preview .dateTime {
+    white-space: nowrap;
+}
+.post-hidden:not(#quote-preview) input,
+.post-hidden:not(#quote-preview) .replyContainer,
+.post-hidden:not(#quote-preview) .summary,
+.post-hidden:not(#quote-preview) .op .file,
+.post-hidden:not(#quote-preview) .file,
+.post-hidden .wbtn,
+.post-hidden .postNum span,
+.post-hidden:not(#quote-preview) .backlink,
+div.post-hidden:not(#quote-preview) div.file,
+div.post-hidden:not(#quote-preview) blockquote.postMessage {
+  display: none;
+}

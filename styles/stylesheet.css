@@ -622,10 +622,8 @@ iframe[src="about:blank"] {
     padding: 3px 6px 6px 3px;
     margin: 0;
     background: #F0E0D6;
-    border: outset;
-    border-width: 2px;
-    border-color: #D99F91 !important;
-    max-width: 700px;
+    border: 1px solid #D9BFB7;
+    max-width: 70%;
 }
 
 #quote-preview .dateTime {
@@ -659,11 +657,8 @@ div.backlink {
 }
 
 .hider {
-	margin-left: 5px;
-}
-.hider2 {
 	margin-left: 5px!important;
-	}
+}
 a.expander {
 	margin-left: 5px;
 	}
