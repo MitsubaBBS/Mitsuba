@@ -5,7 +5,7 @@ html {
 }
 
 body {
-    background: #FFFFEE;
+    background: #FFFFEE url('../img/yotsuba-fade.png') top center repeat-x;
     color: #800000;
     font-family: arial,helvetica,sans-serif;
     font-size: 10pt;
