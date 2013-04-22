@@ -73,9 +73,9 @@ function addPostpreview()
 
 function addBacklinks()
 {
-	$(".postInfo").each(function () {
+	$(".postMessage").each(function () {
 		
-		$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'">&nbsp;</div>');
+		$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(1)+'"></div>');
 		
 	});
 	$(".quotelink:not(cross)").each(function () {
@@ -83,6 +83,11 @@ function addBacklinks()
 		var postid = hr.substr(hr.indexOf('#')+2);
 		//here
 		try {
+			
+		if ($("#bl"+postid).html() == "")
+		{
+			$("#bl"+postid).append("<hr />");
+		}
 		$("#bl"+postid).append("<span><a href='#p"+$(this).parent(".postMessage").attr("id").substr(1)+"' class='quotelink'>>>"+$(this).parent(".postMessage").attr("id").substr(1)+"</a> </span>");
 		} catch(ex) {
 			
@@ -218,7 +223,7 @@ function hideThreads()
 
 function hideThread(id)
 {
-	$("#f"+id).css("display", "none");
+	$("#pc"+id+" .file").css("display", "none");
 	$("#m"+id).css("display", "none");
 	$("#et"+id).css("display", "none");
 	$("#t"+id).find(".replyContainer").css("display", "none");
@@ -228,7 +233,7 @@ function hideThread(id)
 
 function showThread(id)
 {
-	$("#f"+id).css("display", "block");
+	$("#pc"+id+" .file").css("display", "block");
 	$("#m"+id).css("display", "block");
 	$("#et"+id).css("display", "inline");
 	$("#t"+id).find(".replyContainer").css("display", "block");

@@ -63,10 +63,6 @@ function getBoardLinks($conn, $in_thread = 0)
 function processComment($board, $conn, $string, $parser, $thread = 0, $specialchars = 1, $bbcode = 1, $id = 0, $resto = 0)
 {
 	$new = $string;
-	if ($specialchars == 1)
-	{
-		$new = htmlspecialchars($new);
-	}
 	
 	$fresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
 	$replace_array = array();
@@ -77,15 +73,17 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 	$c_lines = 0;
 	foreach ($lines as $line)
 	{
-		if (substr($line, 0, 8) == "&gt;&gt;")
+		if (substr($line, 0, 2) == ">>")
 		{
 			$space = explode(" ", $line, 2);
-			if (is_numeric(substr($space[0], 8)))
+			if (is_numeric(substr($space[0], 2)))
 			{
-				$result = $conn->query("SELECT * FROM posts WHERE id='".substr($space[0], 8)."' AND board='".$board."';");
+				$result = $conn->query("SELECT * FROM posts WHERE id='".substr($space[0], 2)."' AND board='".$board."';");
 				if (empty($space[1])) { $space[1] = ""; }
+				if ($specialchars == 1) { $space[1] = htmlspecialchars($space[1]); }
 				if ($result->num_rows == 1)
 				{
+					
 					$row = $result->fetch_assoc();
 					if ($row['resto'] != 0)
 					{
@@ -108,15 +106,17 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 						}
 					}
 				} else {
+					if ($specialchars == 1) { $space[0] = htmlspecialchars($space[0]); }
 					$new .= "<span class='quote'>".$space[0]." ".$space[1]."</span><br />";
 				}
-			} elseif ((substr($space[0], 0, 9) == "&gt;&gt;/") || (substr($space[0], 0, 13) == "&gt;&gt;&gt;/"))
+			} elseif ((substr($space[0], 0, 3) == ">>/") || (substr($space[0], 0, 4) == ">>>/"))
 			{
 				$parts = explode("/", $space[0]);
 				if ((isBoard($conn, $parts[1])) && (is_numeric($parts[2])))
 				{
 					$result = $conn->query("SELECT * FROM posts WHERE id='".$parts[2]."' AND board='".$parts[1]."';");
 					if (empty($space[1])) { $space[1] = ""; }
+					if ($specialchars == 1) { $space[1] = htmlspecialchars($space[1]); }
 					if ($result->num_rows == 1)
 					{
 						$row = $result->fetch_assoc();
@@ -141,18 +141,23 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 							}
 						}
 					} else {
+						if ($specialchars == 1) { $space[0] = htmlspecialchars($space[0]); }
 						$new .= "<span class='quote'>".$space[0]."</span> ".$space[1]." <br />";
 					}
 				} else {
+					if ($specialchars == 1) {  $line = htmlspecialchars($line); }
 					$new .= "<span class='quote'>".$line."</span><br />";
 				}
 			} else {
+				if ($specialchars == 1) { $line = htmlspecialchars($line); }
 				$new .= "<span class='quote'>".$line."</span> <br />";
 			}
-		} elseif (substr($line, 0, 4) == "&gt;")
+		} elseif (substr($line, 0, 1) == ">")
 		{
+			if ($specialchars == 1) { $line = htmlspecialchars($line); }
 			$new .= "<span class='quote'>".$line."</span><br />";
 		} else {
+			if ($specialchars == 1) { $line = htmlspecialchars($line); }
 			$new .= $line." <br />";
 			
 		}
@@ -1263,12 +1268,12 @@ function getFiles($row, $board, $return, $threadno)
 				$file .= '<div class="fileInfo">';
 				if ($return == 1)
 				{
-					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank">'.$fileinfo['filename'].'</a> -('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 				} elseif ($threadno != 0)
 				{
-					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="../src/'.$fileinfo['filename'].'" target="_blank">'.$fileinfo['filename'].'</a> -('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="../src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 				} else {
-					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./src/'.$fileinfo['filename'].'" target="_blank">'.$fileinfo['filename'].'</a> -('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="./src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 				}
 				$file .= '</div>';
 				if ($return == 1)
