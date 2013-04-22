@@ -16,11 +16,20 @@ Planned features
 * captcha support
 * catalog feature (like 4chan)
 
+API
+---
+
+I (Desuneko) have added support for API.
+
+The API is at ./`board`/`thread_no`.json
+
+For more info visit [4chan's api](https://github.com/4chan/4chan-API)
+
 Credits
 -------
-onexxen - creator and developer of Project Mitsuba
+Desuneko - creator and developer of Project Mitsuba
 
-skandal - first betatester, helped with bughunting
+skandal - first betatester, helped with bughunting, made Polish translation and several alternative stylesheets
 
 License
 --------

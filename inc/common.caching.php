@@ -1400,8 +1400,8 @@ function serializePost($row, $boarddata, $parser, $conn)
 						$pinfo = pathinfo(substr($row['filename'], 8));
 						$pinfoo = pathinfo($row['orig_filename']);
 						$file = array();
-						$file['tim'] = $pinfo['basename'];
-						$file['filename'] = $pinfoo['basename'];
+						$file['tim'] = $pinfo['filename'];
+						$file['filename'] = $pinfoo['filename'];
 						$file['ext'] = ".".$pinfo['extension'];
 						$file['fsize'] = $row['orig_filesize'];
 						$sze = explode("x", $row['imagesize']);
@@ -1415,8 +1415,8 @@ function serializePost($row, $boarddata, $parser, $conn)
 						$pinfo = pathinfo($row['filename']);
 						$pinfoo = pathinfo($row['orig_filename']);
 						$file = array();
-						$file['tim'] = $pinfo['basename'];
-						$file['filename'] = $pinfoo['basename'];
+						$file['tim'] = $pinfo['filename'];
+						$file['filename'] = $pinfoo['filename'];
 						$file['ext'] = ".".$pinfo['extension'];
 						$file['fsize'] = $row['orig_filesize'];
 						$sze = explode("x", $row['imagesize']);
@@ -1439,8 +1439,8 @@ function serializePost($row, $boarddata, $parser, $conn)
 				{
 					$pinfo = pathinfo(substr($row['filename'], 8));
 					$pinfoo = pathinfo($row['orig_filename']);
-					$post['tim'] = $pinfo['basename'];
-					$post['filename'] = $pinfoo['basename'];
+					$post['tim'] = $pinfo['filename'];
+					$post['filename'] = $pinfoo['filename'];
 					$post['ext'] = ".".$pinfo['extension'];
 					$post['fsize'] = $row['orig_filesize'];
 					$sze = explode("x", $row['imagesize']);
@@ -1452,8 +1452,8 @@ function serializePost($row, $boarddata, $parser, $conn)
 				} else {
 					$pinfo = pathinfo($row['filename']);
 					$pinfoo = pathinfo($row['orig_filename']);
-					$post['tim'] = $pinfo['basename'];
-					$post['filename'] = $pinfoo['basename'];
+					$post['tim'] = $pinfo['filename'];
+					$post['filename'] = $pinfoo['filename'];
 					$post['ext'] = ".".$pinfo['extension'];
 					$post['fsize'] = $row['orig_filesize'];
 					$sze = explode("x", $row['imagesize']);
