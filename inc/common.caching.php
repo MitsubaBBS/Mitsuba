@@ -1429,7 +1429,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 			{
 				if ($row['filename'] != "deleted")
 				{
-					if (substr($row['filename'], 0, 8) == "spoiler:"))
+					if (substr($row['filename'], 0, 8) == "spoiler:")
 					{
 						$pinfo = pathinfo(substr($row['filename'], 8));
 						$pinfoo = pathinfo($row['orig_filename']);
@@ -1445,7 +1445,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 						$file['t_h'] = $row['t_h'];
 						$file['spoiler'] = 1;
 						$post['files'][] = $file;
-					} elseif (substr($row['filename'], 0, 6) == "embed:"))
+					} elseif (substr($row['filename'], 0, 6) == "embed:")
 					{
 						$file['embed'] = 1;
 						$file['embed_url'] = substr($row['filename'], 6);
@@ -1473,7 +1473,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 		} else {
 			if ($row['filename'] != "deleted")
 			{
-				if (substr($row['filename'], 0, 8) == "spoiler:"))
+				if (substr($row['filename'], 0, 8) == "spoiler:")
 				{
 					$pinfo = pathinfo(substr($row['filename'], 8));
 					$pinfoo = pathinfo($row['orig_filename']);
@@ -1489,7 +1489,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 					$file['t_h'] = $row['t_h'];
 					$file['spoiler'] = 1;
 					$post['files'][] = $file;
-				} elseif (substr($row['filename'], 0, 6) == "embed:"))
+				} elseif (substr($row['filename'], 0, 6) == "embed:")
 				{
 					$file['embed'] = 1;
 					$file['embed_url'] = substr($row['filename'], 6);
