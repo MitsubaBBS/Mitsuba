@@ -1035,6 +1035,7 @@ function serializeThread($conn, $board, $thread)
 			$row = $thread->fetch_assoc();
 			require_once( "./jbbcode/Parser.php" );
 			$parser = new JBBCode\Parser();
+			$boarddata = getBoardData($conn, $board);
 			if ($boarddata['bbcode']==1)
 			{
 				$bbcode = $conn->query("SELECT * FROM bbcodes;");
@@ -1044,7 +1045,6 @@ function serializeThread($conn, $board, $thread)
 					$parser->addBBCode($row['name'], $row['code']);
 				}
 			}
-			$boarddata = getBoardData($board);
 			$api_posts = array();
 			$api_posts[] = serializePost($row, $boarddata, $parser, $conn);
 			
