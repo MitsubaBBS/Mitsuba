@@ -322,14 +322,14 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	{
 		if (($email == "nonoko") || ($email == "nonokosage"))
 		{
-			echo '<meta http-equiv="refresh" content="2;URL='."'?/board&b=".$board."'".'">';
+			echo '<meta http-equiv="refresh" content="2;URL='."'./mod.php?/board&b=".$board."'".'">';
 			
 		} else {
 			if ($resto != 0)
 			{
-				echo '<meta http-equiv="refresh" content="2;URL='."'?/board&b=".$board."&t=".$resto."#p".$id."".'">';
+				echo '<meta http-equiv="refresh" content="2;URL='."'./mod.php?/board&b=".$board."&t=".$resto."#p".$id."".'">';
 			} else {
-				echo '<meta http-equiv="refresh" content="2;URL='."'?/board&b=".$board."&t=".$id."'".'">';
+				echo '<meta http-equiv="refresh" content="2;URL='."'./mod.php?/board&b=".$board."&t=".$id."'".'">';
 				
 			}
 		}

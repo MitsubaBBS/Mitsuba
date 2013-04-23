@@ -1,4 +1,5 @@
 <?php
+session_start();
 if (!file_exists("./config.php"))
 {
 header("Location: ./install.php");
@@ -9,11 +10,23 @@ include("inc/common.php");
 include("inc/common.caching.php");
 include("inc/common.posting.php");
 include("inc/common.plugins.php");
+include("inc/admin.common.php");
 
-if (isset($_POST['mode']))
+if (!empty($_POST['mode']))
 {
-$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
-loadPlugins($conn);
+	$mod = 0;
+	$mod_type = 0;
+	if ((!empty($_GET['mod'])) && ($_GET['mod']==1))
+	{
+		if ((!empty($_POST['board'])) || (isBoard($conn, $_POST['board'])))
+		{
+			canBoard($_POST['board']);
+			$mod = 1;
+			if (!empty($_SESSION['type'])) { $mod_type = $_SESSION['type']; }
+		}
+	}
+	$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
+	loadPlugins($conn);
 	$mode = $_POST['mode'];
 	switch($mode)
 	{
@@ -33,8 +46,18 @@ loadPlugins($conn);
 				exit;
 			}
 			$board = $_POST['board'];
-			banMessage($conn, $board);
-			
+			if ($mod == 0)
+			{
+				banMessage($conn, $board);
+			}
+			$ignoresizelimit = 0;
+			if ($mod == 1)
+			{
+				if ((!empty($_POST['ignoresizelimit'])) && ($_POST['ignoresizelimit']==1) && ($mod_type >= 1))
+				{
+					$ignoresizelimit = 1;
+				}
+			}
 			if (!isBoard($conn, $_POST['board']))
 			{
 				echo "<h1>This board does not exist!</h1></body></html>"; exit;
@@ -65,7 +88,7 @@ loadPlugins($conn);
 				echo "<center><h1>Choose one: image or embed! ;_;</h1></center></body></html>";
 				exit;
 			}
-			if (isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) != 2)
+			if ((isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) != 2) && (($mod == 0) || ($mod_type==0)))
 			{
 				$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
 				if ($lastdate->num_rows == 1)
@@ -128,7 +151,7 @@ loadPlugins($conn);
 					$filename = $fileid . "." . $ext; 
 					$target_path .= $filename;
 					$file_size = $_FILES['upfile']['size'];
-					if ($file_size > $bdata['filesize'])
+					if (($file_size > $bdata['filesize']) && ($ignoresizelimit != 1))
 					{
 						echo "<h1>File size too big! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
 						exit;
@@ -139,7 +162,7 @@ loadPlugins($conn);
 						exit;
 					}
 					$md5 = md5_file($_FILES['upfile']['tmp_name']);
-					if ($bdata['nodup'] == 1)
+					if (($bdata['nodup'] == 1) && (($mod == 0) || ($mod_type == 0)))
 					{
 						$isit = $conn->query("SELECT * FROM posts WHERE filehash='".$md5."' AND board='".$_POST['board']."'");
 						if ($isit->num_rows >= 1)
@@ -158,7 +181,7 @@ loadPlugins($conn);
 			}
 
 			$name = "Anonymous";
-			if ((!empty($_POST['name'])) && ($bdata['noname'] == 0)) { $name = $_POST['name']; }
+			if ((!empty($_POST['name'])) && (($bdata['noname'] == 0) || (($mod == 1) && ($mod_type >= 1)))) { $name = $_POST['name']; }
 			$resto = 0;
 			if (isset($_POST['resto'])) { $resto = $_POST['resto']; }
 			$password = "";
@@ -199,6 +222,34 @@ loadPlugins($conn);
 					}
 				}
 			}
+			$capcode = 0;
+			$raw = 0;
+			$sticky = 0;
+			$lock = 0;
+			$nolimit = 0;
+			if (($mod == 1) && ($mod_type>=1))
+			{
+				if ((!empty($_POST['nolimit'])) && ($_POST['nolimit']==1))
+				{
+					$nolimit = 1;
+				}
+				if ((!empty($_POST['capcode'])) && ($_POST['capcode']==1))
+				{
+					$capcode = $mod_type;
+				}
+				if ((!empty($_POST['raw'])) && ($_POST['raw']==1))
+				{
+					$raw = 1;
+				}
+				if ((!empty($_POST['sticky'])) && ($_POST['sticky']==1))
+				{
+					$sticky = 1;
+				}
+				if ((!empty($_POST['lock'])) && ($_POST['lock']==1))
+				{
+					$lock = 1;
+				}
+			}
 			$spoiler = 0;
 			if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1) && (substr($filename, 0, 6) != "embed:"))
 			{
@@ -220,7 +271,7 @@ loadPlugins($conn);
 				$embed = 1;
 				$fname = "embed";
 			}
-			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed);
+			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit);
 			if ($is == -16)
 			{
 					echo "<h1>This board does not exist!</h1></body></html>"; exit;
@@ -238,9 +289,13 @@ loadPlugins($conn);
 				}
 				$board = $_POST['board'];
 				banMessage($conn, $board);
-				if (isset($_COOKIE['password'])) { $password = $_COOKIE['password']; }
+				$password = "";
+				if ($mod == 0)
+				{
+					if (isset($_COOKIE['password'])) { $password = $_COOKIE['password']; }
+					if (!empty($_POST['pwd'])) { $password = $_POST['pwd']; }
+				}
 				if ((isset($_POST['onlyimgdel']) && ($_POST['onlyimgdel'] == "on"))) { $onlyimgdel = 1; }
-				if (!empty($_POST['pwd'])) { $password = $_POST['pwd']; }
 				foreach ($_POST as $key => $value)
 				{
 					if ($value == "delete")
@@ -285,7 +340,12 @@ loadPlugins($conn);
 						}
 					}
 				}
-				echo '<meta http-equiv="refresh" content="1;URL='."'./".$_POST['board']."/index.html'".'">';
+				if ($mod == 1)
+				{
+					echo '<meta http-equiv="refresh" content="2;URL='."'./mod.php?/board&b=".$_POST['board']."'".'">';
+				} else {
+					echo '<meta http-equiv="refresh" content="1;URL='."'./".$_POST['board']."/index.html'".'">';
+				}
 			}
 			break;
 		case "usrapp":

@@ -28,6 +28,10 @@ function appendToPost($conn, $board, $postid, $text)
 
 function canBoard($board)
 {
+	if (empty($_SESSION['logged']))
+	{
+		die("NOT LOGGED IN");
+	}
 	if (($_SESSION['boards'] != "*") && ($_SESSION['type'] != 2))
 	{
 		$boards = explode(",", $_SESSION['boards']);
@@ -35,7 +39,7 @@ function canBoard($board)
 		{
 			return 1;
 		} else {
-			die();
+			die("CAN'T BOARD");
 		}
 	} else {
 		return 1;

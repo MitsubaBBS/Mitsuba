@@ -424,7 +424,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				if ($return == 1)
 				{
 					$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">Return</a>]</div>';
-					$file .= '<form action="?/board/action" method="post" enctype="multipart/form-data">';
+					$file .= '<form action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
 				} else {
 					$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>]</div>';
 					$file .= '<form action="../../imgboard.php" method="post" enctype="multipart/form-data">';
@@ -432,7 +432,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			} else {
 				if ($return == 1)
 				{
-					$file .= '<form action="?/board/action" method="post" enctype="multipart/form-data">';
+					$file .= '<form action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
 				} else {
 					$file .= '<form action="../imgboard.php" method="post" enctype="multipart/form-data">';
 				}

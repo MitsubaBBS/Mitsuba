@@ -265,9 +265,6 @@ switch ($path)
 	case "/board":
 		include("inc/mod/board.inc.php");
 		break;
-	case "/board/action":
-		include("inc/mod/board.action.inc.php");
-		break;
 	case "/reports":
 		include("inc/mod/reports.inc.php");
 		break;
