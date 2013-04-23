@@ -227,6 +227,7 @@ if (!empty($_POST['mode']))
 			$sticky = 0;
 			$lock = 0;
 			$nolimit = 0;
+			$fake_id = "";
 			if (($mod == 1) && ($mod_type>=1))
 			{
 				if ((!empty($_POST['nolimit'])) && ($_POST['nolimit']==1))
@@ -248,6 +249,10 @@ if (!empty($_POST['mode']))
 				if ((!empty($_POST['lock'])) && ($_POST['lock']==1))
 				{
 					$lock = 1;
+				}
+				if (!empty($_POST['fake_id']))
+				{
+					$fake_id = $_POST['fake_id'];
 				}
 			}
 			$spoiler = 0;
@@ -271,7 +276,7 @@ if (!empty($_POST['mode']))
 				$embed = 1;
 				$fname = "embed";
 			}
-			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit);
+			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $fake_id);
 			if ($is == -16)
 			{
 					echo "<h1>This board does not exist!</h1></body></html>"; exit;
