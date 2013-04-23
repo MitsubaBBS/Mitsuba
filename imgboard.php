@@ -228,6 +228,11 @@ if (!empty($_POST['mode']))
 			$lock = 0;
 			$nolimit = 0;
 			$fake_id = "";
+			
+			if (!empty($_POST['name'])) { setcookie("mitsuba_name", $_POST['name'], time() + 86400*256); }
+			if (!empty($_POST['email'])) { setcookie("mitsuba_email", $_POST['email'], time() + 86400*256); }
+			if (!empty($_POST['fake_id'])) { setcookie("mitsuba_fakeid", $_POST['fake_id'], time() + 86400*256); }
+			
 			if (($mod == 1) && ($mod_type>=1))
 			{
 				if ((!empty($_POST['nolimit'])) && ($_POST['nolimit']==1))

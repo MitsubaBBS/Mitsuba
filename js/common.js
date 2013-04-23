@@ -1,6 +1,6 @@
-if (typeof $.cookie("style") !== "undefined")
+if (typeof $.cookie("mitsuba_style") !== "undefined")
 {
-	$("#switch").attr("href", $.cookie("style"));
+	$("#switch").attr("href", $.cookie("mitsuba_style"));
 }
 
 String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
@@ -11,6 +11,7 @@ function strStartsWith(str, prefix) {
 
 
 $(document).ready(function () {
+	fillFields();
 	
 	if ($(".postingMode").length == 0) //outside thread
 	{
@@ -26,8 +27,25 @@ $(document).ready(function () {
 	addPostpreview("body");
 	addImgExpand("body");
 	addQuotelinks();
-	
 });
+
+function fillFields()
+{
+	if (typeof $.cookie("mitsuba_name") !== "undefined")
+	{
+		$("input[name='name']").val($.cookie("mitsuba_name"));
+	}
+	
+	if (typeof $.cookie("mitsuba_email") !== "undefined")
+	{
+		$("input[name='email']").val($.cookie("mitsuba_email"));
+	}
+	
+	if (typeof $.cookie("mitsuba_fakeid") !== "undefined")
+	{
+		$("input[name='fake_id']").val($.cookie("mitsuba_fakeid"));
+	}
+}
 
 function addThreadUpdater()
 {
@@ -53,9 +71,9 @@ function addStylechanger()
 	$("#stylechangerDiv").css("display", "block");
 	$("link[rel='alternate stylesheet']").each(function () {
 		var selected = "";
-		if (typeof $.cookie("style") !== "undefined")
+		if (typeof $.cookie("mitsuba_style") !== "undefined")
 		{
-			if (absolutizeURI(window.location.href, $(this).attr("href")) == $.cookie("style"))
+			if (absolutizeURI(window.location.href, $(this).attr("href")) == $.cookie("mitsuba_style"))
 			{
 				selected = " selected";
 			}
@@ -64,7 +82,7 @@ function addStylechanger()
 	});
 	$("#stylechanger").change(function (e) {
 		$("#switch").attr("href", e.target.options[e.target.selectedIndex].value);
-		$.cookie("style", absolutizeURI(window.location.href, e.target.options[e.target.selectedIndex].value), {expires: 31, path: '/'});
+		$.cookie("mitsuba_style", absolutizeURI(window.location.href, e.target.options[e.target.selectedIndex].value), {expires: 31, path: '/'});
 	});
 	
 	
