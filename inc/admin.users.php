@@ -42,6 +42,7 @@ function delUser($conn, $id)
 		return -1;
 	}
 	$conn->query("DELETE FROM users WHERE id=".$id);
+	$conn->query("DELETE FROM notes WHERE mod_id=".$id);
 }
 
 function updateUser($conn, $id, $username, $password, $type, $boards)

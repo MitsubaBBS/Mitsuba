@@ -20,6 +20,7 @@ $(document).ready(function () {
 	addBacklinks();
 	addPostpreview();
 	addQuotelinks();
+	addImgExpand();
 	
 });
 
@@ -241,6 +242,107 @@ function thread_toggle(id)
 	}
 }
 
+function addImgExpand()
+{
+	$(".fileThumb").click(function (e) {
+		imgExpand($(this).parent());
+		e.preventDefault();
+	});
+}
+
+function imgExpand(element)
+{
+	$(element).children(".fileThumb").css("opacity", "0.7");
+	var id = $(element).attr("id");
+	$(element).append("<img src='"+$($(element).children(".fileThumb")[0]).attr("href")+"' style='display: none;' id='x"+id+"' />");
+	$("#x"+id).bind("load", function () { 
+		var iw = $('body').innerWidth();
+		$(element).children(".fileThumb").css("opacity", "").css("display", "none");
+		$(this).css("display", "");
+		$(this).css("width", Math.max($(this).width, (iw-40))+"px");
+		$(this).css("height", "auto");
+		$(this).css("max-width", "auto");
+		$(this).css("max-height", "auto");
+		addZoom(this);
+	});
+}
+
+function imgThumbnail(element)
+{
+	$(element).siblings(".fileThumb").css("display", "");
+	$(element).remove();
+}
+
+var targetImageWidth = 0;
+var targetDiagonal = 0;
+var targetDragging = false;
+function addZoom(img) {
+	$(img).mousedown(function(e) {
+		if (e.button == 0) {
+			targetImageWidth = $(this).width();
+			var rc = e.target.getBoundingClientRect();
+			var p = Math.pow;
+			var dragSize = p(p(e.clientX-rc.left, 2)+p(e.clientY-rc.top, 2), .5);
+			targetDiagonal = Math.round(dragSize);
+			targetDragging = false;
+			e.preventDefault();
+		}
+	});
+	$(img).mousemove(function(e) {
+		if (targetDiagonal){
+			var rc = e.target.getBoundingClientRect();
+			var p = Math.pow;
+			var dragSize = p(p(e.clientX-rc.left, 2)+p(e.clientY-rc.top, 2), .5);
+			var newDiagonal = Math.round(dragSize);
+			var oldDiagonal = targetDiagonal;
+			var imageWidth = targetImageWidth;
+			var newWidth = Math.max(250, newDiagonal/oldDiagonal*imageWidth)+'px';
+			$(this).css("width", newWidth);
+			$(this).css("maxWidth", newWidth);
+
+			$(this).css("maxHeight", "");
+			$(this).css("height", "auto");
+
+			targetDragging = true;
+		}
+	});
+	$(img).mouseout(function(e) {
+		targetDiagonal = 0;
+	});
+	$(img).mouseup(function(e) {
+		if (targetDiagonal) {
+			var rc = e.target.getBoundingClientRect();
+			var p = Math.pow;
+			var dragSize = p(p(e.clientX-rc.left, 2)+p(e.clientY-rc.top, 2), .5);
+			var newDiagonal = Math.round(dragSize);
+			var oldDiagonal = targetDiagonal;
+			var imageWidth = targetImageWidth;
+			var newWidth = Math.max(250, newDiagonal/oldDiagonal*imageWidth)+'px';
+			//$(this).width(newWidth);
+			$(this).css("width", newWidth);
+			$(this).css("maxWidth", newWidth);
+
+		}
+	});
+	$(img).click(function(e) {
+		targetDiagonal = 0;
+		if (targetDragging) {
+			targetDragging = false;
+			e.preventDefault();
+			return false;
+		}
+	});
+	
+	$(img).dblclick(function (e) {
+		imgThumbnail(this);
+	});
+}
+
+/* 
+ * ==============================
+ * | URI manipulation functions |
+ * ==============================
+ */
 function parseURI(url) {
   var m = String(url).replace(/^\s+|\s+$/g, '').match(/^([^:\/?#]+:)?(\/\/(?:[^:@]*(?::[^:@]*)?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
   // authority = '//' + user + ':' + pass '@' + hostname + ':' port
