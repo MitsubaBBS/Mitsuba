@@ -356,8 +356,16 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	if ($resto == 0)
 	{
 		generateView($conn, $board, $id);
+		if ($config['enable_api']==1)
+		{
+			serializeThread($conn, $board, $id);
+		}
 	} else {
 		generateView($conn, $board, $resto);
+		if ($config['enable_api']==1)
+		{
+			serializeThread($conn, $board, $resto);
+		}
 	}
 	generateView($conn, $board);
 	
