@@ -1,3 +1,8 @@
+if (typeof $.cookie("style") !== "undefined")
+{
+	$("#switch").attr("href", $.cookie("style"));
+}
+
 String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
 
 function strStartsWith(str, prefix) {
@@ -47,17 +52,22 @@ function addStylechanger()
 {
 	$("#stylechangerDiv").css("display", "block");
 	$("link[rel='alternate stylesheet']").each(function () {
-		$("#stylechanger").append("<option value='"+$(this).attr("href")+"'>"+$(this).attr("title")+"</option>");
+		var selected = "";
+		if (typeof $.cookie("style") !== "undefined")
+		{
+			if (absolutizeURI(window.location.href, $(this).attr("href")) == $.cookie("style"))
+			{
+				selected = " selected";
+			}
+		}
+		$("#stylechanger").append("<option value='"+$(this).attr("href")+"'"+selected+">"+$(this).attr("title")+"</option>");
 	});
 	$("#stylechanger").change(function (e) {
 		$("#switch").attr("href", e.target.options[e.target.selectedIndex].value);
 		$.cookie("style", absolutizeURI(window.location.href, e.target.options[e.target.selectedIndex].value), {expires: 31, path: '/'});
 	});
 	
-	if (typeof $.cookie("style") !== "undefined")
-	{
-		$("#switch").attr("href", $.cookie("style"));
-	}
+	
 }
 
 function addPostpreview(parent)

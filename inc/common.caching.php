@@ -340,8 +340,8 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$row['path_thread'].'" title="'.$row['name'].'">';
 			}
 			$file .= "<script type='text/javascript' src='../../js/jquery.js'></script>";
-			$file .= "<script type='text/javascript' src='../../js/common.js'></script>";
 			$file .= "<script type='text/javascript' src='../../js/jquery.cookie.js'></script>";
+			$file .= "<script type='text/javascript' src='../../js/common.js'></script>";
 			$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 			$file .= "</head><body>";
 			$file .= getBoardLinks($conn, 1);
@@ -367,8 +367,8 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$row['path'].'" title="'.$row['name'].'">';
 			}
 			$file .= "<script type='text/javascript' src='../js/jquery.js'></script>";
-			$file .= "<script type='text/javascript' src='../js/common.js'></script>";
 			$file .= "<script type='text/javascript' src='../js/jquery.cookie.js'></script>";
+			$file .= "<script type='text/javascript' src='../js/common.js'></script>";
 			$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 			$file .= "</head><body>";
 			$file .= getBoardLinks($conn, 0);
