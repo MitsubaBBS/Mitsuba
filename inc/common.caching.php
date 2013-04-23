@@ -423,10 +423,10 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$file .= '<div class="postingMode">Posting mode: Reply</div>';
 				if ($return == 1)
 				{
-					$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">Return</a>]</div>';
+					$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">Return</a>] [<a href="#bottom">Bottom</a>]</div>';
 					$file .= '<form action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
 				} else {
-					$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>]</div>';
+					$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>] [<a href="#bottom">Bottom</a>]</div>';
 					$file .= '<form action="../../imgboard.php" method="post" enctype="multipart/form-data">';
 				}
 			} else {
@@ -870,10 +870,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= '<hr />';
 		}
 		$file .= "</div>";
-		if ($threadno != 0)
-		{
-			$file .= '<div class="navLinks">[<a href="../" accesskey="a">Return</a>] <!--[<a href="../catalog.html">Catalog</a>]--> [<a href="#bottom">Bottom</a>] <span></span></div>';
-		}
+		$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>] [<a href="#top">Top</a>]</div>';
 		$file .= '<div class="deleteform">
 			<input type="hidden" name="board" value="'.$board.'" />
 			<input type="hidden" name="mode" value="usrform" />Delete Post [<input type="checkbox" name="onlyimgdel" value="on" />File Only] ';
@@ -974,6 +971,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= '</div>';
 			$file .= '</div>';
 		}
+		$file .= '<div id="bottom"></div>';
 		$file .= "</body></html>";
 		if ($return != 1)
 		{
