@@ -17,10 +17,10 @@ $(document).ready(function () {
 	}
 	
 	addStylechanger();
-	addBacklinks();
-	addPostpreview();
+	addBacklinks("body");
+	addPostpreview("body");
+	addImgExpand("body");
 	addQuotelinks();
-	addImgExpand();
 	
 });
 
@@ -60,10 +60,10 @@ function addStylechanger()
 	}
 }
 
-function addPostpreview()
+function addPostpreview(parent)
 {
 	$("body").append('<div id="quote-preview" class="post preview" style="display: none; position: absolute; z-index:999;"></div>');
-	$(".quotelink").hover(function () {
+	$(parent).find(".quotelink").hover(function () {
 		showPostPreview(this);
 	}, function () {
 		hidePostPreview(this);
@@ -71,9 +71,9 @@ function addPostpreview()
 	);
 }
 
-function addBacklinks()
+function addBacklinks(parent)
 {
-	$(".postMessage").each(function () {
+	$(parent).find(".postMessage").each(function () {
 		
 		$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(1)+'"></div>');
 		
@@ -116,9 +116,11 @@ function addThreadExpander()
 				$('<span> &nbsp; [<a href="'+href+'" class="replylink">Reply</a>] </span>').insertAfter($(tid+" div.op span.postNum"));
 				$(tid).find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
 				$(tid).find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
-				addBacklinks();
-				addPostpreview();
 				
+				addBacklinks(tid);
+				addPostpreview(tid);
+				addImgExpand(tid);
+					
 				}
 			});
 		});
@@ -242,9 +244,9 @@ function thread_toggle(id)
 	}
 }
 
-function addImgExpand()
+function addImgExpand(parent)
 {
-	$(".fileThumb").click(function (e) {
+	$(parent).find(".fileThumb").click(function (e) {
 		imgExpand($(this).parent());
 		e.preventDefault();
 	});
@@ -259,11 +261,16 @@ function imgExpand(element)
 		var iw = $('body').innerWidth();
 		$(element).children(".fileThumb").css("opacity", "").css("display", "none");
 		$(this).css("display", "");
-		$(this).css("width", Math.max($(this).width, (iw-40))+"px");
+		var newWidth = Math.min($(this).width(), (iw-100));
+		$(this).css("width", newWidth+"px");
+		$(this).css("max-width", newWidth+"px");
 		$(this).css("height", "auto");
-		$(this).css("max-width", "auto");
 		$(this).css("max-height", "auto");
 		addZoom(this);
+	});
+	$("#x"+id).bind("error", function () { 
+		$(element).children(".fileThumb").css("opacity", "");
+		$(this).remove();
 	});
 }
 
