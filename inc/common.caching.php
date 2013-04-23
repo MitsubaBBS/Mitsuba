@@ -540,8 +540,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			
 			$result = $conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
 		}
-
-		$api_posts = array();
+		
 		while ($row = $result->fetch_assoc())
 		{
 			$file .= '<div class="thread" id="t'.$row['id'].'">';
@@ -705,10 +704,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= '</div>';
 			$file .= '</div>';
 			
-			if ($config['enable_api']==1)
-			{
-				$api_posts[] = serializePost($row, $boarddata, $parser, $conn);
-			}
+			
 			
 			if ($threadno != 0)
 			{
@@ -860,10 +856,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				
 				$file .= '</div>';
 				
-				if ($config['enable_api']==1)
-				{
-					$api_posts[] = serializePost($row2, $boarddata, $parser, $conn);
-				}
+				
 			}
 			
 			$file .= '</div>';
@@ -978,13 +971,6 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			if ($threadno != 0)
 			{
 				$handle = fopen("./".$board."/res/".$threadno.".html", "w");
-				if ($config['enable_api']==1)
-				{
-					$api_handle = fopen("./".$board."/res/".$threadno.".json", "w");
-					$api['posts'] = $api_posts;
-					fwrite($api_handle, json_encode($api));
-					fclose($api_handle);
-				}
 			} else {
 				if ($pg != 0)
 				{
@@ -1015,6 +1001,7 @@ function generateCatalog($conn, $board, $return = 0)
 
 function updateThreads($conn, $board)
 {
+	$config = getConfig($conf);
 	$board = $conn->real_escape_string($board);
 	if (!isBoard($conn, $board))
 	{
@@ -1024,9 +1011,51 @@ function updateThreads($conn, $board)
 	while ($row = $result->fetch_assoc())
 	{
 		generateView($conn, $board, $row['id']);
+		if ($config['enable_api']==1)
+		{
+			serializeThread($conn, $board, $row['id']);
+		}
 	}
 }
 
+function serializeThread($conn, $board, $thread)
+{
+	if (isBoard($board))
+	{
+		$thread = $conn->query("SELECT * FROM posts WHERE board='".$board."' AND id=".$thread);
+		if ($thread->num_rows == 1)
+		{
+			$row = $thread->fetch_assoc();
+			require_once( "./jbbcode/Parser.php" );
+			$parser = new JBBCode\Parser();
+			if ($boarddata['bbcode']==1)
+			{
+				$bbcode = $conn->query("SELECT * FROM bbcodes;");
+				
+				while ($row = $bbcode->fetch_assoc())
+				{
+					$parser->addBBCode($row['name'], $row['code']);
+				}
+			}
+			$boarddata = getBoardData($board);
+			$api_posts = array();
+			$api_posts[] = serializePost($row, $boarddata, $parser, $conn);
+			
+			$posts = $conn->query("SELECT * FROM posts WHERE board='".$board."' AND resto=".$thread);
+			
+			while ($row2 = $posts->fetch_assoc())
+			{
+				$api_posts[] = serializePost($row2, $boarddata, $parser, $conn);
+			}
+			
+			$api_handle = fopen("./".$board."/res/".$threadno.".json", "w");
+			$api['posts'] = $api_posts;
+			fwrite($api_handle, json_encode($api));
+			fclose($api_handle);
+		}
+	}
+	
+}
 
 function regenThumbnails($conn, $board)
 {
@@ -1393,7 +1422,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 			{
 				if ($row['filename'] != "deleted")
 				{
-					if (substr($row['filename'], 0, 8 == "spoiler:"))
+					if (substr($row['filename'], 0, 8) == "spoiler:"))
 					{
 						$pinfo = pathinfo(substr($row['filename'], 8));
 						$pinfoo = pathinfo($row['orig_filename']);
@@ -1409,6 +1438,10 @@ function serializePost($row, $boarddata, $parser, $conn)
 						$file['t_h'] = $row['t_h'];
 						$file['spoiler'] = 1;
 						$post['files'][] = $file;
+					} elseif (substr($row['filename'], 0, 6) == "embed:"))
+					{
+						$file['embed'] = 1;
+						$file['embed_url'] = substr($row['filename'], 6);
 					} else {
 						$pinfo = pathinfo($row['filename']);
 						$pinfoo = pathinfo($row['orig_filename']);
@@ -1433,32 +1466,40 @@ function serializePost($row, $boarddata, $parser, $conn)
 		} else {
 			if ($row['filename'] != "deleted")
 			{
-				if (substr($row['filename'], 0, 8 == "spoiler:"))
+				if (substr($row['filename'], 0, 8) == "spoiler:"))
 				{
 					$pinfo = pathinfo(substr($row['filename'], 8));
 					$pinfoo = pathinfo($row['orig_filename']);
-					$post['tim'] = $pinfo['filename'];
-					$post['filename'] = $pinfoo['filename'];
-					$post['ext'] = ".".$pinfo['extension'];
-					$post['fsize'] = $row['orig_filesize'];
+					$file = array();
+					$file['tim'] = $pinfo['filename'];
+					$file['filename'] = $pinfoo['filename'];
+					$file['ext'] = ".".$pinfo['extension'];
+					$file['fsize'] = $row['orig_filesize'];
 					$sze = explode("x", $row['imagesize']);
-					$post['w'] = $sze[0];
-					$post['h'] = $sze[1];
-					$post['t_w'] = $row['t_w'];
-					$post['t_h'] = $row['t_h'];
-					$post['spoiler'] = 1;
+					$file['w'] = $sze[0];
+					$file['h'] = $sze[1];
+					$file['t_w'] = $row['t_w'];
+					$file['t_h'] = $row['t_h'];
+					$file['spoiler'] = 1;
+					$post['files'][] = $file;
+				} elseif (substr($row['filename'], 0, 6) == "embed:"))
+				{
+					$file['embed'] = 1;
+					$file['embed_url'] = substr($row['filename'], 6);
 				} else {
 					$pinfo = pathinfo($row['filename']);
 					$pinfoo = pathinfo($row['orig_filename']);
-					$post['tim'] = $pinfo['filename'];
-					$post['filename'] = $pinfoo['filename'];
-					$post['ext'] = ".".$pinfo['extension'];
-					$post['fsize'] = $row['orig_filesize'];
+					$file = array();
+					$file['tim'] = $pinfo['filename'];
+					$file['filename'] = $pinfoo['filename'];
+					$file['ext'] = ".".$pinfo['extension'];
+					$file['fsize'] = $row['orig_filesize'];
 					$sze = explode("x", $row['imagesize']);
-					$post['w'] = $sze[0];
-					$post['h'] = $sze[1];
-					$post['t_w'] = $row['t_w'];
-					$post['t_h'] = $row['t_h'];
+					$file['w'] = $sze[0];
+					$file['h'] = $sze[1];
+					$file['t_w'] = $row['t_w'];
+					$file['t_h'] = $row['t_h'];
+					$post['files'][] = $file;
 				}
 			} else {
 				$post['filedeleted'] = 1;
