@@ -251,14 +251,14 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		{
 			$email = "";
 		}
-		if (($email == "nokosage") || ($email == "nonokosage"))
+		if (($email == "nokosage") || ($email == "nonokosage") || ($email == "sage"))
 		{
 			$email = "sage";
 			$old_email = "sage";
 		}
 	}
 	
-	if (($email == "nokosage") || ($email == "nonokosage"))
+	if (($email == "nokosage") || ($email == "nonokosage") || ($email == "sage"))
 	{
 		$old_email = "sage";
 	}
