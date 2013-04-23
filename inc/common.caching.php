@@ -1055,7 +1055,7 @@ function serializeThread($conn, $board, $thread_id)
 				$api_posts[] = serializePost($row2, $boarddata, $parser, $conn);
 			}
 			
-			$api_handle = fopen("./".$board."/res/".$threadno.".json", "w");
+			$api_handle = fopen("./".$board."/res/".$thread_id.".json", "w");
 			$api['posts'] = $api_posts;
 			fwrite($api_handle, json_encode($api));
 			fclose($api_handle);
