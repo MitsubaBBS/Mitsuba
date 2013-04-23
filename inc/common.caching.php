@@ -451,7 +451,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					<td><input name="name" type="text" /></td>
 					</tr>';
 			}
-			if (($bdata['ids'] == 1) && ($adm_type >= 1))
+			if (($boarddata['ids'] == 1) && ($adm_type >= 1))
 			{
 				$file .= '<tr>
 					<td>Fake ID</td>
