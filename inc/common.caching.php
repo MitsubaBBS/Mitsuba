@@ -1027,7 +1027,7 @@ function updateThreads($conn, $board)
 
 function serializeThread($conn, $board, $thread)
 {
-	if (isBoard($board))
+	if (isBoard($conn, $board))
 	{
 		$thread = $conn->query("SELECT * FROM posts WHERE board='".$board."' AND id=".$thread);
 		if ($thread->num_rows == 1)
