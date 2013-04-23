@@ -1025,11 +1025,11 @@ function updateThreads($conn, $board)
 	}
 }
 
-function serializeThread($conn, $board, $thread)
+function serializeThread($conn, $board, $thread_id)
 {
 	if (isBoard($conn, $board))
 	{
-		$thread = $conn->query("SELECT * FROM posts WHERE board='".$board."' AND id=".$thread);
+		$thread = $conn->query("SELECT * FROM posts WHERE board='".$board."' AND id=".$thread_id);
 		if ($thread->num_rows == 1)
 		{
 			$row = $thread->fetch_assoc();
@@ -1048,7 +1048,7 @@ function serializeThread($conn, $board, $thread)
 			$api_posts = array();
 			$api_posts[] = serializePost($row, $boarddata, $parser, $conn);
 			
-			$posts = $conn->query("SELECT * FROM posts WHERE board='".$board."' AND resto=".$thread);
+			$posts = $conn->query("SELECT * FROM posts WHERE board='".$board."' AND resto=".$thread_id);
 			
 			while ($row2 = $posts->fetch_assoc())
 			{
