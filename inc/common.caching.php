@@ -622,7 +622,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				}
 				if ($row['sage']==1)
 				{
-					$file .= ' <span style="color: red;">[A]</a> ';
+					$file .= ' <span style="color: red;">[A]</span> ';
 				}
 				if ($adm_type >= 1)
 				{

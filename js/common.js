@@ -16,10 +16,9 @@ $(document).ready(function () {
 		addThreadUpdater();
 	}
 	
-	
+	addStylechanger();
 	addBacklinks();
 	addPostpreview();
-	addStylechanger();
 	addQuotelinks();
 	
 });
@@ -116,26 +115,8 @@ function addThreadExpander()
 				$('<span> &nbsp; [<a href="'+href+'" class="replylink">Reply</a>] </span>').insertAfter($(tid+" div.op span.postNum"));
 				$(tid).find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
 				$(tid).find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
-				$(tid+" .postInfo").each(function () {
-					
-					$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(2)+'">&nbsp;</div>');
-					
-				});
-				$(tid+" .quotelink:not(cross)").each(function () {
-					var hr = $(this).attr("href");
-					var postid = hr.substr(hr.indexOf('#')+2);
-					//here
-					try {
-					$("#bl"+postid).append("<span><a href='#p"+$(this).parent(".postMessage").attr("id").substr(1)+"' class='quotelink'>>>"+$(this).parent(".postMessage").attr("id").substr(1)+"</a> </span>");
-					} catch(ex) {
-						
-					}
-				});
-				$(tid).find(".quotelink").hover(function () {
-					showPostPreview(this);
-				}, function () {
-					hidePostPreview(this);
-				});
+				addBacklinks();
+				addPostpreview();
 				
 				}
 			});
