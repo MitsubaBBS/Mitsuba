@@ -13,9 +13,14 @@ reqPermission(2);
 			{
 				$boards = "*";
 			} else {
-				foreach ($_POST['boards'] as $board)
+				if (!empty($_POST['boards']))
 				{
-					$boards .= $board.",";
+					foreach ($_POST['boards'] as $board)
+					{
+						$boards .= $board.",";
+					}
+				} else {
+					$board = "*";
 				}
 			}
 			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }

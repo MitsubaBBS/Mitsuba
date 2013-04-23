@@ -244,6 +244,9 @@ switch ($path)
 	case "/bans/add":
 		include("inc/mod/bans.add.inc.php");
 		break;
+	case "/users/delete":
+		include("inc/mod/users.delete.inc.php");
+		break;
 	case "/users/delete_yes":
 		include("inc/mod/users.delete_yes.inc.php");
 		break;
