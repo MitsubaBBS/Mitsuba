@@ -105,7 +105,34 @@ function getConfigValue($conn, $name)
 function thumb($board,$filename,$s=250){
 	$extension = getGraphicsExtension();
 	
-	if ($extension == "gd")
+	if ($extension == "imagick")
+	{
+		$fname='./'.$board.'/src/'.$filename;
+		$thumb_dir = './'.$board.'/src/thumb/'; //thumbnail directory
+		$width = $s; //output width
+		$height = $s; //output height
+		$img = new Imagick($fname);
+		$most_width = 0;
+		$most_height = 0;
+		$oig = $img->getImageGeometry();
+		if (($oig['width'] > $s) || ($oig['height'] > $s))
+		{
+			foreach($img as $frame)
+			{
+				$frame->thumbnailImage($width, $height, true);
+				$geo2 = $frame->getImageGeometry();
+				if ($geo2['width']>$most_width) { $most_width = $geo2['width']; }
+				if ($geo2['height']>$most_height) { $most_height = $geo2['height']; }
+				$frame->setImagePage($geo2['width'], $geo2['height'], 0, 0);
+			}
+		}
+		//$img->setImageCompressionQuality(60); 
+		$img->writeImages($thumb_dir.$filename, true);
+		$img->destroy();
+		$ig['width'] = $most_width;
+		$ig['height'] = $most_height;
+		return $ig;
+	} elseif ($extension == "gd")
 	{
 		if(!function_exists("ImageCreate")||!function_exists("ImageCreateFromJPEG"))return;
 		$fname='./'.$board.'/src/'.$filename;
@@ -156,8 +183,6 @@ function thumb($board,$filename,$s=250){
 		}else{$im_out = ImageCreate($out_w, $out_h);}
 		// copy resized original
 		ImageCopyResized($im_out, $im_in, 0, 0, 0, 0, $out_w, $out_h, $size[0], $size[1]);
-		$rcolor = imagecolorallocate($im_out, 255, 255, 238);
-		imagecolortransparent($im_out, $rcolor);
 		// thumbnail saved
 		switch ($type)
 		{
@@ -176,22 +201,6 @@ function thumb($board,$filename,$s=250){
 		ImageDestroy($im_in);
 		ImageDestroy($im_out);
 		return array("width" => $out_w, "height" => $out_h);
-	} elseif ($extension == "imagick")
-	{
-		$fname='./'.$board.'/src/'.$filename;
-		$thumb_dir = './'.$board.'/src/thumb/'; //thumbnail directory
-		$width = $s; //output width
-		$height = $s; //output height
-		$img = new Imagick($fname);
-		foreach($img as $frame)
-		{
-			$frame->scaleImage($width, $height, true);
-		}
-		$img->setImageCompressionQuality(60); 
-		$img->writeImages($thumb_dir.$filename, true);
-		$ig = $img->getImageGeometry();
-		$img->destroy();
-		return $ig;
 	}
 }
 
