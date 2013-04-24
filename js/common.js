@@ -15,9 +15,10 @@ $(document).ready(function () {
 	
 	if ($(".postingMode").length == 0) //outside thread
 	{
-		addThreadHider();
-		addThreadExpander();
+		addThreadHider("body");
+		addThreadExpander("body");
 		hideThreads();
+		addLoader();
 	} else { //in thread
 		addThreadUpdater();
 	}
@@ -28,6 +29,46 @@ $(document).ready(function () {
 	addImgExpand("body");
 	addQuotelinks();
 });
+
+var currentPage = 0;
+function addLoader()
+{
+	var strong = $(".pagelist").find("strong")[0];
+	currentPage = $(strong).html();
+	var nextPageEl = $(strong).parent().next();
+	if (nextPageEl.length >= 1)
+	{
+		$(window).scroll(function() {   
+			if($(window).scrollTop() + $(window).height() == $(document).height()) {
+				$(".pagelist").css("opacity", "0.5");
+				$.ajax({
+				type: 'get',
+				url: "./"+$(nextPageEl).html()+".html",
+				success: function(data, textStatus, xhr){
+					$(".pagelist").css("opacity", "");
+					var html = xhr.responseText;
+					var nodes = $.parseHTML( html );
+					currentPage = $(nextPageEl).html();
+					$(".deleteform").before("<div class='board' id='b"+currentPage+"'><br /><b>Page "+currentPage+"</b><hr />"+$($(".board", nodes)[0]).html()+"</div>");
+					$(".prev").html($(".prev", nodes).html());
+					$(".pages").html($(".pages", nodes).html());
+					$(".next").html($(".next", nodes).html());
+					addBacklinks("#b"+currentPage);
+					addPostpreview("#b"+currentPage);
+					addImgExpand("#b"+currentPage);
+					addThreadHider("#b"+currentPage);
+					addThreadExpander("#b"+currentPage);
+					hideThreads();
+					addLoader();
+						
+					}
+				});
+				$(window).unbind('scroll');
+			}
+		});
+	}
+	
+}
 
 function fillFields()
 {
@@ -106,7 +147,7 @@ function addBacklinks(parent)
 		$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(1)+'"></div>');
 		
 	});
-	$(".quotelink:not(cross)").each(function () {
+	$(parent).find(".quotelink:not(cross)").each(function () {
 		var hr = $(this).attr("href");
 		var postid = hr.substr(hr.indexOf('#')+2);
 		//here
@@ -123,10 +164,10 @@ function addBacklinks(parent)
 	});
 }
 
-function addThreadExpander()
+function addThreadExpander(parent)
 {
 	
-	$(".thread").each(function () {
+	$(parent).find(".thread").each(function () {
 		$('<a href="javascript:;" class="expander" id="e'+$(this).attr("id")+'">[+]</a>').insertAfter($("div#"+$(this).attr("id")+" > span.summary")).click(function () {
 			var tid = "#"+$(this).attr("id").substr(1);
 			var href = absolutizeURI(window.location.href, $(tid).find(".replylink").attr("href"));
@@ -155,14 +196,14 @@ function addThreadExpander()
 	});
 }
 
-function addThreadHider()
+function addThreadHider(parent)
 {
-	$(".op .postInfo").each(function () {
+	$(parent).find(".op .postInfo").each(function () {
 		var id = $(this).attr("id").substr(2);
 		$(this).append(' <a href="javascript:;" class="hider" id="ht'+id+'">[-]</a>');
 	});
 
-	$(".hider").click(function () {
+	$(parent).find(".hider").click(function () {
 		var id = $(this).attr("id").substr(2);
 		thread_toggle(id);
 	});

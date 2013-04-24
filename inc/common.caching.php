@@ -929,7 +929,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= '</div>';
 		} elseif ($threadno == 0)
 		{
-			$file .= '<div class="pagelist desktop">';
+			$file .= '<div class="pagelist">';
 			$file .= '<div class="prev">';
 			if ($pg != 0)
 			{
