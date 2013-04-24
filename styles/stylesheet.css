@@ -487,7 +487,7 @@ div.closed {
     border-color: #d69595!important;
 }
 
-.reply:target,.reply.highlight {
+.op:target, .op.highlight, .reply:target,.reply.highlight {
     background: #F0C0B0!important;
     border: 1px solid #D99F91!important;
     border-left: none!important;

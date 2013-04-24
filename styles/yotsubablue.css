@@ -536,7 +536,7 @@ div.closed {
     border-color: #7b82ac!important;
 }
 
-.reply:target,.reply.highlight {
+.op:target, .op.highlight, .reply:target,.reply.highlight {
     background: #D6BAD0!important;
     border: 1px solid #BA9DBF!important;
     border-left: none!important;
