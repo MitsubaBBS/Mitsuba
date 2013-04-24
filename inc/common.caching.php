@@ -1008,7 +1008,7 @@ function generateCatalog($conn, $board, $return = 0)
 
 function updateThreads($conn, $board)
 {
-	$config = getConfig($conf);
+	$config = getConfig($conn);
 	$board = $conn->real_escape_string($board);
 	if (!isBoard($conn, $board))
 	{
