@@ -870,7 +870,10 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= '<hr />';
 		}
 		$file .= "</div>";
-		$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>] [<a href="#top">Top</a>]</div>';
+		if ($threadno != 0)
+		{
+			$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>] [<a href="#top">Top</a>]</div>';
+		}
 		$file .= '<div class="deleteform">
 			<input type="hidden" name="board" value="'.$board.'" />
 			<input type="hidden" name="mode" value="usrform" />Delete Post [<input type="checkbox" name="onlyimgdel" value="on" />File Only] ';
@@ -888,7 +891,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		$file .= "</form>";
 		if (($return == 1) && ($threadno == 0))
 		{
-			$file .= '<div class="pagelist desktop">';
+			$file .= '<div class="pagelist">';
 			$file .= '<div class="prev">';
 			if ($page != 0)
 			{
