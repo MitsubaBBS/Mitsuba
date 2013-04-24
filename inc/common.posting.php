@@ -239,29 +239,26 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		$name = $arr['name'];
 	} else {
 		$name = "Anonymous";
-		if (($email != "nonoko") || ($email != "nonokosage") || ($email != "noko") || ($email != "nokosage") || ($email != "sage"))
+		/*if (($email != "nonoko") || ($email != "nonokosage") || ($email != "noko") || ($email != "nokosage") || ($email != "sage"))
 		{
 			$email = "";
-		}
+		}*/
 	}
 	$old_email = $email;
-	if (($bdata['noname'] == 1) && (!empty($email)))
+	if (($bdata['noname'] == 1) && (!empty($email)) && ($adm_type <= 0))
 	{
 		if (($email == "noko") || ($email == "nonoko"))
 		{
 			$email = "";
-		}
-		if (($email == "nokosage") || ($email == "nonokosage") || ($email == "sage"))
+		} elseif (($email == "nokosage") || ($email == "nonokosage") || ($email == "sage"))
 		{
 			$email = "sage";
-			$old_email = "sage";
+		} else {
+			$email = "";
 		}
 	}
 	
-	if (($email == "nokosage") || ($email == "nonokosage") || ($email == "sage"))
-	{
-		$old_email = "sage";
-	}
+	
 	$md5 = $conn->real_escape_string($md5);
 	$poster_id = "";
 	if (!empty($fake_id))
@@ -314,7 +311,6 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 			$conn->query("UPDATE posts SET poster_id='".$conn->real_escape_string($poster_id)."' WHERE id=".$id." AND board='".$board."'");
 		}
 	}
-	$email = $old_email;
 	if ($resto != 0)
 	{
 		if (($email == "sage") || ($tinfo['sage'] == 1) || ($replies > $bdata['bumplimit']))
@@ -323,9 +319,9 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		} else {
 			$conn->query("UPDATE posts SET lastbumped=".time()." WHERE id=".$resto." AND board='".$board."'");
 		}
-	
-	
 	}
+	$email = $old_email;
+	
 	if ($adm_type > 0)
 	{
 		if (($email == "nonoko") || ($email == "nonokosage"))
