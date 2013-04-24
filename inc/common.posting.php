@@ -326,7 +326,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	
 	
 	}
-	if ($adm_type >= 0)
+	if ($adm_type > 0)
 	{
 		if (($email == "nonoko") || ($email == "nonokosage"))
 		{
