@@ -203,7 +203,7 @@ if (!empty($_POST['mode']))
 				{
 					if ($resto != 0)
 					{
-						$returned = thumb($board, $fileid.".".$ext, 125);
+						$returned = thumb($board, $fileid.$ext, 125);
 						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
 							echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
@@ -211,7 +211,7 @@ if (!empty($_POST['mode']))
 						$thumb_w = $returned['width'];
 						$thumb_h = $returned['height'];
 					} else {
-						$returned = thumb($board, $fileid.".".$ext);
+						$returned = thumb($board, $fileid.$ext);
 						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
 							echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
@@ -274,7 +274,7 @@ if (!empty($_POST['mode']))
 				{
 					$fname = "";
 				} else {
-					$filename = $fileid.".".$ext;
+					$filename = $fileid.$ext;
 				}
 			} else {
 				$embed = 1;
