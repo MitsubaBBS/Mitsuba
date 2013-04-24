@@ -146,21 +146,20 @@ if (!empty($_POST['mode']))
 				if (!empty($_FILES['upfile']['tmp_name']))
 				{
 					$target_path = "./".$board."/src/";
-					$fileid = time() . mt_rand(10000000, 999999999);
-					$ext = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
-					$filename = $fileid . "." . $ext; 
-					$target_path .= $filename;
 					$file_size = $_FILES['upfile']['size'];
 					if (($file_size > $bdata['filesize']) && ($ignoresizelimit != 1))
 					{
 						echo "<h1>File size too big! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
 						exit;
 					}
-					if (!isImage($_FILES['upfile']['tmp_name']))
+					if (!($ext = isImage($_FILES['upfile']['tmp_name'])))
 					{
 						echo "<h1>File is not an image! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
 						exit;
 					}
+					$fileid = time() . mt_rand(10000000, 999999999);
+					$filename = $fileid . $ext; 
+					$target_path .= $filename;
 					$md5 = md5_file($_FILES['upfile']['tmp_name']);
 					if (($bdata['nodup'] == 1) && (($mod == 0) || ($mod_type == 0)))
 					{

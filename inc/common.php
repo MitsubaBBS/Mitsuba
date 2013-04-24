@@ -342,24 +342,35 @@ function isImage($path)
 	{
 		$finfo = finfo_open();
 		$mime = finfo_file($finfo, $path, FILEINFO_MIME_TYPE);
-		if (($mime == "image/jpeg") || ($mime == "image/png") || ($mime == "image/gif"))
+		switch ($mime)
 		{
-			return true;
+			case "image/jpeg": return ".jpg";
+			case "image/gif": return ".gif";
+			case "image/png": return ".png";
 		}
 	} elseif (function_exists("mime_content_type"))
 	{
 		$mime = mime_content_type($path);
-		if (($mime == "image/jpeg") || ($mime == "image/png") || ($mime == "image/gif"))
+		switch ($mime)
 		{
-			return true;
+			case "image/jpeg": return ".jpg";
+			case "image/gif": return ".gif";
+			case "image/png": return ".png";
 		}
 	} elseif (function_exists("getimagesize")) {
 		$a = getimagesize($path);
 		$image_type = $a[2];
-
-		if(in_array($image_type , array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG)))
+		if (in_array($image_type, IMAGETYPE_GIF))
 		{
-			return true;
+			return ".gif";
+		}
+		if (in_array($image_type, IMAGETYPE_PNG))
+		{
+			return ".png";
+		}
+		if (in_array($image_type, IMAGETYPE_JPEG))
+		{
+			return ".jpg";
 		}
 	} else {
 		return false;
