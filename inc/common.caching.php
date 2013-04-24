@@ -64,10 +64,7 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 {
 	$new = $string;
 	
-	$fresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
-	$replace_array = array();
-	while ($row = $fresult->fetch_assoc()) { $replace_array[$row['search']] = $row['replace']; }
-	$new = strtr($new, $replace_array);
+	
 	$lines = explode("\n", $new);
 	$new = "";
 	$c_lines = 0;
@@ -189,6 +186,10 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 			$new .= '<br/><span class="abbr">Comment too long. Click <a href="./res/'.$resto.'.html#p'.$id.'">here</a> to view the full text.</span>';
 		}
 	}
+	$fresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
+	$replace_array = array();
+	while ($row = $fresult->fetch_assoc()) { $replace_array[$row['search']] = $row['replace']; }
+	$new = strtr($new, $replace_array);
 	return $new;
 }
 

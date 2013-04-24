@@ -360,15 +360,15 @@ function isImage($path)
 	} elseif (function_exists("getimagesize")) {
 		$a = getimagesize($path);
 		$image_type = $a[2];
-		if (in_array($image_type, IMAGETYPE_GIF))
+		if ($image_type == IMAGETYPE_GIF)
 		{
 			return ".gif";
 		}
-		if (in_array($image_type, IMAGETYPE_PNG))
+		if ($image_type == IMAGETYPE_PNG)
 		{
 			return ".png";
 		}
-		if (in_array($image_type, IMAGETYPE_JPEG))
+		if ($image_type == IMAGETYPE_JPEG)
 		{
 			return ".jpg";
 		}
