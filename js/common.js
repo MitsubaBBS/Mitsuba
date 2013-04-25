@@ -275,7 +275,7 @@ function hideThread(id)
 	$("#pc"+id+" .file").slideToggle(1200);
 	$("#m"+id).css("display", "none");
 	$("#et"+id).css("display", "none");
-	$("#t"+id).find(".replyContainer").css("display", "none");
+	$("#t"+id).find(".replyContainer").slideToggle(1200);
 	$("#t"+id).find("span.summary").css("display", "none");
 	$("#ht"+id).html("[+]");
 }
@@ -283,7 +283,7 @@ function hideThread(id)
 function showThread(id)
 {
 	$("#pc"+id+" .file").slideToggle(1200);
-	$("#t"+id).find(".replyContainer").css("display", "block");
+	$("#t"+id).find(".replyContainer").slideToggle(1200);
 	$("#t"+id).find("span.summary").css("display", "inline");
 	$("#ht"+id).html("[-]");
 }
