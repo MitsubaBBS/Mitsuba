@@ -272,20 +272,18 @@ function hideThreads()
 
 function hideThread(id)
 {
-	$("#pc"+id+" .file").css("display", "none");
+	$("#pc"+id+" .file").slideToggle(1200);
 	$("#m"+id).css("display", "none");
 	$("#et"+id).css("display", "none");
-	$("#t"+id).find(".replyContainer").css("display", "none");
+	$("#t"+id).find(".replyContainer").slideToggle(1200);
 	$("#t"+id).find("span.summary").css("display", "none");
 	$("#ht"+id).html("[+]");
 }
 
 function showThread(id)
 {
-	$("#pc"+id+" .file").css("display", "block");
-	$("#m"+id).css("display", "block");
-	$("#et"+id).css("display", "inline");
-	$("#t"+id).find(".replyContainer").css("display", "block");
+	$("#pc"+id+" .file").slideToggle(1200);
+	$("#t"+id).find(".replyContainer").slideToggle(1200);
 	$("#t"+id).find("span.summary").css("display", "inline");
 	$("#ht"+id).html("[-]");
 }
