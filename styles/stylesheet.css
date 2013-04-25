@@ -229,6 +229,8 @@ div.post div.file .fileThumb img {
 span.summary {
     color: #707070;
     margin-top: 10px;
+    display: inline-block;
+    margin-top: 0px;
 }
 
 div.postingMode {

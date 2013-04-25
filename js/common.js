@@ -173,7 +173,13 @@ function addThreadExpander(parent)
 			success: function(data, textStatus, xhr){
 				var html = xhr.responseText;
 				var nodes = $.parseHTML( html );
+				$(tid).fadeOut(100, function()
+					{
+						$(tid).fadeIn(200);
+					});
+
 				$(tid).html($(tid, nodes).html());
+
 				$('<a href="javascript:;" class="hider" id="ht'+tid.substr(2)+'">[-]</a>').appendTo($(tid+" div.op div.postInfo")).click(function () {
 					var id = $(this).attr("id").substr(2);
 					thread_toggle(id);
@@ -277,9 +283,9 @@ function hideThread(id, type)
 	{
 		$("#pc"+id+" .file").css("display", "none");
 		$("#m"+id).css("display", "none");
-		$("#et"+id).css("display", "none");
 		$("#t"+id).find(".replyContainer").css("display", "none");
-		$("#t"+id).find("span.summary").css("display", "none");
+		$("#t"+id).find("span.summary").slideUp(1);
+		$("#et"+id).slideUp(1);
 	}
 	else
 	{
@@ -298,13 +304,22 @@ function hideThread(id, type)
 function showThread(id)
 {
 	
-	$("#pc"+id+" .file").slideDown(1200);
-	$("#t"+id).find(".replyContainer").slideDown(1200, function()
+	
+	if (($("#t"+id).find(".replyContainer").length) != 0)
 	{
-		$("#m"+id).slideDown(300);
-		$("#et"+id).slideDown(600);
+		$("#pc"+id+" .file").slideDown(1200);
+		$("#t"+id).find(".replyContainer").slideDown(1200, function()
+		{
+			$("#m"+id).slideDown(300);
+			$("#t"+id).find("span.summary").slideDown(600, function(){$("#et"+id).slideDown(600);});
+		});
+	}
+	else 
+	{
+		$("#pc"+id+" .file").slideDown(1200, function(){$("#m"+id).slideDown(300);});
 		$("#t"+id).find("span.summary").slideDown(600);
-	});
+	}
+
 	
 	$("#ht"+id).html("[-]");
 }
