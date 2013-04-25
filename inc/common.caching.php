@@ -60,7 +60,7 @@ function getBoardLinks($conn, $in_thread = 0)
 	}
 }
 
-function processComment($board, $conn, $string, $parser, $thread = 0, $specialchars = 1, $bbcode = 1, $id = 0, $resto = 0)
+function processComment($board, $conn, $string, $parser, $thread = 0, $specialchars = 1, $bbcode = 1, $id = 0, $resto = 0, $wordfilter = 1, $wf_table = array())
 {
 	$new = $string;
 	
@@ -186,10 +186,10 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 			$new .= '<br/><span class="abbr">Comment too long. Click <a href="./res/'.$resto.'.html#p'.$id.'">here</a> to view the full text.</span>';
 		}
 	}
-	$fresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
-	$replace_array = array();
-	while ($row = $fresult->fetch_assoc()) { $replace_array[$row['search']] = $row['replace']; }
-	$new = strtr($new, $replace_array);
+	if ($wordfilter == 1)
+	{
+		$new = strtr($new, $replace_array);
+	}
 	return $new;
 }
 
@@ -217,6 +217,9 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 	{
 		return -666;
 	}
+	$wfresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
+	$replace_array = array();
+	while ($row = $wfresult->fetch_assoc()) { $replace_array[$row['search']] = $row['replace']; }
 	$max_pages = $boarddata['pages'];
 	$all_pages = $max_pages;
 	$pages = $max_pages;
@@ -683,23 +686,28 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= '</div>';
 			$file .= getFiles($row, $board, $return, $threadno);
 			$file .= '<blockquote class="postMessage" id="m'.$row['id'].'">';
+			$wf = 1;
 			
+			if ($row['capcode'] >= 1)
+			{
+				$wf = 0;
+			}
 			if ($row['raw'] != 1)
 			{
 				if ($row['raw'] == 2)
 				{
 					if ($return == 1)
 					{
-						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0, $boarddata['bbcode'], $row['id'], $row['resto']);
+						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
 					} else {
-						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row['id'], $row['resto']);
+						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
 					}
 				} else {
 					if ($return == 1)
 					{
-						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 1, $boarddata['bbcode'], $row['id'], $row['resto']);
+						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 1, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
 					} else {
-						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row['id'], $row['resto']);
+						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
 					}
 				}
 			} else {
@@ -836,22 +844,27 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$file .= '</div>';
 				$file .= getFiles($row2, $board, $return, $threadno);
 				$file .= '<blockquote class="postMessage" id="m'.$row2['id'].'">';
+				$wf = 1;
+				if ($row2['capcode'] >= 1)
+				{
+					$wf = 0;
+				}
 				if ($row2['raw'] != 1)
 				{
 					if ($row2['raw'] == 2)
 					{
 						if ($return == 1)
 						{
-							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 0, $boarddata['bbcode'], $row2['id'], $row2['resto']);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 0, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
 						} else {
-							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row2['id'], $row2['resto']);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
 						}
 					} else {
 						if ($return == 1)
 						{
-							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 1, $boarddata['bbcode'], $row2['id'], $row2['resto']);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 1, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
 						} else {
-							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row2['id'], $row2['resto']);
+							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
 						}
 					}
 				} else {

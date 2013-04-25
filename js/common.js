@@ -132,12 +132,8 @@ function addStylechanger()
 function addPostpreview(parent)
 {
 	$("body").append('<div id="quote-preview" class="post preview" style="display: none; position: absolute; z-index:999;"></div>');
-	$(parent).find(".quotelink").hover(function () {
-		showPostPreview(this);
-	}, function () {
-		hidePostPreview(this);
-	}
-	);
+	$(parent).find(".quotelink").mousein(function () { showPostPreview(this); });
+	$(parent).find(".quotelink").mouseout(function () { hidePostPreview(this); });
 }
 
 function addBacklinks(parent)
