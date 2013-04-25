@@ -264,27 +264,48 @@ function hideThreads()
 			var id = splitCookie[0].substr(2);
 			if (splitCookie[1] == 1)
 			{
-				hideThread(id);
+				hideThread(id, 1);
 			}
 		}
 	});
 }
 
-function hideThread(id)
+function hideThread(id, type)
 {
-	$("#pc"+id+" .file").slideToggle(1200);
-	$("#m"+id).css("display", "none");
-	$("#et"+id).css("display", "none");
-	$("#t"+id).find(".replyContainer").slideToggle(1200);
-	$("#t"+id).find("span.summary").css("display", "none");
+	// 0 = click, 1 = cookie
+	if (type == 1)
+	{
+		$("#pc"+id+" .file").css("display", "none");
+		$("#m"+id).css("display", "none");
+		$("#et"+id).css("display", "none");
+		$("#t"+id).find(".replyContainer").css("display", "none");
+		$("#t"+id).find("span.summary").css("display", "none");
+	}
+	else
+	{
+		$("#m"+id).slideToggle(300, function()
+		{
+			$("#pc"+id+" .file").slideUp(1200);
+			$("#et"+id).slideUp(1200);
+			$("#t"+id).find(".replyContainer").slideUp(1200);
+			$("#t"+id).find("span.summary").slideUp(1200);
+		});
+	}
+
 	$("#ht"+id).html("[+]");
 }
 
 function showThread(id)
 {
-	$("#pc"+id+" .file").slideToggle(1200);
-	$("#t"+id).find(".replyContainer").slideToggle(1200);
-	$("#t"+id).find("span.summary").css("display", "inline");
+	
+	$("#pc"+id+" .file").slideDown(1200);
+	$("#t"+id).find(".replyContainer").slideDown(1200, function()
+	{
+		$("#m"+id).slideDown(300);
+		$("#et"+id).slideDown(600);
+		$("#t"+id).find("span.summary").slideDown(600);
+	});
+	
 	$("#ht"+id).html("[-]");
 }
 
