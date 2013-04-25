@@ -56,15 +56,15 @@ $result = $conn->query("SELECT * FROM whitelist ORDER BY id DESC;");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td>".$row['ip']."</td>";
+echo "<td><center>".$row['ip']."</center></td>";
 echo "<td>".$row['note']."</td>";
 if ($row['nolimits'] == 1)
 {
-echo "<td><b>YES</b></td>";
+echo "<td><center><b>YES</b></center></td>";
 } else {
-echo "<td><b>NO</b></td>";
+echo "<td><center><b>NO</b></center></td>";
 }
-echo "<td><a href='?/whitelist&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
+echo "<td><center><a href='?/whitelist&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 echo "</tr>";
 }
 ?>

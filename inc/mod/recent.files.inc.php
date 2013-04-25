@@ -48,30 +48,30 @@ if (!defined("IN_MOD"))
 				$resto = $row['resto'];
 				$op = 0;
 				if ($row['resto'] == 0) { $resto = $row['id']; $op = 1; }
-				echo "<a href='?/board&b=".$row['board']."&t=".$resto."'>/".$row['board']."/".$row['id']."</a> ";
-				if ($op == 1) { echo "<b>OP</b>"; }
+				echo "<center><a href='?/board&b=".$row['board']."&t=".$resto."'>/".$row['board']."/".$row['id']."</a></center> ";
+				if ($op == 1) { echo "<center><b>OP</b></center>"; }
 				echo "</td><td>";
 				$trip = "";
 				if (!empty($row['trip']))
 				{
-					$trip = "<span class='postertrip'>!".$row['trip']."</span>";
+					$trip = "<center><span class='postertrip'>!".$row['trip']."</span></center>";
 				}
 				if ($row['capcode'] == 1)
 				{
-					echo '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span></span>';
+					echo '<center><span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span></span></span></center>';
 				} elseif ($row['capcode'] == 2)
 				{
-					echo '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span></span>';
+					echo '<center><span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span></span></span></center>';
 				} elseif ($row['capcode'] == 3)
 				{
-					echo '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span></span>';
+					echo '<center><span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span></span></span></center>';
 				} else {
-					echo '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.'</span>';
+					echo '<center><span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.'</span></center>';
 				}
 			
 				echo "</td>";
-				echo "<td>".$row['email']."</td>";
-				echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
+				echo "<td><center>".$row['email']."</center></td>";
+				echo "<td><center>".date("d/m/Y @ H:i", $row['date'])."</center></td>";
 				if ($row['raw'] != 1)
 				{
 					if ($row['raw'] == 2)
@@ -95,7 +95,7 @@ if (!defined("IN_MOD"))
 					} elseif (substr($row['filename'], 0, 6) == "embed:") {
 						echo "<td><a href='".substr($row['filename'], 6)."'>Embed</a></td>";
 					} else {
-						echo "<td><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></a></td>";
+						echo "<td><center><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></a></center></td>";
 					}
 				} else {
 					echo "<td></td>";

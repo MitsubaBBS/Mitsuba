@@ -66,16 +66,16 @@ $result = $conn->query("SELECT * FROM styles ORDER BY name ASC");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td>".htmlspecialchars($row['name']);
+echo "<td><center>".htmlspecialchars($row['name']);
 if ($row['default'] == 1) { echo " ( <b>".$lang['mod/default']."</b> )"; }
-echo "</td>";
-echo "<td><a href='".htmlspecialchars($row['path_index'])."' target='_blank'>Show file</a></td>";
-echo "<td><a href='?/styles&f=1&n=".$row['id']."'>".$lang['mod/delete']."</a>(<a href='?/styles&d=1&n=".$row['id']."'>".$lang['mod/delete_no_file']."</a>)";
+echo "</center></td>";
+echo "<td><center><a href='".htmlspecialchars($row['path_index'])."' target='_blank'>Show file</a></center></td>";
+echo "<td><center><a href='?/styles&f=1&n=".$row['id']."'>".$lang['mod/delete']."</a>(<a href='?/styles&d=1&n=".$row['id']."'>".$lang['mod/delete_no_file']."</a>)";
 if ($row['default'] == 0)
 {
 	echo " <a href='?/styles&def=1&n=".$row['id']."'>".$lang['mod/make_default']."</a>";
 }
-echo "</td>";
+echo "</center></td>";
 echo "</tr>";
 }
 ?>

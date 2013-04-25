@@ -51,8 +51,8 @@ $usern = $result->num_rows;
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td>".$row['username']."</td>";
-echo "<td>";
+echo "<td><center>".$row['username']."</center></td>";
+echo "<td><center>";
 switch ($row['type'])
 {
 	case 0:
@@ -68,12 +68,12 @@ switch ($row['type'])
 		echo $lang['mod/faggot'];
 		break;
 }
-echo "</td>";
-echo "<td>".$row['boards']."</td>";
-echo "<td><a href='?/users/edit&id=".$row['id']."'>".$lang['mod/edit']."</a></td>";
+echo "<center></td>";
+echo "<td><center>".$row['boards']."</center></td>";
+echo "<td><center><a href='?/users/edit&id=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
 if ($usern != 1)
 {
-echo "<td><a href='?/users/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></td>";
+echo "<td><center><a href='?/users/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 } else {
 echo "<td></td>";
 }

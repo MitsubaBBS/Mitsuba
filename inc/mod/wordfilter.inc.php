@@ -54,9 +54,9 @@ $result = $conn->query("SELECT * FROM wordfilter ORDER BY search ASC");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td>".htmlspecialchars($row['search'])."</td>";
-echo "<td>".htmlspecialchars($row['replace'])."</td>";
-echo "<td><a href='?/wordfilter&d=1&n=".$row['id']."'>Delete</a> <a href='?/wordfilter/edit&n=".$row['id']."'>Edit</a></td>";
+echo "<td><center>".htmlspecialchars($row['search'])."</center></td>";
+echo "<td><center>".htmlspecialchars($row['replace'])."</center></td>";
+echo "<td><center><a href='?/wordfilter&d=1&n=".$row['id']."'>Delete</a> <a href='?/wordfilter/edit&n=".$row['id']."'>Edit</a></center></td>";
 echo "</tr>";
 }
 ?>

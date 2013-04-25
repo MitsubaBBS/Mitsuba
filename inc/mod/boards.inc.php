@@ -54,15 +54,15 @@ $result = $conn->query("SELECT * FROM boards;");
 while ($row = $result->fetch_assoc())
 {
 echo '<tr>';
-echo "<td><a href='./".$row['short']."/'>/".$row['short']."/</a></td>";
-echo "<td>".$row['name']."</td>";
+echo "<td><center><a href='./".$row['short']."/'>/".$row['short']."/</a></center></td>";
+echo "<td><center>".$row['name']."</center></td>";
 echo "<td>".$row['des']."</td>";
-echo "<td>".$row['bumplimit']."</td>";
+echo "<td><center>".$row['bumplimit']."</center></td>";
 if (!empty($row['message']))
 {
-echo "<td>".$lang['mod/yes']."</td>";
+echo "<td><center>".$lang['mod/yes']."</center></td>";
 } else {
-echo "<td>".$lang['mod/no']."</td>";
+echo "<td><center>".$lang['mod/no']."</center></td>";
 }
 echo "<td>";
 if ($row['spoilers']==1) { echo "<b>".$lang['mod/spoilers']."</b><br />"; }
@@ -72,9 +72,9 @@ if ($row['embeds']==1) { echo "<b>".$lang['mod/embeds']."</b><br />"; }
 if ($row['bbcode']==1) { echo "<b>".$lang['mod/board_bbcode']."</b><br />"; }
 if ($row['hidden']==1) { echo "<b>".$lang['mod/board_hidden']."</b><br />"; }
 echo "</td>";
-echo "<td><a href='?/boards/edit&board=".$row['short']."'>".$lang['mod/edit']."</a></td>";
-echo "<td><a href='?/boards/delete&board=".$row['short']."'>".$lang['mod/delete']."</a></td>";
-echo "<td><a href='?/boards/rebuild&board=".$row['short']."'>".$lang['mod/rebuild_cache']."</a></td>";
+echo "<td><center><a href='?/boards/edit&board=".$row['short']."'>".$lang['mod/edit']."</a></center></td>";
+echo "<td><center><a href='?/boards/delete&board=".$row['short']."'>".$lang['mod/delete']."</a></center></td>";
+echo "<td><center><a href='?/boards/rebuild&board=".$row['short']."'>".$lang['mod/rebuild_cache']."</a></center></td>";
 echo '</tr>';
 }
 ?>

@@ -67,9 +67,9 @@ $result = $conn->query("SELECT * FROM embeds ORDER BY name ASC");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td>".$row['name']."</td>";
+echo "<td><center>".$row['name']."</center></td>";
 echo "<td>".htmlspecialchars($row['regex'])."</td>";
-echo "<td><a href='?/embeds&d=1&n=".$row['name']."'>".$lang['mod/delete']."</a> <a href='?/embeds/edit&n=".$row['name']."'>".$lang['mod/edit']."</a></td>";
+echo "<td><center><a href='?/embeds&d=1&n=".$row['name']."'>".$lang['mod/delete']."</a> <a href='?/embeds/edit&n=".$row['name']."'>".$lang['mod/edit']."</a></center></td>";
 echo "</tr>";
 }
 ?>

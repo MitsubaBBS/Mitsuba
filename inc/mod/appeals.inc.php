@@ -54,7 +54,7 @@ while ($row = $appeals->fetch_assoc())
 		echo "<tr>";
 		if ($row['rangeban'] == 0)
 		{
-			echo "<td>".$ban['ip']."</td>";
+			echo "<td><center>".$ban['ip']."</center></td>";
 		} else {
 			echo "<td>".$ban['start_ip']." - ".$ban['end_ip']." ( ".$row['ip']." )</td>";
 		}
@@ -68,13 +68,13 @@ while ($row = $appeals->fetch_assoc())
 		echo "<td>".$ban['note']."</td>";
 		if ($left = -1)
 		{
-			echo "<td><b>".$lang['mod/permaban']."</b></td>";
+			echo "<td><center><b>".$lang['mod/permaban']."</b></center></td>";
 		} else {
-			echo "<td>".$left." days</td>";
+			echo "<td><center>".$left." days</center></td>";
 		}
-		echo "<td>".$row['email']."</td>";
+		echo "<td><center>".$row['email']."</center></td>";
 		echo "<td>".$row['msg']."</td>";
-		echo "<td> [ <a href='?/appeals&m=clear&id=".$row['id']."'>C</a> / <a href='?/bans&del=1&b=".$ban['id']."'>U</a> ]</td>";
+		echo "<td><center> [ <a href='?/appeals&m=clear&id=".$row['id']."'>C</a> / <a href='?/bans&del=1&b=".$ban['id']."'>U</a> ]</center></td>";
 		echo "</tr>";
 	} else {
 		$conn->query("DELETE FROM appeals WHERE id=".$row['id']);

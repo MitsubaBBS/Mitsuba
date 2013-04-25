@@ -30,7 +30,7 @@ if (!defined("IN_MOD"))
 	while ($thread = $threads->fetch_assoc())
 	{
 		echo "<tr>";
-		echo "<td><a href='?/board&b=".$thread['board']."&t=".$thread['id']."#p".$thread['id']."'>/".$thread['board']."/".$thread['id']."</a></td>";
+		echo "<td><center><a href='?/board&b=".$thread['board']."&t=".$thread['id']."#p".$thread['id']."'>/".$thread['board']."/".$thread['id']."</a></center></td>";
 		if ($thread['raw'] == 0)
 		{
 			echo "<td>".processComment($thread['board'], $conn, $thread['comment'], $parser, 2)."</td>";
@@ -40,7 +40,7 @@ if (!defined("IN_MOD"))
 		} else {
 			echo "<td>".$thread['comment']."</td>";
 		}
-		echo "<td><a href='?/locked/toggle&b=".$thread['board']."&t=".$thread['id']."'>".$lang['mod/unlock']."</a></td>";
+		echo "<td><center><a href='?/locked/toggle&b=".$thread['board']."&t=".$thread['id']."'>".$lang['mod/unlock']."</a></center></td>";
 		echo "</tr>";
 	}
 	?>

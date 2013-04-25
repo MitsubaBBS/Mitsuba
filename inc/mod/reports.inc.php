@@ -47,7 +47,7 @@ if ($_SESSION['type'] >= 1)
 <td><?php echo $lang['mod/post']; ?></td>
 <td><?php echo $lang['mod/file']; ?></td>
 <td class="comments"><?php echo $lang['mod/comment']; ?></td>
-<td><?php echo $lang['mod/reason']; ?></td>
+<td class="reason"><?php echo $lang['mod/reason']; ?></td>
 <td><?php echo $lang['mod/reporter_ip']; ?></td>
 <td><?php echo $lang['mod/actions']; ?></td>
 </tr>
@@ -78,18 +78,18 @@ if ($_SESSION['type'] >= 1)
 				$resto = $pdata['resto'];
 			}
 			echo "<tr>";
-			echo "<td><a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['reported_post']."'>/".$row['board']."/".$row['reported_post']."</a></td>";
+			echo "<td><center><a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['reported_post']."'>/".$row['board']."/".$row['reported_post']."</a></center></td>";
 			if (!empty($pdata['filename']))
 			{
 				if ($pdata['filename'] == "deleted")
 				{
 					echo "<td><img src='./img/deleted.gif' /></td>";
 				} elseif (substr($pdata['filename'], 0, 8) == "spoiler:") {
-					echo "<td><a href='./".$row['board']."/src/".substr($pdata['filename'], 8)."' target='_blank'><img src='./".$row['board']."/src/thumb/".substr($pdata['filename'], 8)."' /></a></td>";
+					echo "<td><center><a href='./".$row['board']."/src/".substr($pdata['filename'], 8)."' target='_blank'><img src='./".$row['board']."/src/thumb/".substr($pdata['filename'], 8)."' /></a></center></td>";
 				} elseif (substr($pdata['filename'], 0, 6) == "embed:") {
 					echo "<td><a href='".substr($pdata['filename'], 6)."'>Embed</a></td>";
 				} else {
-					echo "<td><a href='./".$row['board']."/src/".$pdata['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$pdata['filename']."' /></a></td>";
+					echo "<td><center><a href='./".$row['board']."/src/".$pdata['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$pdata['filename']."' /></a></center></td>";
 				}
 			} else {
 				echo "<td></td>";
@@ -104,7 +104,7 @@ if ($_SESSION['type'] >= 1)
 				echo "<td>".$pdata['comment']."</td>";
 			}
 			echo "<td>".$row['reason']."</td>";
-			echo "<td>".$row['reporter_ip']."</td>";
+			echo "<td><center>".$row['reporter_ip']."</center></td>";
 			echo "<td><center>[ <a href='?/reports&cl=1&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> "; 
 			if ($_SESSION['type']>=1)
 			{

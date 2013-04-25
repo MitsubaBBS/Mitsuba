@@ -23,13 +23,13 @@ if (!defined("IN_MOD"))
 			echo "<tr>";
 			if ($row['read_msg']==0)
 			{
-				echo "<td><b><a href='?/inbox/read&id=".$row['id']."'>".$row['title']."</a></b></td>";
+				echo "<td><center><b><a href='?/inbox/read&id=".$row['id']."'>".$row['title']."</a></b></center></td>";
 			} else {
-				echo "<td><a href='?/inbox/read&id=".$row['id']."'>".$row['title']."</a></td>";
+				echo "<td><center><a href='?/inbox/read&id=".$row['id']."'>".$row['title']."</a></center></td>";
 			}
-			echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
-			echo "<td>".$row['username']."</td>";
-			echo "<td><a href='?/inbox/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></td>";
+			echo "<td><center>".date("d/m/Y @ H:i", $row['created'])."</center></td>";
+			echo "<td><center>".$row['username']."</center></td>";
+			echo "<td><center><a href='?/inbox/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 			echo "</tr>";
 		}
 		?>

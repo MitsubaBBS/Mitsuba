@@ -40,10 +40,10 @@ $result = $conn->query("SELECT * FROM announcements WHERE mod_id=".$_SESSION['id
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td>".$row['title']."</td>";
-echo "<td>".date("d/m/Y @ H:i", $row['date'])."</td>";
-echo "<td><a href='?/announcements/edit&b=".$row['id']."'>".$lang['mod/edit']."</a></td>";
-echo "<td><a href='?/announcements/delete&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
+echo "<td><center>".$row['title']."</center></td>";
+echo "<td><center>".date("d/m/Y @ H:i", $row['date'])."</center></td>";
+echo "<td><center><a href='?/announcements/edit&b=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
+echo "<td><center><a href='?/announcements/delete&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 echo "</tr>";
 }
 ?>

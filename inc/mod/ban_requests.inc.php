@@ -21,7 +21,7 @@ reqPermission(1);
 <tr>
 <td><?php echo $lang['mod/ip']; ?></td>
 <td><?php echo $lang['mod/reason']; ?></td>
-<td><?php echo $lang['mod/staff_note']; ?>/td>
+<td><?php echo $lang['mod/staff_note']; ?></td>
 <td><?php echo $lang['mod/created']; ?></td>
 <td><?php echo $lang['mod/actions']; ?></td>
 </tr>
@@ -32,10 +32,10 @@ $result = $conn->query("SELECT * FROM ban_requests ORDER BY created DESC LIMIT 0
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td>".$row['ip']."</td>";
+echo "<td><center>".$row['ip']."</center></td>";
 echo "<td>".$row['reason']."</td>";
 echo "<td>".$row['note']."</td>";
-echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
+echo "<td><center>".date("d/m/Y @ H:i", $row['created'])."</center></td>";
 
 $post_r = $conn->query("SELECT * FROM posts WHERE id=".$row['post']." AND board='".$row['board']."'");
 if ($post_r->num_rows == 1)
@@ -43,9 +43,9 @@ if ($post_r->num_rows == 1)
 $post = $post_r->fetch_assoc();
 $resto = $post['resto'];
 if ($resto == 0) { $resto = $post['id']; }
-echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$post['id']."'>P</a> ]</td>";
+echo "<td><center>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> / <a href='?/board&b=".$row['board']."&t=".$resto."#p".$post['id']."'>P</a> ]</center></td>";
 } else {
-echo "<td>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</td>";
+echo "<td><center>[ <a href='?/ban_requests&del=1&b=".$row['id']."'>C</a> / <a href='?/bans/add&r=".$row['id']."'>B</a> ]</center></td>";
 }
 
 echo "</tr>";
