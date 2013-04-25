@@ -188,7 +188,7 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 	}
 	if ($wordfilter == 1)
 	{
-		$new = strtr($new, $replace_array);
+		$new = strtr($new, $wf_table);
 	}
 	return $new;
 }
