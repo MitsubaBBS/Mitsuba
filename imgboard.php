@@ -40,7 +40,7 @@ if (!empty($_POST['mode']))
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php echo $lang['inc/error']; ?></title>
+<title><?php echo $lang['img/error']; ?></title>
 </head>
 <body>
 			<?php
@@ -68,10 +68,10 @@ if (!empty($_POST['mode']))
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php echo $lang['inc/updating_index']; ?></title>
+<title><?php echo $lang['img/updating_index']; ?></title>
 </head>
 <body>
-<center><h1><?php echo $lang['inc/updating_index']; ?></h1></center>
+<center><h1><?php echo $lang['img/updating_index']; ?></h1></center>
 			<?php
 			
 			$md5 = "";
