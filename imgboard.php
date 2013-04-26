@@ -42,7 +42,7 @@ if (!empty($_POST['mode']))
 </head>
 <body>
 			<?php
-				echo "<center><h1>No board selected!</h1></center></body></html>";
+				echo "<center><h1>".$lang['img/no_board']."</h1></center></body></html>";
 				exit;
 			}
 			$board = $_POST['board'];
@@ -75,17 +75,17 @@ if (!empty($_POST['mode']))
 			$bdata = getBoardData($conn, $_POST['board']);
 			if ($bdata['hidden'] == 1)
 			{
-				echo "<h1>This board does not exist!</h1></body></html>"; exit;
+				echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
 			}
 			
 			if (strlen($_POST['com']) > $bdata['maxchars'])
 			{
-				echo "<h1>Comment too long (".strlen($_POST['com'])."/".$bdata['maxchars'].")!</h1></body></html>"; exit;
+				echo "<h1>".printf($lang['img/comment_too_long'],strlen($_POST['com']),$bdata['maxchars'])."</h1></body></html>"; exit;
 			}
 			
 			if ((!empty($_POST['embed'])) && (!empty($_FILES['upfile']['tmp_name'])))
 			{
-				echo "<center><h1>Choose one: image or embed! ;_;</h1></center></body></html>";
+				echo "<center><h1>".$lang['img/choose_one']."</h1></center></body></html>";
 				exit;
 			}
 			if ((isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) != 2) && (($mod == 0) || ($mod_type==0)))
@@ -98,7 +98,7 @@ if (!empty($_POST['mode']))
 					
 					if (($pdate + $bdata['time_between_posts']) > time())
 					{
-						echo "<center><h1>You'll have to wait more before posting a new post! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
+						echo "<center><h1>".$lang['img/wait_more_post']." [<a href='./".$_POST['board']."/'>".$lang['return']."</a>]</h1></center></body></html>";
 						exit;
 					}
 				}
@@ -111,7 +111,7 @@ if (!empty($_POST['mode']))
 					
 					if (($pdate + $bdata['time_between_threads']) > time())
 					{
-						echo "<center><h1>You'll have to wait more before posting a new thread! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
+						echo "<center><h1>".$lang['img/wait_more_thread']." [<a href='./".$_POST['board']."/'>".$lang['return']."</a>]</h1></center></body></html>";
 						exit;
 					}
 				}
@@ -120,7 +120,7 @@ if (!empty($_POST['mode']))
 			{
 				if ($bdata['embeds']==0)
 				{
-					echo "<center><h1>Embed not supported! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
+					echo "<center><h1>".$lang['img/embed_not_supported']." [<a href='./".$_POST['board']."/'>".$lang['return']."</a>]</h1></center></body></html>";
 					exit;
 				}
 				
@@ -134,13 +134,13 @@ if (!empty($_POST['mode']))
 				{
 					$filename = "embed:".$_POST['embed'];
 				} else {
-					echo "<center><h1>Embed not supported! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></center></body></html>";
+					echo "<center><h1>".$lang['img/embed_not_supported']." [<a href='./".$_POST['board']."/'>".$lang['return']."</a>]</h1></center></body></html>";
 					exit;
 				}
 			} else {
 				if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 				{
-					echo "<h1>File size too big! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
+					echo "<h1>".$lang['img/file_too_big']." [<a href='./".$_POST['board']."/'>".$lang['return']."</a>]</h1></body></html>";
 					exit;
 				}
 				if (!empty($_FILES['upfile']['tmp_name']))
@@ -149,12 +149,12 @@ if (!empty($_POST['mode']))
 					$file_size = $_FILES['upfile']['size'];
 					if (($file_size > $bdata['filesize']) && ($ignoresizelimit != 1))
 					{
-						echo "<h1>File size too big! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
+						echo "<h1>".$lang['img/file_too_big']." [<a href='./".$_POST['board']."/'>".$lang['return']."</a>]</h1></body></html>";
 						exit;
 					}
 					if (!($ext = isImage($_FILES['upfile']['tmp_name'])))
 					{
-						echo "<h1>File is not an image! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
+						echo "<h1>".$lang['img/file_not_img']." [<a href='./".$_POST['board']."/'>".$lang['return']."</a>]</h1></body></html>";
 						exit;
 					}
 					$fileid = time() . mt_rand(10000000, 999999999);
@@ -166,20 +166,20 @@ if (!empty($_POST['mode']))
 						$isit = $conn->query("SELECT * FROM posts WHERE filehash='".$md5."' AND board='".$_POST['board']."'");
 						if ($isit->num_rows >= 1)
 						{
-							echo "<h1>Duplicate file detected! [<a href='./".$_POST['board']."/'>RETURN</a>]</h1></body></html>";
+							echo "<h1>".$lang['img/file_duplicate']." [<a href='./".$_POST['board']."/'>".$lang['return']."</a>]</h1></body></html>";
 							exit;
 						}
 					}
 					if(move_uploaded_file($_FILES['upfile']['tmp_name'], $target_path)) {
-						echo "The file ".basename( $_FILES['upfile']['name'])." has been uploaded";
+						echo printf($lang['img/file_uploaded'], basename( $_FILES['upfile']['name']));
 					} else {
-						echo "There was an error uploading the file, please try again!";
+						echo $lang['img/upload_error'];
 						$filename = "";
 					}
 				}
 			}
 
-			$name = "Anonymous";
+			$name = $lang['img/anonymous'];
 			if ((!empty($_POST['name'])) && (($bdata['noname'] == 0) || (($mod == 1) && ($mod_type >= 1)))) { $name = $_POST['name']; }
 			$resto = 0;
 			if (isset($_POST['resto'])) { $resto = $_POST['resto']; }
@@ -206,7 +206,7 @@ if (!empty($_POST['mode']))
 						$returned = thumb($board, $fileid.$ext, 125);
 						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
-							echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
+							echo "<h1>".$lang['img/no_thumb']."</h1></body></html>"; exit;
 						}
 						$thumb_w = $returned['width'];
 						$thumb_h = $returned['height'];
@@ -214,7 +214,7 @@ if (!empty($_POST['mode']))
 						$returned = thumb($board, $fileid.$ext);
 						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
-							echo "<h1>Could not create thumbnail!</h1></body></html>"; exit;
+							echo "<h1>".$lang['img/no_thumb']."</h1></body></html>"; exit;
 						}
 						$thumb_w = $returned['width'];
 						$thumb_h = $returned['height'];
@@ -283,7 +283,7 @@ if (!empty($_POST['mode']))
 			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $fake_id);
 			if ($is == -16)
 			{
-					echo "<h1>This board does not exist!</h1></body></html>"; exit;
+					echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
 			}
 			break;
 		case "usrform":
@@ -293,7 +293,7 @@ if (!empty($_POST['mode']))
 				$password = "";
 				if (empty($_POST['board']))
 				{
-					echo "<h1>No board selected!</h1></body></html>";
+					echo "<h1>".$lang['img/no_board']."</h1></body></html>";
 					exit;
 				}
 				$board = $_POST['board'];
@@ -311,21 +311,21 @@ if (!empty($_POST['mode']))
 					{
 						$done = deletePost($conn, $_POST['board'], $key, $password, $onlyimgdel);
 						if ($done == -1) {
-							echo "Bad password for post ".$key.".<br />";
+							echo printf($lang["img/post_bad_password"],$key).".<br />";
 						} elseif ($done == -2) {
-							echo "Post ".$key." not found.<br />";
+							echo printf($lang["img/post_not_found"],$key)."<br />";
 						} elseif ($done == -3) {
-							echo "Post ".$key." has no image.<br />";
+							echo printf($lang["img/post_no_image"],$key)."<br />";
 						} elseif ($done == -4) {
-							echo "You'll have to wait more before deleting post ".$key.".<br />";
+							echo printf($lang["img/post_wait_more"],$key).".<br />";
 						} elseif ($done == 1) {
-							echo "Deleted image from post ".$key.".<br />";
+							echo printf($lang["img/post_deleted_image"],$key).".<br />";
 						} elseif ($done == 2) {
-							echo "Deleted post ".$key.".<br />";
+							echo printf($lang["img/post_deleted"],$key).".<br />";
 						}
 						if ($done == -16)
 						{
-							echo "<h1>This board does not exist!</h1></body></html>"; exit;
+							echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
 						}
 					}
 				}
@@ -369,7 +369,7 @@ if (!empty($_POST['mode']))
 				$range = 0;
 				if (!empty($bandata['start_ip'])) { $range = 1; }
 				$conn->query("INSERT INTO appeals (created, ban_id, ip, msg, email, rangeban) VALUES (".time().", ".$ban_id.", '".$ip."', '".$msg."', '".$email."', ".$range.")");
-				echo "Your appeal has been sent. Keep calm and wait for reply";
+				echo $lang['img/appeal_sent'];
 			}
 			break;
 	}

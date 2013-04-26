@@ -181,13 +181,13 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	
 	if (($resto == 0) && (empty($filename)))
 	{
-		echo "<center><h1>Error: No file selected.</h1><br /><a href='./".$board."'>RETURN</a></center>";
+		echo "<center><h1>".$lang['img/no_file']."</h1><br /><a href='./".$board."'>".$lang['img/return']."</a></center>";
 		return;
 	}
 	
 	if ((empty($filename)) && (empty($comment)))
 	{
-		echo "<center><h1>Error: No file selected.</h1><br /><a href='./".$board."'>RETURN</a></center>";
+		echo "<center><h1>".$lang['img/no_file']."</h1><br /><a href='./".$board."'>".$lang['img/return']."</a></center>";
 		return;
 	}
 	
@@ -218,14 +218,14 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		
 		if ($thread->num_rows == 0)
 		{
-			echo "<center><h1>Error: Cannot reply to thread because thread does not exist.</h1><br /><a href='./".$board."'>RETURN</a></center>";
+			echo "<center><h1>".$lang['img/cant_reply']."</h1><br /><a href='./".$board."'>".$lang['img/return']."</a></center>";
 			return;
 		}
 		
 		$tinfo = $thread->fetch_assoc();
 		if (($tinfo['locked'] == 1) && ($adm_type <= 0))
 		{
-			echo "<center><h1>Error: This thread is locked.</h1><br /><a href='./".$board."'>RETURN</a></center>";
+			echo "<center><h1>".$lang['img/thread_locked']."</h1><br /><a href='./".$board."'>".$lang['img/return']."</a></center>";
 			return;
 		}
 		
