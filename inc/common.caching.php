@@ -424,13 +424,13 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		{
 			if ($threadno != 0)
 		{
-				$file .= '<div class="postingMode">Posting mode: Reply</div>';
+				$file .= '<div class="postingMode">'.$lang['img/posting_mode'].'</div>';
 				if ($return == 1)
 				{
-					$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">Return</a>] [<a href="#bottom">Bottom</a>]</div>';
+					$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
 					$file .= '<form action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
 				} else {
-					$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>] [<a href="#bottom">Bottom</a>]</div>';
+					$file .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
 					$file .= '<form action="../../imgboard.php" method="post" enctype="multipart/form-data">';
 				}
 			} else {
@@ -451,64 +451,65 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			if (($boarddata['noname'] == 0) || ($adm_type >= 1))
 			{
 				$file .= '<tr>
-					<td>Name</td>
+					<td>'.$lang['img/name'].'</td>
 					<td><input name="name" type="text" /></td>
 					</tr>';
 			}
 			if (($boarddata['ids'] == 1) && ($adm_type >= 1))
 			{
 				$file .= '<tr>
-					<td>Fake ID</td>
+					<td>'.$lang['img/fake_id'].'</td>
 					<td><input name="fake_id" type="text" /></td>
 					</tr>';
 			}
 			$file .= '<tr>
-				<td>E-mail</td>
+				<td>'.$lang['img/email'].'</td>
 				<td><input name="email" type="text" /></td>
 				</tr>
 				<tr>
-				<td>Subject</td>
+				<td>'.$lang['img/subject'].'</td>
 				<td><input name="sub" type="text" />';
 			$file .= '<input type="hidden" name="board" value="'.$board.'" />';
 			if ($threadno != 0)
 			{
 				$file .= '<input type="hidden" name="resto" value="'.$threadno.'" />';
 			}
-			$file .= '<input type="submit" value="Submit" /></td>
+			$file .= '<input type="submit" value="'.$lang['img/submit'].'" /></td>
 				</tr>
 				<tr>
-				<td>Comment</td>
+				<td>'.$lang['img/comment'].'</td>
 				<td><textarea name="com" cols="35" rows="4"></textarea></td>
 				</tr>
 				<tr>
-				<td>File</td>
+				<td>'.$lang['img/file'].'</td>
 				<td><input id="postFile" name="upfile" type="file" />';
 			if ($boarddata['spoilers'] == 1)
 			{
-				$file .= '<label><input type="checkbox" name="spoiler" value="1">Spoiler Image?</label>';
+				$file .= '<label><input type="checkbox" name="spoiler" value="1">'.$lang['img/spoiler'].'</label>';
 			}
 			if ($boarddata['embeds'] == 1)
 			{
-				$file .= '<br />Embed: <input type="text" name="embed"/>';
+				$file .= '<br />'.$lang['img/embed'].': <input type="text" name="embed"/>';
 			}
 			$file .= '</td>
 				</tr>
 				<tr>
-				<td>Password</td>
-				<td><input id="postPassword" name="pwd" type="password" maxlength="8" /> <span class="password">(Password used for deletion)</span></td>
+				<td>'.$lang['img/password'].'</td>
+				<td><input id="postPassword" name="pwd" type="password" maxlength="8" /> <span class="password">'.$lang['img/password_used'].'</span></td>
 				</tr>';
 			if ($adm_type >= 1)
 			{
 				$file .='<tr>
-					<td>Mod</td>
-					<td><input type="checkbox" name="capcode" value=1" />Capcode<input type="checkbox" name="raw" value=1" />Raw HTML<input type="checkbox" name="sticky" value=1" />Sticky<input type="checkbox" name="lock" value=1" />Lock<input type="checkbox" name="nolimit" value=1" />Ignore bumplimit<input type="checkbox" name="ignoresizelimit" value=1" />Ignore filesize limit</td>';
+					<td>'.$lang['img/mod'].'</td>
+					<td><input type="checkbox" name="capcode" value=1" />'.$lang['img/mod_capcode'].'<input type="checkbox" name="raw" value=1" />'.$lang['img/mod_raw'].'<input type="checkbox" name="sticky" value=1" />'.$lang['img/mod_sticky'].'<input type="checkbox" name="lock" value=1" />'.$lang['img/mod_lock'].'<br />';
+				$file .= '<input type="checkbox" name="nolimit" value=1" selected/>'.$lang['img/mod_nolimit'].'<input type="checkbox" name="ignoresizelimit" value=1" />'.$lang['img/mod_nosizelimit'].'</td>';
 			}
 			$file .= '<tr class="rules">
 				<td colspan="2">
 				<ul class="rules">
-				<li>Supported file types are: GIF, JPG, PNG</li>
-				<li>Maximum file size allowed is '.$boarddata['filesize'].' bytes.</li>
-				<li>Images greater than 250x250 pixels will be thumbnailed.</li>
+				<li>'.$lang['img/supported_types'].'</li>
+				<li>'.printf($lang['img/max_filesize'], $boarddata['filesize']).'</li>
+				<li>'.$lang['img/thumbnail'].'</li>
 				</ul>
 				</td>
 				</tr>
@@ -516,7 +517,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				</table>
 				</form>';
 		} else {
-			$file .= "<div class='closed'><h1>This thread is locked.</h1></div>";
+			$file .= "<div class='closed'><h1>".$lang['img/locked']."</h1></div>";
 		}
 		$file .= "<hr />";
 		if (!empty($config['global_message']))
@@ -656,7 +657,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				}
 				if ($threadno == 0)
 				{
-					$file .= '&nbsp; <span>[<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">Reply</a>]</span>';
+					$file .= '&nbsp; <span>[<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">'.$lang['img/reply'].'</a>]</span>';
 				}
 				$file .= '</span>';
 			} elseif ($threadno != 0)
@@ -681,7 +682,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				{
 					$file .= '<img src="../img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
 				}
-				$file .= '&nbsp; <span>[<a href="./res/'.$row['id'].'.html" class="replylink">Reply</a>]</span></span>';
+				$file .= '&nbsp; <span>[<a href="./res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</span></span>';
 			}
 			$file .= '</div>';
 			$file .= getFiles($row, $board, $return, $threadno);
@@ -737,9 +738,9 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			{
 				if ($return == 1)
 				{
-					$file .= '<span class="summary">'.($row1[0]-3).' posts omitted. Click <a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">here</a> to view.</span>';
+					$file .= '<span class="summary">'.printf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">', '</a>').'</span>';
 				} else {
-					$file .= '<span class="summary">'.($row1[0]-3).' posts omitted. Click <a href="./res/'.$row['id'].'.html" class="replylink">here</a> to view.</span>';
+					$file .= '<span class="summary">'.printf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="./res/'.$row['id'].'.html" class="replylink">', '</a>').'</span>';
 				}
 			}
 			$offset = 0;
@@ -886,21 +887,21 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		$file .= "</div>";
 		if ($threadno != 0)
 		{
-			$file .= '<div class="navLinks">[<a href=".././" accesskey="a">Return</a>] [<a href="#top">Top</a>]</div>';
+			$file .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#top">'.$lang['img/top'].'</a>]</div>';
 		}
 		$file .= '<div class="deleteform">
 			<input type="hidden" name="board" value="'.$board.'" />
-			<input type="hidden" name="mode" value="usrform" />Delete Post [<input type="checkbox" name="onlyimgdel" value="on" />File Only] ';
+			<input type="hidden" name="mode" value="usrform" />'.$lang['img/delete_post'].' [<input type="checkbox" name="onlyimgdel" value="on" />'.$lang['img/file_only'].'] ';
 		if ($adm_type <= 0)
 		{
-		$file .= 'Password <input type="password" id="delPassword" name="pwd" maxlength="8" /> ';
+		$file .= $lang['img/password'].' <input type="password" id="delPassword" name="pwd" maxlength="8" /> ';
 		}
-		$file .= '<input type="submit" name="delete" value="Delete" /><br />';
+		$file .= '<input type="submit" name="delete" value="'.$lang['img/delete'].'" /><br />';
 		if ($adm_type <= 0)
 		{
-		$file .= 'Reason <input type="text" name="reason" /><input type="submit" name="report" value="Report" />';
+		$file .= $lang['img/reason'].' <input type="text" name="reason" /><input type="submit" name="report" value="'.$lang['img/report'].'" />';
 		}
-		$file .= '<div class="stylechanger" id="stylechangerDiv" style="display:none;">Style: <select id="stylechanger"></select></div>
+		$file .= '<div class="stylechanger" id="stylechangerDiv" style="display:none;">'.$lang['img/style'].' <select id="stylechanger"></select></div>
 			</div>';
 		$file .= "</form>";
 		if (($return == 1) && ($threadno == 0))
@@ -910,10 +911,10 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			if ($page != 0)
 			{
 				
-				$file .= '<form action="?/board&b='.$board.'&p='.($page-1).'" onsubmit="location=this.action; return false;"><input type="submit" value="Previous" /></form>';
+				$file .= '<form action="?/board&b='.$board.'&p='.($page-1).'" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/previous'].'" /></form>';
 				
 			} else {
-				$file .= '<span>Previous</span>';
+				$file .= '<span>'.$lang['img/previous'].'</span>';
 			}
 			$file .= ' </div>';
 			$file .= '<div class="pages">';
@@ -935,9 +936,9 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= ' <div class="next">';
 			if ($page != ($all_pages-1))
 			{
-				$file .= '<form action="?/board&b='.$board.'&p='.($page+1).'" onsubmit="location=this.action; return false;"><input type="submit" value="Next" /></form>';
+				$file .= '<form action="?/board&b='.$board.'&p='.($page+1).'" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/next'].'" /></form>';
 			} else {
-				$file .= '<span>Next</span>';
+				$file .= '<span>'.$lang['img/next'].'</span>';
 			}
 			$file .= '</div>';
 			$file .= '</div>';
@@ -949,12 +950,12 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			{
 				if ($pg != 1)
 				{
-					$file .= '<form action="./'.($pg-1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="Previous" /></form>';
+					$file .= '<form action="./'.($pg-1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/previous'].'" /></form>';
 				} else {
-					$file .= '<form action="./index.html" onsubmit="location=this.action; return false;"><input type="submit" value="Previous" /></form>';
+					$file .= '<form action="./index.html" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/previous'].'" /></form>';
 				}
 			} else {
-				$file .= '<span>Previous</span>';
+				$file .= '<span>'.$lang['img/previous'].'</span>';
 			}
 			$file .= ' </div>';
 			$file .= '<div class="pages">';
@@ -981,9 +982,9 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= ' <div class="next">';
 			if ($pg != ($all_pages-1))
 			{
-				$file .= '<form action="./'.($pg+1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="Next" /></form>';
+				$file .= '<form action="./'.($pg+1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/next'].'" /></form>';
 			} else {
-				$file .= '<span>Next</span>';
+				$file .= '<span>'.$lang['img/next'].'</span>';
 			}
 			$file .= '</div>';
 			$file .= '</div>';
