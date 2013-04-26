@@ -93,18 +93,6 @@ if (!empty($_POST['mode']))
 			}
 			if ((isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) != 2) && (($mod == 0) || ($mod_type==0)))
 			{
-				$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
-				if ($lastdate->num_rows == 1)
-				{
-					$pdate = $lastdate->fetch_assoc();
-					$pdate = $pdate['date'];
-					
-					if (($pdate + $bdata['time_between_posts']) > time())
-					{
-						echo "<center><h1>".$lang['img/wait_more_post']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></center></body></html>";
-						exit;
-					}
-				}
 				if ((empty($_POST['resto'])) || ($_POST['resto']==0))
 				{
 					$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND resto=0 AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
@@ -118,6 +106,19 @@ if (!empty($_POST['mode']))
 							echo "<center><h1>".$lang['img/wait_more_thread']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></center></body></html>";
 							exit;
 						}
+					}
+				}
+				
+				$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
+				if ($lastdate->num_rows == 1)
+				{
+					$pdate = $lastdate->fetch_assoc();
+					$pdate = $pdate['date'];
+					
+					if (($pdate + $bdata['time_between_posts']) > time())
+					{
+						echo "<center><h1>".$lang['img/wait_more_post']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></center></body></html>";
+						exit;
 					}
 				}
 			}
