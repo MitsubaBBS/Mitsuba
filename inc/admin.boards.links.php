@@ -132,8 +132,8 @@ $table .= "<td colspan=2 style='text-align: center;'><b>".$row['title']."</b> <a
 $table .= "<td>".$row['short']."</td>";
 $table .= "<td>".$row['title']."</td>";
 }
-$table .= "<td><a href='?/links/edit&i=".$row['id']."'>Edit</a></td>";
-$table .= "<td><a href='?/links&m=del&i=".$row['id']."'>Delete</a></td>";
+$table .= "<td><center><a href='?/links/edit&i=".$row['id']."'>Edit</a></center></td>";
+$table .= "<td><center><a href='?/links&m=del&i=".$row['id']."'>Delete</a></center></td>";
 $table .= "</tr>";
 $t2 = getLinkTable($conn, $row['id']);
 if (!empty($t2))

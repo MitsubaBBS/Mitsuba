@@ -37,20 +37,20 @@ $result = $conn->query("SELECT * FROM bans WHERE ip='".$_GET['ip']."' ORDER BY c
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td>".$row['ip']."</td>";
+echo "<td><center>".$row['ip']."</center></td>";
 echo "<td>".$row['reason']."</td>";
 echo "<td>".$row['note']."</td>";
-echo "<td>".date("d/m/Y @ H:i", $row['created'])."</td>";
+echo "<td><center>".date("d/m/Y @ H:i", $row['created'])."</center></td>";
 if ($row['expires'] != 0)
 {
-echo "<td>".date("d/m/Y @ H:i", $row['expires'])."</td>";
+echo "<td><center>".date("d/m/Y @ H:i", $row['expires'])."</center></td>";
 } else {
-echo "<td><b>never</b></td>";
+echo "<td><center><b>never</b></center></td>";
 }
-echo "<td>".$row['boards']."</td>";
+echo "<td><center>".$row['boards']."</center></td>";
 if ($_SESSION['type']>=1)
 {
-echo "<td><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
+echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 } else {
 echo "<td></td>";
 }
@@ -74,9 +74,9 @@ $result = $conn->query("SELECT * FROM ip_notes WHERE ip='".$_GET['ip']."';");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td>".date("d/m/Y(D)H:i:s", $row['created'])."</td>";
+echo "<td><center>".date("d/m/Y(D)H:i:s", $row['created'])."</center></td>";
 echo "<td>".$row['text']."</td>";
-echo "<td><a href='?/ipnotes/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></td>";
+echo "<td><center><a href='?/ipnotes/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 echo "</td>";
 }
 ?>
