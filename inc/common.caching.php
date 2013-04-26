@@ -62,6 +62,7 @@ function getBoardLinks($conn, $in_thread = 0)
 
 function processComment($board, $conn, $string, $parser, $thread = 0, $specialchars = 1, $bbcode = 1, $id = 0, $resto = 0, $wordfilter = 1, $wf_table = array())
 {
+	global $lang;
 	$new = $string;
 	
 	
@@ -72,90 +73,25 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 	{
 		if (substr($line, 0, 2) == ">>")
 		{
-			$space = explode(" ", $line, 2);
-			if (is_numeric(substr($space[0], 2)))
+			$newline = "";
+			$space = explode(" ", $line);
+			foreach ($space as $word)
 			{
-				$result = $conn->query("SELECT * FROM posts WHERE id='".substr($space[0], 2)."' AND board='".$board."';");
-				if (empty($space[1])) { $space[1] = ""; }
-				if ($specialchars == 1) { $space[1] = htmlspecialchars($space[1]); }
-				if ($result->num_rows == 1)
-				{
-					
-					$row = $result->fetch_assoc();
-					if ($row['resto'] != 0)
-					{
-						if ($thread == 1)
-						{
-							$new .= '<a href="../res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
-						} elseif ($thread == 0) {
-							$new .= '<a href="./res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
-						} else {
-							$new .= '<a href="?/board&b='.$board.'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].'<br />';
-						}
-					} else {
-						if ($thread == 1)
-						{
-							$new .= '<a href="../res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
-						} elseif ($thread == 0) {
-							$new .= '<a href="./res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
-						} else {
-							$new .= '<a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink">'.$space[0].'</a> '.$space[1].' <br />';
-						}
-					}
-				} else {
-					if ($specialchars == 1) { $space[0] = htmlspecialchars($space[0]); }
-					$new .= "<span class='quote'>".$space[0]." ".$space[1]."</span><br />";
-				}
-			} elseif ((substr($space[0], 0, 3) == ">>/") || (substr($space[0], 0, 4) == ">>>/"))
-			{
-				$parts = explode("/", $space[0]);
-				if ((isBoard($conn, $parts[1])) && (is_numeric($parts[2])))
-				{
-					$result = $conn->query("SELECT * FROM posts WHERE id='".$parts[2]."' AND board='".$parts[1]."';");
-					if (empty($space[1])) { $space[1] = ""; }
-					if ($specialchars == 1) { $space[1] = htmlspecialchars($space[1]); }
-					if ($result->num_rows == 1)
-					{
-						$row = $result->fetch_assoc();
-						if ($row['resto'] != 0)
-						{
-							if ($thread == 1)
-							{
-								$new .= '<a href="../../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
-							} elseif ($thread == 0) {
-								$new .= '<a href="../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
-							} else {
-								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
-							}
-						} else {
-							if ($thread == 1)
-							{
-								$new .= '<a href="../../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
-							} elseif ($thread == 0) {
-								$new .= '<a href="../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
-							} else {
-								$new .= '<a href="?/board&b='.$parts[1].'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink cross">'.$space[0].'</a> '.$space[1].' <br />';
-							}
-						}
-					} else {
-						if ($specialchars == 1) { $space[0] = htmlspecialchars($space[0]); }
-						$new .= "<span class='quote'>".$space[0]."</span> ".$space[1]." <br />";
-					}
-				} else {
-					if ($specialchars == 1) {  $line = htmlspecialchars($line); }
-					$new .= "<span class='quote'>".$line."</span><br />";
-				}
-			} else {
-				if ($specialchars == 1) { $line = htmlspecialchars($line); }
-				$new .= "<span class='quote'>".$line."</span> <br />";
+				$newline .= getQuotelink($conn, $board, $word, $specialchars, $thread)." ";
 			}
+			$new .= $newline."<br />";
 		} elseif (substr($line, 0, 1) == ">")
 		{
 			if ($specialchars == 1) { $line = htmlspecialchars($line); }
 			$new .= "<span class='quote'>".$line."</span><br />";
 		} else {
-			if ($specialchars == 1) { $line = htmlspecialchars($line); }
-			$new .= $line." <br />";
+			$newline = "";
+			$space = explode(" ", $line);
+			foreach ($space as $word)
+			{
+				$newline .= getQuotelink($conn, $board, $word, $specialchars, $thread)." ";
+			}
+			$new .= $newline."<br />";
 			
 		}
 		$c_lines++;
@@ -181,9 +117,9 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 	{
 		if ($resto == 0)
 		{
-			$new .= '<br/><span class="abbr">Comment too long. Click <a href="./res/'.$id.'.html#p'.$id.'">here</a> to view the full text.</span>';
+			$new .= '<br/><span class="abbr">'.sprintf($lang['img/comment_long'], '<a href="./res/'.$id.'.html#p'.$id.'">', '</a>').'</span>';
 		} else {
-			$new .= '<br/><span class="abbr">Comment too long. Click <a href="./res/'.$resto.'.html#p'.$id.'">here</a> to view the full text.</span>';
+			$new .= '<br/><span class="abbr">'.sprintf($lang['img/comment_long'], '<a href="./res/'.$resto.'.html#p'.$id.'">', '</a>').'</span>';
 		}
 	}
 	if ($wordfilter == 1)
@@ -191,6 +127,86 @@ function processComment($board, $conn, $string, $parser, $thread = 0, $specialch
 		$new = strtr($new, $wf_table);
 	}
 	return $new;
+}
+
+function getQuotelink($conn, $board, $link, $specialchars, $thread)
+{
+	$return = $link;
+	if (is_numeric(substr($link, 2)))
+	{
+		$result = $conn->query("SELECT * FROM posts WHERE id='".substr($link, 2)."' AND board='".$board."';");
+		if ($result->num_rows == 1)
+		{
+			
+			$row = $result->fetch_assoc();
+			if ($row['resto'] != 0)
+			{
+				if ($thread == 1)
+				{
+					$return = '<a href="../res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
+				} elseif ($thread == 0) {
+					$return = '<a href="./res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
+				} else {
+					$return = '<a href="?/board&b='.$board.'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
+				}
+			} else {
+				if ($thread == 1)
+				{
+					$return = '<a href="../res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
+				} elseif ($thread == 0) {
+					$return = '<a href="./res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
+				} else {
+					$return = '<a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
+				}
+			}
+		} else {
+			$return = "<span class='quote'>".$link."</span>";
+		}
+	} elseif ((substr($link, 0, 3) == ">>/") || (substr($link, 0, 4) == ">>>/"))
+	{
+		$parts = explode("/", $link);
+		if ((isBoard($conn, $parts[1])) && (is_numeric($parts[2])))
+		{
+			$result = $conn->query("SELECT * FROM posts WHERE id='".$parts[2]."' AND board='".$parts[1]."';");
+			if ($result->num_rows == 1)
+			{
+				$row = $result->fetch_assoc();
+				if ($row['resto'] != 0)
+				{
+					if ($thread == 1)
+					{
+						$return = '<a href="../../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink cross">'.$link.'</a>';
+					} elseif ($thread == 0) {
+						$return = '<a href="../'.$parts[1].'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink cross">'.$link.'</a>';
+					} else {
+						$return = '<a href="?/board&b='.$parts[1].'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink cross">'.$link.'</a>';
+					}
+				} else {
+					if ($thread == 1)
+					{
+						$return = '<a href="../../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink cross">'.$link.'</a>';
+					} elseif ($thread == 0) {
+						$return = '<a href="../'.$parts[1].'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink cross">'.$link.'</a>';
+					} else {
+						$return = '<a href="?/board&b='.$parts[1].'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink cross">'.$link.'</a>';
+					}
+				}
+			} else {
+				if ($specialchars == 1) {  $link = htmlspecialchars($link); }
+				$return = "<span class='quote'>".$link."</span>";
+			}
+		} else {
+			if ($specialchars == 1) {  $link = htmlspecialchars($link); }
+			$return = "<span class='quote'>".$link."</span>";
+		}
+	} elseif (substr($link, 0, 1) == ">") {
+		if ($specialchars == 1) { $line = htmlspecialchars($link); }
+		$return = "<span class='quote'>".$link."</span>";
+	} else {
+		if ($specialchars == 1) { $line = htmlspecialchars($link); }
+		$return = $link;
+	}
+	return $return;
 }
 
 function urlCallback($match)

@@ -62,4 +62,5 @@ $lang['img/style'] = "Style";
 $lang['img/previous'] = "Previous";
 $lang['img/next'] = "Next";
 $lang['img/posts_omitted'] = "%s posts omitted. Click %shere%s to view.";
+$lang['img/comment_long'] = "Comment too long. Click %shere%s to view the full text.";
 ?>
