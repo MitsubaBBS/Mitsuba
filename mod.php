@@ -9,6 +9,8 @@ define("IN_MOD", TRUE);
 session_start();
 include("config.php");
 include("version.php");
+include("inc/strings/mod.strings.php");
+include("inc/strings/imgboard.strings.php");
 include("inc/common.php");
 include("inc/common.caching.php");
 include("inc/common.posting.php");
@@ -19,8 +21,6 @@ include("inc/admin.caching.php");
 include("inc/admin.boards.php");
 include("inc/admin.boards.links.php");
 include("inc/common.plugins.php");
-include("inc/strings/mod.strings.php");
-include("inc/strings/imgboard.strings.php");
 
 function logAction($conn, $text)
 {
