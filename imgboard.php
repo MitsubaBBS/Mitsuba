@@ -39,6 +39,7 @@ if (!empty($_POST['mode']))
 			
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Error</title>
 </head>
 <body>
@@ -66,6 +67,7 @@ if (!empty($_POST['mode']))
 			?>
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Updating index</title>
 </head>
 <body>
