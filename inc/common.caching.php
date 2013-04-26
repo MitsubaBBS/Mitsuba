@@ -205,7 +205,7 @@ function urlCallback($match)
 
 function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm_type = 0)
 {
-	
+	global $lang;
 	$config = getConfig($conn);
 	$board = $conn->real_escape_string($board);
 	if (!isBoard($conn, $board))
@@ -508,7 +508,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				<td colspan="2">
 				<ul class="rules">
 				<li>'.$lang['img/supported_types'].'</li>
-				<li>'.printf($lang['img/max_filesize'], $boarddata['filesize']).'</li>
+				<li>'.sprintf($lang['img/max_filesize'], $boarddata['filesize']).'</li>
 				<li>'.$lang['img/thumbnail'].'</li>
 				</ul>
 				</td>
@@ -738,9 +738,9 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			{
 				if ($return == 1)
 				{
-					$file .= '<span class="summary">'.printf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">', '</a>').'</span>';
+					$file .= '<span class="summary">'.sprintf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">', '</a>').'</span>';
 				} else {
-					$file .= '<span class="summary">'.printf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="./res/'.$row['id'].'.html" class="replylink">', '</a>').'</span>';
+					$file .= '<span class="summary">'.sprintf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="./res/'.$row['id'].'.html" class="replylink">', '</a>').'</span>';
 				}
 			}
 			$offset = 0;
