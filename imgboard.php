@@ -83,7 +83,7 @@ if (!empty($_POST['mode']))
 			
 			if (strlen($_POST['com']) > $bdata['maxchars'])
 			{
-				echo "<h1>".printf($lang['img/comment_too_long'],strlen($_POST['com']),$bdata['maxchars'])."</h1></body></html>"; exit;
+				echo "<h1>".sprintf($lang['img/comment_too_long'],strlen($_POST['com']),$bdata['maxchars'])."</h1></body></html>"; exit;
 			}
 			
 			if ((!empty($_POST['embed'])) && (!empty($_FILES['upfile']['tmp_name'])))
@@ -174,7 +174,7 @@ if (!empty($_POST['mode']))
 						}
 					}
 					if(move_uploaded_file($_FILES['upfile']['tmp_name'], $target_path)) {
-						echo printf($lang['img/file_uploaded'], basename( $_FILES['upfile']['name']));
+						printf($lang['img/file_uploaded'], basename( $_FILES['upfile']['name']));
 					} else {
 						echo $lang['img/upload_error'];
 						$filename = "";
@@ -314,17 +314,17 @@ if (!empty($_POST['mode']))
 					{
 						$done = deletePost($conn, $_POST['board'], $key, $password, $onlyimgdel);
 						if ($done == -1) {
-							echo printf($lang["img/post_bad_password"],$key).".<br />";
+							echo sprintf($lang["img/post_bad_password"],$key).".<br />";
 						} elseif ($done == -2) {
-							echo printf($lang["img/post_not_found"],$key)."<br />";
+							echo sprintf($lang["img/post_not_found"],$key)."<br />";
 						} elseif ($done == -3) {
-							echo printf($lang["img/post_no_image"],$key)."<br />";
+							echo sprintf($lang["img/post_no_image"],$key)."<br />";
 						} elseif ($done == -4) {
-							echo printf($lang["img/post_wait_more"],$key).".<br />";
+							echo sprintf($lang["img/post_wait_more"],$key).".<br />";
 						} elseif ($done == 1) {
-							echo printf($lang["img/post_deleted_image"],$key).".<br />";
+							echo sprintf($lang["img/post_deleted_image"],$key).".<br />";
 						} elseif ($done == 2) {
-							echo printf($lang["img/post_deleted"],$key).".<br />";
+							echo sprintf($lang["img/post_deleted"],$key).".<br />";
 						}
 						if ($done == -16)
 						{
