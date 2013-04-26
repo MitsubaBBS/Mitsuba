@@ -20,6 +20,7 @@ include("inc/admin.boards.php");
 include("inc/admin.boards.links.php");
 include("inc/common.plugins.php");
 include("inc/strings/mod.strings.php");
+include("inc/strings/imgboard.strings.php");
 
 function logAction($conn, $text)
 {

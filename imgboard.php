@@ -11,6 +11,7 @@ include("inc/common.caching.php");
 include("inc/common.posting.php");
 include("inc/common.plugins.php");
 include("inc/admin.common.php");
+include("inc/strings/imgboard.strings.php");
 
 if (!empty($_POST['mode']))
 {
