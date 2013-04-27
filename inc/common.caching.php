@@ -624,22 +624,25 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					$c_image = ' <img src="../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
 				}
 			}
+			$email_a = "";
+			$email_b = "";
 			if (!empty($row['email'])) {
-				$file .= '<span class="nameBlock"><a href="mailto:'.$row['email'].'" class="useremail"><span class="name">'.$row['name'].'</span>'.$trip.'</a> '.$poster_id.'</span>';
-			} else {
-				if ($row['capcode'] == 1)
-				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
-				} elseif ($row['capcode'] == 2)
-				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
-				} elseif ($row['capcode'] == 3)
-				{
-					$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
-				} else {
-					$file .= '<span class="nameBlock"><span class="name">'.$row['name'].'</span>'.$trip.' '.$poster_id.'</span>';
-				}
+				$email_a = '<a href="mailto:'.$row['email'].'" class="useremail">';
+				$email_b = '</a>';
 			}
+			if ($row['capcode'] == 1)
+			{
+				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
+			} elseif ($row['capcode'] == 2)
+			{
+				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
+			} elseif ($row['capcode'] == 3)
+			{
+				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
+			} else {
+				$file .= '<span class="nameBlock">'.$email_a.'<span class="name">'.$row['name'].'</span>'.$email_b.$trip.' '.$poster_id.'</span>';
+			}
+			
 			$opip = $row['ip'];
 			if (($adm_type >= 1) && ($return == 1))
 			{
@@ -822,21 +825,23 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 						$c_image = ' <img src="../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
 					}
 				}
+				$email_a = "";
+				$email_b = "";
 				if (!empty($row2['email'])) {
-					$file .= '<span class="nameBlock"><a href="mailto:'.$row2['email'].'" class="useremail"><span class="name">'.$row2['name'].'</span>'.$trip.'</a> '.$poster_id.'</span>';
+					$email_a = '<a href="mailto:'.$row2['email'].'" class="useremail">';
+					$email_b = '</a>';
+				}
+				if ($row2['capcode'] == 1)
+				{
+					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
+				} elseif ($row2['capcode'] == 2)
+				{
+					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
+				} elseif ($row2['capcode'] == 3)
+				{
+					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
 				} else {
-					if ($row2['capcode'] == 1)
-					{
-						$file .= '<span class="nameBlock"><span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
-					} elseif ($row2['capcode'] == 2)
-					{
-						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
-					} elseif ($row2['capcode'] == 3)
-					{
-						$file .= '<span class="nameBlock"><span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
-					} else {
-						$file .= '<span class="nameBlock"><span class="name">'.$row2['name'].'</span>'.$trip.' '.$poster_id.'</span>';
-					}
+					$file .= '<span class="nameBlock">'.$email_a.'<span class="name">'.$row2['name'].'</span>'.$email_b.$trip.' '.$poster_id.'</span>';
 				}
 				if (($adm_type >= 1) && ($return == 1))
 				{

@@ -407,6 +407,12 @@ switch ($path)
 	case "/whitelist":
 		include("inc/mod/whitelist.inc.php");
 		break;
+	case "/spamfilter":
+		include("inc/mod/spamfilter.inc.php");
+		break;
+	case "/spamfilter/edit":
+		include("inc/mod/spamfilter.edit.inc.php");
+		break;
 	default:
 		echo runHooks("panel", $path);
 		break;
