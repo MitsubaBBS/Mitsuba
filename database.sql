@@ -19,16 +19,6 @@ CREATE TABLE IF NOT EXISTS `appeals` (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `banfilter` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `search` varchar(100) NOT NULL,
-  `reason` varchar(100) NOT NULL,
-  `boards` text NOT NULL,
-  `expires` int(30) NOT NULL,
-  `active` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
-);
-
 CREATE TABLE IF NOT EXISTS `bans` (
   `id` int(30) NOT NULL AUTO_INCREMENT,
   `ip` varchar(50) NOT NULL,
@@ -211,6 +201,16 @@ CREATE TABLE IF NOT EXISTS `reports` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `spamfilter` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `search` varchar(100) NOT NULL,
+  `reason` varchar(100) NOT NULL,
+  `boards` text NOT NULL,
+  `expires` int(30) NOT NULL,
+  `active` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `styles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
@@ -244,6 +244,7 @@ CREATE TABLE IF NOT EXISTS `wordfilter` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `search` varchar(100) NOT NULL,
   `replace` varchar(100) NOT NULL,
+  `boards` text NOT NULL,
   `active` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 );

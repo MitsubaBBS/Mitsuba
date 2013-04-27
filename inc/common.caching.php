@@ -235,7 +235,19 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 	}
 	$wfresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
 	$replace_array = array();
-	while ($row = $wfresult->fetch_assoc()) { $replace_array[$row['search']] = $row['replace']; }
+	while ($row = $wfresult->fetch_assoc())
+	{
+		if ($row['boards'] != "*")
+		{
+			$boards = explode(",", $row['boards']);
+			if (in_array($board, $boards))
+			{
+				$replace_array[$row['search']] = $row['replace'];
+			}
+		} else {
+			$replace_array[$row['search']] = $row['replace'];
+		}
+	}
 	$max_pages = $boarddata['pages'];
 	$all_pages = $max_pages;
 	$pages = $max_pages;
