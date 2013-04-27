@@ -701,7 +701,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$file .= '&nbsp; <span>[<a href="./res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</span></span>';
 			}
 			$file .= '</div>';
-			$file .= getFiles($row, $board, $return, $threadno);
+			$file .= getFiles($row, $board, $return, $threadno, $embed_table);
 			$file .= '<blockquote class="postMessage" id="m'.$row['id'].'">';
 			$wf = 1;
 			
@@ -859,7 +859,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 					$file .= '<span class="postNum"><a href="./res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
 				}
 				$file .= '</div>';
-				$file .= getFiles($row2, $board, $return, $threadno);
+				$file .= getFiles($row2, $board, $return, $threadno, $embed_table);
 				$file .= '<blockquote class="postMessage" id="m'.$row2['id'].'">';
 				$wf = 1;
 				if ($row2['capcode'] >= 1)
@@ -1262,7 +1262,7 @@ function generateNews($conn)
 	fclose($handle);
 }
 
-function getFiles($row, $board, $return, $threadno)
+function getFiles($row, $board, $return, $threadno, $embed_table)
 {
 	$file = "";
 	if (!empty($row['filename']))
