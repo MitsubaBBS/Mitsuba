@@ -9,33 +9,40 @@ reqPermission(2);
 		$regex = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
-			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; }
-			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; }
-			if (empty($_POST['regex'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $regex = $_POST['regex']; }
-			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
-			{ echo "<b style='color: red;'>".$lang['mod/name_error']."</b>"; }
-			else {
-				$name = $conn->real_escape_string($_POST['name']);
-				$regex = $conn->real_escape_string($_POST['regex']);
-				$code = $conn->real_escape_string($_POST['code']);
-				$conn->query("INSERT INTO embeds (name, regex, code) VALUES ('".$name."', '".$regex."', '".$code."');");
-				$name = "";
-				$regex = "";
-				$code = "";
+			$continue = 0;
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; $continue = 1; }
+			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; $continue = 1; }
+			if (empty($_POST['regex'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $regex = $_POST['regex']; $continue = 1; }
+			if ($continue == 1)
+			{
+				if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
+				{ echo "<b style='color: red;'>".$lang['mod/name_error']."</b>"; }
+				else {
+					$name = $conn->real_escape_string($_POST['name']);
+					$regex = $conn->real_escape_string($_POST['regex']);
+					$code = $conn->real_escape_string($_POST['code']);
+					$conn->query("INSERT INTO embeds (name, regex, code) VALUES ('".$name."', '".$regex."', '".$code."');");
+					$name = "";
+					$regex = "";
+					$code = "";
+				}
 			}
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['name2']))) {
-			
-			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; }
-			if (empty($_POST['regex'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $regex = $_POST['regex']; }
-			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; }
-			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
-			{ echo "<b style='color: red;'>".$lang['mod/name_error']."</b>"; }
-			else {
-				$name = $conn->real_escape_string($_POST['name']);
-				$name2 = $conn->real_escape_string($_POST['name2']);
-				$regex = $conn->real_escape_string($_POST['regex']);
-				$code = $conn->real_escape_string($_POST['code']);
-				$conn->query("UPDATE embeds SET name='".$name."', code='".$code."', regex='".$regex."' WHERE name='".$name2."';");
+			$continue = 0;
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; $continue = 1; }
+			if (empty($_POST['regex'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $regex = $_POST['regex']; $continue = 1; }
+			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; $continue = 1; }
+			if ($continue == 1)
+			{
+				if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
+				{ echo "<b style='color: red;'>".$lang['mod/name_error']."</b>"; }
+				else {
+					$name = $conn->real_escape_string($_POST['name']);
+					$name2 = $conn->real_escape_string($_POST['name2']);
+					$regex = $conn->real_escape_string($_POST['regex']);
+					$code = $conn->real_escape_string($_POST['code']);
+					$conn->query("UPDATE embeds SET name='".$name."', code='".$code."', regex='".$regex."' WHERE name='".$name2."';");
+				}
 			}
 			$name = "";
 			$code = "";

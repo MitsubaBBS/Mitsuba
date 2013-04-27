@@ -9,79 +9,86 @@ reqPermission(2);
 		$expires = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
-			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; }
-			if (empty($_POST['reason'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $reason = $_POST['reason']; }
-			$search = $conn->real_escape_string($_POST['search']);
-			$reason = $conn->real_escape_string($_POST['reason']);
-			$boards = "";
-			if ((!empty($_POST['all'])) && ($_POST['all']==1))
+			$continue = 0;
+			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; $continue = 1; }
+			if (empty($_POST['reason'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $reason = $_POST['reason']; $continue = 1; }
+			if ($continue == 1)
 			{
-				$boards = "*";
-			} else {
-				if (!empty($_POST['boards']))
+				$search = $conn->real_escape_string($_POST['search']);
+				$reason = $conn->real_escape_string($_POST['reason']);
+				$boards = "";
+				if ((!empty($_POST['all'])) && ($_POST['all']==1))
 				{
-					foreach ($_POST['boards'] as $board)
-					{
-						$boards .= $board.",";
-					}
+					$boards = "*";
 				} else {
-					$board = "*";
+					if (!empty($_POST['boards']))
+					{
+						foreach ($_POST['boards'] as $board)
+						{
+							$boards .= $board.",";
+						}
+					} else {
+						$board = "*";
+					}
 				}
-			}
-			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-			$expires = $_POST['expires'];
-			$perma = 1;
-			if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
-			{
-				$expires = "never";
-			} else {
-				$expirex = parse_time($expires);
-				if (($expirex == false) && ($perma == 0))
+				if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+				$expires = $_POST['expires'];
+				$perma = 1;
+				if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
 				{
-					echo "<b style='color: red;'>".$lang['mod/fool']."</b>";
+					$expires = "never";
+				} else {
+					$expirex = parse_time($expires);
+					if (($expirex == false) && ($perma == 0))
+					{
+						echo "<b style='color: red;'>".$lang['mod/fool']."</b>";
+					}
 				}
+				$conn->query("INSERT INTO spamfilter (`search`, `reason`, `boards`, `expires`, `active`) VALUES ('".$search."', '".$reason."', '".$boards."', '".$expires."', 1);");
 			}
-			$conn->query("INSERT INTO spamfilter (`search`, `reason`, `boards`, `expires`, `active`) VALUES ('".$search."', '".$reason."', '".$boards."', '".$expires."', 1);");
 			$search = "";
 			$reason = "";
 			$expires = "";
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['id']))) {
-			
-			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; }
-			if (empty($_POST['reason'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $reason = $_POST['reason']; }
-			$search = $conn->real_escape_string($_POST['search']);
-			$id = $_POST['id'];
-			if (!is_numeric($id)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
-			$reason = $conn->real_escape_string($_POST['reason']);
-			$boards = "";
-			if ((!empty($_POST['all'])) && ($_POST['all']==1))
+			$continue = 0;
+			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; $continue = 1; }
+			if (empty($_POST['reason'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $reason = $_POST['reason']; $continue = 1; }
+			if ($continue == 1)
 			{
-				$boards = "*";
-			} else {
-				if (!empty($_POST['boards']))
+				$search = $conn->real_escape_string($_POST['search']);
+				$id = $_POST['id'];
+				if (!is_numeric($id)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
+				$reason = $conn->real_escape_string($_POST['reason']);
+				$boards = "";
+				if ((!empty($_POST['all'])) && ($_POST['all']==1))
 				{
-					foreach ($_POST['boards'] as $board)
-					{
-						$boards .= $board.",";
-					}
+					$boards = "*";
 				} else {
-					$board = "*";
+					if (!empty($_POST['boards']))
+					{
+						foreach ($_POST['boards'] as $board)
+						{
+							$boards .= $board.",";
+						}
+					} else {
+						$board = "*";
+					}
 				}
-			}
-			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-			$expires = $_POST['expires'];
-			$perma = 1;
-			if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
-			{
-				$expires = "never";
-			} else {
-				$expirex = parse_time($expires);
-				if (($expirex == false) && ($perma == 0))
+				if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+				$expires = $_POST['expires'];
+				$perma = 1;
+				if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
 				{
-					echo "<b style='color: red;'>".$lang['mod/fool']."</b>";
+					$expires = "never";
+				} else {
+					$expirex = parse_time($expires);
+					if (($expirex == false) && ($perma == 0))
+					{
+						echo "<b style='color: red;'>".$lang['mod/fool']."</b>";
+					}
 				}
+				$conn->query("UPDATE spamfilter SET `search`='".$search."', `reason`='".$reason."', `boards`='".$boards."', `expires`='".$expires."' WHERE id=".$id);
 			}
-			$conn->query("UPDATE spamfilter SET `search`='".$search."', `reason`='".$reason."', `boards`='".$boards."', `expires`='".$expires."' WHERE id=".$id);
 			$search = "";
 			$reason = "";
 			$expires = "";

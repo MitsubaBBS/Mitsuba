@@ -8,54 +8,61 @@ reqPermission(2);
 		$replace = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
-			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; }
-			if (empty($_POST['replace'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $replace = $_POST['replace']; }
-			$search = $conn->real_escape_string($_POST['search']);
-			$replace = $conn->real_escape_string($_POST['replace']);
-			$boards = "";
-			if ((!empty($_POST['all'])) && ($_POST['all']==1))
+			$continue = 0;
+			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; $continue = 1; }
+			if (empty($_POST['replace'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $replace = $_POST['replace']; $continue = 1; }
+			if ($continue == 1)
 			{
-				$boards = "*";
-			} else {
-				if (!empty($_POST['boards']))
+				$search = $conn->real_escape_string($_POST['search']);
+				$replace = $conn->real_escape_string($_POST['replace']);
+				$boards = "";
+				if ((!empty($_POST['all'])) && ($_POST['all']==1))
 				{
-					foreach ($_POST['boards'] as $board)
-					{
-						$boards .= $board.",";
-					}
+					$boards = "*";
 				} else {
-					$board = "*";
+					if (!empty($_POST['boards']))
+					{
+						foreach ($_POST['boards'] as $board)
+						{
+							$boards .= $board.",";
+						}
+					} else {
+						$board = "*";
+					}
 				}
+				if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+				$conn->query("INSERT INTO wordfilter (`search`, `replace`, `boards`, `active`) VALUES ('".$search."', '".$replace."', '".$boards."', 1);");
 			}
-			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-			$conn->query("INSERT INTO wordfilter (`search`, `replace`, `boards`, `active`) VALUES ('".$search."', '".$replace."', '".$boards."', 1);");
 			$search = "";
 			$replace = "";
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['id']))) {
-			
-			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; }
-			if (empty($_POST['replace'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $replace = $_POST['replace']; }
-			$search = $conn->real_escape_string($_POST['search']);
-			$id = $_POST['id'];
-			if (!is_numeric($id)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
-			$replace = $conn->real_escape_string($_POST['replace']);
-			$boards = "";
-			if ((!empty($_POST['all'])) && ($_POST['all']==1))
+			$continue = 0;
+			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; $continue = 1; }
+			if (empty($_POST['replace'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $replace = $_POST['replace']; $continue = 1; }
+			if ($continue == 1)
 			{
-				$boards = "*";
-			} else {
-				if (!empty($_POST['boards']))
+				$search = $conn->real_escape_string($_POST['search']);
+				$id = $_POST['id'];
+				if (!is_numeric($id)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
+				$replace = $conn->real_escape_string($_POST['replace']);
+				$boards = "";
+				if ((!empty($_POST['all'])) && ($_POST['all']==1))
 				{
-					foreach ($_POST['boards'] as $board)
-					{
-						$boards .= $board.",";
-					}
+					$boards = "*";
 				} else {
-					$board = "*";
+					if (!empty($_POST['boards']))
+					{
+						foreach ($_POST['boards'] as $board)
+						{
+							$boards .= $board.",";
+						}
+					} else {
+						$board = "*";
+					}
 				}
+				if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+				$conn->query("UPDATE wordfilter SET `search`='".$search."', `replace`='".$replace."', `boards`='".$boards."' WHERE id=".$id);
 			}
-			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-			$conn->query("UPDATE wordfilter SET `search`='".$search."', `replace`='".$replace."', `boards`='".$boards."' WHERE id=".$id);
 			$search = "";
 			$replace = "";
 		}

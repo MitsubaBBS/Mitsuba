@@ -8,28 +8,35 @@ reqPermission(2);
 		$code = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
-			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; }
-			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; }
-			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
-			{ echo "<b style='color: red;'>".$lang['mod/name_error']."</b>"; }
-			else {
-				$name = $conn->real_escape_string($_POST['name']);
-				$code = $conn->real_escape_string($_POST['code']);
-				$conn->query("INSERT INTO bbcodes (name, code) VALUES ('".$name."', '".$code."');");
-				$name = "";
-				$code = "";
+			$continue = 0;
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; $continue = 1; }
+			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; $continue = 1; }
+			if ($continue == 1)
+			{
+				if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
+				{ echo "<b style='color: red;'>".$lang['mod/name_error']."</b>"; }
+				else {
+					$name = $conn->real_escape_string($_POST['name']);
+					$code = $conn->real_escape_string($_POST['code']);
+					$conn->query("INSERT INTO bbcodes (name, code) VALUES ('".$name."', '".$code."');");
+					$name = "";
+					$code = "";
+				}
 			}
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['name2']))) {
-			
-			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; }
-			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; }
-			if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
-			{ echo "<b style='color: red;'>".$lang['mod/name_error']."</b>"; }
-			else {
-				$name = $conn->real_escape_string($_POST['name']);
-				$name2 = $conn->real_escape_string($_POST['name2']);
-				$code = $conn->real_escape_string($_POST['code']);
-				$conn->query("UPDATE bbcodes SET name='".$name."', code='".$code."' WHERE name='".$name2."';");
+			$continue = 0;
+			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; $continue = 1; }
+			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; $continue = 1; }
+			if ($continue == 1)
+			{
+				if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']))
+				{ echo "<b style='color: red;'>".$lang['mod/name_error']."</b>"; }
+				else {
+					$name = $conn->real_escape_string($_POST['name']);
+					$name2 = $conn->real_escape_string($_POST['name2']);
+					$code = $conn->real_escape_string($_POST['code']);
+					$conn->query("UPDATE bbcodes SET name='".$name."', code='".$code."' WHERE name='".$name2."';");
+				}
 			}
 			$name = "";
 			$code = "";
