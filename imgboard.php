@@ -60,10 +60,6 @@ if (!empty($_POST['mode']))
 					$ignoresizelimit = 1;
 				}
 			}
-			if (!isBoard($conn, $_POST['board']))
-			{
-				echo "<h1>This board does not exist!</h1></body></html>"; exit;
-			}
 			?>
 <html>
 <head>
@@ -73,6 +69,11 @@ if (!empty($_POST['mode']))
 <body>
 <center><h1><?php echo $lang['img/updating_index']; ?></h1></center>
 			<?php
+			if (!isBoard($conn, $_POST['board']))
+			{
+				echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
+			}
+			
 			
 			$md5 = "";
 			$bdata = getBoardData($conn, $_POST['board']);
@@ -85,7 +86,27 @@ if (!empty($_POST['mode']))
 			{
 				echo "<h1>".sprintf($lang['img/comment_too_long'],strlen($_POST['com']),$bdata['maxchars'])."</h1></body></html>"; exit;
 			}
-			
+			if ($mod_type < 1)
+			{
+				$spam = $conn->query("SELECT * FROM spamfilter WHERE active=1");
+				while ($row = $spam->fetch_assoc())
+				{
+					if ($row['boards'] != "*")
+					{
+						$boards = explode(",", $row['boards']);
+						if (in_array($board, $boards))
+						{
+							if (stripos($_POST['com'], $row['search']) !== false) {
+								addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+							}
+						}
+					} else {
+						if (stripos($_POST['com'], $row['search']) !== false) {
+								addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+						}
+					}
+				}
+			}
 			if ((!empty($_POST['embed'])) && (!empty($_FILES['upfile']['tmp_name'])))
 			{
 				echo "<center><h1>".$lang['img/choose_one']."</h1></center></body></html>";
@@ -339,7 +360,7 @@ if (!empty($_POST['mode']))
 			} elseif (!empty($_POST['report'])) {
 				if (empty($_POST['board']))
 				{
-					echo "<h1>No board selected!</h1></body></html>";
+					echo "<h1>".$lang['img/no_board']."</h1></body></html>";
 					exit;
 				}
 				$board = $_POST['board'];
@@ -351,7 +372,7 @@ if (!empty($_POST['mode']))
 						$done = reportPost($conn, $_POST['board'], $key, $_POST['reason']);
 						if ($done == 1)
 						{
-							echo "Post ".$key." reported.<br />";
+							echo sprintf($lang['img/post_reported'], $key)."<br />";
 						}
 					}
 				}

@@ -206,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `spamfilter` (
   `search` varchar(100) NOT NULL,
   `reason` varchar(100) NOT NULL,
   `boards` text NOT NULL,
-  `expires` int(30) NOT NULL,
+  `expires` varchar(90) NOT NULL,
   `active` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 );
