@@ -305,12 +305,17 @@ function isBanned($conn, $ip, $board)
 	{
 		return $bandata;
 	} else {
-		$boards = explode(",", $bandata['boards']);
-		if (in_array($board, $boards))
+		if ($board == "*")
 		{
 			return $bandata;
 		} else {
-			return 0;
+			$boards = explode(",", $bandata['boards']);
+			if (in_array($board, $boards))
+			{
+				return $bandata;
+			} else {
+				return 0;
+			}
 		}
 	}
 	return 0;

@@ -99,14 +99,14 @@ if (!empty($_POST['mode']))
 							if (stripos($_POST['com'], $row['search']) !== false) {
 								addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
 								echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
-								exit;
+								die();
 							}
 						}
 					} else {
 						if (stripos($_POST['com'], $row['search']) !== false) {
 								addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
 								echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
-								exit;
+								die();
 						}
 					}
 				}
