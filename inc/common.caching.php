@@ -915,7 +915,12 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		$file .= "</div>";
 		if ($threadno != 0)
 		{
-			$file .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#top">'.$lang['img/top'].'</a>]</div>';
+			if ($return == 1)
+			{
+				$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#top">'.$lang['img/top'].'</a>]</div>';
+			} else {
+				$file .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#top">'.$lang['img/top'].'</a>]</div>';
+			}
 		}
 		$file .= '<div class="deleteform">
 			<input type="hidden" name="board" value="'.$board.'" />
