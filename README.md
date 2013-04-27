@@ -13,13 +13,11 @@ Planned features
 ----------------
 
 * logging actions
-* captcha support
+* reCaptcha support
 * catalog feature (like 4chan)
 
 API
 ---
-
-I (Desuneko) have added support for API.
 
 The API is at ./`board`/`thread_no`.json
 
@@ -30,6 +28,8 @@ Credits
 Desuneko - creator and developer of Project Mitsuba
 
 skandal - first betatester, helped with bughunting, made Polish translation and several alternative stylesheets
+
+hardkurahen - javascripts
 
 License
 --------
