@@ -55,7 +55,7 @@ reqPermission(2);
 				}
 			}
 			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-			$conn->query("UPDATE wordfilter SET `search`='".$search."', `replace`='".$replace."', `boards`='".$boards.."' WHERE id=".$id);
+			$conn->query("UPDATE wordfilter SET `search`='".$search."', `replace`='".$replace."', `boards`='".$boards."' WHERE id=".$id);
 			$search = "";
 			$replace = "";
 		}
@@ -114,7 +114,7 @@ echo "</tr>";
 $result = $conn->query("SELECT * FROM boards;");
 while ($row = $result->fetch_assoc())
 {
-echo "<option onClick='document.getElementById(\"all\").checked=false;' value='",$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
+echo "<option onClick='document.getElementById(\"all\").checked=false;' value='".$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
 }
 ?>
 </select><br />

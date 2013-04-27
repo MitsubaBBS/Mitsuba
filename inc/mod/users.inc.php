@@ -21,7 +21,7 @@ reqPermission(2);
 $result = $conn->query("SELECT * FROM boards;");
 while ($row = $result->fetch_assoc())
 {
-echo "<option onClick='document.getElementById(\"all\").checked=false;' value='",$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
+echo "<option onClick='document.getElementById(\"all\").checked=false;' value='".$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
 }
 ?>
 </select><br />

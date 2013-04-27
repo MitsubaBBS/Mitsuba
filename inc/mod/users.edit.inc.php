@@ -100,7 +100,7 @@ if ($boards !== "*")
 		$checked = " checked ";
 	}
 }
-echo "<option onClick='document.getElementById(\"all\").checked=false;' value='",$row['short']."'".$checked.">/".$row['short']."/ - ".$row['name']."</option>";
+echo "<option onClick='document.getElementById(\"all\").checked=false;' value='".$row['short']."'".$checked.">/".$row['short']."/ - ".$row['name']."</option>";
 }
 ?>
 </select><br />

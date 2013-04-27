@@ -46,7 +46,7 @@ if ($_SESSION['type']>=1) {
 $result = $conn->query("SELECT * FROM boards;");
 while ($row = $result->fetch_assoc())
 {
-echo "<option value='",$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
+echo "<option value='".$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
 }
 ?>
 </select><br />
@@ -225,7 +225,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 $result = $conn->query("SELECT * FROM boards;");
 while ($row = $result->fetch_assoc())
 {
-echo "<option value='",$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
+echo "<option value='".$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
 }
 ?>
 </select><br />
