@@ -13,7 +13,7 @@ reqPermission(2);
 			$search = $conn->real_escape_string($_POST['search']);
 			$replace = $conn->real_escape_string($_POST['replace']);
 			$boards = "";
-			if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
+			if ((!empty($_POST['all'])) && ($_POST['all']==1))
 			{
 				$boards = "*";
 			} else {
@@ -40,7 +40,7 @@ reqPermission(2);
 			if (!is_numeric($id)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$replace = $conn->real_escape_string($_POST['replace']);
 			$boards = "";
-			if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
+			if ((!empty($_POST['all'])) && ($_POST['all']==1))
 			{
 				$boards = "*";
 			} else {

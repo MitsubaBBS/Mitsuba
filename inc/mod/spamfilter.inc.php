@@ -14,7 +14,7 @@ reqPermission(2);
 			$search = $conn->real_escape_string($_POST['search']);
 			$reason = $conn->real_escape_string($_POST['reason']);
 			$boards = "";
-			if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
+			if ((!empty($_POST['all'])) && ($_POST['all']==1))
 			{
 				$boards = "*";
 			} else {
@@ -54,7 +54,7 @@ reqPermission(2);
 			if (!is_numeric($id)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$reason = $conn->real_escape_string($_POST['reason']);
 			$boards = "";
-			if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
+			if ((!empty($_POST['all'])) && ($_POST['all']==1))
 			{
 				$boards = "*";
 			} else {
@@ -137,7 +137,7 @@ echo "</tr>";
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/wf_search']; ?>: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($reason); ?>"/><br />
-<?php echo $lang['mod/expires']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($expires); ?>"/><br />
+<?php echo $lang['mod/expires']; ?>: <input type="text" name="expires" value="<?php echo htmlspecialchars($expires); ?>"/><br />
 <br /><br />
 <?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
 <select name="boards[]" id="boardSelect" multiple>
