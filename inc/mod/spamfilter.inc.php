@@ -5,13 +5,14 @@ if (!defined("IN_MOD"))
 }
 reqPermission(2);
 		$search = "";
-		$replace = "";
+		$reason = "";
+		$expires = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
 			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; }
-			if (empty($_POST['replace'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $replace = $_POST['replace']; }
+			if (empty($_POST['reason'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $reason = $_POST['reason']; }
 			$search = $conn->real_escape_string($_POST['search']);
-			$replace = $conn->real_escape_string($_POST['replace']);
+			$reason = $conn->real_escape_string($_POST['reason']);
 			$boards = "";
 			if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
 			{
@@ -28,17 +29,30 @@ reqPermission(2);
 				}
 			}
 			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-			$conn->query("INSERT INTO wordfilter (`search`, `replace`, `boards`, `active`) VALUES ('".$search."', '".$replace."', '".$boards."', 1);");
+			$expires = $_POST['expires'];
+			$perma = 1;
+			if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
+			{
+				$expires = "never";
+			} else {
+				$expirex = parse_time($expires);
+				if (($expirex == false) && ($perma == 0))
+				{
+					echo "<b style='color: red;'>".$lang['mod/fool']."</b>";
+				}
+			}
+			$conn->query("INSERT INTO spamfilter (`search`, `reason`, `boards`, `expires`, `active`) VALUES ('".$search."', '".$reason."', '".$boards."', '".$expires."', 1);");
 			$search = "";
-			$replace = "";
+			$reason = "";
+			$expires = "";
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['id']))) {
 			
 			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; }
-			if (empty($_POST['replace'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $replace = $_POST['replace']; }
+			if (empty($_POST['reason'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $reason = $_POST['reason']; }
 			$search = $conn->real_escape_string($_POST['search']);
 			$id = $_POST['id'];
 			if (!is_numeric($id)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
-			$replace = $conn->real_escape_string($_POST['replace']);
+			$reason = $conn->real_escape_string($_POST['reason']);
 			$boards = "";
 			if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
 			{
@@ -55,42 +69,57 @@ reqPermission(2);
 				}
 			}
 			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-			$conn->query("UPDATE wordfilter SET `search`='".$search."', `replace`='".$replace."', `boards`='".$boards."' WHERE id=".$id);
+			$expires = $_POST['expires'];
+			$perma = 1;
+			if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
+			{
+				$expires = "never";
+			} else {
+				$expirex = parse_time($expires);
+				if (($expirex == false) && ($perma == 0))
+				{
+					echo "<b style='color: red;'>".$lang['mod/fool']."</b>";
+				}
+			}
+			$conn->query("UPDATE spamfilter SET `search`='".$search."', `reason`='".$reason."', `boards`='".$boards."', `expires`='".$expires."' WHERE id=".$id);
 			$search = "";
-			$replace = "";
+			$reason = "";
+			$expires = "";
 		}
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
 		{
 			$n = $conn->real_escape_string($_GET['n']);
 			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
-			$conn->query("DELETE FROM wordfilter WHERE id=".$n);
+			$conn->query("DELETE FROM spamfilter WHERE id=".$n);
 		}
 		?>
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/manage_wordfilter']; ?></h2></div>
+<div class="boxbar"><h2><?php echo $lang['mod/manage_spamfilter']; ?></h2></div>
 <div class="boxcontent">
 <table>
 <thead>
 <tr>
 <td><?php echo $lang['mod/wf_search']; ?></td>
-<td><?php echo $lang['mod/wf_replace']; ?></td>
+<td><?php echo $lang['mod/reason']; ?></td>
 <td><?php echo $lang['mod/boards']; ?></td>
+<td><?php echo $lang['mod/expires']; ?></td>
 <td><?php echo $lang['mod/actions']; ?></td>
 </tr>
 </thead>
 <tbody>
 <?php
-$result = $conn->query("SELECT * FROM wordfilter ORDER BY search ASC");
+$result = $conn->query("SELECT * FROM spamfilter ORDER BY search ASC");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td><center>".htmlspecialchars($row['search'])."</center></td>";
-echo "<td><center>".htmlspecialchars($row['replace'])."</center></td>";
+echo "<td><center>".htmlspecialchars($row['reason'])."</center></td>";
 echo "<td><center>".$row['boards']."</center></td>";
-echo "<td><center><a href='?/wordfilter&d=1&n=".$row['id']."'>".$lang['mod/delete']."</a> <a href='?/wordfilter/edit&n=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
+echo "<td><center>".$row['expires']."</center></td>";
+echo "<td><center><a href='?/spamfilter&d=1&n=".$row['id']."'>".$lang['mod/delete']."</a> <a href='?/spamfilter/edit&n=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
 echo "</tr>";
 }
 ?>
@@ -104,11 +133,11 @@ echo "</tr>";
 <div class="box-inner">
 <div class="boxbar"><h2><?php echo $lang['mod/wf_add']; ?></h2></div>
 <div class="boxcontent">
-<form action="?/wordfilter" method="POST">
+<form action="?/spamfilter" method="POST">
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/wf_search']; ?>: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"/><br />
-<?php echo $lang['mod/wf_replace']; ?>: <input type="text" name="replace" value="<?php echo htmlspecialchars($replace); ?>"/><br />
-
+<?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($reason); ?>"/><br />
+<?php echo $lang['mod/expires']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($expires); ?>"/><br />
 <br /><br />
 <?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
 <select name="boards[]" id="boardSelect" multiple>
