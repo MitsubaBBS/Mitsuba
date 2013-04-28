@@ -324,7 +324,7 @@ function addThreadExpander(parent)
 				}
 				if (localStorage.getItem("o_watched") == 1)
 				{
-					addWatchedButton(tid);
+					addWatchButton(tid);
 				}
 				}
 			});
@@ -618,7 +618,7 @@ function addZoom(img) {
 	}
 })(jQuery);
 
-function addWatchedButton()
+function addWatchButton(parent)
 {
 	$(parent).find(".op .postInfo").each(function () {
 		var id = $(this).attr("id").substr(2);
@@ -655,7 +655,7 @@ function handleWatched(parent)
 	}
 
 	addFrame();
-	addWatchedButton();
+	addWatchButton(parent);
 	loadWatched();
 	
 	$('#watcher_box').drags();
