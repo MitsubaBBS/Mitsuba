@@ -1,3 +1,4 @@
+localStorage.setItem("meow", 1);
 if (localStorage.getItem("firsttime") != 1)
 {
 	localStorage.setItem("firsttime", 1);
