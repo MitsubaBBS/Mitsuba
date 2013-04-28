@@ -1,3 +1,17 @@
+if (localStorage.getItem("firsttime") != 1)
+{
+	localStorage.setItem("firsttime", 1);
+	localStorage.setItem("o_hider", 1);
+	localStorage.setItem("o_expander", 1);
+	localStorage.setItem("o_backlinks", 1);
+	localStorage.setItem("o_preview", 1);
+
+	localStorage.setItem("o_loader", 0);
+	localStorage.setItem("o_watched", 0);
+	localStorage.setItem("o_updater", 0);
+	localStorage.setItem("o_imgexpand", 0);
+	localStorage.setItem("o_fastreply", 0);
+}
 if (typeof $.cookie("mitsuba_style") !== "undefined")
 {
 	$("#switch").attr("href", $.cookie("mitsuba_style"));
@@ -12,23 +26,52 @@ function strStartsWith(str, prefix) {
 
 $(document).ready(function () {
 	fillFields();
-	
 	if ($(".postingMode").length == 0) //outside thread
 	{
-		addThreadHider("body");
-		addThreadExpander("body");
-		handleWatched("body");
-		hideThreads();
-		addLoader();
+		if (localStorage.getItem("o_hider") == 1)
+		{
+			addThreadHider("body");
+			hideThreads();
+		}
+		if (localStorage.getItem("o_expander") == 1)
+		{
+			addThreadExpander("body");
+		}
+		if (localStorage.getItem("o_watched") == 1)
+		{
+			handleWatched("body");
+		}
+		if (localStorage.getItem("o_loader") == 1)
+		{
+			addLoader();
+		}
 	} else { //in thread
-		addThreadUpdater();
+		if (localStorage.getItem("o_updater") == 1)
+		{
+			addThreadUpdater();
+		}
 	}
 	
 	addStylechanger();
-	addBacklinks("body");
-	addPostpreview("body");
-	addImgExpand("body");
+	if (localStorage.getItem("o_backlinks") == 1)
+	{
+		addBacklinks("body");
+	}
+	if (localStorage.getItem("o_preview") == 1)
+	{
+		addPostpreview("body");
+	}
+	if (localStorage.getItem("o_imgexpand") == 1)
+	{
+		addImgExpand("body");
+	}
+	if (localStorage.getItem("o_fastreply") == 1)
+	{
+
+	}
 	addQuotelinks();
+
+	addSettings();
 });
 
 var currentPage = 0;
@@ -70,6 +113,72 @@ function addLoader()
 		});
 	}
 	
+}
+
+var settingsShown = 0;
+
+function addSettings()
+{
+	$("body").prepend("<span style='float:right;'>[<a id='settingsbutton' href='#'>Settings</a>]</span>");
+	$("body").prepend("<div id='settingsDivWrap' style='z-index:9000; display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.247);'><div id='settingsDiv' style='width: 400px; height: 100%; margin: auto; background: rgb(241, 225, 215); overflow: auto; z-index: 9001;'> \
+		<span style='font-size:20px; display: block; text-align: center; background: #ffccaa;'>Settings</span> \
+		<hr /> \
+		<input type='checkbox' name='o_hider' /> Enable thread hider<br />\
+		<input type='checkbox' name='o_expander' /> Enable thread expander<br />\
+		<input type='checkbox' name='o_backlinks' /> Enable backlinks<br />\
+		<input type='checkbox' name='o_preview' /> Enable post preview<br />\
+		<input type='checkbox' name='o_loader' /> Enable page loader<br />\
+		<input type='checkbox' name='o_watched' /> Enable watched threads<br />\
+		<input type='checkbox' name='o_updater' /> Enable updater<br />\
+		<input type='checkbox' name='o_imgexpand' /> Enable image expander (RES)<br />\
+		<input type='checkbox' name='o_fastreply' /> Enable fast reply<br />\
+		<hr /> \
+		<input type='button' value='Save' id='settingsSave'/> <input type='button' value='Reset' id='settingsReset'/>\
+		</div></div>");
+	
+	$("#settingsSave").click(function (e) {
+		$("input[name^='o_']").each(function ()
+		{
+			if ($(this).prop("checked"))
+			{
+				localStorage.setItem($(this).attr("name"), 1);
+			} else {
+				localStorage.setItem($(this).attr("name"), 0);
+			}
+		});
+		window.location.reload();
+	});
+	$("#settingsReset").click(function (e) {
+		localStorage.setItem("firsttime", 0);
+		window.location.reload();
+	});
+	$("#settingsDivWrap").click(function (e) {
+		if( e.target !== this ) 
+			return;
+		$(this).css("display", "none");
+		e.preventDefault();
+	});
+	$("#settingsbutton").click(function (e) {
+		$("input[name^='o_']").attr("checked", false);
+		for (var key in localStorage)
+		{
+			if ((key.substring(0, 2) == "o_") && (localStorage.getItem(key) == 1))
+			{
+				$("input[name='"+key+"']").attr("checked", true);
+			}
+		}
+		//$("#settingsDiv").css("display","");
+		$("#settingsDivWrap").css("display","");
+		/*if (settingsShown == 0)
+		{
+			settingsShown = 1;
+			$("#settingsDiv").css("display","");
+		} else {
+			settingsShown = 0;
+			$("#settingsDiv").css("display","none");
+		}*/
+		e.preventDefault();
+	});
 }
 
 function fillFields()
@@ -476,8 +585,6 @@ function addZoom(img) {
 		}).on("mouseup", function() {
 			if(opt.handle === "") {
 				$(this).removeClass('draggable');
-				localStorage.setItem("w_box_x", $('#watcher_box').offset().left);
-				localStorage.setItem("w_box_y", $('#watcher_box').offset().top);
 			} else {
 				$(this).removeClass('active-handle').parent().removeClass('draggable');
 			}
@@ -488,11 +595,6 @@ function addZoom(img) {
 
 function handleWatched(parent)
 {
-	if ((localStorage.getItem("w_box_x") === null)||(localStorage.getItem("w_box_y") === null))
-	{
-		localStorage.setItem("w_box_x", "100");
-		localStorage.setItem("w_box_y", "100");
-	}
 
 	function addButton()
 	{
@@ -505,7 +607,7 @@ function handleWatched(parent)
 	function addFrame()
 	{
 		$("body").append('<div class="movable" id="watcher_box" \
-			style="border: solid 1px; position: absolute; top: '+localStorage.getItem("w_box_y")+'px; left: '+localStorage.getItem("w_box_x")+'px; width: 250px; height: 150px; \
+			style="border: solid 1px; position: absolute; top: 100px; left: 100px; width: 250px; height: 150px; \
 			background: rgba(241, 225, 215, 0.5);"> \
 			<span style="font-size:20px; display: block; text-align: center; background: #ffccaa;">Watched Threads</span> \
 			<ul id="watched_list"></ul>');
