@@ -366,7 +366,7 @@ function processName($conn, $string)
 			$moretrips = explode("#", substr($exploded[1], 1), 2);
 			if (count($moretrips)>1)
 			{
-				$arr['strip'] = getsecuretripcode($conn, substr($moretrips[0], 1));
+				$arr['strip'] = getsecuretripcode($conn, $moretrips[0]);
 				$arr['trip'] = mktripcode($moretrips[1]);
 			} else {
 				$arr['strip'] = getsecuretripcode($conn, substr($exploded[1], 1));

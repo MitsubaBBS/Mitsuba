@@ -15,6 +15,11 @@ include("inc/strings/imgboard.strings.php");
 
 if (!empty($_POST['mode']))
 {
+	$return_url = "./";
+	if (!empty($_POST['board']))
+	{
+		$return_url = "".$return_url."";
+	}
 	$mod = 0;
 	$mod_type = 0;
 	if ((!empty($_GET['mod'])) && ($_GET['mod']==1))
@@ -24,6 +29,10 @@ if (!empty($_POST['mode']))
 			canBoard($_POST['board']);
 			$mod = 1;
 			if (!empty($_SESSION['type'])) { $mod_type = $_SESSION['type']; }
+			if (!empty($_POST['board']))
+			{
+				$return_url = "mod.php?/board&b=".$_POST['board'];
+			}
 		}
 	}
 	$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
@@ -128,7 +137,7 @@ if (!empty($_POST['mode']))
 						
 						if (($pdate + $bdata['time_between_threads']) > time())
 						{
-							echo "<center><h1>".$lang['img/wait_more_thread']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></center></body></html>";
+							echo "<center><h1>".$lang['img/wait_more_thread']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></center></body></html>";
 							exit;
 						}
 					}
@@ -142,7 +151,7 @@ if (!empty($_POST['mode']))
 					
 					if (($pdate + $bdata['time_between_posts']) > time())
 					{
-						echo "<center><h1>".$lang['img/wait_more_post']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></center></body></html>";
+						echo "<center><h1>".$lang['img/wait_more_post']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></center></body></html>";
 						exit;
 					}
 				}
@@ -151,7 +160,7 @@ if (!empty($_POST['mode']))
 			{
 				if ($bdata['embeds']==0)
 				{
-					echo "<center><h1>".$lang['img/embed_not_supported']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></center></body></html>";
+					echo "<center><h1>".$lang['img/embed_not_supported']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></center></body></html>";
 					exit;
 				}
 				
@@ -165,13 +174,13 @@ if (!empty($_POST['mode']))
 				{
 					$filename = "embed:".$_POST['embed'];
 				} else {
-					echo "<center><h1>".$lang['img/embed_not_supported']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></center></body></html>";
+					echo "<center><h1>".$lang['img/embed_not_supported']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></center></body></html>";
 					exit;
 				}
 			} else {
 				if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 				{
-					echo "<h1>".$lang['img/file_too_big']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></body></html>";
+					echo "<h1>".$lang['img/file_too_big']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
 					exit;
 				}
 				if (!empty($_FILES['upfile']['tmp_name']))
@@ -180,12 +189,12 @@ if (!empty($_POST['mode']))
 					$file_size = $_FILES['upfile']['size'];
 					if (($file_size > $bdata['filesize']) && ($ignoresizelimit != 1))
 					{
-						echo "<h1>".$lang['img/file_too_big']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></body></html>";
+						echo "<h1>".$lang['img/file_too_big']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
 						exit;
 					}
 					if (!($ext = isImage($_FILES['upfile']['tmp_name'])))
 					{
-						echo "<h1>".$lang['img/file_not_img']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></body></html>";
+						echo "<h1>".$lang['img/file_not_img']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
 						exit;
 					}
 					$fileid = time() . mt_rand(10000000, 999999999);
@@ -197,7 +206,7 @@ if (!empty($_POST['mode']))
 						$isit = $conn->query("SELECT * FROM posts WHERE filehash='".$md5."' AND board='".$_POST['board']."'");
 						if ($isit->num_rows >= 1)
 						{
-							echo "<h1>".$lang['img/file_duplicate']." [<a href='./".$_POST['board']."/'>".$lang['img/return']."</a>]</h1></body></html>";
+							echo "<h1>".$lang['img/file_duplicate']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
 							exit;
 						}
 					}
@@ -371,7 +380,7 @@ if (!empty($_POST['mode']))
 						}
 					}
 				}
-				echo '<meta http-equiv="refresh" content="2;URL='."'./".$_POST['board']."/index.html'".'">';
+				echo '<meta http-equiv="refresh" content="2;URL='."'".$return_url."index.html'".'">';
 			} elseif (!empty($_POST['report'])) {
 				if (empty($_POST['board']))
 				{
@@ -395,7 +404,7 @@ if (!empty($_POST['mode']))
 				{
 					echo '<meta http-equiv="refresh" content="2;URL='."'./mod.php?/board&b=".$_POST['board']."'".'">';
 				} else {
-					echo '<meta http-equiv="refresh" content="1;URL='."'./".$_POST['board']."/index.html'".'">';
+					echo '<meta http-equiv="refresh" content="1;URL='."'".$return_url."index.html'".'">';
 				}
 			}
 			break;
