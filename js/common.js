@@ -624,6 +624,14 @@ function addWatchButton(parent)
 		var id = $(this).attr("id").substr(2);
 		$('#pi'+id).append('<div style="display: inline;" class="watcher" id="wt ' + id + '"> <a href="javascript:;">[W]</a></div>');
 	});
+	$(parent).find(".watcher").click(function () {
+		var id = $(this).attr("id").substr(3);
+		if ($('#wl'+id).length == 0)
+			addToWatched(id);
+		else
+			removeFromWatched(id);
+
+	});
 }
 
 function handleWatched(parent)
@@ -655,19 +663,12 @@ function handleWatched(parent)
 	}
 
 	addFrame();
-	addWatchButton(parent);
 	loadWatched();
 	
 	$('#watcher_box').drags();
+	addWatchButton(parent);
 
-	$(parent).find(".watcher").click(function () {
-		var id = $(this).attr("id").substr(3);
-		if ($('#wl'+id).length == 0)
-			addToWatched(id);
-		else
-			removeFromWatched(id);
-
-	});
+	
 }
 
 function addToWatched(id)
