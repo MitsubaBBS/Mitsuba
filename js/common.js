@@ -322,7 +322,10 @@ function addThreadExpander(parent)
 				{
 					addImgExpand(tid);
 				}
-
+				if (localStorage.getItem("o_watched") == 1)
+				{
+					addWatchedButton(tid);
+				}
 				}
 			});
 		});
@@ -615,20 +618,20 @@ function addZoom(img) {
 	}
 })(jQuery);
 
+function addWatchedButton()
+{
+	$(parent).find(".op .postInfo").each(function () {
+		var id = $(this).attr("id").substr(2);
+		$('#pi'+id).append('<div style="display: inline;" class="watcher" id="wt ' + id + '"> <a href="javascript:;">[W]</a></div>');
+	});
+}
+
 function handleWatched(parent)
 {
 	if ((localStorage.getItem("w_box_x") === null)||(localStorage.getItem("w_box_y") === null))
 	{
 		localStorage.setItem("w_box_x", "100");
 		localStorage.setItem("w_box_y", "100");
-	}
-
-	function addButton()
-	{
-		$(parent).find(".op .postInfo").each(function () {
-			var id = $(this).attr("id").substr(2);
-			$('#pi'+id).append('<div style="display: inline;" class="watcher" id="wt ' + id + '"> <a href="javascript:;">[W]</a></div>');
-		});
 	}
 
 	function addFrame()
@@ -652,7 +655,7 @@ function handleWatched(parent)
 	}
 
 	addFrame();
-	addButton();
+	addWatchedButton();
 	loadWatched();
 	
 	$('#watcher_box').drags();
