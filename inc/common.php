@@ -333,16 +333,60 @@ function randomPassword() {
 	return implode($pass);
 }
 
+function getsecuretripcode($conn, $pwd)
+{
+	$striphash = mktripcode(substr($pwd, 1));
+	$strips = $conn->query("SELECT * FROM tripcodes WHERE hash='".$striphash."' AND secure=1");
+	if ($strips->num_rows >= 1)
+	{
+		$row = $strips->fetch_assoc();
+		return $row['replace'];
+	} else {
+		$strip = mksecuretripcode($pwd);
+		$conn->query("INSERT INTO tripcodes (`hash`, `replace`, `secure`) VALUES ('".$striphash."', '".$strip."', 1);");
+		return $strip;
+	}
+}
+
 function processName($conn, $string)
 {
 	$arr = array();
 	$new = $string;
-	$new = str_replace("##", "#", $new);
+	//$new = str_replace("##", "#", $new);
 	$exploded = explode("#", $new, 2);
+	$arr['trip'] = "";
+	$arr['name'] = "";
+	$arr['strip'] = "";
+	//$arr['striphash'] = "";
 	if (count($exploded)>1)
 	{
 		$arr['name'] = $exploded[0];
-		$arr['trip'] = mktripcode($exploded[1]);
+		if (substr($exploded[1], 0, 1) == "#")
+		{
+			$moretrips = explode("#", substr($exploded[1], 1), 2);
+			if (count($moretrips)>1)
+			{
+				$arr['strip'] = getsecuretripcode($conn, substr($moretrips[0], 1));
+				$arr['trip'] = mktripcode($moretrips[1]);
+			} else {
+				$arr['strip'] = getsecuretripcode($conn, substr($exploded[1], 1));
+			}
+		} else {
+			$moretrips = explode("#", $exploded[1], 2);
+			if (count($moretrips)>1)
+			{
+				if (substr($moretrips[1], 0, 1) == "#")
+				{
+					$arr['strip'] = getsecuretripcode($conn, substr($moretrips[1], 1);
+				} else {
+					$arr['strip'] = getsecuretripcode($conn, $moretrips[1]);
+				}
+				$arr['trip'] = mktripcode($moretrips[0]);
+			} else {
+				$arr['trip'] = mktripcode($exploded[1]);
+			}
+		}
+		
 	} else {
 		$arr['name'] = $new;
 		$arr['trip'] = "";
@@ -357,16 +401,6 @@ function processString($conn, $string)
 	$new = $string;
 	$new = $conn->real_escape_string($new);
 	$new = htmlspecialchars($new);
-	
-	$new = str_replace("##", "#", $new);
-	$exploded = explode("#", $new, 2);
-	if (count($exploded)>1)
-	{
-		$arr = array();
-		$arr['name'] = $exploded[0];
-		$arr['trip'] = mktripcode($exploded[1]);
-		return $arr;
-	}
 	return $new;
 }
 
@@ -430,6 +464,23 @@ function mktripcode($pw)
     $pw=str_replace('>','&gt;',$pw);
     
     $salt=substr($pw.'H.',1,2);
+    $salt=preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
+    $salt=strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
+    
+    $trip=substr(crypt($pw,$salt),-10);
+    return $trip;
+}
+
+function mksecuretripcode($pw, $junk = "cookies")
+{
+    $pw=mb_convert_encoding($pw,'SJIS','UTF-8');
+    $pw=str_replace('&','&amp;',$pw);
+    $pw=str_replace('"','&quot;',$pw);
+    $pw=str_replace("'",'&#39;',$pw);
+    $pw=str_replace('<','&lt;',$pw);
+    $pw=str_replace('>','&gt;',$pw);
+    
+    $salt=substr($pw.'H!'.time().mt_rand(90, 1681018501).$junk,1,2);
     $salt=preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
     $salt=strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
     

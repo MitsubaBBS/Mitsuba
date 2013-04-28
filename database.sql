@@ -154,7 +154,8 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `date` int(30) NOT NULL,
   `name` varchar(60) NOT NULL,
-  `trip` varchar(11) NOT NULL,
+  `trip` varchar(30) NOT NULL,
+  `strip` varchar(11) NOT NULL,
   `poster_id` varchar(8) NOT NULL,
   `email` varchar(60) NOT NULL,
   `subject` varchar(100) NOT NULL,
@@ -221,6 +222,15 @@ CREATE TABLE IF NOT EXISTS `styles` (
   `path_index` varchar(60) NOT NULL,
   `default` int(1) NOT NULL,
   PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `tripcodes` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `hash` varchar(11) NOT NULL,
+  `replace` varchar(30) NOT NULL,
+  `secure` int (1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `hash` (`hash`, `secure`)
 );
 
 CREATE TABLE IF NOT EXISTS `users` (

@@ -613,7 +613,15 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			$trip = "";
 			if (!empty($row['trip']))
 			{
-				$trip = "<span class='postertrip'>!".$row['trip']."</span>";
+				$trip = " !".$row['trip']."";
+			}
+			if (!empty($row['trip']))
+			{
+				$trip .= " !!".$row['strip']."";
+			}
+			if ((!empty($row['trip'])) || (!empty($row['strip'])))
+			{
+				$trip = "<span class='postertrip'>".$trip."</span>";
 			}
 			$poster_id = "";
 			if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && ($row['capcode']<1))
@@ -818,12 +826,15 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				$trip = "";
 				if (!empty($row2['trip']))
 				{
-					$trip = "<span class='postertrip'>!".$row2['trip']."</span>";
+					$trip = " !".$row2['trip']."";
 				}
-				$poster_id = "";
-				if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && ($row2['capcode']<1))
+				if (!empty($row2['trip']))
 				{
-					$poster_id = '<span class="posteruid">(ID: '.$row2['poster_id'].')</span>';
+					$trip .= " !!".$row2['strip']."";
+				}
+				if ((!empty($row2['trip'])) || (!empty($row2['strip'])))
+				{
+					$trip = "<span class='postertrip'>".$trip."</span>";
 				}
 				$c_image = "";
 				if ($row2['capcode'] == 1)

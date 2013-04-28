@@ -233,11 +233,13 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	}
 	$lastbumped = time();
 	$trip = "";
+	$strip = "";
 	if (($bdata['noname'] == 0) || ($adm_type >= 1))
 	{
 		$arr = processName($conn, $name);
 		$trip = $arr['trip'];
 		$name = $arr['name'];
+		$strip = $arr['strip'];
 	} else {
 		$name = "Anonymous";
 		/*if (($email != "nonoko") || ($email != "nonokosage") || ($email != "noko") || ($email != "nokosage") || ($email != "sage"))
@@ -301,8 +303,8 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		$cc_text = $conn->real_escape_string(htmlspecialchars($cc_text));
 		$cc_color = $conn->real_escape_string(htmlspecialchars($cc_color));
 	}
-	$conn->query("INSERT INTO posts (board, date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, t_w, t_h, sticky, sage, locked, capcode, raw, cc_text, cc_color)".
-	"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', ".$t_w.", ".$t_h.",".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.", '".$cc_text."', '".$cc_color."')");
+	$conn->query("INSERT INTO posts (board, date, name, trip, strip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, t_w, t_h, sticky, sage, locked, capcode, raw, cc_text, cc_color)".
+	"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$strip."', ".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', ".$t_w.", ".$t_h.",".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.", '".$cc_text."', '".$cc_color."')");
 	$id = mysqli_insert_id($conn);
 	if (empty($fake_id))
 	{
