@@ -864,6 +864,9 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				} elseif ($row2['capcode'] == 3)
 				{
 					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
+				} elseif ($row2['capcode'] == 4)
+				{
+					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:'.$row2['cc_color'].'">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:'.$row2['cc_color'].'">## '.$row2['cc_text'].'</span>'.$c_image.'</span> '.$poster_id.'</span>';
 				} else {
 					$file .= '<span class="nameBlock">'.$email_a.'<span class="name">'.$row2['name'].'</span>'.$email_b.$trip.' '.$poster_id.'</span>';
 				}
