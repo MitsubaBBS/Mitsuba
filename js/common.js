@@ -6,7 +6,7 @@ if (typeof $.cookie("mitsuba_style") !== "undefined")
 String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
 
 function strStartsWith(str, prefix) {
-    return str.indexOf(prefix) === 0;
+	return str.indexOf(prefix) === 0;
 }
 
 
@@ -17,6 +17,7 @@ $(document).ready(function () {
 	{
 		addThreadHider("body");
 		addThreadExpander("body");
+		handleWatched("body");
 		hideThreads();
 		addLoader();
 	} else { //in thread
@@ -444,6 +445,111 @@ function addZoom(img) {
 	});
 }
 
+/* Dragging function */
+(function($) {
+	$.fn.drags = function(opt) {
+
+		opt = $.extend({handle:"",cursor:"move"}, opt);
+
+		if(opt.handle === "") {
+			var $el = this;
+		} else {
+			var $el = this.find(opt.handle);
+		}
+
+		return $el.css('cursor', opt.cursor).on("mousedown", function(e) {
+			if(opt.handle === "") {
+				var $drag = $(this).addClass('draggable');
+			} else {
+				var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
+			}
+			var z_idx = $drag.css('z-index'),
+				drg_h = $drag.outerHeight(),
+				drg_w = $drag.outerWidth(),
+				pos_y = $drag.offset().top + drg_h - e.pageY,
+				pos_x = $drag.offset().left + drg_w - e.pageX;
+			$drag.css('z-index', 1000).parents().on("mousemove", function(e) {
+				$('.draggable').offset({
+					top:e.pageY + pos_y - drg_h,
+					left:e.pageX + pos_x - drg_w
+				}).on("mouseup", function() {
+					$(this).removeClass('draggable').css('z-index', z_idx);
+				});
+			});
+			e.preventDefault(); // disable selection
+		}).on("mouseup", function() {
+			if(opt.handle === "") {
+				$(this).removeClass('draggable');
+			} else {
+				$(this).removeClass('active-handle').parent().removeClass('draggable');
+			}
+		});
+
+	}
+})(jQuery);
+
+function handleWatched(parent)
+{
+
+	function addButton()
+	{
+		$(parent).find(".op .postInfo").each(function () {
+			var id = $(this).attr("id").substr(2);
+			$('#pi'+id).append('<div style="display: inline;" class="watcher" id="wt ' + id + '"> <a href="javascript:;">[W]</a></div>');
+		});
+	}
+
+	function addFrame()
+	{
+		$("body").append('<div class="movable" id="watcher_box" \
+			style="border: solid 1px; position: absolute; top: 100px; left: 100px; width: 250px; height: 150px; \
+			background: rgba(241, 225, 215, 0.5);"> \
+			<span style="font-size:20px; display: block; text-align: center; background: #ffccaa;">Watched Threads</span> \
+			<ul id="watched_list"></ul>');
+	}
+
+	function loadWatched()
+	{
+		for (var key in localStorage)
+		{
+			if (key.substring(0, 2) == "wt")
+			{
+				addToWatched(key.substring(2));
+			}
+		}
+	}
+
+	addFrame();
+	addButton();
+	loadWatched();
+	
+	$('#watcher_box').drags();
+
+	$(parent).find(".watcher").click(function () {
+		var id = $(this).attr("id").substr(3);
+		if ($('#wl'+id).length == 0)
+			addToWatched(id);
+		else
+			removeFromWatched(id);
+
+	});
+}
+
+function addToWatched(id)
+{
+
+	localStorage.setItem("wt"+id, "1");
+
+	$('#watched_list').append('<li id="wl'+id+'" style="display:none;">Thread: '+id+'</li>');
+	$('#wl'+id).fadeIn();
+}
+
+function removeFromWatched(id)
+{
+	localStorage.removeItem("wt"+id);
+	$('#wl'+id).fadeOut(function(){$('#wl'+id).remove();});
+}
+
 /* 
  * ==============================
  * | URI manipulation functions |
@@ -453,41 +559,41 @@ function parseURI(url) {
   var m = String(url).replace(/^\s+|\s+$/g, '').match(/^([^:\/?#]+:)?(\/\/(?:[^:@]*(?::[^:@]*)?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
   // authority = '//' + user + ':' + pass '@' + hostname + ':' port
   return (m ? {
-    href     : m[0] || '',
-    protocol : m[1] || '',
-    authority: m[2] || '',
-    host     : m[3] || '',
-    hostname : m[4] || '',
-    port     : m[5] || '',
-    pathname : m[6] || '',
-    search   : m[7] || '',
-    hash     : m[8] || ''
+	href     : m[0] || '',
+	protocol : m[1] || '',
+	authority: m[2] || '',
+	host     : m[3] || '',
+	hostname : m[4] || '',
+	port     : m[5] || '',
+	pathname : m[6] || '',
+	search   : m[7] || '',
+	hash     : m[8] || ''
   } : null);
 }
  
 function absolutizeURI(base, href) {// RFC 3986
  
   function removeDotSegments(input) {
-    var output = [];
-    input.replace(/^(\.\.?(\/|$))+/, '')
-         .replace(/\/(\.(\/|$))+/g, '/')
-         .replace(/\/\.\.$/, '/../')
-         .replace(/\/?[^\/]*/g, function (p) {
-      if (p === '/..') {
-        output.pop();
-      } else {
-        output.push(p);
-      }
-    });
-    return output.join('').replace(/^\//, input.charAt(0) === '/' ? '/' : '');
+	var output = [];
+	input.replace(/^(\.\.?(\/|$))+/, '')
+		 .replace(/\/(\.(\/|$))+/g, '/')
+		 .replace(/\/\.\.$/, '/../')
+		 .replace(/\/?[^\/]*/g, function (p) {
+	  if (p === '/..') {
+		output.pop();
+	  } else {
+		output.push(p);
+	  }
+	});
+	return output.join('').replace(/^\//, input.charAt(0) === '/' ? '/' : '');
   }
  
   href = parseURI(href || '');
   base = parseURI(base || '');
  
   return !href || !base ? null : (href.protocol || base.protocol) +
-         (href.protocol || href.authority ? href.authority : base.authority) +
-         removeDotSegments(href.protocol || href.authority || href.pathname.charAt(0) === '/' ? href.pathname : (href.pathname ? ((base.authority && !base.pathname ? '/' : '') + base.pathname.slice(0, base.pathname.lastIndexOf('/') + 1) + href.pathname) : base.pathname)) +
-         (href.protocol || href.authority || href.pathname ? href.search : (href.search || base.search)) +
-         href.hash;
+		 (href.protocol || href.authority ? href.authority : base.authority) +
+		 removeDotSegments(href.protocol || href.authority || href.pathname.charAt(0) === '/' ? href.pathname : (href.pathname ? ((base.authority && !base.pathname ? '/' : '') + base.pathname.slice(0, base.pathname.lastIndexOf('/') + 1) + href.pathname) : base.pathname)) +
+		 (href.protocol || href.authority || href.pathname ? href.search : (href.search || base.search)) +
+		 href.hash;
 }
