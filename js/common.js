@@ -28,14 +28,14 @@ $(document).ready(function () {
 	fillFields();
 	if ($(".postingMode").length == 0) //outside thread
 	{
+		if (localStorage.getItem("o_expander") == 1)
+		{
+			addThreadExpander("body");
+		}
 		if (localStorage.getItem("o_hider") == 1)
 		{
 			addThreadHider("body");
 			hideThreads();
-		}
-		if (localStorage.getItem("o_expander") == 1)
-		{
-			addThreadExpander("body");
 		}
 		if (localStorage.getItem("o_watched") == 1)
 		{
@@ -174,24 +174,19 @@ function addSettings()
 		e.preventDefault();
 	});
 	$("#settingsbutton").click(function (e) {
-		$("input[name^='o_']").attr("checked", false);
+		$("#settingsDivWrap").css("display","");
 		for (var key in localStorage)
 		{
-			if ((key.substring(0, 2) == "o_") && (localStorage.getItem(key) == 1))
+			if (key.substring(0, 2) == "o_")
 			{
-				$("input[name='"+key+"']").attr("checked", true);
+				if (localStorage[key] == 1)
+				{
+					$("input[name='"+key+"']").attr("checked", true);
+				} else {
+					$("input[name='"+key+"']").attr("checked", false);
+				}
 			}
 		}
-		//$("#settingsDiv").css("display","");
-		$("#settingsDivWrap").css("display","");
-		/*if (settingsShown == 0)
-		{
-			settingsShown = 1;
-			$("#settingsDiv").css("display","");
-		} else {
-			settingsShown = 0;
-			$("#settingsDiv").css("display","none");
-		}*/
 		e.preventDefault();
 	});
 }
