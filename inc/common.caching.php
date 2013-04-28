@@ -615,7 +615,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			{
 				$trip = " !".$row['trip']."";
 			}
-			if (!empty($row['trip']))
+			if (!empty($row['strip']))
 			{
 				$trip .= " !!".$row['strip']."";
 			}
@@ -828,7 +828,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				{
 					$trip = " !".$row2['trip']."";
 				}
-				if (!empty($row2['trip']))
+				if (!empty($row2['strip']))
 				{
 					$trip .= " !!".$row2['strip']."";
 				}
