@@ -34,6 +34,7 @@ $(document).ready(function () {
 var currentPage = 0;
 function addLoader()
 {
+	$(".deleteform").css("position", "fixed").css("opacity", "0.7").css("bottom", "10px").css("right", "10px");
 	var strong = $(".pagelist").find("strong")[0];
 	currentPage = $(strong).html();
 	var nextPageEl = $(strong).parent().next();
@@ -42,6 +43,7 @@ function addLoader()
 		$(window).scroll(function() {   
 			if($(window).scrollTop() + $(window).height() == $(document).height()) {
 				$(".pagelist").css("opacity", "0.5");
+				$(window).unbind('scroll');
 				$.ajax({
 				type: 'get',
 				url: "./"+$(nextPageEl).html()+".html",
@@ -64,7 +66,6 @@ function addLoader()
 						
 					}
 				});
-				$(window).unbind('scroll');
 			}
 		});
 	}
@@ -263,18 +264,13 @@ function hidePostPreview( el )
 
 function hideThreads()
 {
-	$.each(document.cookie.split(/; */), function()  {
-		var splitCookie = this.split('=');
-		// name is splitCookie[0], value is splitCookie[1]
-		if (strStartsWith(splitCookie[0], "h_"))
+	for (var key in localStorage)
+	{
+		if (key.substring(0, 2) == "h_")
 		{
-			var id = splitCookie[0].substr(2);
-			if (splitCookie[1] == 1)
-			{
-				hideThread(id, 1);
-			}
+			hideThread(key.substring(2), 1);
 		}
-	});
+	}
 }
 
 function hideThread(id, type)
@@ -327,18 +323,18 @@ function showThread(id)
 
 function thread_toggle(id)
 {
-	if (typeof $.cookie("h_"+id) === "undefined")
+	if (typeof localStorage.getItem("h_"+id) === "undefined")
 	{
-		$.cookie("h_"+id, 1, {expires: 31});
+		localStorage.setItem("h_"+id, "1");
 		hideThread(id);
 	} else {
-		if ($.cookie("h_"+id) == 1)
+		if (localStorage.getItem("h_"+id) == 1)
 		{
 			
-			$.cookie("h_"+id, 0, {expires: 31});
+			localStorage.removeItem("h_"+id);
 			showThread(id);
 		} else {
-			$.cookie("h_"+id, 1, {expires: 31});
+			localStorage.setItem("h_"+id, "1");
 			hideThread(id);
 		}
 	}
