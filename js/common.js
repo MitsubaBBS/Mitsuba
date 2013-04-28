@@ -99,12 +99,27 @@ function addLoader()
 					$(".prev").html($(".prev", nodes).html());
 					$(".pages").html($(".pages", nodes).html());
 					$(".next").html($(".next", nodes).html());
-					addBacklinks("#b"+currentPage);
-					addPostpreview("#b"+currentPage);
-					addImgExpand("#b"+currentPage);
-					addThreadHider("#b"+currentPage);
-					addThreadExpander("#b"+currentPage);
-					hideThreads();
+					if (localStorage.getItem("o_backlinks") == 1)
+					{
+						addBacklinks("#b"+currentPage);
+					}
+					if (localStorage.getItem("o_preview") == 1)
+					{
+						addPostpreview("#b"+currentPage);
+					}
+					if (localStorage.getItem("o_imgexpand") == 1)
+					{
+						addImgExpand("#b"+currentPage);
+					}
+					if (localStorage.getItem("o_expander") == 1)
+					{
+						addThreadExpander("#b"+currentPage);
+					}
+					if (localStorage.getItem("o_hider") == 1)
+					{
+						addThreadHider("#b"+currentPage);
+						hideThreads();
+					}
 					addLoader();
 						
 					}
@@ -299,10 +314,19 @@ function addThreadExpander(parent)
 				$(tid).find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
 				$(tid).find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
 				
-				addBacklinks(tid);
-				addPostpreview(tid);
-				addImgExpand(tid);
-					
+				if (localStorage.getItem("o_backlinks") == 1)
+				{
+					addBacklinks(tid);
+				}
+				if (localStorage.getItem("o_preview") == 1)
+				{
+					addPostpreview(tid);
+				}
+				if (localStorage.getItem("o_imgexpand") == 1)
+				{
+					addImgExpand(tid);
+				}
+
 				}
 			});
 		});
