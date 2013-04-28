@@ -537,7 +537,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				if ($adm_type == 2)
 				{	
 					$file .= '<input type="radio" name="capcode" value=2 id="custom_cc" />'.$lang['img/mod_customcapcode'];
-					$file .= '<div style="display: none;" id="cc_fields">'.$lang['img/text'].': <input type="text" name="cc_text" /><br />
+					$file .= '<div style="display: none;" id="cc_fields" value="#FF0000">'.$lang['img/text'].': <input type="text" name="cc_text" /><br />
 					'.$lang['img/color'].': <input type="text" name="cc_color" /></div>';
 					$file .= "<script type=\"text/javascript\">
 $(\"input[name='capcode']\").change(function() {
