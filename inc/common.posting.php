@@ -130,7 +130,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 	}
 }
 
-function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $fake_id = "")
+function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $nofile = 0, $fake_id = "", $cc_color = "", $cc_text = "")
 {
 	global $lang;
 	$config = getConfig($conn);
@@ -180,7 +180,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		$locked = 0;
 	}
 	
-	if (($resto == 0) && (empty($filename)))
+	if (($resto == 0) && (empty($filename)) && ($nofile == 0))
 	{
 		echo "<center><h1>".$lang['img/no_file']."</h1><br /><a href='./".$board."'>".$lang['img/return']."</a></center>";
 		return;

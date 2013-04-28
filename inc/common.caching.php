@@ -530,7 +530,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$file .='<tr>
 					<td>'.$lang['img/mod'].'</td>
 					<td><input type="checkbox" name="capcode" value=1" />'.$lang['img/mod_capcode'].'<input type="checkbox" name="raw" value=1" />'.$lang['img/mod_raw'].'<input type="checkbox" name="sticky" value=1" />'.$lang['img/mod_sticky'].'<input type="checkbox" name="lock" value=1" />'.$lang['img/mod_lock'].'<br />';
-				$file .= '<input type="checkbox" name="nolimit" value=1" selected/>'.$lang['img/mod_nolimit'].'<input type="checkbox" name="ignoresizelimit" value=1" />'.$lang['img/mod_nosizelimit'].'</td>';
+				$file .= '<input type="checkbox" name="nolimit" value=1" selected/>'.$lang['img/mod_nolimit'].'<input type="checkbox" name="ignoresizelimit" value=1" />'.$lang['img/mod_nosizelimit'].'<input type="checkbox" name="nofile" value=1" />'.$lang['img/mod_nofile'].'</td>';
 			}
 			$file .= '<tr class="rules">
 				<td colspan="2">
@@ -639,6 +639,9 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			} elseif ($row['capcode'] == 3)
 			{
 				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
+			} elseif ($row['capcode'] == 4)
+			{
+				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:'.$row['cc_color'].'">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:'.$row['cc_color'].'">## '.$row['cc_text'].'</span>'.$c_image.'</span> '.$poster_id.'</span>';
 			} else {
 				$file .= '<span class="nameBlock">'.$email_a.'<span class="name">'.$row['name'].'</span>'.$email_b.$trip.' '.$poster_id.'</span>';
 			}
@@ -1422,7 +1425,13 @@ function serializePost($row, $boarddata, $parser, $conn)
 	{
 		$post['trip'] = "!".$row['trip'];
 	}
-	if ($row['capcode'] == 2)
+	if ($row['capcode'] == 4)
+	{
+		$post['id'] = $row['cc_text'];
+	} elseif ($row['capcode'] == 3)
+	{
+		$post['id'] = "Faggot";
+	} elseif ($row['capcode'] == 2)
 	{
 		$post['id'] = "Admin";
 	} elseif ($row['capcode'] == 1) {
@@ -1433,7 +1442,13 @@ function serializePost($row, $boarddata, $parser, $conn)
 			$post['id'] = $row['poster_id'];
 		}
 	}
-	if ($row['capcode'] == 2)
+	if ($row['capcode'] == 4)
+	{
+		$post['capcode'] = $row['cc_text'];
+	} elseif ($row['capcode'] == 3)
+	{
+		$post['capcode'] = "faggot";
+	} elseif ($row['capcode'] == 2)
 	{
 		$post['capcode'] = "admin";
 	} elseif ($row['capcode'] == 1) {

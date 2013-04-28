@@ -43,6 +43,7 @@ $lang['img/mod_raw'] = "Raw HTML";
 $lang['img/mod_sticky'] = "Sticky";
 $lang['img/mod_lock'] = "Lock";
 $lang['img/mod_nolimit'] = "Ignore bumplimit";
+$lang['img/mod_nofile'] = "No file";
 $lang['img/mod_nosizelimit'] = "Ignore filesize limit";
 $lang['img/supported_types'] = "Supported file types are: GIF, JPG, PNG";
 $lang['img/max_filesize'] = "Maximum file size allowed is %s bytes.";

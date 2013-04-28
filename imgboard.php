@@ -257,6 +257,7 @@ if (!empty($_POST['mode']))
 			$sticky = 0;
 			$lock = 0;
 			$nolimit = 0;
+			$nofile = 0;
 			$fake_id = "";
 			
 			if (!empty($_POST['name'])) { setcookie("mitsuba_name", $_POST['name'], time() + 86400*256); } else { setcookie("mitsuba_name","", time() + 86400*256); }
@@ -276,6 +277,10 @@ if (!empty($_POST['mode']))
 				if ((!empty($_POST['raw'])) && ($_POST['raw']==1))
 				{
 					$raw = 1;
+				}
+				if ((!empty($_POST['nofile'])) && ($_POST['nofile']==1))
+				{
+					$nofile = 1;
 				}
 				if ((!empty($_POST['sticky'])) && ($_POST['sticky']==1))
 				{
@@ -311,7 +316,7 @@ if (!empty($_POST['mode']))
 				$embed = 1;
 				$fname = "embed";
 			}
-			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $fake_id);
+			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id);
 			if ($is == -16)
 			{
 					echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;

@@ -176,6 +176,8 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `locked` int(1) NOT NULL,
   `capcode` int(1) NOT NULL,
   `raw` int(1) NOT NULL,
+  `cc_color` varchar(12) NOT NULL,
+  `cc_text` varchar(50) NOT NULL,
   PRIMARY KEY (`board`, `id`)
 ) ENGINE=MyISAM;
 
