@@ -65,4 +65,8 @@ $lang['img/next'] = "Next";
 $lang['img/posts_omitted'] = "%s posts omitted. Click %shere%s to view.";
 $lang['img/comment_long'] = "Comment too long. Click %shere%s to view the full text.";
 $lang['img/post_reported'] = "Post %s reported.";
+$lang['img/mod_nocapcode'] = "No capcode";
+$lang['img/mod_customcapcode'] = "Custom capcode";
+$lang['img/color'] = "Color";
+$lang['img/text'] = "Text";
 ?>

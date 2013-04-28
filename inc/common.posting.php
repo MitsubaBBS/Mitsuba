@@ -130,7 +130,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 	}
 }
 
-function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $nofile = 0, $fake_id = "", $cc_color = "", $cc_text = "")
+function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $nofile = 0, $fake_id = "", $cc_text = "", $cc_color = "")
 {
 	global $lang;
 	$config = getConfig($conn);
@@ -293,8 +293,16 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 			$fsize = human_filesize($osize);
 		}
 	}
-	$conn->query("INSERT INTO posts (board, date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, t_w, t_h, sticky, sage, locked, capcode, raw)".
-	"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', ".$t_w.", ".$t_h.",".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.")");
+	if ((empty($cc_text)) || (empty($cc_color)))
+	{
+		$cc_text = "";
+		$cc_color = "";
+	} else {
+		$cc_text = $conn->real_escape_string(htmlspecialchars($cc_text));
+		$cc_color = $conn->real_escape_string(htmlspecialchars($cc_color));
+	}
+	$conn->query("INSERT INTO posts (board, date, name, trip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, t_w, t_h, sticky, sage, locked, capcode, raw, cc_text, cc_color)".
+	"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', ".$t_w.", ".$t_h.",".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.", '".$cc_text."', '".$cc_color."')");
 	$id = mysqli_insert_id($conn);
 	if (empty($fake_id))
 	{

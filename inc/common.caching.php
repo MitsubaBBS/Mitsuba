@@ -529,8 +529,29 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			{
 				$file .='<tr>
 					<td>'.$lang['img/mod'].'</td>
-					<td><input type="checkbox" name="capcode" value=1" />'.$lang['img/mod_capcode'].'<input type="checkbox" name="raw" value=1" />'.$lang['img/mod_raw'].'<input type="checkbox" name="sticky" value=1" />'.$lang['img/mod_sticky'].'<input type="checkbox" name="lock" value=1" />'.$lang['img/mod_lock'].'<br />';
-				$file .= '<input type="checkbox" name="nolimit" value=1" selected/>'.$lang['img/mod_nolimit'].'<input type="checkbox" name="ignoresizelimit" value=1" />'.$lang['img/mod_nosizelimit'].'<input type="checkbox" name="nofile" value=1" />'.$lang['img/mod_nofile'].'</td>';
+					<td><input type="checkbox" name="raw" value=1 />'.$lang['img/mod_raw'].'<input type="checkbox" name="sticky" value=1 />'.$lang['img/mod_sticky'].'<input type="checkbox" name="lock" value=1 />'.$lang['img/mod_lock'].'<br />';
+				$file .= '<input type="checkbox" name="nolimit" value=1 selected/>'.$lang['img/mod_nolimit'].'<input type="checkbox" name="ignoresizelimit" value=1 />'.$lang['img/mod_nosizelimit'].'<input type="checkbox" name="nofile" value=1 />'.$lang['img/mod_nofile'].'</td>';
+				$file .='<tr>
+					<td>'.$lang['img/mod_capcode'].'</td>
+					<td id="capcode_td"><input type="radio" name="capcode" value=0 checked />'.$lang['img/mod_nocapcode'].'<input type="radio" name="capcode" value=1 />'.$lang['img/mod_capcode'];
+				if ($adm_type == 2)
+				{	
+					$file .= '<input type="radio" name="capcode" value=2 id="custom_cc" />'.$lang['img/mod_customcapcode'];
+					$file .= '<div style="display: none;" id="cc_fields">'.$lang['img/text'].': <input type="text" name="cc_text" /><br />
+					'.$lang['img/color'].': <input type="text" name="cc_color" /></div>';
+					$file .= "<script type=\"text/javascript\">
+$(\"input[name='capcode']\").change(function() {
+if ($(\"#custom_cc\").prop(\"checked\"))
+{
+	$(\"#cc_fields\").css(\"display\", \"\");
+} else {
+	$(\"#cc_fields\").css(\"display\", \"none\");
+	$(\"#cc_fields input\").val(\"\");
+}
+});
+</script>";
+				}
+				$file .= "</td></tr>";
 			}
 			$file .= '<tr class="rules">
 				<td colspan="2">

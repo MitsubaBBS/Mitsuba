@@ -259,7 +259,8 @@ if (!empty($_POST['mode']))
 			$nolimit = 0;
 			$nofile = 0;
 			$fake_id = "";
-			
+			$cc_text = "";
+			$cc_color = "";
 			if (!empty($_POST['name'])) { setcookie("mitsuba_name", $_POST['name'], time() + 86400*256); } else { setcookie("mitsuba_name","", time() + 86400*256); }
 			if ((!empty($_POST['email'])) && ($_POST['email'] != "sage")) { setcookie("mitsuba_email", $_POST['email'], time() + 86400*256); } else { setcookie("mitsuba_email","", time() + 86400*256); }
 			if (!empty($_POST['fake_id'])) { setcookie("mitsuba_fakeid", $_POST['fake_id'], time() + 86400*256); } else { setcookie("mitsuba_fakeid","", time() + 86400*256); }
@@ -273,6 +274,11 @@ if (!empty($_POST['mode']))
 				if ((!empty($_POST['capcode'])) && ($_POST['capcode']==1))
 				{
 					$capcode = $mod_type;
+				} elseif ((!empty($_POST['capcode'])) && ($_POST['capcode']==2) && (!empty($_POST['cc_text'])) && (!empty($_POST['cc_color'])))
+				{
+					$capcode = 4;
+					$cc_text = $_POST['cc_text'];
+					$cc_color = $_POST['cc_color'];
 				}
 				if ((!empty($_POST['raw'])) && ($_POST['raw']==1))
 				{
@@ -316,7 +322,7 @@ if (!empty($_POST['mode']))
 				$embed = 1;
 				$fname = "embed";
 			}
-			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id);
+			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_color);
 			if ($is == -16)
 			{
 					echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
