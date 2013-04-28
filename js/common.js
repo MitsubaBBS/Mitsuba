@@ -480,6 +480,8 @@ function addZoom(img) {
 		}).on("mouseup", function() {
 			if(opt.handle === "") {
 				$(this).removeClass('draggable');
+				localStorage.setItem("w_box_x", $('#watcher_box').offset().left);
+				localStorage.setItem("w_box_y", $('#watcher_box').offset().top);
 			} else {
 				$(this).removeClass('active-handle').parent().removeClass('draggable');
 			}
@@ -490,6 +492,11 @@ function addZoom(img) {
 
 function handleWatched(parent)
 {
+	if ((localStorage.getItem("w_box_x") === null)||(localStorage.getItem("w_box_y") === null))
+	{
+		localStorage.setItem("w_box_x", "100");
+		localStorage.setItem("w_box_y", "100");
+	}
 
 	function addButton()
 	{
@@ -502,7 +509,7 @@ function handleWatched(parent)
 	function addFrame()
 	{
 		$("body").append('<div class="movable" id="watcher_box" \
-			style="border: solid 1px; position: absolute; top: 100px; left: 100px; width: 250px; height: 150px; \
+			style="border: solid 1px; position: absolute; top: '+localStorage.getItem("w_box_y")+'px; left: '+localStorage.getItem("w_box_x")+'px; width: 250px; height: 150px; \
 			background: rgba(241, 225, 215, 0.5);"> \
 			<span style="font-size:20px; display: block; text-align: center; background: #ffccaa;">Watched Threads</span> \
 			<ul id="watched_list"></ul>');
