@@ -18,7 +18,7 @@ if (!empty($_POST['mode']))
 	$return_url = "./";
 	if (!empty($_POST['board']))
 	{
-		$return_url = "".$return_url."";
+		$return_url = "./".$_POST['board']."/";
 	}
 	$mod = 0;
 	$mod_type = 0;
@@ -29,10 +29,7 @@ if (!empty($_POST['mode']))
 			canBoard($_POST['board']);
 			$mod = 1;
 			if (!empty($_SESSION['type'])) { $mod_type = $_SESSION['type']; }
-			if (!empty($_POST['board']))
-			{
-				$return_url = "mod.php?/board&b=".$_POST['board'];
-			}
+			$return_url = "mod.php?/board&b=".$_POST['board'];
 		}
 	}
 	$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
