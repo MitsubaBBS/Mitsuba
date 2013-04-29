@@ -644,7 +644,7 @@ function handleWatched(parent)
 
 	function addFrame()
 	{
-		$("body").append('<div class="movable" id="watcher_box" \
+		$('body').append('<div class="movable" id="watcher_box" \
 			style="border: solid 1px; position: absolute; top: '+localStorage.getItem("w_box_y")+'px; left: '+localStorage.getItem("w_box_x")+'px; width: 250px; height: 150px; \
 			background: rgba(241, 225, 215, 0.5);"> \
 			<span style="font-size:20px; display: block; text-align: center; background: #ffccaa;">Watched Threads</span> \
@@ -667,17 +667,37 @@ function handleWatched(parent)
 	
 	$('#watcher_box').drags();
 	addWatchButton(parent);
-
-	
 }
 
 function addToWatched(id)
 {
 
-	localStorage.setItem("wt"+id, "1");
+	function getPost(id)
+	{
+		return $.ajax({url: './res/'+id+'.html'});
+	}
 
-	$('#watched_list').append('<li id="wl'+id+'" style="display:none;">Thread: '+id+'</li>');
-	$('#wl'+id).fadeIn();
+	var numberOfPosts = getPost(id);
+
+	numberOfPosts.success(function (data) {
+		if (localStorage.getItem("wt"+id) === null) {
+			localStorage.setItem("wt"+id, "1/" + ($(data).find('.postContainer')).length + "/" + ($(data).find('.postContainer img')).length );
+			var ommited_threads = 0;
+			var ommited_images = 0;
+		}
+		else
+		{
+			var localData = localStorage.getItem('wt'+id);
+			var localData = localData.split("/");
+
+			var ommited_threads = ($(data).find('.postContainer')).length - localData[1];
+			var ommited_images = ($(data).find('.postContainer img')).length - localData[2];
+		}
+		
+		$('#watched_list').append('<li id="wl'+id+'" style="display:none;">(<span id="wlp">'+ommited_threads+'</span>) [<span id="wli">'+ommited_images+'</span>] <a href="./res/'+id+'.html">'+id+'</a> '+$('#pi'+id+' .subject').text()+'</li>');
+		$('#wl'+id).fadeIn();
+	});
+
 }
 
 function removeFromWatched(id)
