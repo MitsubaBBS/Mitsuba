@@ -4,7 +4,7 @@ function rebuildBoardCache($conn, $board)
 {
 generateView($conn, $board);
 updateThreads($conn, $board);
-//regenIDs($conn, $board);
+regenIDs($conn, $board);
 }
 
 function regenIDs($conn, $board)
@@ -18,16 +18,17 @@ function regenIDs($conn, $board)
 			while ($row = $result->fetch_assoc())
 			{
 				$poster_id = "";
-				if ($row['resto'] != 0)
+				if (empty($row['poster_id']))
 				{
-					$poster_id = mkid($row['ip'], $row['resto'], $board);
-				} else {
-					$poster_id = mkid($row['ip'], $row['id'], $board);
+					if ($row['resto'] != 0)
+					{
+						$poster_id = mkid($row['ip'], $row['resto'], $board);
+					} else {
+						$poster_id = mkid($row['ip'], $row['id'], $board);
+					}
+					$conn->query("UPDATE posts SET poster_id='".$poster_id."' WHERE id=".$row['id']." AND board='".$board."'");
 				}
-				$conn->query("UPDATE posts SET poster_id='".$poster_id."' WHERE id=".$row['id']." AND board='".$board."'");
 			}
-		} else {
-			$conn->query("UPDATE posts SET poster_id='' WHERE board='".$board."'");
 		}
 	}
 }
