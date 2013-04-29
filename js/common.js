@@ -650,9 +650,9 @@ function handleWatched(parent)
 	function addFrame()
 	{
 		$('body').append('<div class="movable" id="watcher_box" \
-			style="border: solid 1px; position: absolute; top: '+localStorage.getItem("w_box_y")+'px; left: '+localStorage.getItem("w_box_x")+'px; width: 250px; height: 150px; \
-			background: rgba(241, 225, 215, 0.5);"> \
-			<span style="font-size:20px; display: block; text-align: center; background: #ffccaa;">Watched Threads</span> \
+			style="border: solid 1px; position: absolute; top: '+localStorage.getItem("w_box_y")+'px; left: '+localStorage.getItem("w_box_x")+'px; \
+			width: 250px; height: 50px; background: rgba(241, 225, 215, 0.5);"> \
+			<span style="font-size:20px; display: block; text-align: center; background: #ffccaa;" id="watcher_title">Watched Threads</span> \
 			<ul id="watched_list"></ul>');
 	}
 
@@ -671,6 +671,11 @@ function handleWatched(parent)
 
 	addFrame();
 	loadWatched();
+
+	$('#watcher_title').dblclick(function()
+	{
+		refreshWatched();
+	});
 	
 	$('#watcher_box').drags();
 	addWatchButton(parent);
@@ -686,6 +691,11 @@ function updateOmmited()
 	var numberOfImages = ($('html').find('.postContainer img')).length;
 
 	localStorage.setItem("wt_"+board_name+"_"+id, "1/" + numberOfPosts + "/" + numberOfImages );
+}
+
+function refreshWatched()
+{
+	// To do
 }
 
 function addToWatched(board, id)
@@ -715,6 +725,9 @@ function addToWatched(board, id)
 
 		$('#watched_list').append('<li id="wl_'+board+'_'+id+'" style="display:none;">(<span id="wlp">'+ommited_threads+'</span>) [<span id="wli">'+ommited_images+'</span>] \
 			<a href="../'+board+'/res/'+id+'.html">&gt;&gt;/'+board+'/'+id+'</a> '+$('#pi'+id+' .subject').text()+'</li>');
+
+		$('#wl_'+board+'_'+id).dblclick(function(){removeFromWatched(board,id);});
+		$("#watcher_box").animate({height: '+=25px'}, '500', 'linear');
 		$('#wl_'+board+'_'+id).fadeIn();
 	});
 
@@ -723,6 +736,7 @@ function addToWatched(board, id)
 function removeFromWatched(board, id)
 {
 	localStorage.removeItem("wt_"+board+"_"+id);
+	$("#watcher_box").animate({height: '-=25px'}, '500', 'linear');
 	$('#wl_'+board+'_'+id).fadeOut(function(){$('#wl_'+board+'_'+id).remove();});
 }
 
