@@ -51,6 +51,10 @@ $(document).ready(function () {
 		{
 			addThreadUpdater();
 		}
+
+		/* Resetting ommited posts and images counters */
+		updateOmmited();
+
 	}
 	
 	addStylechanger();
@@ -667,6 +671,17 @@ function handleWatched(parent)
 	
 	$('#watcher_box').drags();
 	addWatchButton(parent);
+}
+
+function updateOmmited()
+{
+	var id = window.location.pathname;
+	id = id.match(/\d+/g);
+
+	var numberOfPosts = ($('html').find('.postContainer')).length;
+	var numberOfImages = ($('html').find('.postContainer img')).length;
+
+	localStorage.setItem("wt"+id, "1/" + numberOfPosts + "/" + numberOfImages );
 }
 
 function addToWatched(id)
