@@ -630,10 +630,11 @@ function addWatchButton(parent)
 	});
 	$(parent).find(".watcher").click(function () {
 		var id = $(this).attr("id").substr(3);
-		if ($('#wl'+id).length == 0)
-			addToWatched(id);
+		var board = $('#boardname').text();
+		if ($('#wl_'+board+'_'+id).length == 0)
+			addToWatched(board, id);
 		else
-			removeFromWatched(id);
+			removeFromWatched(board, id);
 
 	});
 }
@@ -661,7 +662,9 @@ function handleWatched(parent)
 		{
 			if (key.substring(0, 2) == "wt")
 			{
-				addToWatched(key.substring(2));
+				var board = key.split("_")[1];
+				var id = key.split("_")[2];
+				addToWatched(board, id);
 			}
 		}
 	}
@@ -678,47 +681,49 @@ function updateOmmited()
 	var id = window.location.pathname;
 	id = id.match(/\d+/g);
 
+	var board_name = $('#boardname').text();
 	var numberOfPosts = ($('html').find('.postContainer')).length;
 	var numberOfImages = ($('html').find('.postContainer img')).length;
 
-	localStorage.setItem("wt"+id, "1/" + numberOfPosts + "/" + numberOfImages );
+	localStorage.setItem("wt_"+board_name+"_"+id, "1/" + numberOfPosts + "/" + numberOfImages );
 }
 
-function addToWatched(id)
+function addToWatched(board, id)
 {
 
-	function getPost(id)
+	function getPost(board, id)
 	{
-		return $.ajax({url: './res/'+id+'.html'});
+		return $.ajax({url: '../'+board+'/res/'+id+'.html'});
 	}
 
-	var numberOfPosts = getPost(id);
+	var numberOfPosts = getPost(board, id);
 
 	numberOfPosts.success(function (data) {
-		if (localStorage.getItem("wt"+id) === null) {
-			localStorage.setItem("wt"+id, "1/" + ($(data).find('.postContainer')).length + "/" + ($(data).find('.postContainer img')).length );
+		if (localStorage.getItem("wt_"+board+"_"+id) === null) {
+			localStorage.setItem("wt_"+board+"_"+id, "1/" + ($(data).find('.postContainer')).length + "/" + ($(data).find('.postContainer img')).length );
 			var ommited_threads = 0;
 			var ommited_images = 0;
 		}
 		else
 		{
-			var localData = localStorage.getItem('wt'+id);
+			var localData = localStorage.getItem("wt_"+board+"_"+id);
 			var localData = localData.split("/");
 
 			var ommited_threads = ($(data).find('.postContainer')).length - localData[1];
 			var ommited_images = ($(data).find('.postContainer img')).length - localData[2];
 		}
-		
-		$('#watched_list').append('<li id="wl'+id+'" style="display:none;">(<span id="wlp">'+ommited_threads+'</span>) [<span id="wli">'+ommited_images+'</span>] <a href="./res/'+id+'.html">'+id+'</a> '+$('#pi'+id+' .subject').text()+'</li>');
-		$('#wl'+id).fadeIn();
+
+		$('#watched_list').append('<li id="wl_'+board+'_'+id+'" style="display:none;">(<span id="wlp">'+ommited_threads+'</span>) [<span id="wli">'+ommited_images+'</span>] \
+			<a href="../'+board+'/res/'+id+'.html">&gt;&gt;/'+board+'/'+id+'</a> '+$('#pi'+id+' .subject').text()+'</li>');
+		$('#wl_'+board+'_'+id).fadeIn();
 	});
 
 }
 
-function removeFromWatched(id)
+function removeFromWatched(board, id)
 {
-	localStorage.removeItem("wt"+id);
-	$('#wl'+id).fadeOut(function(){$('#wl'+id).remove();});
+	localStorage.removeItem("wt_"+board+"_"+id);
+	$('#wl_'+board+'_'+id).fadeOut(function(){$('#wl_'+board+'_'+id).remove();});
 }
 
 /* 
