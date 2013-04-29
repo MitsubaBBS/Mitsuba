@@ -423,6 +423,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		} else {
 			$file .= '<img class="title" src=".'.$randomImage.'" alt="Mitsuba" />';
 		}
+		$file .= '<div id="boardname" style="display: none;">'.$boarddata['short'].'</div>';
 		$file .= '<div class="boardTitle">/'.$boarddata['short'].'/ - '.$boarddata['name'].'</div>';
 		$file .= '<div class="boardSubtitle">'.$boarddata['des'].'</div>';
 		$file .= '</div>';
