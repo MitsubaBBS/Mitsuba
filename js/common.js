@@ -695,7 +695,29 @@ function updateOmmited()
 
 function refreshWatched()
 {
-	// To do
+	for (var key in localStorage)
+		{
+			if (key.substring(0, 2) == "wt")
+			{
+				var board = key.split("_")[1];
+				var id = key.split("_")[2];
+				var numberOfPosts = getPost(board, id);
+			}
+		}
+
+	function getPost(board, id)
+	{
+		$.get('../'+board+'/res/'+id+'.html', function(data) {
+  			var localData = localStorage.getItem("wt_"+board+"_"+id);
+			var localData = localData.split("/");
+
+			var ommited_threads = ($(data).find('.postContainer')).length - localData[1];
+			var ommited_images = ($(data).find('.postContainer img')).length - localData[2];
+
+			$('#wl_'+board+'_'+id+' .wlp').html(ommited_threads+'');
+			$('#wl_'+board+'_'+id+' .wli').html(ommited_images+'');
+		});
+	}
 }
 
 function addToWatched(board, id)
@@ -723,7 +745,7 @@ function addToWatched(board, id)
 			var ommited_images = ($(data).find('.postContainer img')).length - localData[2];
 		}
 
-		$('#watched_list').append('<li id="wl_'+board+'_'+id+'" style="display:none;">(<span id="wlp">'+ommited_threads+'</span>) [<span id="wli">'+ommited_images+'</span>] \
+		$('#watched_list').append('<li id="wl_'+board+'_'+id+'" style="display:none;">(<span class="wlp">'+ommited_threads+'</span>) [<span class="wli">'+ommited_images+'</span>] \
 			<a href="../'+board+'/res/'+id+'.html">&gt;&gt;/'+board+'/'+id+'</a> '+$('#pi'+id+' .subject').text()+'</li>');
 
 		$('#wl_'+board+'_'+id).dblclick(function(){removeFromWatched(board,id);});
