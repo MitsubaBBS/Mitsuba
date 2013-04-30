@@ -204,7 +204,7 @@ function getQuotelink($conn, $board, $link, $specialchars, $thread)
 				} elseif ($thread == 0) {
 					$return = '<a href="../'.$parts[1].'/" class="quotelink cross">'.$link.'</a>';
 				} else {
-					$return = '<a href="?/board&b='.$parts[1]'" class="quotelink cross">'.$link.'</a>';
+					$return = '<a href="?/board&b='.$parts[1].'" class="quotelink cross">'.$link.'</a>';
 				}
 			}
 			
@@ -881,6 +881,11 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				if (!empty($row2['email'])) {
 					$email_a = '<a href="mailto:'.$row2['email'].'" class="useremail">';
 					$email_b = '</a>';
+				}
+				$poster_id = "";
+				if ((!empty($row2['poster_id'])) && ($boarddata['ids']==1) && ($row2['capcode']<1))
+				{
+					$poster_id = '<span class="posteruid">(ID: '.$row2['poster_id'].')</span>';
 				}
 				if ($row2['capcode'] == 1)
 				{
