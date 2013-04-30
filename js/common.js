@@ -630,7 +630,7 @@ function addWatchButton(parent)
 	});
 	$(parent).find(".watcher").click(function () {
 		var id = $(this).attr("id").substr(3);
-		var board = $('#boardname').text();
+		var board = $('meta[property="og:boardname"]').attr('content');
 		if ($('#wl_'+board+'_'+id).length == 0)
 			addToWatched(board, id);
 		else
@@ -686,10 +686,9 @@ function updateOmmited()
 	var id = window.location.pathname;
 	id = id.match(/\d+/g);
 
-	var board_name = $('#boardname').text();
+	var board_name = $('meta[property="og:boardname"]').attr('content');
 	var numberOfPosts = ($('html').find('.postContainer')).length;
 	var numberOfImages = ($('html').find('.postContainer img')).length;
-
 	localStorage.setItem("wt_"+board_name+"_"+id, "1/" + numberOfPosts + "/" + numberOfImages );
 }
 

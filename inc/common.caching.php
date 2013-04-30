@@ -347,6 +347,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= "<script type='text/javascript' src='./js/common.js'></script>";
 			$file .= "<script type='text/javascript' src='./js/admin.js'></script>";
 			$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+			$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
 			$file .= "</head><body>";
 			$file .= getBoardLinks($conn, 2);
 		} elseif ($threadno != 0)
@@ -375,6 +376,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= "<script type='text/javascript' src='../../js/jquery.cookie.js'></script>";
 			$file .= "<script type='text/javascript' src='../../js/common.js'></script>";
 			$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+			$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
 			$file .= "</head><body>";
 			$file .= getBoardLinks($conn, 1);
 		} else {
@@ -402,6 +404,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 			$file .= "<script type='text/javascript' src='../js/jquery.cookie.js'></script>";
 			$file .= "<script type='text/javascript' src='../js/common.js'></script>";
 			$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+			$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
 			$file .= "</head><body>";
 			$file .= getBoardLinks($conn, 0);
 		}
@@ -423,7 +426,6 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 		} else {
 			$file .= '<img class="title" src=".'.$randomImage.'" alt="Mitsuba" />';
 		}
-		$file .= '<div id="boardname" style="display: none;">'.$boarddata['short'].'</div>';
 		$file .= '<div class="boardTitle">/'.$boarddata['short'].'/ - '.$boarddata['name'].'</div>';
 		$file .= '<div class="boardSubtitle">'.$boarddata['des'].'</div>';
 		$file .= '</div>';
