@@ -54,6 +54,7 @@ $(document).ready(function () {
 
 		/* Resetting ommited posts and images counters */
 		updateOmmited();
+		addQuotelinks();
 
 	}
 	
@@ -64,6 +65,7 @@ $(document).ready(function () {
 	}
 	if (localStorage.getItem("o_preview") == 1)
 	{
+		$("body").append('<div id="quote-preview" class="post preview" style="display: none; position: absolute; z-index:999;"></div>');
 		addPostpreview("body");
 	}
 	if (localStorage.getItem("o_imgexpand") == 1)
@@ -74,7 +76,6 @@ $(document).ready(function () {
 	{
 
 	}
-	addQuotelinks();
 
 	addSettings();
 });
@@ -257,7 +258,7 @@ function addStylechanger()
 
 function addPostpreview(parent)
 {
-	$("body").append('<div id="quote-preview" class="post preview" style="display: none; position: absolute; z-index:999;"></div>');
+	$(parent).find(".quotelink").off();
 	$(parent).find(".quotelink").mouseenter(function () { showPostPreview(this); });
 	$(parent).find(".quotelink").mouseleave(function () { hidePostPreview(this); });
 }
