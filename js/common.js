@@ -26,7 +26,7 @@ function strStartsWith(str, prefix) {
 
 
 $(document).ready(function () {
-	fillFields();
+	fillFields("body");
 	if ($(".postingMode").length == 0) //outside thread
 	{
 		if (localStorage.getItem("o_expander") == 1)
@@ -48,7 +48,7 @@ $(document).ready(function () {
 		}
 		if (localStorage.getItem("o_fastreply") == 1)
 		{
-			addFastReply("body");
+			addFastReply("body", 0);
 		}
 	} else { //in thread
 		if (localStorage.getItem("o_updater") == 1)
@@ -201,21 +201,21 @@ function addSettings()
 	});
 }
 
-function fillFields()
+function fillFields(parent)
 {
 	if (typeof $.cookie("mitsuba_name") !== "undefined")
 	{
-		$("input[name='name']").val($.cookie("mitsuba_name"));
+		$(parent).find("input[name='name']").val($.cookie("mitsuba_name"));
 	}
 	
 	if (typeof $.cookie("mitsuba_email") !== "undefined")
 	{
-		$("input[name='email']").val($.cookie("mitsuba_email"));
+		$(parent).find("input[name='email']").val($.cookie("mitsuba_email"));
 	}
 	
 	if (typeof $.cookie("mitsuba_fakeid") !== "undefined")
 	{
-		$("input[name='fake_id']").val($.cookie("mitsuba_fakeid"));
+		$(parent).find("input[name='fake_id']").val($.cookie("mitsuba_fakeid"));
 	}
 }
 
@@ -260,17 +260,25 @@ function addStylechanger()
 	
 }
 
-function addFastReply(parent)
+function addFastReply(parent, thread)
 {
-	$(parent).find(".thread").each(function () {
+	if (thread == 1)
+	{
+		var jq = $(parent);
+	} else {
+		var jq = $(parent).find(".thread");
+	}
+	$(jq).each(function () {
 		$(this).append('<div class="postContainer replyContainer"> \
 		<div class="sideArrows">&gt;&gt;</div> \
 		<form action="../imgboard.php" method="post" enctype="multipart/form-data"> \
 		<div class="post reply" style="display: inline-block;"> \
+		<input type="hidden" name="MAX_FILE_SIZE" value="2097152" /><input type="hidden" name="mode" value="regist" /> \
+		<input name="board" type="hidden" value="'+$('meta[property="og:boardname"]').attr('content')+'" /> \
+		<input name="resto" type="hidden" value="'+$(this).attr('id').substr(1)+'" /> \
 		<blockquote> \
 		<textarea name="com" class="fastReply" cols=35 rows=5 ></textarea><br /> \
 		<input name="upfile" type="file" style="display: none;"> \
-		<input name="board" type="hidden" value="'+$('meta[property="og:boardname"]').attr('content')+'" /> \
 		</blockquote> \
 		</div> \
 		<div style="display: inline-block;" class="leftFields"> \
@@ -282,6 +290,7 @@ function addFastReply(parent)
 		</div> \
 		</form> \
 		</div>');
+		fillFields(this);
 		var fields = $(this).find(".leftFields")[0];
 		$(fields).css("display", "none");
 		$(this).find(".fastReply").click(function () {
@@ -371,6 +380,10 @@ function addThreadExpander(parent)
 				if (localStorage.getItem("o_watched") == 1)
 				{
 					addWatchButton(tid);
+				}
+				if (localStorage.getItem("o_fastreply") == 1)
+				{
+					addFastReply(tid, 1);
 				}
 				}
 			});
