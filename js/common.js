@@ -46,6 +46,10 @@ $(document).ready(function () {
 		{
 			addLoader();
 		}
+		if (localStorage.getItem("o_fastreply") == 1)
+		{
+			addFastReply("body");
+		}
 	} else { //in thread
 		if (localStorage.getItem("o_updater") == 1)
 		{
@@ -71,10 +75,6 @@ $(document).ready(function () {
 	if (localStorage.getItem("o_imgexpand") == 1)
 	{
 		addImgExpand("body");
-	}
-	if (localStorage.getItem("o_fastreply") == 1)
-	{
-
 	}
 
 	addSettings();
@@ -112,6 +112,10 @@ function addLoader()
 					if (localStorage.getItem("o_preview") == 1)
 					{
 						addPostpreview("#b"+currentPage);
+					}
+					if (localStorage.getItem("o_fastreply") == 1)
+					{
+						addFastReply("#b"+currentPage);
 					}
 					if (localStorage.getItem("o_imgexpand") == 1)
 					{
@@ -254,6 +258,43 @@ function addStylechanger()
 	});
 	
 	
+}
+
+function addFastReply(parent)
+{
+	$(parent).find(".thread").each(function () {
+		$(this).append('<div class="postContainer replyContainer"> \
+		<div class="sideArrows">&gt;&gt;</div> \
+		<form action="../imgboard.php" method="post" enctype="multipart/form-data"> \
+		<div class="post reply" style="display: inline-block;"> \
+		<blockquote> \
+		<textarea name="com" class="fastReply" cols=35 rows=5 ></textarea><br /> \
+		<input name="upfile" type="file" style="display: none;"> \
+		<input name="board" type="hidden" value="'+$('meta[property="og:boardname"]').attr('content')+'" /> \
+		</blockquote> \
+		</div> \
+		<div style="display: inline-block;" class="leftFields"> \
+		<input type="text" placeholder="Name" name="name" /> <br /> \
+		<input type="text" placeholder="E-mail" name="email" /> <br /> \
+		<input type="text" placeholder="Subject" name="sub" /> <br /> \
+		<input type="password" placeholder="Password" name="pwd" maxlength="8"> \
+		<input type="submit" value="Submit" /> \
+		</div> \
+		</form> \
+		</div>');
+		var fields = $(this).find(".leftFields")[0];
+		$(fields).css("display", "none");
+		$(this).find(".fastReply").click(function () {
+			$(fields).css({
+				opacity: 0,
+				display: 'inline-block'     
+			}).animate({opacity:1},600);
+			$(this).siblings("input").css({
+				opacity: 0,
+				display: 'inline-block'     
+			}).animate({opacity:1},600);
+		});
+	});
 }
 
 function addPostpreview(parent)
