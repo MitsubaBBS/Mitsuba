@@ -232,7 +232,7 @@ function urlCallback($match)
 	}
 }
 
-function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm_type = 0)
+function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm_type = 0, $overboard = 0)
 {
 	global $lang;
 	$config = getConfig($conn);
@@ -1086,6 +1086,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			$file .= '</div>';
 			$file .= '</div>';
 		}
+		$file .= '<div style="text-align: center; font-size: x-small!important; padding-bottom: 4px; padding-top: 10px; color: #333;"><span class="absBotDisclaimer">- <a href="http://github.com/MitsubaBBS/Mitsuba" target="_top" rel="nofollow">mitsuba</a> -</span></div>';
 		$file .= '<div id="bottom"></div>';
 		$file .= "</body></html>";
 		if ($return != 1)
