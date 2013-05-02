@@ -1293,7 +1293,7 @@ function generateFrontpage($conn)
 		$handle = fopen("./".$config['frontpage_menu_url'], "w");
 		fwrite($handle, $menu);
 		fclose($handle);
-	} elseif ($config['frontpage_style'] == 1) //2chan.tk style
+	} elseif ($config['frontpage_style'] == 1) //4chan style
 	{
 		
 		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -1335,11 +1335,11 @@ function generateFrontpage($conn)
 				if (!empty($child['url_index']))
 				{
 					$file .= '<li>
-						<a class="boardlink" href="'.$child['url_index'].'" title="'.$child['title'].'">/'.$child['short'].'/ - '.$child['title'].'</a>
+						<a class="boardlink" href="'.$child['url_index'].'" title="'.$child['title'].'">'.$child['title'].'</a>
 					</li>';
 				} else {
 					$file .= '<li>
-						<a class="boardlink" href="'.$child['url'].'" title="'.$child['title'].'">/'.$child['short'].'/ - '.$child['title'].'</a>
+						<a class="boardlink" href="'.$child['url'].'" title="'.$child['title'].'">'.$child['title'].'</a>
 					</li>';
 				}
 			}
