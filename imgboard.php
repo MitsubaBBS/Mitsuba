@@ -94,6 +94,7 @@ if (!empty($_POST['mode']))
 			}
 			if ($mod_type < 1)
 			{
+				$clean_text = 
 				$spam = $conn->query("SELECT * FROM spamfilter WHERE active=1");
 				while ($row = $spam->fetch_assoc())
 				{

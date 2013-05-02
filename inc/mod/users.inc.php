@@ -15,16 +15,10 @@ reqPermission(2);
 <?php echo $lang['mod/type']; ?>: <select name="type"><option value="0"><?php echo $lang['mod/janitor']; ?></option><option value="1"><?php echo $lang['mod/moderator']; ?></option><option value="2"><?php echo $lang['mod/administrator']; ?></option></select>
 
 <br /><br />
-<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
-<select name="boards[]" id="boardSelect" multiple>
 <?php
-$result = $conn->query("SELECT * FROM boards;");
-while ($row = $result->fetch_assoc())
-{
-echo "<option onClick='document.getElementById(\"all\").checked=false;' value='".$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
-}
+getBoardList($conn);
 ?>
-</select><br />
+<br />
 <input type="submit" value="<?php echo $lang['mod/add_user']; ?>" />
 </form>
 </div>

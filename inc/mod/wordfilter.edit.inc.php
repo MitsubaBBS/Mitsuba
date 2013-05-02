@@ -21,36 +21,7 @@ reqPermission(2);
 <?php echo $lang['mod/wf_search']; ?>: <input type="text" name="search" value="<?php echo htmlspecialchars($info['search']); ?>"/><br />
 <?php echo $lang['mod/wf_replace']; ?>: <input type="text" name="replace" value="<?php echo htmlspecialchars($info['replace']); ?>"/><br />
 <br /><br />
-<?php
-if ($info['boards'] == "*")
-{
-?>
-<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1 checked/> <?php echo $lang['mod/all']; ?><br/>
-<select name="boards[]" id="boardSelect" multiple style="display: none;">
-<?php
-} else {
-?>
-<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
-<select name="boards[]" id="boardSelect" multiple>
-<?php
-}
-?>
-<?php
-$boards = explode(",", $info['boards']);
-$result = $conn->query("SELECT * FROM boards;");
-while ($row = $result->fetch_assoc())
-{
-$checked = "";
-if ($boards !== "*")
-{
-	if (in_array($boards, $row['short']))
-	{
-		$checked = " checked ";
-	}
-}
-echo "<option onClick='document.getElementById(\"all\").checked=false;' value='".$row['short']."'".$checked.">/".$row['short']."/ - ".$row['name']."</option>";
-}
-?>
+<?php getBoardList($conn, $info['boards']); ?>
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>

@@ -75,35 +75,9 @@ switch ($data['type'])
 
 <br /><br />
 <?php
-if ($boards == "*")
-{
+getBoardList($conn, $boards);
 ?>
-<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1 checked/> <?php echo $lang['mod/all']; ?><br/>
-<select name="boards[]" id="boardSelect" multiple style="display: none;">
-<?php
-} else {
-?>
-<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
-<select name="boards[]" id="boardSelect" multiple>
-<?php
-}
-?>
-<?php
-$result = $conn->query("SELECT * FROM boards;");
-while ($row = $result->fetch_assoc())
-{
-$checked = "";
-if ($boards !== "*")
-{
-	if (in_array($boards, $row['short']))
-	{
-		$checked = " checked ";
-	}
-}
-echo "<option onClick='document.getElementById(\"all\").checked=false;' value='".$row['short']."'".$checked.">/".$row['short']."/ - ".$row['name']."</option>";
-}
-?>
-</select><br />
+<br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 </div>

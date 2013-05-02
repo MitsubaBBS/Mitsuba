@@ -35,21 +35,7 @@ if (empty($_GET['r']))
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" /><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />
-<?php
-if ($_SESSION['type']>=1) {
-?>
-<?php echo $lang['mod/expires_eg']; ?>: <input type="text" name="expires" /><br />
-<br /><br />
-<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
-<select name="boards[]" id="boardSelect" multiple>
-<?php
-$result = $conn->query("SELECT * FROM boards;");
-while ($row = $result->fetch_assoc())
-{
-echo "<option value='".$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
-}
-?>
-</select><br />
+<?php getBoardList($conn); ?><br />
 <br />
 <?php
 }
@@ -219,16 +205,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" value="<?php echo $request['note']; ?>"/><br />
 <?php echo $lang['mod/expires_eg']; ?>: <input type="text" name="expires" /><br />
 <br /><br />
-<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
-<select name="boards[]" id="boardSelect" multiple>
-<?php
-$result = $conn->query("SELECT * FROM boards;");
-while ($row = $result->fetch_assoc())
-{
-echo "<option value='".$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
-}
-?>
-</select><br />
+<?php getBoardList($conn); ?><br />
 <br />
 <?php
 if (!empty($postinfo))

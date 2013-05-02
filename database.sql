@@ -275,7 +275,10 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('news_url', 'news.html'),
 ('sitename', 'Mitsuba'),
 ('enable_api', '0'),
-('enable_rss', '0');
+('enable_rss', '0'),
+('overboard_enabled', '0'),
+('overboard_boards', ''),
+('overboard_name', '*');
 
 INSERT INTO `embeds` (`name`, `regex`, `code`) VALUES
 ('dailymotion', '/http(s)?:\\/\\/(www\\.)?dailymotion\\.com\\/video\\/([^&]+)/', '<iframe width="%1$s" height=""%1$s" src="http://www.dailymotion.com/embed/video/"%4$s" frameborder="0" allowfullscreen></iframe>'),

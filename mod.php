@@ -22,6 +22,42 @@ include("inc/admin.boards.php");
 include("inc/admin.boards.links.php");
 include("inc/common.plugins.php");
 
+function getBoardList($conn, $boards = "")
+{
+	<?php
+	if ($boards == "*")
+	{
+	?>
+	<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1 checked/> <?php echo $lang['mod/all']; ?><br/>
+	<select name="boards[]" id="boardSelect" multiple style="display: none;">
+	<?php
+	} else {
+	?>
+	<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
+	<select name="boards[]" id="boardSelect" multiple>
+	<?php
+	}
+	?>
+	<?php
+	if (($boards != "*") && ($boards != "")) { $boards = substr($boards, 0, strlen($boards) - 1); }
+	$result = $conn->query("SELECT * FROM boards;");
+	while ($row = $result->fetch_assoc())
+	{
+	$checked = "";
+	if (($boards !== "*") && ($boards !== ""))
+	{
+		if (in_array($boards, $row['short']))
+		{
+			$checked = " checked ";
+		}
+	}
+	echo "<option onClick='document.getElementById(\"all\").checked=false;' value='".$row['short']."'".$checked.">/".$row['short']."/ - ".$row['name']."</option>";
+	}
+	?>
+	</select>
+	<?php
+}
+
 function logAction($conn, $text)
 {
 	$text = $conn->real_escape_string($text);
