@@ -4,7 +4,7 @@
 }
 
 #logo {
-    background: url('/image/fp/logo.png') top left no-repeat;
+    background: #FFFFEE url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADICAIAAACmkByiAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QQWExgT+kPPfAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAbUlEQVQoz91QyxXAMAgC95+ks3Qne0jS4CeHXnvw5UEEFfh9GYBvRcrLyL14ci59XHozwHs9Re8ceOnA5MW0k/BFg+afe45Jf9BM7+KRfXIOJ14wE9bsyo3cmao30WTceZ/4dE93b9ipyf6/9QBWzwl7ArfscgAAAABJRU5ErkJggg==) top center repeat-x;
     font-size: 1px;
     line-height: 0;
     height: 120px;
