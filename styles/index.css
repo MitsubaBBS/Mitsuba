@@ -85,12 +85,11 @@ body {
 }
 
 #doc,#doc2,#doc3,#doc4,.yui-t1,.yui-t2,.yui-t3,.yui-t4,.yui-t5,.yui-t6,.yui-t7 {
-    text-align: left;
-	width: auto;
-    *width: 56.301em;
-	min-width: 750px;
-	margin-left: 5%;
-	margin-right: 5%;
+    margin:auto;
+    text-align:left;
+    width:57.69em;
+    *width:56.301em;
+    min-width:750px;
 	display: table;
 }
 
