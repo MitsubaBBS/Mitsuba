@@ -121,8 +121,8 @@ div.thread>div:nth-of-type(2)>div.reply {
 }
 
 div.op {
-    background-color: #f1e1d7;
-    border: 1px solid #D9BFB7;
+    background-color: #fffaf0;
+    border: 1px solid #CC8877;
 }
 
 div.reply {
@@ -645,7 +645,7 @@ div.post-hidden:not(#quote-preview) blockquote.postMessage {
 }
 
 textarea {
-	white-space: pre-wrap;
+    white-space: pre-wrap;
 }
 
 div.backlink {
@@ -659,8 +659,8 @@ div.backlink {
 }
 
 .hider {
-	margin-left: 5px!important;
+    margin-left: 5px!important;
 }
 a.expander {
-	margin-left: 5px;
-	}
+    margin-left: 5px;
+    }
