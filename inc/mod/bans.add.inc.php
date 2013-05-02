@@ -35,6 +35,10 @@ if (empty($_GET['r']))
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" /><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />
+<?php
+if ($_SESSION['type']>=1) {
+?>
+<?php echo $lang['mod/expires_eg']; ?>: <input type="text" name="expires" /><br />
 <?php getBoardList($conn); ?><br />
 <br />
 <?php
@@ -173,6 +177,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 </div>
 </div>
 				<?php
+		}
 		}
 		} else {
 			if (is_numeric($_GET['r']))

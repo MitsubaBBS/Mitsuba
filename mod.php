@@ -24,6 +24,7 @@ include("inc/common.plugins.php");
 
 function getBoardList($conn, $boards = "")
 {
+	global $lang;
 	if ($boards == "*")
 	{
 	?>
