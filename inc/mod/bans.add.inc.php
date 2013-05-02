@@ -174,7 +174,6 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 </div>
 				<?php
 		}
-		}
 		} else {
 			if (is_numeric($_GET['r']))
 			{

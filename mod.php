@@ -24,7 +24,6 @@ include("inc/common.plugins.php");
 
 function getBoardList($conn, $boards = "")
 {
-	<?php
 	if ($boards == "*")
 	{
 	?>
