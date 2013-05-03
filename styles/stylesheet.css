@@ -98,11 +98,11 @@ div.opContainer {
 }
 
 div.sideArrows {
-    color: #e0bfb7;
-    float: left;
-    margin-right: 2px;
-    margin-top: 0px;
-    margin-left: 2px;
+	color: #e0bfb7;
+	float: left;
+	margin-right: 2px;
+	margin-top: 0px;
+	margin-left: 22px;
 }
 
 div.thread {
@@ -126,10 +126,12 @@ div.op {
 }
 
 div.reply {
-    background-color: #f0e0d6;
-    border: 1px solid #D9BFB7;
-    display: table;
-    padding: 2px;
+	background-color: #f0e0d6;
+	border: 1px solid #D9BFB7;
+	display: table;
+	padding: 2px;
+	margin-left: 40px;
+	margin-right: 25%;
 }
 
 div.reply input {
