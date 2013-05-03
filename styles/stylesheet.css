@@ -131,6 +131,7 @@ div.reply {
 	display: table;
 	padding: 2px;
 	margin-left: 40px;
+	margin-right: 25%;
 }
 
 div.reply input {
