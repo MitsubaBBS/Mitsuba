@@ -29,6 +29,10 @@ $(document).ready(function () {
 	fillFields("body");
 	if ($(".postingMode").length == 0) //outside thread
 	{
+		if (localStorage.getItem("o_fastreply") == 1)
+		{
+			addFastReply("body", 0);
+		}
 		if (localStorage.getItem("o_expander") == 1)
 		{
 			addThreadExpander("body");
@@ -46,10 +50,7 @@ $(document).ready(function () {
 		{
 			addLoader();
 		}
-		if (localStorage.getItem("o_fastreply") == 1)
-		{
-			addFastReply("body", 0);
-		}
+		
 	} else { //in thread
 		if (localStorage.getItem("o_updater") == 1)
 		{
