@@ -73,6 +73,7 @@ reqPermission(2);
 			}
 			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars) > 0)
 			{
+				logAction($conn, sprintf($lang['log/added_board'], $conn->real_escape_string($_POST['short'])));
 				?>
 							<div class="box-outer top-box">
 <div class="box-inner">

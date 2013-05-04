@@ -17,6 +17,7 @@ reqPermission(2);
 			{
 				rebuildBoardCache($conn, $row['short']);
 			}
+			logAction($conn, $lang['log/rebuilt_cache']);
 		}
 		
 		if ((!empty($_POST['thumbs'])) && ($_POST['thumbs']==1))
@@ -26,6 +27,7 @@ reqPermission(2);
 			{
 				regenThumbnails($conn, $row['short']);
 			}
+			logAction($conn, $lang['log/rebuilt_thumbs']);
 		}
 		
 		if ((!empty($_POST['static'])) && ($_POST['static']==1))

@@ -12,7 +12,6 @@ To install Mitsuba you'll have to:
 Planned features
 ----------------
 
-* logging actions
 * reCaptcha support
 * catalog feature (like 4chan)
 

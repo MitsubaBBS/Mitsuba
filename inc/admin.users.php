@@ -77,7 +77,8 @@ function isUser($conn, $id)
 	$result = $conn->query("SELECT * FROM users WHERE id=".$conn->real_escape_string($id));
 	if ($result->num_rows == 1)
 	{
-		return 1;
+		$row = $result->fetch_assoc();
+		return $row['username'];
 	} else {
 		return 0;
 	}

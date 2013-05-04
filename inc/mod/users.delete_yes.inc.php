@@ -7,9 +7,10 @@ reqPermission(2);
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 			$id = $_GET['id'];
-			if (isUser($conn, $id))
+			if ($username = isUser($conn, $id))
 			{
 				delUser($conn, $id);
+				logAction($conn, sprintf($lang['log/deleted_user'], $username));
 					?>
 								<div class="box-outer top-box">
 <div class="box-inner">

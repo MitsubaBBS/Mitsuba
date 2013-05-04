@@ -10,6 +10,7 @@ reqPermission(2);
 			if (isBoard($conn, $board))
 			{
 				deleteBoard($conn, $board);
+				logAction($conn, sprintf($lang['log/deleted_board'], $board));
 					?>
 								<div class="box-outer top-box">
 <div class="box-inner">

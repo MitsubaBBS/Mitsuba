@@ -7,7 +7,7 @@ reqPermission(2);
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 			$id = $_GET['id'];
-			if (isUser($conn, $id))
+			if ($username = isUser($conn, $id))
 			{
 				if ((!empty($_POST['username'])) && (is_numeric($_POST['type'])))
 				{
@@ -28,6 +28,11 @@ reqPermission(2);
 							$board = "*";
 						}
 					}
+					if ($username != $_POST['username'])
+					{
+						logAction($conn, sprintf($lang['log/changed_username'], $username, $_POST['username']));
+					}
+					logAction($conn, sprintf($lang['log/edited_user'], $username));
 					if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
 					updateUser($conn, $id, $_POST['username'], $_POST['password'], $_POST['type'], $boards);
 					?>

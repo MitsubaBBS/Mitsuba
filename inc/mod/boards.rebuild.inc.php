@@ -7,6 +7,7 @@ reqPermission(1);
 		if ((!empty($_GET['board'])) && (isBoard($conn, $_GET['board'])))
 		{
 			rebuildBoardCache($conn, $_GET['board']);
+			logAction($conn, sprintf($lang['log/rebuilt_board'], $conn->real_escape_string($_GET['board'])));
 		?>
 							<div class="box-outer top-box">
 <div class="box-inner">

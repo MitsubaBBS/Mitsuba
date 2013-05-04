@@ -286,6 +286,7 @@ $lang['mod/wf_replace'] = "Replace"; //wordfilter
 $lang['mod/wf_add'] = "Add wodrfilter";
 $lang['mod/wf_edit'] = "Edit wordfilter";
 $lang['mod/show_file'] = "Show file";
-
+$lang['mod/user'] = "User";
+$lang['mod/action'] = "Action";
 //$lang['mod/'] = "";
 ?>

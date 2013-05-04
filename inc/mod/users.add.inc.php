@@ -7,6 +7,7 @@ reqPermission(2);
 		if ((!empty($_POST['username'])) && (!empty($_POST['password'])) && (is_numeric($_POST['type'])))
 		{
 			$type = $_POST['type'];
+
 			if (empty($type)) { $type = 0; }
 			$boards = "";
 			if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
@@ -27,6 +28,7 @@ reqPermission(2);
 			$result = addUser($conn, $_POST['username'], $_POST['password'], $type, $boards);
 			if ($result == 1)
 			{
+				logAction($conn, sprintf($lang['log/user_added'], $conn->real_escape_string($_POST['username'])));
 			?>
 								<div class="box-outer top-box">
 <div class="box-inner">

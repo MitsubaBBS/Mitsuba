@@ -9,6 +9,7 @@ reqPermission(2);
 			if (!empty($_POST['new']))
 			{
 				$result = moveBoard($conn, $_GET['board'], $_POST['new']);
+				logAction($conn, sprintf($lang['log/moved_board'], $conn->real_escape_string($_GET['board']), $conn->real_escape_string($_POST['new'])));
 				if($result == 1)
 				{
 				?>

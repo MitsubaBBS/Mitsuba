@@ -11,6 +11,7 @@ include("config.php");
 include("version.php");
 include("inc/strings/mod.strings.php");
 include("inc/strings/imgboard.strings.php");
+include("inc/strings/log.strings.php");
 include("inc/common.php");
 include("inc/common.caching.php");
 include("inc/common.posting.php");
@@ -60,6 +61,7 @@ function getBoardList($conn, $boards = "")
 
 function logAction($conn, $text)
 {
+	$conn->query("DELETE FROM log WHERE date<".(time()-(60*60*24*7)));
 	$text = $conn->real_escape_string($text);
 	$conn->query("INSERT INTO log (date, event, mod_id) VALUES (".time().", '".$text."', ".$_SESSION['id'].")");
 }
@@ -172,6 +174,11 @@ if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && ((
 <?php
 }
 $conn = new mysqli($db_host, $db_username, $db_password, $db_database);
+if (($_SESSION['logged_in']==1) && ($_SESSION['ip']!=$_SERVER['REMOTE_ADDR']))
+{
+	logAction($conn, sprintf($lang['log/ip_changed'], $_SESSION['ip'], $_SERVER['REMOTE_ADDR']));
+	$_SESSION['ip']=$_SERVER['REMOTE_ADDR'];
+}
 loadPlugins($conn);
 switch ($path)
 {
