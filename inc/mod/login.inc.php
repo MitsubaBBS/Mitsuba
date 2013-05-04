@@ -19,7 +19,7 @@ if ((!empty($_POST['username'])) && (!empty($_POST['password'])))
 					$_SESSION['type']=$data['type'];
 					$_SESSION['boards']=$data['boards'];
 					$_SESSION['ip']=$_SERVER['REMOTE_ADDR'];
-					logAction($conn, sprintf($lang['log/logged_in'], $_SERVER['REMOTE_ADDR']);
+					logAction($conn, sprintf($lang['log/logged_in'], $_SERVER['REMOTE_ADDR']));
 					header("Location: ./mod.php");
 				} else {
 					die($lang['mod/bad_password']);

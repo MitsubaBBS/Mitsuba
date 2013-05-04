@@ -174,7 +174,7 @@ if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && ((
 <?php
 }
 $conn = new mysqli($db_host, $db_username, $db_password, $db_database);
-if (($_SESSION['logged_in']==1) && ($_SESSION['ip']!=$_SERVER['REMOTE_ADDR']))
+if ((!empty($_SESSION['logged'])) && ($_SESSION['logged']==1) && ($_SESSION['ip']!=$_SERVER['REMOTE_ADDR']))
 {
 	logAction($conn, sprintf($lang['log/ip_changed'], $_SESSION['ip'], $_SERVER['REMOTE_ADDR']));
 	$_SESSION['ip']=$_SERVER['REMOTE_ADDR'];
