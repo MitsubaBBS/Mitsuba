@@ -49,9 +49,10 @@ sub {
 }
 
 input,textarea,select {
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	margin-right: 3px;
 }
 
 legend {
