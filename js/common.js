@@ -327,11 +327,15 @@ function addBacklinks(parent)
 		//here
 		try {
 			
-		if ($("#bl"+postid).html() == "")
-		{
-			$("#bl"+postid).append("<hr />");
-		}
-		$("#bl"+postid).append("<span><a href='#p"+$(this).parent(".postMessage").attr("id").substr(1)+"' class='quotelink'>>>"+$(this).parent(".postMessage").attr("id").substr(1)+"</a> </span>");
+			if ($("#bl"+postid).html() == "")
+			{
+				$("#bl"+postid).append("<hr />");
+			}
+			var targetid = $(this).parent(".postMessage").attr("id").substr(1);
+			if ("#bl"+postid+" a[data-targetid='"+targetid+"']").length == 0)
+			{
+				$("#bl"+postid).append("<span><a href='#p"+targetid+"' data-targetid='"+targetid+"' class='quotelink'>>>"+targetid+"</a> </span>");
+			}
 		} catch(ex) {
 			
 		}
