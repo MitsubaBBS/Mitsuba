@@ -28,7 +28,8 @@ if ((empty($_POST['db_host'])) || (empty($_POST['db_username'])) || (empty($_POS
 Database host: <input type="text" name="db_host" value="localhost" /><br />
 Database username: <input type="text" name="db_username" /><br />
 Database password: <input type="password" name="db_password" /><br />
-Database <b>name</b>: <input type="text" name="db_name" /><br /><br />
+Database <b>name</b>: <input type="text" name="db_name" /><br />
+<em>(Will be created if not exists)</em><br />
 <hr />
 Admin username: <input type="text" name="username" value="root" /><br />
 Admin password: <input type="text" name="password" value="" /><br />
@@ -45,13 +46,24 @@ Admin password: <input type="text" name="password" value="" /><br />
 	$db_name = $_POST['db_name'];
 	$username = $_POST['username'];
 	$password = $_POST['password'];
-	$conn = new mysqli($db_host, $db_username, $db_password, $db_name);
+	$conn = new mysqli($db_host, $db_username, $db_password);
+	if(!$conn->select_db($db_name)) {
+		if(!$conn->query("CREATE DATABASE ".$db_name)) {
+			$conn->close();
+			$msg = "Could not create database!";
+		} elseif(!$conn->select_db($db_name)) {
+			$conn->close();
+		}
+	}
 	if (!$conn)
 	{
+	if(!isset($msg)) {
+		$msg = "Could not connect to database!";
+	}
 	?>
 	<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2>Could not connect to database!</h2></div>
+<div class="boxbar"><h2><?php echo $msg; ?></h2></div>
 <div class="boxcontent">
 <a href="./install.php">[ BACK ]</a>
 </div>
