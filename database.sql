@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `bans` (
   `id` int(30) NOT NULL AUTO_INCREMENT,
   `ip` varchar(50) NOT NULL,
   `mod_id` int(10) NOT NULL,
-  `reason` varchar(80) NOT NULL,
+  `reason` text NOT NULL,
   `note` text NOT NULL,
   `created` int(30) NOT NULL,
   `expires` int(30) NOT NULL,
@@ -71,12 +71,6 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `maxchars` int(8) NOT NULL,
   `multifile` int(2) NOT NULL,
   PRIMARY KEY (`short`)
-);
-
-CREATE TABLE IF NOT EXISTS `captcha_wordlist` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `word` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `config` (
