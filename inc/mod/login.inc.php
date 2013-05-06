@@ -19,7 +19,7 @@ if ((!empty($_POST['username'])) && (!empty($_POST['password'])))
 					$_SESSION['type']=$data['type'];
 					$_SESSION['boards']=$data['boards'];
 					$_SESSION['ip']=$_SERVER['REMOTE_ADDR'];
-					setcookie('in_mod', '1', 0);
+					$_SESSION['cookie_set']=2;
 					logAction($conn, sprintf($lang['log/logged_in'], $_SERVER['REMOTE_ADDR']));
 					header("Location: ./mod.php");
 				} else {

@@ -7,6 +7,12 @@ header("Location: ./install.php");
 define("IN_MOD", TRUE);
 
 session_start();
+
+if ((!empty($_SESSION['logged'])) && (!empty($_SESSION['cookie_set'])) && ($_SESSION['cookie_set']==2))
+{
+	setcookie('in_mod', '1', 0);
+	$_SESSION['cookie_set']=1;
+}
 include("config.php");
 include("version.php");
 include("inc/strings/mod.strings.php");

@@ -79,6 +79,11 @@ $(document).ready(function () {
 	}
 
 	addSettings();
+
+	if ((typeof $.cookie("in_mod") !== "undefined") && ($.cookie("in_mod")==1))
+	{
+		//here admin stuff
+	}
 });
 
 var currentPage = 0;
