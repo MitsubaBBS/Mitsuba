@@ -189,6 +189,7 @@ switch ($path)
 		include("inc/mod/login.inc.php");
 		break;
 	case "/logout":
+		setcookie('in_mod', '0', time()-86400);
 		session_destroy();
 		header("Location: ./mod.php");
 		break;
