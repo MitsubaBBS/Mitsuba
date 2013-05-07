@@ -463,6 +463,9 @@ switch ($path)
 	case "/spamfilter/edit":
 		include("inc/mod/spamfilter.edit.inc.php");
 		break;
+	case "/outbox":
+		include("inc/mod/outbox.inc.php");
+		break;
 	default:
 		echo runHooks("panel", $path);
 		break;

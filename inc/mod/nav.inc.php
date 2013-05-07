@@ -70,6 +70,7 @@ if ($_SESSION['type'] >= 1)
 <div id="acc" style="">
 <ul>
 <li><a href="?/inbox" target="main"><?php echo $lang['mod/inbox']; ?> (<?php echo $pms; ?>)</a></li>
+<li><a href="?/outbox" target="main"><?php echo $lang['mod/outbox']; ?></a></li>
 <li><a href="?/inbox/new" target="main"><?php echo $lang['mod/send_message']; ?></a></li>
 <li><a href="?/password" target="main"><?php echo $lang['mod/change_password']; ?></a></li>
 </ul></div>

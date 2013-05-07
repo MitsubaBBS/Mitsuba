@@ -21,7 +21,8 @@ if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 <?php echo $lang['mod/from']; ?>: <b><?php echo $row['username']; ?></b><br />
 <?php echo $lang['mod/title']; ?>: <b><?php echo $row['title']; ?></b><br />
 <?php echo $lang['mod/text']; ?>:<br />
-<?php echo $row['text']; ?><br />
+<?php echo $row['text']; ?><br /><br />
+<a href="?/inbox/new&id=<?php $_GET['id']; ?>">[ <?php echo $lang['mod/reply']; ?> ]</a>
 </div>
 </div>
 </div>
