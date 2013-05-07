@@ -5,7 +5,7 @@ if (!defined("IN_MOD"))
 }
 if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
-		$result = $conn->query("SELECT users.username, pm.* FROM pm LEFT JOIN users ON pm.from_user=users.id WHERE pm.to_user=".$_SESSION['id']." AND pm.id=".$_GET['id']);
+		$result = $conn->query("SELECT users.username, pm.* FROM pm LEFT JOIN users ON pm.from_user=users.id WHERE (pm.to_user=".$_SESSION['id']." OR pm.from_user=".$_SESSION['id'].") AND pm.id=".$_GET['id']);
 		if ($result->num_rows == 1)
 			{
 				$row = $result->fetch_assoc();
