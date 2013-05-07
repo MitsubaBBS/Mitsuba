@@ -87,7 +87,12 @@ reqPermission(2);
 				{
 					$pages = $_POST['pages'];
 				}
-				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars))
+				$anonymous = "Anonymous";
+				if (!empty($_POST['anonymous'])
+				{
+					$anonymous = $_POST['anonymous'];
+				}
+				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous))
 				{
 				logAction($conn, sprintf($lang['log/updated_board'], $conn->real_escape_string($_GET['board'])));
 				?>

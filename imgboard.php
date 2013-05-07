@@ -216,8 +216,11 @@ if (!empty($_POST['mode']))
 					}
 				}
 			}
-
 			$name = $lang['img/anonymous'];
+			if (!empty($bdata['anonymous']))
+			{
+				$name = $bdata['anonymous'];
+			}
 			if ((!empty($_POST['name'])) && (($bdata['noname'] == 0) || (($mod == 1) && ($mod_type >= 1)))) { $name = $_POST['name']; }
 			$resto = 0;
 			if (isset($_POST['resto'])) { $resto = $_POST['resto']; }

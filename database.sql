@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `nodup` int(1) NOT NULL,
   `maxchars` int(8) NOT NULL,
   `multifile` int(2) NOT NULL,
+  `anonymous` varchar(60) NOT NULL,
   PRIMARY KEY (`short`)
 );
 

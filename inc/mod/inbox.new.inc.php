@@ -47,8 +47,8 @@ if ((!empty($_POST['to'])) && (!empty($_POST['title'])) && (!empty($_POST['text'
 <div class="boxbar"><h2><?php echo $lang['mod/send_message']; ?></h2></div>
 <div class="boxcontent">
 <form action="?/inbox/new" method="POST">
-<?php echo $lang['mod/to']; ?>: <input type="text" name="to" /><br />
-<?php echo $lang['mod/title']; ?>: <input type="text" name="title" /><br />
+<?php echo $lang['mod/to']; ?>: <input type="text" name="to" value="<?php echo $username; ?>" /><br />
+<?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $title; ?>" /><br />
 <?php echo $lang['mod/text']; ?>:<br />
 <textarea name="text" cols=40 rows=9></textarea><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
