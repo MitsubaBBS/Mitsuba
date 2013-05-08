@@ -9,7 +9,7 @@ if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		if ($result->num_rows == 1)
 			{
 				$row = $result->fetch_assoc();
-				if ($row['read_msg'] != 1)
+				if (($row['read_msg'] != 1) && ($row['to_user']==$_SESSION['id']))
 				{
 					$conn->query("UPDATE pm SET read_msg=1 WHERE id=".$_GET['id']);
 				}
