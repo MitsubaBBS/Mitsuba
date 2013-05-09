@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(2);
+reqPermission(3);
 		if ((!empty($_POST['bans'])) && ($_POST['bans']==1))
 		{
 			$conn->query("DELETE FROM bans WHERE expires<".time());

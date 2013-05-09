@@ -275,7 +275,7 @@ if (!empty($_POST['mode']))
 			if ((!empty($_POST['email'])) && ($_POST['email'] != "sage")) { setcookie("mitsuba_email", $_POST['email'], time() + 86400*256); } else { setcookie("mitsuba_email","", time() + 86400*256); }
 			if (!empty($_POST['fake_id'])) { setcookie("mitsuba_fakeid", $_POST['fake_id'], time() + 86400*256); } else { setcookie("mitsuba_fakeid","", time() + 86400*256); }
 			
-			if (($mod == 1) && ($mod_type>=1))
+			if (($mod == 1) && ($mod_type>=2))
 			{
 				if ((!empty($_POST['nolimit'])) && ($_POST['nolimit']==1))
 				{
@@ -286,7 +286,7 @@ if (!empty($_POST['mode']))
 					$capcode = $mod_type;
 				} elseif ((!empty($_POST['capcode'])) && ($_POST['capcode']==2) && (!empty($_POST['cc_text'])) && (!empty($_POST['cc_color'])))
 				{
-					$capcode = 4;
+					$capcode = 5;
 					$cc_text = $_POST['cc_text'];
 					$cc_color = $_POST['cc_color'];
 				}

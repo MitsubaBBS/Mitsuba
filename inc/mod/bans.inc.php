@@ -5,7 +5,7 @@ if (!defined("IN_MOD"))
 }
 if ((isset($_GET['del'])) && ($_GET['del']==1))
 	{
-		reqPermission(1);
+		reqPermission(2);
 		if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
 		{
 			$conn->query("DELETE FROM bans WHERE id=".$_GET['b']);
@@ -45,7 +45,7 @@ echo "<td><center>".date("d/m/Y @ H:i", $row['expires'])."</center></td>";
 echo "<td><b>never</b></td>";
 }
 echo "<td><center>".$row['boards']."</center></td>";
-if ($_SESSION['type']>=1)
+if ($_SESSION['type']>=2)
 {
 echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 } else {

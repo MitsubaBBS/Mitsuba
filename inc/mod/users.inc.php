@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(2);
+reqPermission(3);
 	?>
 		<div class="box-outer top-box">
 <div class="box-inner">
@@ -12,7 +12,7 @@ reqPermission(2);
 <form action="?/users/add" method="POST">
 <?php echo $lang['mod/username']; ?>: <input type="text" name="username" /><br />
 <?php echo $lang['mod/password']; ?>: <input type="password" name="password"/><br />
-<?php echo $lang['mod/type']; ?>: <select name="type"><option value="0"><?php echo $lang['mod/janitor']; ?></option><option value="1"><?php echo $lang['mod/moderator']; ?></option><option value="2"><?php echo $lang['mod/administrator']; ?></option></select>
+<?php echo $lang['mod/type']; ?>: <select name="type"><option value="1"><?php echo $lang['mod/janitor']; ?></option><option value="2"><?php echo $lang['mod/moderator']; ?></option><option value="3"><?php echo $lang['mod/administrator']; ?></option></select>
 
 <br /><br />
 <?php

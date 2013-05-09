@@ -39,7 +39,7 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	echo "<td><b>never</b></td>";
 	}
 	echo "<td><center>".$row['boards']."</center></td>";
-	if ($_SESSION['type']>=1)
+	if ($_SESSION['type']>=2)
 	{
 	echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 	} else {

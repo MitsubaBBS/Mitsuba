@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(2);
+reqPermission(3);
 /*
 <?php echo $lang['mod/frontpage_style']; ?>: <select name="frontpage_style">
 		<option value="0" <?php if ($config['frontpage_style'] == 0) { echo "selected"; } ?>>Kusaba X</option>

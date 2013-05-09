@@ -550,7 +550,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				$file .='<tr>
 					<td>'.$lang['img/mod_capcode'].'</td>
 					<td id="capcode_td"><input type="radio" name="capcode" value=0 checked />'.$lang['img/mod_nocapcode'].'<input type="radio" name="capcode" value=1 />'.$lang['img/mod_capcode'];
-				if ($adm_type == 2)
+				if ($adm_type == 3)
 				{	
 					$file .= '<input type="radio" name="capcode" value=2 id="custom_cc" />'.$lang['img/mod_customcapcode'];
 					$file .= '<div style="display: none;" id="cc_fields" value="#FF0000">'.$lang['img/text'].': <input type="text" name="cc_text" /><br />
@@ -640,12 +640,12 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				$trip = "<span class='postertrip'>".$trip."</span>";
 			}
 			$poster_id = "";
-			if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && ($row['capcode']<1))
+			if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && ($row['capcode']<2))
 			{
 				$poster_id = '<span class="posteruid">(ID: '.$row['poster_id'].')</span>';
 			}
 			$c_image = "";
-			if ($row['capcode'] == 1)
+			if ($row['capcode'] == 2)
 			{
 				if ($return == 1)
 				{
@@ -656,7 +656,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				} else {
 					$c_image = ' <img src="../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
 				}
-			} elseif ($row['capcode'] == 2)
+			} elseif ($row['capcode'] == 3)
 			{
 				
 				if ($return == 1)
@@ -675,16 +675,16 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				$email_a = '<a href="mailto:'.$row['email'].'" class="useremail">';
 				$email_b = '</a>';
 			}
-			if ($row['capcode'] == 1)
+			if ($row['capcode'] == 2)
 			{
 				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
-			} elseif ($row['capcode'] == 2)
-			{
-				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
 			} elseif ($row['capcode'] == 3)
 			{
-				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
+				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
 			} elseif ($row['capcode'] == 4)
+			{
+				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
+			} elseif ($row['capcode'] == 5)
 			{
 				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:'.$row['cc_color'].'">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:'.$row['cc_color'].'">## '.$row['cc_text'].'</span>'.$c_image.'</span> '.$poster_id.'</span>';
 			} else {
@@ -692,7 +692,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			}
 			
 			$opip = $row['ip'];
-			if (($adm_type >= 1) && ($return == 1))
+			if (($adm_type >= 2) && ($return == 1))
 			{
 				$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row['ip'].'" target="_blank">'.$row['ip'].'</a>)</span>';
 				$file .= ' [<a href="?/info&ip='.$row['ip'].'">N</a>] <b style="color: red;">[ OP ]</b>';
@@ -714,7 +714,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				{
 					$file .= ' <span style="color: red;">[A]</span> ';
 				}
-				if ($adm_type >= 1)
+				if ($adm_type >= 2)
 				{
 					$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'">D</a>';
 					if (!empty($row['filename']))
@@ -723,14 +723,14 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					} else {
 						$file .= ']';
 					}
-					if ($_SESSION['type'] >= 2)
+					if ($adm_type >= 3)
 					{
 						$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'" class="edit">E</a>]';
 					}
 				} else {
 					$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a>]</span>';
 				}
-				if ($_SESSION['type'] >= 1)
+				if ($adm_type >= 2)
 				{
 					$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
 				}
@@ -768,7 +768,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			$file .= '<blockquote class="postMessage" id="m'.$row['id'].'">';
 			$wf = 1;
 			
-			if ($row['capcode'] >= 1)
+			if ($row['capcode'] >= 2)
 			{
 				$wf = 0;
 			}
@@ -853,7 +853,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					$trip = "<span class='postertrip'>".$trip."</span>";
 				}
 				$c_image = "";
-				if ($row2['capcode'] == 1)
+				if ($row2['capcode'] == 2)
 				{
 					if ($return == 1)
 					{
@@ -864,7 +864,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					} else {
 						$c_image = ' <img src="../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
 					}
-				} elseif ($row2['capcode'] == 2)
+				} elseif ($row2['capcode'] == 3)
 				{
 					if ($return == 1)
 					{
@@ -887,22 +887,22 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				{
 					$poster_id = '<span class="posteruid">(ID: '.$row2['poster_id'].')</span>';
 				}
-				if ($row2['capcode'] == 1)
+				if ($row2['capcode'] == 2)
 				{
 					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
-				} elseif ($row2['capcode'] == 2)
-				{
-					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
 				} elseif ($row2['capcode'] == 3)
 				{
-					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
+					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
 				} elseif ($row2['capcode'] == 4)
+				{
+					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
+				} elseif ($row2['capcode'] == 5)
 				{
 					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:'.$row2['cc_color'].'">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:'.$row2['cc_color'].'">## '.$row2['cc_text'].'</span>'.$c_image.'</span> '.$poster_id.'</span>';
 				} else {
 					$file .= '<span class="nameBlock">'.$email_a.'<span class="name">'.$row2['name'].'</span>'.$email_b.$trip.' '.$poster_id.'</span>';
 				}
-				if (($adm_type >= 1) && ($return == 1))
+				if (($adm_type >= 2) && ($return == 1))
 				{
 					$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row2['ip'].'" target="_blank">'.$row2['ip'].'</a>) [<a href="?/info&ip='.$row2['ip'].'">N</a>] '; 
 					if ($row2['ip'] == $opip)
@@ -923,7 +923,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					} else {
 						$file .= ']';
 					}
-					if ($_SESSION['type'] >= 2)
+					if ($adm_type >= 3)
 					{
 						$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row2['id'].'" class="edit">E</a>]';
 					}
@@ -938,7 +938,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				$file .= getFiles($row2, $board, $return, $threadno, $embed_table);
 				$file .= '<blockquote class="postMessage" id="m'.$row2['id'].'">';
 				$wf = 1;
-				if ($row2['capcode'] >= 1)
+				if ($row2['capcode'] >= 2)
 				{
 					$wf = 0;
 				}
@@ -989,12 +989,12 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 		$file .= '<div class="deleteform">
 			<input type="hidden" name="board" value="'.$board.'" />
 			<input type="hidden" name="mode" value="usrform" />'.$lang['img/delete_post'].' [<input type="checkbox" name="onlyimgdel" value="on" />'.$lang['img/file_only'].'] ';
-		if ($adm_type <= 0)
+		if ($adm_type <= 1)
 		{
 		$file .= $lang['img/password'].' <input type="password" id="delPassword" name="pwd" maxlength="8" /> ';
 		}
 		$file .= '<input type="submit" name="delete" value="'.$lang['img/delete'].'" /><br />';
-		if ($adm_type <= 0)
+		if ($adm_type <= 1)
 		{
 		$file .= $lang['img/reason'].' <input type="text" name="reason" /><input type="submit" name="report" value="'.$lang['img/report'].'" />';
 		}

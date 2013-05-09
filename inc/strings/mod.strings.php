@@ -291,5 +291,6 @@ $lang['mod/action'] = "Action";
 $lang['mod/reply'] = "Reply";
 $lang['mod/outbox'] = "Outbox";
 $lang['mod/board_default_name'] = "Default name";
+$lang['mod/disabled'] = "Disabled";
 //$lang['mod/'] = "";
 ?>

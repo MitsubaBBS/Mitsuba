@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(1);
+reqPermission(2);
 		if ((isset($_GET['del'])) && ($_GET['del']==1))
 		{
 			if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))

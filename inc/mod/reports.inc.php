@@ -12,7 +12,7 @@ if ((!empty($_GET['cl'])) && ($_GET['cl']==1))
 	}
 	if ((!empty($_GET['m'])) && (!empty($_GET['i'])) && (is_numeric($_GET['i'])))
 	{
-		reqPermission(1);
+		reqPermission(2);
 		switch($_GET['m'])
 		{
 			case "wtr":
@@ -34,7 +34,7 @@ if ((!empty($_GET['cl'])) && ($_GET['cl']==1))
 <div class="boxbar"><h2><?php echo $lang['mod/reports']; ?></h2></div>
 <div class="boxcontent">
 <?php
-if ($_SESSION['type'] >= 1)
+if ($_SESSION['type'] >= 2)
 {
 ?>
 <a href="?/reports/clear_all"><?php echo $lang['mod/clear_all']; ?></a>
@@ -106,7 +106,7 @@ if ($_SESSION['type'] >= 1)
 			echo "<td>".$row['reason']."</td>";
 			echo "<td><center>".$row['reporter_ip']."</center></td>";
 			echo "<td><center>[ <a href='?/reports&cl=1&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> "; 
-			if ($_SESSION['type']>=1)
+			if ($_SESSION['type']>=2)
 			{
 				echo "/ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."&d=1'>&</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."'>D</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."&f=1'>F</a> ] "; 
 				echo "[ <a href='?/info&ip=".$pdata['ip']."'>N</a> ] <br />";

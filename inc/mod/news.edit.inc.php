@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(1);
+reqPermission(2);
 		if ((isset($_GET['b'])) && (is_numeric($_GET['b'])))
 	{
 	$result = $conn->query("SELECT * FROM news WHERE id=".$_GET['b']);
@@ -29,7 +29,7 @@ reqPermission(1);
 </div><br />
 	<?php
 	} else {
-		if ($_SESSION['type']==2)
+		if ($_SESSION['type']==3)
 		{
 		updateEntry($conn, 1, $_GET['b'], $_POST['who'], $_POST['title'], $_POST['text']);
 		} else {

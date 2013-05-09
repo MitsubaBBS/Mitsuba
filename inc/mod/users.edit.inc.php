@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(2);
+reqPermission(3);
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 			$id = $_GET['id'];
@@ -59,6 +59,7 @@ reqPermission(2);
 <?php echo $lang['mod/username']; ?>: <input type="text" name="username" value="<?php echo $data['username']; ?>"/><br />
 <?php echo $lang['mod/password_leave_blank']; ?>: <input type="password" name="password"/><br />
 <?php
+$disabled = "";
 $janitor = "";
 $moderator = "";
 $administrator = "";
@@ -66,17 +67,20 @@ $administrator = "";
 switch ($data['type'])
 {
 	case 0:
-		$janitor = " selected ";
+		$disabled = " selected ";
 		break;
 	case 1:
-		$moderator = " selected ";
+		$janitor = " selected ";
 		break;
 	case 2:
+		$moderator = " selected ";
+		break;
+	case 3:
 		$administrator = " selected ";
 		break;
 }
 ?>
-<?php echo $lang['mod/type']; ?>: <select name="type"><option value="0"<?php echo $janitor; ?>><?php echo $lang['mod/janitor']; ?></option><option value="1"<?php echo $moderator; ?>><?php echo $lang['mod/moderator']; ?></option><option value="2"<?php echo $administrator; ?>><?php echo $lang['mod/administrator']; ?></option></select>
+<?php echo $lang['mod/type']; ?>: <select name="type"><option value="0"<?php echo $disabled; ?>><?php echo $lang['mod/disabled']; ?></option><option value="1"<?php echo $janitor; ?>><?php echo $lang['mod/janitor']; ?></option><option value="2"<?php echo $moderator; ?>><?php echo $lang['mod/moderator']; ?></option><option value="3"<?php echo $administrator; ?>><?php echo $lang['mod/administrator']; ?></option></select>
 
 <br /><br />
 <?php

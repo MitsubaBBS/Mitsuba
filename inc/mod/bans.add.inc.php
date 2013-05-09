@@ -29,7 +29,7 @@ if (empty($_GET['r']))
 		?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2><?php if ($_SESSION['type']>=1) { echo $lang['mod/add_ban']; } else { echo $lang['mod/add_ban_request']; } ?></h2></div>
+<div class="boxbar"><h2><?php if ($_SESSION['type']>=2) { echo $lang['mod/add_ban']; } else { echo $lang['mod/add_ban_request']; } ?></h2></div>
 <div class="boxcontent">
 <form action="?/bans/add" method="POST">
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
@@ -119,7 +119,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 		if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
 		$result = 0;
 		$what = 1;
-		if ($_SESSION['type'] == 0)
+		if ($_SESSION['type'] <= 1)
 		{
 			$append = 0;
 			if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
@@ -201,7 +201,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 					?>
 		<div class="box-outer top-box">
 <div class="box-inner">
-<div class="boxbar"><h2><?php if ($_SESSION['type']>=1) { echo $lang['mod/add_ban']; } else { echo $lang['mod/add_ban_request']; } ?></h2></div>
+<div class="boxbar"><h2><?php if ($_SESSION['type']>=2) { echo $lang['mod/add_ban']; } else { echo $lang['mod/add_ban_request']; } ?></h2></div>
 <div class="boxcontent">
 <form action="?/bans/add" method="POST">
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />

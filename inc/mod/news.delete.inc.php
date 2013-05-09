@@ -3,10 +3,10 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(1);
+reqPermission(2);
 	if (isset($_GET['b']))
 	{
-		if ($_SESSION['type']==2)
+		if ($_SESSION['type']==3)
 		{
 			deleteEntry($conn, 1, $_GET['b']);
 		} else {

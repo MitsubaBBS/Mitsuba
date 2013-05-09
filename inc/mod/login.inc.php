@@ -7,7 +7,7 @@ if ((!empty($_POST['username'])) && (!empty($_POST['password'])))
 		{
 			$username = $conn->real_escape_string($_POST['username']);
 			$password = hash("sha512", $_POST['password']);
-			$result = $conn->query("SELECT * FROM users WHERE username='".$username."'");
+			$result = $conn->query("SELECT * FROM users WHERE username='".$username."' AND type>=1");
 			if ($result->num_rows == 1)
 			{
 				$data = $result->fetch_assoc();

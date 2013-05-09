@@ -11,7 +11,7 @@ if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
 <div class="boxbar"><h2><?php printf($lang['mod/ip_info'], $_GET['ip']); ?></h2></div>
 <div class="boxcontent">
 <?php
-if ($_SESSION['type']>=1)
+if ($_SESSION['type']>=2)
 {
 ?>
 <a href="?/search/ip&ip=<?php echo $_GET['ip']; ?>"><?php echo $lang['mod/search_ip']; ?></a><br />
@@ -48,7 +48,7 @@ echo "<td><center>".date("d/m/Y @ H:i", $row['expires'])."</center></td>";
 echo "<td><center><b>never</b></center></td>";
 }
 echo "<td><center>".$row['boards']."</center></td>";
-if ($_SESSION['type']>=1)
+if ($_SESSION['type']>=2)
 {
 echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 } else {

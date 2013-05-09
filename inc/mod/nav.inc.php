@@ -35,7 +35,7 @@ function toggle(button,area) {
 <body>
 <ul>
 <li><?php echo $lang['mod/logged_in_as']; ?><b><?php echo $_SESSION['username']; ?></b></li>
-<li><?php echo $lang['mod/privileges']; ?><b><?php if ($_SESSION['type']==2) { echo $lang['mod/administrator']; } elseif ($_SESSION['type']==1) { echo $lang['mod/moderator']; } elseif ($_SESSION['type']==0) { echo $lang['mod/janitor']; } else { echo $lang['mod/faggot']; } ?></b></li>
+<li><?php echo $lang['mod/privileges']; ?><b><?php if ($_SESSION['type']==3) { echo $lang['mod/administrator']; } elseif ($_SESSION['type']==2) { echo $lang['mod/moderator']; } elseif ($_SESSION['type']==1) { echo $lang['mod/janitor']; } else { echo $lang['mod/faggot']; } ?></b></li>
 <li><a href="?/logout" target="_top"><?php echo $lang['mod/logout']; ?></a></li>
 </ul>
 <h2><span class="coll" onclick="toggle(this,'gen');" title="Toggle Category">&minus;</span><?php echo $lang['mod/general']; ?></h2>
@@ -51,7 +51,7 @@ function toggle(button,area) {
 <li><a href="?/bans" target="main"><?php echo $lang['mod/banlist']; ?></a></li>
 <?php
 echo runHooks("menu", null);
-if ($_SESSION['type'] >= 1)
+if ($_SESSION['type'] >= 2)
 {
 ?>
 <li><a href="?/whitelist" target="main"><?php echo $lang['mod/manage_whitelist']; ?></a></li>
@@ -75,7 +75,7 @@ if ($_SESSION['type'] >= 1)
 <li><a href="?/password" target="main"><?php echo $lang['mod/change_password']; ?></a></li>
 </ul></div>
 <?php
-if ($_SESSION['type'] >= 2)
+if ($_SESSION['type'] >= 3)
 {
 ?>
 <h2><span class="coll" onclick="toggle(this,'adm');" title="Toggle Category">&minus;</span><?php echo $lang['mod/administration']; ?></h2>
@@ -106,7 +106,7 @@ if ($_SESSION['type'] >= 2)
 <ul>
 <?php
 $result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
-if (($_SESSION['boards'] != "*") && ($_SESSION['type'] != 2))
+if (($_SESSION['boards'] != "*") && ($_SESSION['type'] != 3))
 {
 $boards = explode(",", $_SESSION['boards']);
 } else {
