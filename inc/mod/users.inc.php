@@ -50,12 +50,15 @@ echo "<td><center>";
 switch ($row['type'])
 {
 	case 0:
-		echo $lang['mod/janitor'];
+		echo $lang['mod/disabled'];
 		break;
 	case 1:
-		echo $lang['mod/moderator'];
+		echo $lang['mod/janitor'];
 		break;
 	case 2:
+		echo $lang['mod/moderator'];
+		break;
+	case 3:
 		echo $lang['mod/administrator'];
 		break;
 	default:

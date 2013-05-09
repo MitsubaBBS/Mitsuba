@@ -94,7 +94,7 @@ Admin password: <input type="text" name="password" value="" /><br />
 </div>
 	<?php
 			} else {
-				$result = $conn->query("INSERT INTO users (username, password, type, boards) VALUES ('".$conn->real_escape_string($username)."', '".hash("sha512", $password)."', 2, '*')");
+				$result = $conn->query("INSERT INTO users (username, password, type, boards) VALUES ('".$conn->real_escape_string($username)."', '".hash("sha512", $password)."', 3, '*')");
 				if (!$result)
 				{
 				?>
