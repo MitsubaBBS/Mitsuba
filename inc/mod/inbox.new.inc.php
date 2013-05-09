@@ -11,7 +11,7 @@ if ((!empty($_POST['to'])) && (!empty($_POST['title'])) && (!empty($_POST['text'
 				$row = $result->fetch_assoc();
 				$text = processEntry($conn, $_POST['text']);
 				$title = $conn->real_escape_string($_POST['title']);
-				$conn->query("INSERT INTO pm (created, from_user, to_user, title, text, read_msg) VALUES (".time().", ".$_SESSION['id'].", ".$row['id'].", '".$title."', '".$text."', 0)");
+				$conn->query("INSERT INTO pm (created, from_user, to_user, title, text, read_msg, resto) VALUES (".time().", ".$_SESSION['id'].", ".$row['id'].", '".$title."', '".$text."', 0, 0)");
 			?>
 			<div class="box-outer top-box">
 <div class="box-inner">

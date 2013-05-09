@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `pm` (
   `title` varchar(70) NOT NULL,
   `text` text NOT NULL,
   `read_msg` int(1) NOT NULL,
+  `resto` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
