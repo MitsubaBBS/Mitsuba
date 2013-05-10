@@ -541,7 +541,7 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 				<td>'.$lang['img/password'].'</td>
 				<td><input id="postPassword" name="pwd" type="password" maxlength="8" /> <span class="password">'.$lang['img/password_used'].'</span></td>
 				</tr>';
-			if ($adm_type >= 1)
+			if ($adm_type >= 2)
 			{
 				$file .='<tr>
 					<td>'.$lang['img/mod'].'</td>
