@@ -10,7 +10,7 @@ session_start();
 
 if ((!empty($_SESSION['logged'])) && (!empty($_SESSION['cookie_set'])) && ($_SESSION['cookie_set']==2))
 {
-	setcookie('in_mod', '1', 0);
+	setcookie('in_mod', $_SESSION['type'], 0);
 	$_SESSION['cookie_set']=1;
 }
 include("config.php");

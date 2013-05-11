@@ -520,6 +520,18 @@ $bandata = isBanned($conn, $_SERVER['REMOTE_ADDR'], $board);
 <div class="box-inner">
 <div class="boxbar"><h2>You are banned ;_;</h2></div>
 <div class="boxcontent">
+<?php
+$imagesDir = './rnd/banned/';
+if (is_dir($imagesDir))
+{
+	$images = glob($imagesDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+	$randomImage = $images[array_rand($images)]; 
+	if ($return == 1)
+	{
+		$file .= '<img style="float: right;" src="'.$randomImage.'" alt="Mitsuba" />';
+	}
+}
+?>
 <p>You have been <?php if ($left == -1) { echo "<b>permamently</b>"; } ?> banned from <b><?php if ($boards == 1) { echo "all "; } else { echo "few "; } ?></b>boards for the following reason:</p>
 <p><?php echo $bandata['reason']; ?></p>
 <p>You were <?php if (!empty($bandata['start_ip'])) { echo "<b>range-</b>"; } ?>banned on <b><?php echo date("d/m/Y (D) H:i:s", $bandata['created']); ?></b> and your ban expires  
