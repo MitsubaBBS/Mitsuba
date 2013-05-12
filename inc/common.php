@@ -542,6 +542,8 @@ if (!empty($bandata['start_ip'])) { $range = 1; }
 $appeals = $conn->query("SELECT * FROM appeals WHERE ban_id=".$bandata['id']." AND rangeban=".$range);
 if ((($left > 3) || ($left == -1)) && ($appeals->num_rows == 0))
 {
+	//You'll be able to appeal this ban in x days.
+	//Your appeal has been sent and is waiting until review, you can change it here.
 ?>
 <p>According to our server your IP is: <b><?php echo $_SERVER['REMOTE_ADDR']; ?></b></p>
 <p>Because your ban is longer than 3 days in length, you may appeal it in the form below. Please explain why you deserve to be unbanned. Poorly writen, rude or offensive appeals may be declined. E-mail address is optional.</p>

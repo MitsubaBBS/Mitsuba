@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `bans` (
   `note` text NOT NULL,
   `created` int(30) NOT NULL,
   `expires` int(30) NOT NULL,
+  `appeal` int(30) NOT NULL,
   `boards` text NOT NULL,
   PRIMARY KEY (`id`)
 );
@@ -239,6 +240,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `username` (`username`)
 );
 
+CREATE TABLE IF NOT EXISTS `warnings` (
+  `id` int(30) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(50) NOT NULL,
+  `mod_id` int(10) NOT NULL,
+  `reason` text NOT NULL,
+  `note` text NOT NULL,
+  `created` int(30) NOT NULL,
+  `shown` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `whitelist` (
   `id` int(30) NOT NULL AUTO_INCREMENT,
   `ip` varchar(50) NOT NULL,
@@ -272,6 +284,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('sitename', 'Mitsuba'),
 ('enable_api', '0'),
 ('enable_rss', '0'),
+('super_caching', '0'),
 ('overboard_enabled', '0'),
 ('overboard_boards', ''),
 ('overboard_name', '*');
