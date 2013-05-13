@@ -8,6 +8,10 @@ reqPermission(3);
 		{
 			$conn->query("DELETE FROM bans WHERE expires<".time());
 		}
+		if ((!empty($_POST['warnings'])) && ($_POST['warnings']==1))
+		{
+			$conn->query("DELETE FROM warnings WHERE shown=1");
+		}
 		?>
 					<div class="box-outer top-box">
 <div class="box-inner">

@@ -299,5 +299,6 @@ $lang['mod/all_warnings'] = "All warnings";
 $lang['mod/recent_warnings'] = "Recent %s warnings";
 $lang['mod/showing_warnings'] = "Showing recent %s warnings.";
 $lang['mod/shown'] = "Shown";
+$lang['mod/delete_shown_warnings'] = "Delete shown warnings";
 //$lang['mod/'] = "";
 ?>
