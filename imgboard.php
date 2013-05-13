@@ -54,9 +54,10 @@ if (!empty($_POST['mode']))
 				exit;
 			}
 			$board = $_POST['board'];
-			if ($mod == 0)
+			if (($mod == 0) && (isWhitelisted($conn, $ip) < 1))
 			{
 				banMessage($conn, $board);
+				warningMessage($conn);
 			}
 			$ignoresizelimit = 0;
 			if ($mod == 1)

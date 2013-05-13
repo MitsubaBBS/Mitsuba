@@ -466,6 +466,18 @@ switch ($path)
 	case "/outbox":
 		include("inc/mod/outbox.inc.php");
 		break;
+	case "/warnings":
+		include("inc/mod/warnings.inc.php");
+		break;
+	case "/warnings/all":
+		include("inc/mod/warnings.all.inc.php");
+		break;
+	case "/warnings/recent":
+		include("inc/mod/warnings.recent.inc.php");
+		break;
+	case "/warnings/add":
+		include("inc/mod/warnings.add.inc.php");
+		break;
 	default:
 		echo runHooks("panel", $path);
 		break;

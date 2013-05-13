@@ -258,10 +258,6 @@ function isWhitelisted($conn, $ip)
   
 function isBanned($conn, $ip, $board)
 {
-	if (isWhitelisted($conn, $ip) >= 1)
-	{
-		return 0;
-	}
 	
 	$ipbans = $conn->query("SELECT * FROM bans WHERE ip='".$ip."' AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
 	$rangebans = $conn->query("SELECT * FROM rangebans WHERE INET_ATON('".$ip."') BETWEEN start_ip AND end_ip AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
@@ -321,6 +317,20 @@ function isBanned($conn, $ip, $board)
 	return 0;
 }
 
+function isWarned($conn, $ip, $board)
+{
+	
+	$warns = $conn->query("SELECT * FROM warnings WHERE ip='".$ip."' AND shown=0 ORDER BY created ASC LIMIT 0, 1;");
+	
+	if ($warns->num_rows == 1)
+	{
+		$warndata = $ipbans->fetch_assoc();
+		return $warndata;
+	} else {
+		return 0;
+	}
+	return 0;
+}
 
 function randomPassword() {
 	$alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
@@ -570,6 +580,52 @@ die();
 }
 }
 
+function warningMessage($conn)
+{
+$warndata = isWarned($conn, $_SERVER['REMOTE_ADDR']);
+			if ($warndata != 0)
+			{
+			?>
+			<html>
+<head>
+<title>Banned</title>
+<link rel="stylesheet" href="./styles/index.css" />
+<link rel="stylesheet" href="./styles/global.css" />
+<link rel="stylesheet" href="./styles/postform.css" />
+</head>
+<body>
+<div id="doc">
+<br /><br />
+<div class="box-outer top-box">
+<div class="box-inner">
+<div class="boxbar"><h2>You are banned ;_;</h2></div>
+<div class="boxcontent">
+<?php
+$imagesDir = './rnd/banned/';
+if (is_dir($imagesDir))
+{
+	$images = glob($imagesDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+	$randomImage = $images[array_rand($images)]; 
+	if ($return == 1)
+	{
+		$file .= '<img style="float: right;" src="'.$randomImage.'" alt="Mitsuba" />';
+	}
+}
+?>
+<p>You were issued <b>a warning</b> with the following message:</p>
+<p><?php echo $warndata['reason']; ?></p>
+<p>Your warning was issued on <b><?php echo date("d/m/Y (D) H:i:s", $bandata['created']); ?></b>.</p>
+<p>Now that you have seen this message, you should be able to post again. Click <a href="javascript:history.back()">here</a> to return.</p>
+</div>
+</div>
+</div>
+</body>
+</html>
+<?php
+$conn->query("UPDATE warnings SET shown=1 WHERE id=".$warndata['id']);
+die();
+}
+}
 
 function pruneOld($conn, $board)
 {

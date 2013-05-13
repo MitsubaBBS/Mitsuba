@@ -49,6 +49,7 @@ function toggle(button,area) {
 <li><a href="?/recent/files" target="main"><?php echo $lang['mod/recent_images']; ?></a></li>
 <li><a href="?/reports" target="main"><?php echo $lang['mod/report_queue']; ?> (<?php echo $reports; ?>)</a></li>
 <li><a href="?/bans" target="main"><?php echo $lang['mod/banlist']; ?></a></li>
+<li><a href="?/warnings" target="main"><?php echo $lang['mod/warnings']; ?></a></li>
 <?php
 echo runHooks("menu", null);
 if ($_SESSION['type'] >= 2)
@@ -56,6 +57,7 @@ if ($_SESSION['type'] >= 2)
 ?>
 <li><a href="?/whitelist" target="main"><?php echo $lang['mod/manage_whitelist']; ?></a></li>
 <li><a href="?/bans/add" target="main"><?php echo $lang['mod/add_ban']; ?></a></li>
+<li><a href="?/warnings/add" target="main"><?php echo $lang['mod/add_warning']; ?></a></li>
 <li><a href="?/ban_requests" target="main"><?php echo $lang['mod/ban_requests']; ?> (<?php echo $breqs; ?>)</a></li>
 <li><a href="?/appeals" target="main"><?php echo $lang['mod/appeals']; ?> (<?php echo $appeals; ?>)</a></li>
 <li><a href="?/announcements/add" target="main"><?php echo $lang['mod/new_announcement']; ?></a></li>

@@ -26,6 +26,19 @@ function addBan($conn, $ip, $reason, $note, $expires, $boards)
 	}
 }
 
+function addWarning($conn, $ip, $reason, $note)
+{
+	if (!empty($ip))
+	{
+		$ip = $conn->real_escape_string($ip);
+		$reason = $conn->real_escape_string($reason);
+		$note = $conn->real_escape_string($note);
+		$created = time();
+		$conn->query("INSERT INTO warnings (ip, mod_id, reason, note, created, shown) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", 0);");
+		return 1;
+	}
+}
+
 function addBanRequest($conn, $ip, $reason, $note, $board = "", $post = 0, $append = 0)
 {
 	if (!empty($ip))

@@ -292,5 +292,12 @@ $lang['mod/reply'] = "Reply";
 $lang['mod/outbox'] = "Outbox";
 $lang['mod/board_default_name'] = "Default name";
 $lang['mod/disabled'] = "Disabled";
+$lang['mod/add_warning'] = "Add warning";
+$lang['mod/user_warned'] = "User warned";
+$lang['mod/warnings'] = "Warnings";
+$lang['mod/all_warnings'] = "All warnings";
+$lang['mod/recent_warnings'] = "Recent %s warnings";
+$lang['mod/showing_warnings'] = "Showing recent %s warnings.";
+$lang['mod/shown'] = "Shown";
 //$lang['mod/'] = "";
 ?>
