@@ -317,7 +317,7 @@ function isBanned($conn, $ip, $board)
 	return 0;
 }
 
-function isWarned($conn, $ip, $board)
+function isWarned($conn, $ip)
 {
 	
 	$warns = $conn->query("SELECT * FROM warnings WHERE ip='".$ip."' AND shown=0 ORDER BY created ASC LIMIT 0, 1;");
