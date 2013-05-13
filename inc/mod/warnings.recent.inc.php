@@ -39,9 +39,9 @@ echo "<td>".$row['note']."</td>";
 echo "<td><center>".date("d/m/Y @ H:i", $row['created'])."</center></td>";
 if ($row['shown']==1)
 {
-	echo "<td>YES</td>";
+	echo "<td><center>YES</center></td>";
 } else {
-	echo "<td><b>NO</b></td>";
+	echo "<td><center><b>NO</b></center></td>";
 }
 if ($_SESSION['type']>=2)
 {

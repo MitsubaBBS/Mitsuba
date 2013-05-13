@@ -324,7 +324,7 @@ function isWarned($conn, $ip)
 	
 	if ($warns->num_rows == 1)
 	{
-		$warndata = $ipbans->fetch_assoc();
+		$warndata = $warns->fetch_assoc();
 		return $warndata;
 	} else {
 		return 0;

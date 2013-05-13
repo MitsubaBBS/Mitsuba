@@ -54,7 +54,7 @@ if (!empty($_POST['mode']))
 				exit;
 			}
 			$board = $_POST['board'];
-			if (($mod == 0) && (isWhitelisted($conn, $ip) < 1))
+			if (($mod == 0) && (isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) < 1))
 			{
 				banMessage($conn, $board);
 				warningMessage($conn);
