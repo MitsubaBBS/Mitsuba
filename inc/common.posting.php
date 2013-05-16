@@ -48,9 +48,19 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 					if ($postdata['resto'] != 0)
 					{
 						generateView($conn, $board, $postdata['resto']);
+
+						if ($config['super_caching']==1)
+						{
+							forceGetThread($conn, $board, $postdata['resto']);
+						}
 						generateView($conn, $board);
+
 					} else {
 						generateView($conn, $board, $postno);
+						if ($config['super_caching']==1)
+						{
+							forceGetThread($conn, $board, $postno);
+						}
 						generateView($conn, $board);
 					}
 					return 1; //done-image
@@ -95,6 +105,10 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 						{
 							unlink("./".$board."/res/".$postno.".json");
 						}
+						if (file_exists("./".$board."/res/".$postno."_index.html"))
+						{
+							unlink("./".$board."/res/".$postno."_index.html");
+						}
 						unlink("./".$board."/res/".$postno.".html");
 					}
 					//generateView($conn, $board, $postno);
@@ -117,6 +131,10 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 					}
 					$conn->query("DELETE FROM posts WHERE id=".$postno." AND board='".$board."';");
 					generateView($conn, $board, $postdata['resto']);
+					if ($config['super_caching']==1)
+					{
+						forceGetThread($conn, $board, $postdata['resto']);
+					}
 					generateView($conn, $board);
 					return 2;
 				}
@@ -371,12 +389,20 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 	if ($resto == 0)
 	{
 		generateView($conn, $board, $id);
+		if ($config['super_caching']==1)
+		{
+			forceGetThread($conn, $board, $id);
+		}
 		if ($config['enable_api']==1)
 		{
 			serializeThread($conn, $board, $id);
 		}
 	} else {
 		generateView($conn, $board, $resto);
+		if ($config['super_caching']==1)
+		{
+			forceGetThread($conn, $board, $resto);
+		}
 		if ($config['enable_api']==1)
 		{
 			serializeThread($conn, $board, $resto);

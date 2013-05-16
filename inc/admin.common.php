@@ -8,6 +8,7 @@ function appendToPost($conn, $board, $postid, $text)
 {
 	if (is_numeric($postid))
 	{
+		$config = getConfig($conn);
 		$post = $conn->query("SELECT * FROM posts WHERE id=".$postid." AND board='".$board."'");
 		if ($post->num_rows == 1)
 		{
@@ -18,8 +19,16 @@ function appendToPost($conn, $board, $postid, $text)
 			if ($pdata['resto'] == 0)
 			{
 				generateView($conn, $board, $pdata['id']);
+				if ($config['super_caching']==1)
+				{
+					forceGetThread($conn, $board, $pdata['id']);
+				}
 			} else {
 				generateView($conn, $board, $pdata['resto']);
+				if ($config['super_caching']==1)
+				{
+					forceGetThread($conn, $board, $pdata['resto']);
+				}
 			}
 			generateView($conn, $board);
 		}

@@ -47,6 +47,13 @@ if (!empty($_POST['enable_api']))
 	$config['enable_api'] = 0;
 }
 
+if (!empty($_POST['enable_super_caching']))
+{
+	$config['super_caching'] = 1;
+} else {
+	$config['super_caching'] = 0;
+}
+
 updateConfig($conn, $config);
 
 ?>

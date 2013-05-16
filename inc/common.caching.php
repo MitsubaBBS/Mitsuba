@@ -609,7 +609,6 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 		} else {
 			$file .= '<form id="delform" action="../imgboard.php" method="post"><div class="board">';
 		}
-
 		if ($threadno != 0)
 		{
 			$result = $conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."';");
@@ -617,364 +616,9 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			
 			$result = $conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
 		}
-		
 		while ($row = $result->fetch_assoc())
 		{
-			$file .= '<div class="thread" id="t'.$row['id'].'">';
-			$file .= '<div class="postContainer opContainer" id="pc'.$row['id'].'">';
-			$file .= '<div id="p'.$row['id'].'" class="post op">';
-			$file .= '<div class="postInfo" id="pi'.$row['id'].'">';
-			$file .= '<input type="checkbox" name="'.$row['id'].'" value="delete" />';
-			$file .= '<span class="subject">'.$row['subject'].'</span> ';
-			$trip = "";
-			if (!empty($row['trip']))
-			{
-				$trip = " !".$row['trip']."";
-			}
-			if (!empty($row['strip']))
-			{
-				$trip .= " !!".$row['strip']."";
-			}
-			if ((!empty($row['trip'])) || (!empty($row['strip'])))
-			{
-				$trip = "<span class='postertrip'>".$trip."</span>";
-			}
-			$poster_id = "";
-			if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && ($row['capcode']<2))
-			{
-				$poster_id = '<span class="posteruid">(ID: '.$row['poster_id'].')</span>';
-			}
-			$c_image = "";
-			if ($row['capcode'] == 2)
-			{
-				if ($return == 1)
-				{
-					$c_image = ' <img src="./img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
-				} elseif ($threadno != 0)
-				{
-					$c_image = ' <img src="../../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
-				} else {
-					$c_image = ' <img src="../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
-				}
-			} elseif ($row['capcode'] == 3)
-			{
-				
-				if ($return == 1)
-				{
-					$c_image = ' <img src="./img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
-				} elseif ($threadno != 0)
-				{
-					$c_image = ' <img src="../../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
-				} else {
-					$c_image = ' <img src="../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
-				}
-			}
-			$email_a = "";
-			$email_b = "";
-			if (!empty($row['email'])) {
-				$email_a = '<a href="mailto:'.$row['email'].'" class="useremail">';
-				$email_b = '</a>';
-			}
-			if ($row['capcode'] == 2)
-			{
-				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
-			} elseif ($row['capcode'] == 3)
-			{
-				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
-			} elseif ($row['capcode'] == 4)
-			{
-				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
-			} elseif ($row['capcode'] == 5)
-			{
-				$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:'.$row['cc_color'].'">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:'.$row['cc_color'].'">## '.$row['cc_text'].'</span>'.$c_image.'</span> '.$poster_id.'</span>';
-			} else {
-				$file .= '<span class="nameBlock">'.$email_a.'<span class="name">'.$row['name'].'</span>'.$email_b.$trip.' '.$poster_id.'</span>';
-			}
-			
-			$opip = $row['ip'];
-			if (($adm_type >= 2) && ($return == 1))
-			{
-				$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row['ip'].'" target="_blank">'.$row['ip'].'</a>)</span>';
-				$file .= ' [<a href="?/info&ip='.$row['ip'].'">N</a>] <b style="color: red;">[ OP ]</b>';
-			}
-			$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row['date']).'</span> ';
-		
-			if ($return == 1)
-			{
-				$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a></span>';
-				if ($row['locked']==1)
-				{
-					$file .= '<img src="./img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
-				}
-				if ($row['sticky']==1)
-				{
-					$file .= '<img src="./img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
-				}
-				if ($row['sage']==1)
-				{
-					$file .= ' <span style="color: red;">[A]</span> ';
-				}
-				if ($adm_type >= 2)
-				{
-					$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'">D</a>';
-					if (!empty($row['filename']))
-					{
-						$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'&f=1">F</a>]';
-					} else {
-						$file .= ']';
-					}
-					if ($adm_type >= 3)
-					{
-						$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'" class="edit">E</a>]';
-					}
-				} else {
-					$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a>]</span>';
-				}
-				if ($adm_type >= 2)
-				{
-					$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
-				}
-				if ($threadno == 0)
-				{
-					$file .= '&nbsp; <span>[<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">'.$lang['img/reply'].'</a>]</span>';
-				}
-				$file .= '</span>';
-			} elseif ($threadno != 0)
-			{
-				$file .= '<span class="postNum"><a href="../res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="../res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a>';
-				if ($row['locked']==1)
-				{
-					$file .= '<img src="../../img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
-				}
-				if ($row['sticky']==1)
-				{
-					$file .= '<img src="../../img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
-				}
-				$file .= '</span>';
-			} else {
-				$file .= '<span class="postNum"><a href="./res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a> ';
-				if ($row['locked']==1)
-				{
-					$file .= '<img src="../img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
-				}
-				if ($row['sticky']==1)
-				{
-					$file .= '<img src="../img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
-				}
-				$file .= '&nbsp; <span>[<a href="./res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</span></span>';
-			}
-			$file .= '</div>';
-			$file .= getFiles($row, $board, $return, $threadno, $embed_table);
-			$file .= '<blockquote class="postMessage" id="m'.$row['id'].'">';
-			$wf = 1;
-			
-			if ($row['capcode'] >= 2)
-			{
-				$wf = 0;
-			}
-			if ($row['raw'] != 1)
-			{
-				if ($row['raw'] == 2)
-				{
-					if ($return == 1)
-					{
-						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
-					} else {
-						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
-					}
-				} else {
-					if ($return == 1)
-					{
-						$file .= processComment($board, $conn, $row['comment'], $parser, 2, 1, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
-					} else {
-						$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
-					}
-				}
-			} else {
-				$file .= $row['comment'];
-			}
-			$file .= '</blockquote>';
-			
-			
-			
-			$file .= '</div>';
-			$file .= '</div>';
-			
-			
-			
-			if ($threadno != 0)
-			{
-				$posts = $conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC");
-			} else {
-			$posts = $conn->query("SELECT COUNT(*) FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC");
-			$row1 = $posts->fetch_row();
-			if ($row1[0] == 0)
-			{
-				$file .= '</div><hr />';
-				continue;
-			}
-			if ($row1[0] > 3)
-			{
-				if ($return == 1)
-				{
-					$file .= '<span class="summary">'.sprintf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">', '</a>').'</span>';
-				} else {
-					$file .= '<span class="summary">'.sprintf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="./res/'.$row['id'].'.html" class="replylink">', '</a>').'</span>';
-				}
-			}
-			$offset = 0;
-			if ($row1[0] > 3)
-			{
-				$offset = $row1[0] - 3;
-				
-			}
-			$posts = $conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC LIMIT ".$offset.",3");
-				
-			}
-			while ($row2 = $posts->fetch_assoc())
-			{
-				$file .= '<div class="postContainer replyContainer" id="pc'.$row2['id'].'">';
-				$file .= '<div class="sideArrows" id="sa'.$row2['id'].'">&gt;&gt;</div>';
-				$file .= '<div id="p'.$row2['id'].'" class="post reply">';
-				$file .= '<div class="postInfo" id="pi'.$row2['id'].'">';
-				$file .= '<input type="checkbox" name="'.$row2['id'].'" value="delete" />';
-				$file .= '<span class="subject">'.$row2['subject'].'</span> ';
-				$trip = "";
-				if (!empty($row2['trip']))
-				{
-					$trip = " !".$row2['trip']."";
-				}
-				if (!empty($row2['strip']))
-				{
-					$trip .= " !!".$row2['strip']."";
-				}
-				if ((!empty($row2['trip'])) || (!empty($row2['strip'])))
-				{
-					$trip = "<span class='postertrip'>".$trip."</span>";
-				}
-				$c_image = "";
-				if ($row2['capcode'] == 2)
-				{
-					if ($return == 1)
-					{
-						$c_image = ' <img src="./img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
-					} elseif ($threadno != 0)
-					{
-						$c_image = ' <img src="../../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
-					} else {
-						$c_image = ' <img src="../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
-					}
-				} elseif ($row2['capcode'] == 3)
-				{
-					if ($return == 1)
-					{
-						$c_image = ' <img src="./img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
-					} elseif ($threadno != 0)
-					{
-						$c_image = ' <img src="../../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
-					} else {
-						$c_image = ' <img src="../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
-					}
-				}
-				$email_a = "";
-				$email_b = "";
-				if (!empty($row2['email'])) {
-					$email_a = '<a href="mailto:'.$row2['email'].'" class="useremail">';
-					$email_b = '</a>';
-				}
-				$poster_id = "";
-				if ((!empty($row2['poster_id'])) && ($boarddata['ids']==1) && ($row2['capcode']<1))
-				{
-					$poster_id = '<span class="posteruid">(ID: '.$row2['poster_id'].')</span>';
-				}
-				if ($row2['capcode'] == 2)
-				{
-					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
-				} elseif ($row2['capcode'] == 3)
-				{
-					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
-				} elseif ($row2['capcode'] == 4)
-				{
-					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
-				} elseif ($row2['capcode'] == 5)
-				{
-					$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:'.$row2['cc_color'].'">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:'.$row2['cc_color'].'">## '.$row2['cc_text'].'</span>'.$c_image.'</span> '.$poster_id.'</span>';
-				} else {
-					$file .= '<span class="nameBlock">'.$email_a.'<span class="name">'.$row2['name'].'</span>'.$email_b.$trip.' '.$poster_id.'</span>';
-				}
-				if (($adm_type >= 2) && ($return == 1))
-				{
-					$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row2['ip'].'" target="_blank">'.$row2['ip'].'</a>) [<a href="?/info&ip='.$row2['ip'].'">N</a>] '; 
-					if ($row2['ip'] == $opip)
-					{
-						$file .= '<b style="color: red;">[ OP ]</b>';
-					}
-				}
-				$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row2['date']).'</span> ' ;
-				if ($return == 1)
-				{
-					$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span>';
-					$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row2['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row2['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'">D</a>';
-					
-					
-					if (!empty($row2['filename']))
-					{
-						$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'&f=1">F</a>] ';
-					} else {
-						$file .= ']';
-					}
-					if ($adm_type >= 3)
-					{
-						$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row2['id'].'" class="edit">E</a>]';
-					}
-					$file .= "</span>";
-				} elseif ($threadno != 0)
-				{
-					$file .= '<span class="postNum"><a href="../res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="../res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
-				} else {
-					$file .= '<span class="postNum"><a href="./res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
-				}
-				$file .= '</div>';
-				$file .= getFiles($row2, $board, $return, $threadno, $embed_table);
-				$file .= '<blockquote class="postMessage" id="m'.$row2['id'].'">';
-				$wf = 1;
-				if ($row2['capcode'] >= 2)
-				{
-					$wf = 0;
-				}
-				if ($row2['raw'] != 1)
-				{
-					if ($row2['raw'] == 2)
-					{
-						if ($return == 1)
-						{
-							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 0, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
-						} else {
-							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
-						}
-					} else {
-						if ($return == 1)
-						{
-							$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 1, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
-						} else {
-							$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
-						}
-					}
-				} else {
-					$file .= $row2['comment'];
-				}
-				$file .= '</blockquote>';
-				
-				$file .= "</div>";
-				
-				
-				$file .= '</div>';
-				
-				
-			}
-			
-			$file .= '</div>';
-			$file .= '<hr />';
+			$file .= getThread($conn, $config, $board, $threadno, $return, $adm_type, $parser, $boarddata, $replace_array, $embed_table, $row);
 		}
 		$file .= "</div>";
 		if ($threadno != 0)
@@ -1110,6 +754,428 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 	}
 }
 
+function forceGetThread($conn, $board, $threadno)
+{
+	if (isBoard($conn, $board))
+	{
+		$result = $conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."'");
+		if ($result->num_rows == 1)
+		{
+			$wfresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
+			$replace_array = array();
+			while ($row = $wfresult->fetch_assoc())
+			{
+				if ($row['boards'] != "*")
+				{
+					$boards = explode(",", $row['boards']);
+					if (in_array($board, $boards))
+					{
+						$replace_array[$row['search']] = $row['replace'];
+					}
+				} else {
+					$replace_array[$row['search']] = $row['replace'];
+				}
+			}
+			$config = getConfig($conn);
+			require_once( "./jbbcode/Parser.php" );
+			$parser = new JBBCode\Parser();
+			if ($boarddata['bbcode']==1)
+			{
+				$bbcode = $conn->query("SELECT * FROM bbcodes;");
+				
+				while ($row = $bbcode->fetch_assoc())
+				{
+					$parser->addBBCode($row['name'], $row['code']);
+				}
+			}
+			$embed_table = array();
+			$result = $conn->query("SELECT * FROM embeds;");
+			while ($row = $result->fetch_assoc())
+			{
+				$embed_table[] = $row;
+			}
+			
+			$file = "";
+			$row = $result->fetch_assoc();
+			$boarddata = getBoardData($conn, $board);
+			$file = getThread($conn, $config, $board, 0, 0, 0, $parser, $boarddata, $replace_array, $embed_table, $row, 1);
+		
+		}
+	}
+}
+
+function getThread($conn, $config, $board, $threadno, $return, $adm_type, $parser, $boarddata, $replace_array, $embed_table, $row, $force = 0)
+{
+	if (($config['super_caching']==1) && ($threadno == 0) && ($return == 0) && ($force == 0) && (file_exists("./".$board."/res/".$row['id']."_index.html")))
+	{
+		return file_get_contents("./".$board."/res/".$row['id']."_index.html");
+	}
+	$file = "";
+	$file .= '<div class="thread" id="t'.$row['id'].'">';
+	$file .= '<div class="postContainer opContainer" id="pc'.$row['id'].'">';
+	$file .= '<div id="p'.$row['id'].'" class="post op">';
+	$file .= '<div class="postInfo" id="pi'.$row['id'].'">';
+	$file .= '<input type="checkbox" name="'.$row['id'].'" value="delete" />';
+	$file .= '<span class="subject">'.$row['subject'].'</span> ';
+	$trip = "";
+	if (!empty($row['trip']))
+	{
+		$trip = " !".$row['trip']."";
+	}
+	if (!empty($row['strip']))
+	{
+		$trip .= " !!".$row['strip']."";
+	}
+	if ((!empty($row['trip'])) || (!empty($row['strip'])))
+	{
+		$trip = "<span class='postertrip'>".$trip."</span>";
+	}
+	$poster_id = "";
+	if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && ($row['capcode']<2))
+	{
+		$poster_id = '<span class="posteruid">(ID: '.$row['poster_id'].')</span>';
+	}
+	$c_image = "";
+	if ($row['capcode'] == 2)
+	{
+		if ($return == 1)
+		{
+			$c_image = ' <img src="./img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+		} elseif ($threadno != 0)
+		{
+			$c_image = ' <img src="../../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+		} else {
+			$c_image = ' <img src="../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+		}
+	} elseif ($row['capcode'] == 3)
+	{
+		
+		if ($return == 1)
+		{
+			$c_image = ' <img src="./img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+		} elseif ($threadno != 0)
+		{
+			$c_image = ' <img src="../../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+		} else {
+			$c_image = ' <img src="../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+		}
+	}
+	$email_a = "";
+	$email_b = "";
+	if (!empty($row['email'])) {
+		$email_a = '<a href="mailto:'.$row['email'].'" class="useremail">';
+		$email_b = '</a>';
+	}
+	if ($row['capcode'] == 2)
+	{
+		$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
+	} elseif ($row['capcode'] == 3)
+	{
+		$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
+	} elseif ($row['capcode'] == 4)
+	{
+		$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
+	} elseif ($row['capcode'] == 5)
+	{
+		$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:'.$row['cc_color'].'">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:'.$row['cc_color'].'">## '.$row['cc_text'].'</span>'.$c_image.'</span> '.$poster_id.'</span>';
+	} else {
+		$file .= '<span class="nameBlock">'.$email_a.'<span class="name">'.$row['name'].'</span>'.$email_b.$trip.' '.$poster_id.'</span>';
+	}
+	
+	$opip = $row['ip'];
+	if (($adm_type >= 2) && ($return == 1))
+	{
+		$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row['ip'].'" target="_blank">'.$row['ip'].'</a>)</span>';
+		$file .= ' [<a href="?/info&ip='.$row['ip'].'">N</a>] <b style="color: red;">[ OP ]</b>';
+	}
+	$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row['date']).'</span> ';
+
+	if ($return == 1)
+	{
+		$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a></span>';
+		if ($row['locked']==1)
+		{
+			$file .= '<img src="./img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
+		}
+		if ($row['sticky']==1)
+		{
+			$file .= '<img src="./img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
+		}
+		if ($row['sage']==1)
+		{
+			$file .= ' <span style="color: red;">[A]</span> ';
+		}
+		if ($adm_type >= 2)
+		{
+			$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'">D</a>';
+			if (!empty($row['filename']))
+			{
+				$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'&f=1">F</a>]';
+			} else {
+				$file .= ']';
+			}
+			if ($adm_type >= 3)
+			{
+				$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'" class="edit">E</a>]';
+			}
+		} else {
+			$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a>]</span>';
+		}
+		if ($adm_type >= 2)
+		{
+			$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
+		}
+		if ($threadno == 0)
+		{
+			$file .= '&nbsp; <span>[<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">'.$lang['img/reply'].'</a>]</span>';
+		}
+		$file .= '</span>';
+	} elseif ($threadno != 0)
+	{
+		$file .= '<span class="postNum"><a href="../res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="../res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a>';
+		if ($row['locked']==1)
+		{
+			$file .= '<img src="../../img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
+		}
+		if ($row['sticky']==1)
+		{
+			$file .= '<img src="../../img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
+		}
+		$file .= '</span>';
+	} else {
+		$file .= '<span class="postNum"><a href="./res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a> ';
+		if ($row['locked']==1)
+		{
+			$file .= '<img src="../img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
+		}
+		if ($row['sticky']==1)
+		{
+			$file .= '<img src="../img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
+		}
+		$file .= '&nbsp; <span>[<a href="./res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</span></span>';
+	}
+	$file .= '</div>';
+	$file .= getFiles($row, $board, $return, $threadno, $embed_table);
+	$file .= '<blockquote class="postMessage" id="m'.$row['id'].'">';
+	$wf = 1;
+	
+	if ($row['capcode'] >= 2)
+	{
+		$wf = 0;
+	}
+	if ($row['raw'] != 1)
+	{
+		if ($row['raw'] == 2)
+		{
+			if ($return == 1)
+			{
+				$file .= processComment($board, $conn, $row['comment'], $parser, 2, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
+			} else {
+				$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
+			}
+		} else {
+			if ($return == 1)
+			{
+				$file .= processComment($board, $conn, $row['comment'], $parser, 2, 1, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
+			} else {
+				$file .= processComment($board, $conn, $row['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
+			}
+		}
+	} else {
+		$file .= $row['comment'];
+	}
+	$file .= '</blockquote>';
+	
+	
+	
+	$file .= '</div>';
+	$file .= '</div>';
+	
+	
+	
+	if ($threadno != 0)
+	{
+		$posts = $conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC");
+	} else {
+	$posts = $conn->query("SELECT COUNT(*) FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC");
+	$row1 = $posts->fetch_row();
+	if ($row1[0] == 0)
+	{
+		$file .= '</div><hr />';
+		continue;
+	}
+	if ($row1[0] > 3)
+	{
+		if ($return == 1)
+		{
+			$file .= '<span class="summary">'.sprintf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">', '</a>').'</span>';
+		} else {
+			$file .= '<span class="summary">'.sprintf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="./res/'.$row['id'].'.html" class="replylink">', '</a>').'</span>';
+		}
+	}
+	$offset = 0;
+	if ($row1[0] > 3)
+	{
+		$offset = $row1[0] - 3;
+		
+	}
+	$posts = $conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC LIMIT ".$offset.",3");
+		
+	}
+	while ($row2 = $posts->fetch_assoc())
+	{
+		$file .= '<div class="postContainer replyContainer" id="pc'.$row2['id'].'">';
+		$file .= '<div class="sideArrows" id="sa'.$row2['id'].'">&gt;&gt;</div>';
+		$file .= '<div id="p'.$row2['id'].'" class="post reply">';
+		$file .= '<div class="postInfo" id="pi'.$row2['id'].'">';
+		$file .= '<input type="checkbox" name="'.$row2['id'].'" value="delete" />';
+		$file .= '<span class="subject">'.$row2['subject'].'</span> ';
+		$trip = "";
+		if (!empty($row2['trip']))
+		{
+			$trip = " !".$row2['trip']."";
+		}
+		if (!empty($row2['strip']))
+		{
+			$trip .= " !!".$row2['strip']."";
+		}
+		if ((!empty($row2['trip'])) || (!empty($row2['strip'])))
+		{
+			$trip = "<span class='postertrip'>".$trip."</span>";
+		}
+		$c_image = "";
+		if ($row2['capcode'] == 2)
+		{
+			if ($return == 1)
+			{
+				$c_image = ' <img src="./img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+			} elseif ($threadno != 0)
+			{
+				$c_image = ' <img src="../../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+			} else {
+				$c_image = ' <img src="../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+			}
+		} elseif ($row2['capcode'] == 3)
+		{
+			if ($return == 1)
+			{
+				$c_image = ' <img src="./img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+			} elseif ($threadno != 0)
+			{
+				$c_image = ' <img src="../../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+			} else {
+				$c_image = ' <img src="../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+			}
+		}
+		$email_a = "";
+		$email_b = "";
+		if (!empty($row2['email'])) {
+			$email_a = '<a href="mailto:'.$row2['email'].'" class="useremail">';
+			$email_b = '</a>';
+		}
+		$poster_id = "";
+		if ((!empty($row2['poster_id'])) && ($boarddata['ids']==1) && ($row2['capcode']<1))
+		{
+			$poster_id = '<span class="posteruid">(ID: '.$row2['poster_id'].')</span>';
+		}
+		if ($row2['capcode'] == 2)
+		{
+			$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#800080">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id.'</span>';
+		} elseif ($row2['capcode'] == 3)
+		{
+			$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF0000">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id.'</span>';
+		} elseif ($row2['capcode'] == 4)
+		{
+			$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:#FF00FF">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id.'</span>';
+		} elseif ($row2['capcode'] == 5)
+		{
+			$file .= '<span class="nameBlock">'.$email_a.'<span class="name"><span style="color:'.$row2['cc_color'].'">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:'.$row2['cc_color'].'">## '.$row2['cc_text'].'</span>'.$c_image.'</span> '.$poster_id.'</span>';
+		} else {
+			$file .= '<span class="nameBlock">'.$email_a.'<span class="name">'.$row2['name'].'</span>'.$email_b.$trip.' '.$poster_id.'</span>';
+		}
+		if (($adm_type >= 2) && ($return == 1))
+		{
+			$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row2['ip'].'" target="_blank">'.$row2['ip'].'</a>) [<a href="?/info&ip='.$row2['ip'].'">N</a>] '; 
+			if ($row2['ip'] == $opip)
+			{
+				$file .= '<b style="color: red;">[ OP ]</b>';
+			}
+		}
+		$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row2['date']).'</span> ' ;
+		if ($return == 1)
+		{
+			$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span>';
+			$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row2['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row2['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'">D</a>';
+			
+			
+			if (!empty($row2['filename']))
+			{
+				$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'&f=1">F</a>] ';
+			} else {
+				$file .= ']';
+			}
+			if ($adm_type >= 3)
+			{
+				$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row2['id'].'" class="edit">E</a>]';
+			}
+			$file .= "</span>";
+		} elseif ($threadno != 0)
+		{
+			$file .= '<span class="postNum"><a href="../res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="../res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
+		} else {
+			$file .= '<span class="postNum"><a href="./res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
+		}
+		$file .= '</div>';
+		$file .= getFiles($row2, $board, $return, $threadno, $embed_table);
+		$file .= '<blockquote class="postMessage" id="m'.$row2['id'].'">';
+		$wf = 1;
+		if ($row2['capcode'] >= 2)
+		{
+			$wf = 0;
+		}
+		if ($row2['raw'] != 1)
+		{
+			if ($row2['raw'] == 2)
+			{
+				if ($return == 1)
+				{
+					$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 0, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
+				} else {
+					$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
+				}
+			} else {
+				if ($return == 1)
+				{
+					$file .= processComment($board, $conn, $row2['comment'], $parser, 2, 1, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
+				} else {
+					$file .= processComment($board, $conn, $row2['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
+				}
+			}
+		} else {
+			$file .= $row2['comment'];
+		}
+		$file .= '</blockquote>';
+		
+		$file .= "</div>";
+		
+		
+		$file .= '</div>';
+		
+		
+	}
+	
+	$file .= '</div>';
+	$file .= '<hr />';
+	if (($config['super_caching']==1) && ($threadno == 0) && ($return == 0))
+	{
+			$handle = fopen("./".$board."/res/".$threadno."_index.html", "w");
+			fwrite($handle, $file);
+			fclose($handle);
+	}
+	return $file;
+	
+}
+
 function generateCatalog($conn, $board, $return = 0)
 {
 		if ($return != 1)
@@ -1137,6 +1203,10 @@ function updateThreads($conn, $board)
 		if ($config['enable_api']==1)
 		{
 			serializeThread($conn, $board, $row['id']);
+		}
+		if ($config['super_caching']==1)
+		{
+			forceGetThread($conn, $board, $row['id']);
 		}
 	}
 }

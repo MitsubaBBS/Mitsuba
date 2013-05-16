@@ -20,9 +20,25 @@ reqPermission(3);
 				if ($row['resto'] == 0)
 				{
 					generateView($conn, $_GET['b'], $row['id']);
+					if ($config['super_caching']==1)
+					{
+						forceGetThread($conn, $_GET['b'], $row['id']);
+					}
+					if ($config['enable_api']==1)
+					{
+						serializeThread($conn, $_GET['b'], $row['id']);
+					}
 					$resto = $row['id'];
 				} else {
 					generateView($conn, $_GET['b'], $row['resto']);
+					if ($config['super_caching']==1)
+					{
+						forceGetThread($conn, $_GET['b'], $row['resto']);
+					}
+					if ($config['enable_api']==1)
+					{
+						serializeThread($conn, $_GET['b'], $row['resto']);
+					}
 				}
 				generateView($conn, $_GET['b']);
 			}

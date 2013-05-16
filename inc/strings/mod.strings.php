@@ -300,5 +300,6 @@ $lang['mod/recent_warnings'] = "Recent %s warnings";
 $lang['mod/showing_warnings'] = "Showing recent %s warnings.";
 $lang['mod/shown'] = "Shown";
 $lang['mod/delete_shown_warnings'] = "Delete shown warnings";
+$lang['mod/enable_super_caching'] = "Enable Super Caching&trade;";
 //$lang['mod/'] = "";
 ?>
