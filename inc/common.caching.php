@@ -762,6 +762,8 @@ function forceGetThread($conn, $board, $threadno)
 		$result = $conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."'");
 		if ($result->num_rows == 1)
 		{
+			$trow = $result->fetch_assoc();
+			$boarddata = getBoardData($conn, $board);
 			$wfresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
 			$replace_array = array();
 			while ($row = $wfresult->fetch_assoc())
@@ -797,9 +799,7 @@ function forceGetThread($conn, $board, $threadno)
 			}
 			
 			$file = "";
-			$row = $result->fetch_assoc();
-			$boarddata = getBoardData($conn, $board);
-			$file = getThread($conn, $config, $board, 0, 0, 0, $parser, $boarddata, $replace_array, $embed_table, $row, 1);
+			$file = getThread($conn, $config, $trow['board'], 0, 0, 0, $parser, $boarddata, $replace_array, $embed_table, $trow, 1);
 		
 		}
 	}
@@ -999,8 +999,8 @@ function getThread($conn, $config, $board, $threadno, $return, $adm_type, $parse
 	{
 		$posts = $conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC");
 	} else {
-	$posts = $conn->query("SELECT COUNT(*) FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC");
-	$row1 = $posts->fetch_row();
+	$postnos = $conn->query("SELECT COUNT(*) FROM posts WHERE resto=".$row['id']." AND board='".$row['board']."'");
+	$row1 = $postnos->fetch_row();
 	if ($row1[0] == 0)
 	{
 		$file .= '</div><hr />';
@@ -1170,7 +1170,7 @@ function getThread($conn, $config, $board, $threadno, $return, $adm_type, $parse
 	$file .= '<hr />';
 	if (($config['super_caching']==1) && ($threadno == 0) && ($return == 0))
 	{
-			$handle = fopen("./".$board."/res/".$threadno."_index.html", "w");
+			$handle = fopen("./".$board."/res/".$row['id']."_index.html", "w");
 			fwrite($handle, $file);
 			fclose($handle);
 	}
