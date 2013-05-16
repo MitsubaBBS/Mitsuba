@@ -756,6 +756,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 
 function forceGetThread($conn, $board, $threadno)
 {
+	global $lang;
 	if (isBoard($conn, $board))
 	{
 		$result = $conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."'");
@@ -806,6 +807,7 @@ function forceGetThread($conn, $board, $threadno)
 
 function getThread($conn, $config, $board, $threadno, $return, $adm_type, $parser, $boarddata, $replace_array, $embed_table, $row, $force = 0)
 {
+	global $lang;
 	if (($config['super_caching']==1) && ($threadno == 0) && ($return == 0) && ($force == 0) && (file_exists("./".$board."/res/".$row['id']."_index.html")))
 	{
 		return file_get_contents("./".$board."/res/".$row['id']."_index.html");
@@ -1002,7 +1004,7 @@ function getThread($conn, $config, $board, $threadno, $return, $adm_type, $parse
 	if ($row1[0] == 0)
 	{
 		$file .= '</div><hr />';
-		continue;
+		return $file;
 	}
 	if ($row1[0] > 3)
 	{
