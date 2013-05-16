@@ -614,7 +614,7 @@ if (is_dir($imagesDir))
 ?>
 <p>You were issued <b>a warning</b> with the following message:</p>
 <p><?php echo $warndata['reason']; ?></p>
-<p>Your warning was issued on <b><?php echo date("d/m/Y (D) H:i:s", $bandata['created']); ?></b>.</p>
+<p>Your warning was issued on <b><?php echo date("d/m/Y (D) H:i:s", $warndata['created']); ?></b>.</p>
 <p>Now that you have seen this message, you should be able to post again. Click <a href="javascript:history.back()">here</a> to return.</p>
 </div>
 </div>

@@ -213,10 +213,10 @@ function getQuotelink($conn, $board, $link, $specialchars, $thread)
 			$return = "<span class='quote'>".$link."</span>";
 		}
 	} elseif (substr($link, 0, 1) == ">") {
-		if ($specialchars == 1) { $line = htmlspecialchars($link); }
+		if ($specialchars == 1) { $link = htmlspecialchars($link); }
 		$return = "<span class='quote'>".$link."</span>";
 	} else {
-		if ($specialchars == 1) { $line = htmlspecialchars($link); }
+		if ($specialchars == 1) { $link = htmlspecialchars($link); }
 		$return = $link;
 	}
 	return $return;
