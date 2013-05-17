@@ -44,7 +44,7 @@ reqPermission(3);
 						echo "<b style='color: red;'>".$lang['mod/fool']."</b>";
 					}
 				}
-				$conn->query("INSERT INTO spamfilter (`search`, `reason`, `boards`, `expires`, `active`) VALUES ('".$search."', '".$reason."', '".$boards."', '".$expires."', 1);");
+				$conn->query("INSERT INTO spamfilter (`search`, `reason`, `boards`, `expires`, `active`, `regex`) VALUES ('".$search."', '".$reason."', '".$boards."', '".$expires."', 1, 0);");
 			}
 			$search = "";
 			$reason = "";

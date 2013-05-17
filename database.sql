@@ -208,6 +208,7 @@ CREATE TABLE IF NOT EXISTS `spamfilter` (
   `boards` text NOT NULL,
   `expires` varchar(90) NOT NULL,
   `active` int(1) NOT NULL,
+  `regex` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -266,6 +267,7 @@ CREATE TABLE IF NOT EXISTS `wordfilter` (
   `replace` varchar(100) NOT NULL,
   `boards` text NOT NULL,
   `active` int(1) NOT NULL,
+  `regex` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 );
 

@@ -31,7 +31,7 @@ reqPermission(3);
 					}
 				}
 				if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-				$conn->query("INSERT INTO wordfilter (`search`, `replace`, `boards`, `active`) VALUES ('".$search."', '".$replace."', '".$boards."', 1);");
+				$conn->query("INSERT INTO wordfilter (`search`, `replace`, `boards`, `active`, `regex`) VALUES ('".$search."', '".$replace."', '".$boards."', 1, 0);");
 			}
 			$search = "";
 			$replace = "";

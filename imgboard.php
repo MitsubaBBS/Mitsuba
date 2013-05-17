@@ -95,7 +95,6 @@ if (!empty($_POST['mode']))
 			}
 			if ($mod_type < 1)
 			{
-				$clean_text = 
 				$spam = $conn->query("SELECT * FROM spamfilter WHERE active=1");
 				while ($row = $spam->fetch_assoc())
 				{
@@ -104,17 +103,45 @@ if (!empty($_POST['mode']))
 						$boards = explode(",", $row['boards']);
 						if (in_array($board, $boards))
 						{
-							if (stripos($_POST['com'], $row['search']) !== false) {
-								addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
-								echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
-								die();
+							if ($row['regex'] == 1)
+							{
+								try {
+									if (preg_match($row['search'], $_POST['com']) !== false) {
+										addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+										echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
+										die();
+									}
+								} catch (Exception $ex)
+								{
+
+								}
+							} else {
+								if (stripos($_POST['com'], $row['search']) !== false) {
+									addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+									echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
+									die();
+								}
 							}
 						}
 					} else {
-						if (stripos($_POST['com'], $row['search']) !== false) {
-								addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
-								echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
-								die();
+						if ($row['regex'] == 1)
+						{
+							try {
+								if (preg_match($row['search'], $_POST['com']) !== false) {
+									addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+									echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
+									die();
+								}
+							} catch (Exception $ex)
+							{
+
+							}
+						} else {
+							if (stripos($_POST['com'], $row['search']) !== false) {
+									addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+									echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
+									die();
+							}
 						}
 					}
 				}
