@@ -310,7 +310,6 @@ INSERT INTO `embeds` (`name`, `regex`, `code`) VALUES
 
 INSERT INTO `extensions` (`ext`, `name`, `mimetype`, `image`, `default`) VALUES
 ('jpg', 'JPEG Image', 'image/jpeg', '1', 1),
-('jpeg', 'JPEG Image', 'image/jpeg', '1', 1),
 ('png', 'PNG Image', 'image/png', '1', 1),
 ('gif', 'GIF Image', 'image/gif', '1', 1),
 ('mp3', 'MP3 Audio File', 'audio/mpeg', '0', 0),
