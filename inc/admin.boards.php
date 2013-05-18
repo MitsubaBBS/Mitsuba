@@ -2,9 +2,9 @@
 
 function rebuildBoardCache($conn, $board)
 {
-generateView($conn, $board);
-updateThreads($conn, $board);
-regenIDs($conn, $board);
+	updateThreads($conn, $board);
+	generateView($conn, $board);
+	regenIDs($conn, $board);
 }
 
 function regenIDs($conn, $board)
@@ -53,13 +53,14 @@ function createDirectories($board)
 	}
 }
 
-function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0, $nodup = 0, $maxchars = 2000, $anonymous = "Anonymous")
+function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0, $nodup = 0, $maxchars = 2000, $anonymous = "Anonymous", $extensions = "png,jpg,gif")
 {
 	$short = $conn->real_escape_string(trim($short, "/ "));
 	$name = $conn->real_escape_string($name);
 	$des = $conn->real_escape_string($des);
 	$message = $conn->real_escape_string($message);
 	$anonymous = $conn->real_escape_string($anonymous);
+	$extensions = $conn->real_escape_string($extensions);
 	if (!is_numeric($bumplimit))
 	{
 		$bumplimit = 0;
@@ -116,7 +117,7 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 	{
 		$pages = 15;
 	}
-	$result = $conn->query("INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname, ids, embeds, bbcode, time_between_posts, time_between_threads, time_to_delete, filesize, pages, hidden, nodup, maxchars, anonymous) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.", ".$bbcode.", ".$time_between_posts.", ".$time_between_threads.", ".$time_to_delete.", ".$filesize.", ".$pages.", ".$hidden.", ".$nodup.", ".$maxchars.", '".$anonymous."')");
+	$result = $conn->query("INSERT INTO boards (short, name, des, message, bumplimit, spoilers, noname, ids, embeds, bbcode, time_between_posts, time_between_threads, time_to_delete, filesize, pages, hidden, nodup, maxchars, anonymous, extensions) VALUES ('".$short."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.", ".$bbcode.", ".$time_between_posts.", ".$time_between_threads.", ".$time_to_delete.", ".$filesize.", ".$pages.", ".$hidden.", ".$nodup.", ".$maxchars.", '".$anonymous."', '".$extensions."')");
 	if ($result)
 	{
 		createDirectories($short);

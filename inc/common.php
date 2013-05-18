@@ -421,6 +421,37 @@ function preprocessComment($conn, $string)
 	return $new;
 }
 
+function isFile($conn, $path, $board_files = "*")
+{
+	$mime = "";
+	if (empty($board_files)) { $board_files = "*"; }
+	if (function_exists("finfo_file"))
+	{
+		$finfo = finfo_open();
+		$mime = finfo_file($finfo, $path, FILEINFO_MIME_TYPE);
+	} elseif (function_exists("mime_content_type"))
+	{
+		$mime = mime_content_type($path);
+	} else {
+		return false;
+	}
+	$extensions = $conn->query("SELECT * FROM extensions WHERE mimetype='".$conn->real_escape_string($mime)."'");
+	if ($extensions->num_rows == 1)
+	{
+		$ext = $extensions->fetch_assoc();
+		if (($board_files == "*") && (in_array(explode(",", $board_files), $ext['ext'])))
+		{
+			$nfo['extension'] = $ext['ext'];
+			$nfo['image'] = $ext['image'];
+			return $nfo;
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
 function isImage($path)
 {
 	if (function_exists("finfo_file"))
