@@ -433,16 +433,34 @@ function isFile($conn, $path, $board_files = "*")
 	{
 		$mime = mime_content_type($path);
 	} else {
-		return false;
+		if (function_exists("getimagesize")) {
+			$a = getimagesize($path);
+			$image_type = $a[2];
+			if ($image_type == IMAGETYPE_GIF)
+			{
+				$mime = "image/gif";
+			}
+			if ($image_type == IMAGETYPE_PNG)
+			{
+				$mime = "image/png";
+			}
+			if ($image_type == IMAGETYPE_JPEG)
+			{
+				$mime = "image/jpeg";
+			}
+		} else {
+			return false;
+		}
 	}
 	$extensions = $conn->query("SELECT * FROM extensions WHERE mimetype='".$conn->real_escape_string($mime)."'");
 	if ($extensions->num_rows == 1)
 	{
 		$ext = $extensions->fetch_assoc();
-		if (($board_files == "*") && (in_array(explode(",", $board_files), $ext['ext'])))
+		if (($board_files == "*") || (in_array($ext['ext'], explode(",", $board_files))))
 		{
 			$nfo['extension'] = $ext['ext'];
 			$nfo['image'] = $ext['image'];
+			$nfo['mimetype'] = $mime;
 			return $nfo;
 		} else {
 			return false;
@@ -451,49 +469,6 @@ function isFile($conn, $path, $board_files = "*")
 		return false;
 	}
 }
-
-function isImage($path)
-{
-	if (function_exists("finfo_file"))
-	{
-		$finfo = finfo_open();
-		$mime = finfo_file($finfo, $path, FILEINFO_MIME_TYPE);
-		switch ($mime)
-		{
-			case "image/jpeg": return ".jpg";
-			case "image/gif": return ".gif";
-			case "image/png": return ".png";
-		}
-	} elseif (function_exists("mime_content_type"))
-	{
-		$mime = mime_content_type($path);
-		switch ($mime)
-		{
-			case "image/jpeg": return ".jpg";
-			case "image/gif": return ".gif";
-			case "image/png": return ".png";
-		}
-	} elseif (function_exists("getimagesize")) {
-		$a = getimagesize($path);
-		$image_type = $a[2];
-		if ($image_type == IMAGETYPE_GIF)
-		{
-			return ".gif";
-		}
-		if ($image_type == IMAGETYPE_PNG)
-		{
-			return ".png";
-		}
-		if ($image_type == IMAGETYPE_JPEG)
-		{
-			return ".jpg";
-		}
-	} else {
-		return false;
-	}
-	return false;
-}
-
 
 function mktripcode($pw)
 {

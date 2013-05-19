@@ -304,6 +304,12 @@ function generateView($conn, $board, $threadno = 0, $return = 0, $mode = 0, $adm
 	{
 		$embed_table[] = $row;
 	}
+	$extensions = array();
+	$result = $conn->query("SELECT * FROM extensions;");
+	while ($row = $result->fetch_assoc())
+	{
+		$extensions[$row['mimetype']]['image'] = $row['image'];
+	}
 	if ($return == 1)
 	{
 		$pages = $page;
@@ -618,7 +624,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 		}
 		while ($row = $result->fetch_assoc())
 		{
-			$file .= getThread($conn, $config, $board, $threadno, $return, $adm_type, $parser, $boarddata, $replace_array, $embed_table, $row);
+			$file .= getThread($conn, $config, $board, $threadno, $return, $adm_type, $parser, $boarddata, $replace_array, $embed_table, $row, $extensions);
 		}
 		$file .= "</div>";
 		if ($threadno != 0)
@@ -798,14 +804,21 @@ function forceGetThread($conn, $board, $threadno)
 				$embed_table[] = $row;
 			}
 			
+			$extensions = array();
+			$result = $conn->query("SELECT * FROM extensions;");
+			while ($row = $result->fetch_assoc())
+			{
+				$extensions[$row['mimetype']]['image'] = $row['image'];
+			}
+
 			$file = "";
-			$file = getThread($conn, $config, $trow['board'], 0, 0, 0, $parser, $boarddata, $replace_array, $embed_table, $trow, 1);
+			$file = getThread($conn, $config, $trow['board'], 0, 0, 0, $parser, $boarddata, $replace_array, $embed_table, $trow, $extensions, 1);
 		
 		}
 	}
 }
 
-function getThread($conn, $config, $board, $threadno, $return, $adm_type, $parser, $boarddata, $replace_array, $embed_table, $row, $force = 0)
+function getThread($conn, $config, $board, $threadno, $return, $adm_type, $parser, $boarddata, $replace_array, $embed_table, $row, $extensions, $force = 0)
 {
 	global $lang;
 	if (($config['super_caching']==1) && ($threadno == 0) && ($return == 0) && ($force == 0) && (file_exists("./".$board."/res/".$row['id']."_index.html")))
@@ -957,7 +970,7 @@ function getThread($conn, $config, $board, $threadno, $return, $adm_type, $parse
 		$file .= '&nbsp; <span>[<a href="./res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</span></span>';
 	}
 	$file .= '</div>';
-	$file .= getFiles($row, $board, $return, $threadno, $embed_table);
+	$file .= getFiles($row, $board, $return, $threadno, $embed_table, $extensions);
 	$file .= '<blockquote class="postMessage" id="m'.$row['id'].'">';
 	$wf = 1;
 	
@@ -1128,7 +1141,7 @@ function getThread($conn, $config, $board, $threadno, $return, $adm_type, $parse
 			$file .= '<span class="postNum"><a href="./res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
 		}
 		$file .= '</div>';
-		$file .= getFiles($row2, $board, $return, $threadno, $embed_table);
+		$file .= getFiles($row2, $board, $return, $threadno, $embed_table, $extensions);
 		$file .= '<blockquote class="postMessage" id="m'.$row2['id'].'">';
 		$wf = 1;
 		if ($row2['capcode'] >= 2)
@@ -1544,7 +1557,7 @@ function generateNews($conn)
 	fclose($handle);
 }
 
-function getFiles($row, $board, $return, $threadno, $embed_table)
+function getFiles($row, $board, $return, $threadno, $embed_table, $extensions)
 {
 	$file = "";
 	if (!empty($row['filename']))
@@ -1556,6 +1569,7 @@ function getFiles($row, $board, $return, $threadno, $embed_table)
 			$orig_filenames = explode(";", $row['orig_filename']);
 			$filesizes = explode(";", $row['filesize']);
 			$imagesizes = explode(";", $row['imagesize']);
+			$mimetypes = explode(";", $row['mimetype']);
 			$t_ws = explode(";", $row['t_w']);
 			$t_hs = explode(";", $row['t_h']);
 			$num = 0;
@@ -1565,6 +1579,7 @@ function getFiles($row, $board, $return, $threadno, $embed_table)
 				$files[$num]['orig_filename'] = $orig_filenames[$num];
 				$files[$num]['filesize'] = $filesizes[$num];
 				$files[$num]['imagesize'] = $imagesizes[$num];
+				$files[$num]['mimetype'] = $mimetypes[$num];
 				$files[$num]['t_w'] = $t_ws[$num];
 				$files[$num]['t_h'] = $t_hs[$num];
 				$num++;
@@ -1574,6 +1589,7 @@ function getFiles($row, $board, $return, $threadno, $embed_table)
 			$files[0]['orig_filename'] = $row['orig_filename'];
 			$files[0]['filesize'] = $row['filesize'];
 			$files[0]['imagesize'] = $row['imagesize'];
+			$files[0]['mimetype'] = $row['mimetype'];
 			$files[0]['t_w'] = $row['t_w'];
 			$files[0]['t_h'] = $row['t_h'];
 		}
@@ -1611,14 +1627,17 @@ function getFiles($row, $board, $return, $threadno, $embed_table)
 					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
 				}
 				$file .= '</div>';
-				if ($return == 1)
+				if ((isset($extensions[$fileinfo['mimetype']]['image'])) && ($extensions[$fileinfo['mimetype']]['image']==1))
 				{
-					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-				} elseif ($threadno != 0)
-				{
-					$file .= '<a class="fileThumb" href="../src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-				} else {
-					$file .= '<a class="fileThumb" href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+					if ($return == 1)
+					{
+						$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+					} elseif ($threadno != 0)
+					{
+						$file .= '<a class="fileThumb" href="../src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+					} else {
+						$file .= '<a class="fileThumb" href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+					}
 				}
 				$file .= '</div>';
 			} elseif (substr($fileinfo['filename'], 0, 6) == "embed:")
@@ -1644,16 +1663,18 @@ function getFiles($row, $board, $return, $threadno, $embed_table)
 					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="./src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 				}
 				$file .= '</div>';
-				if ($return == 1)
+				if ((isset($extensions[$fileinfo['mimetype']]['image'])) && ($extensions[$fileinfo['mimetype']]['image']==1))
 				{
-					$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
-				} elseif ($threadno != 0)
-				{
-					$file .= '<a class="fileThumb" href="../src/'.$fileinfo['filename'].'" target="_blank"><img src="../src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
-				} else {
-					$file .= '<a class="fileThumb" href="./src/'.$fileinfo['filename'].'" target="_blank"><img src="./src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+					if ($return == 1)
+					{
+						$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+					} elseif ($threadno != 0)
+					{
+						$file .= '<a class="fileThumb" href="../src/'.$fileinfo['filename'].'" target="_blank"><img src="../src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+					} else {
+						$file .= '<a class="fileThumb" href="./src/'.$fileinfo['filename'].'" target="_blank"><img src="./src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+					}
 				}
-				
 				$file .= '</div>';
 			}
 			$filenum++;
@@ -1739,6 +1760,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 			$orig_filenames = explode(";", $row['orig_filename']);
 			$filesizes = explode(";", $row['orig_filesize']);
 			$imagesizes = explode(";", $row['imagesize']);
+			$mimetypes = explode(";", $row['mimetype']);
 			$t_ws = explode(";", $row['t_w']);
 			$t_hs = explode(";", $row['t_h']);
 			$num = 0;
@@ -1748,6 +1770,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 				$files[$num]['orig_filename'] = $orig_filenames[$num];
 				$files[$num]['filesize'] = $filesizes[$num];
 				$files[$num]['imagesize'] = $imagesizes[$num];
+				$files[$num]['mimetype'] = $mimetypes[$num];
 				$files[$num]['t_w'] = $t_ws[$num];
 				$files[$num]['t_h'] = $t_hs[$num];
 				$num++;
@@ -1766,6 +1789,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 						$file['filename'] = $pinfoo['filename'];
 						$file['ext'] = ".".$pinfo['extension'];
 						$file['fsize'] = $row['orig_filesize'];
+						$file['mimetype'] = $row['mimetype'];
 						$sze = explode("x", $row['imagesize']);
 						$file['w'] = $sze[0];
 						$file['h'] = $sze[1];
@@ -1785,6 +1809,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 						$file['filename'] = $pinfoo['filename'];
 						$file['ext'] = ".".$pinfo['extension'];
 						$file['fsize'] = $row['orig_filesize'];
+						$file['mimetype'] = $row['mimetype'];
 						$sze = explode("x", $row['imagesize']);
 						$file['w'] = $sze[0];
 						$file['h'] = $sze[1];
@@ -1810,6 +1835,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 					$file['filename'] = $pinfoo['filename'];
 					$file['ext'] = ".".$pinfo['extension'];
 					$file['fsize'] = $row['orig_filesize'];
+					$file['mimetype'] = $row['mimetype'];
 					$sze = explode("x", $row['imagesize']);
 					$file['w'] = $sze[0];
 					$file['h'] = $sze[1];
@@ -1829,6 +1855,7 @@ function serializePost($row, $boarddata, $parser, $conn)
 					$file['filename'] = $pinfoo['filename'];
 					$file['ext'] = ".".$pinfo['extension'];
 					$file['fsize'] = $row['orig_filesize'];
+					$file['mimetype'] = $row['mimetype'];
 					$sze = explode("x", $row['imagesize']);
 					$file['w'] = $sze[0];
 					$file['h'] = $sze[1];

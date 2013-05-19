@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `orig_filesize` text NOT NULL,
   `filesize` text NOT NULL,
   `imagesize` text NOT NULL,
+  `mimetype` text NOT NULL,
   `t_w` text NOT NULL,
   `t_h` text NOT NULL,
   `sticky` int(1) NOT NULL,

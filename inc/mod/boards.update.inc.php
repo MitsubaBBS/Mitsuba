@@ -88,7 +88,7 @@ reqPermission(3);
 					$pages = $_POST['pages'];
 				}
 				$anonymous = "Anonymous";
-				if (!empty($_POST['anonymous'])
+				if (!empty($_POST['anonymous']))
 				{
 					$anonymous = $_POST['anonymous'];
 				}

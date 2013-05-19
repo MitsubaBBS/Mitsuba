@@ -182,6 +182,7 @@ if (!empty($_POST['mode']))
 					}
 				}
 			}
+			$mime = "";
 			if (!empty($_POST['embed']))
 			{
 				if ($bdata['embeds']==0)
@@ -209,6 +210,7 @@ if (!empty($_POST['mode']))
 					echo "<h1>".$lang['img/file_too_big']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
 					exit;
 				}
+				$gen_thumb = 0;
 				if (!empty($_FILES['upfile']['tmp_name']))
 				{
 					$target_path = "./".$board."/src/";
@@ -218,11 +220,13 @@ if (!empty($_POST['mode']))
 						echo "<h1>".$lang['img/file_too_big']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
 						exit;
 					}
-					if (!($ext = isImage($_FILES['upfile']['tmp_name'])))
+					if (!($nfo = isFile($conn, $_FILES['upfile']['tmp_name'], $bdata['extensions'])))
 					{
 						echo "<h1>".$lang['img/file_not_img']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
 						exit;
 					}
+					$mime = $nfo['mimetype'];
+					$ext = $nfo['extension'];
 					$fileid = time() . mt_rand(10000000, 999999999);
 					$filename = $fileid . $ext; 
 					$target_path .= $filename;
@@ -237,6 +241,7 @@ if (!empty($_POST['mode']))
 						}
 					}
 					if(move_uploaded_file($_FILES['upfile']['tmp_name'], $target_path)) {
+						if ($nfo['image']==1) { $gen_thumb = 1; }
 						printf($lang['img/file_uploaded'], basename( $_FILES['upfile']['name']));
 					} else {
 						echo $lang['img/upload_error'];
@@ -266,7 +271,7 @@ if (!empty($_POST['mode']))
 			}
 			$thumb_w = 0;
 			$thumb_h = 0;
-			if (substr($filename, 0, 6) != "embed:")
+			if ((substr($filename, 0, 6) != "embed:") && ($gen_thumb == 1))
 			{
 				if (!empty($_FILES['upfile']['tmp_name']))
 				{
@@ -275,6 +280,7 @@ if (!empty($_POST['mode']))
 						$returned = thumb($board, $fileid.$ext, 125);
 						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
+							unlink($target_path);
 							echo "<h1>".$lang['img/no_thumb']."</h1></body></html>"; exit;
 						}
 						$thumb_w = $returned['width'];
@@ -283,6 +289,7 @@ if (!empty($_POST['mode']))
 						$returned = thumb($board, $fileid.$ext);
 						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
+							unlink($target_path);
 							echo "<h1>".$lang['img/no_thumb']."</h1></body></html>"; exit;
 						}
 						$thumb_w = $returned['width'];

@@ -44,7 +44,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 						unlink("./".$board."/src/".$filename);
 						unlink("./".$board."/src/thumb/".$filename);
 					}
-					$conn->query("UPDATE posts SET filename='deleted' WHERE id=".$postno." AND board='".$board."';");
+					$conn->query("UPDATE posts SET filename='deleted', mimetype='', filehash='' WHERE id=".$postno." AND board='".$board."';");
 					if ($postdata['resto'] != 0)
 					{
 						generateView($conn, $board, $postdata['resto']);
@@ -148,7 +148,7 @@ function deletePost($conn, $board, $postno, $password, $onlyimgdel = 0, $adm_typ
 	}
 }
 
-function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $nofile = 0, $fake_id = "", $cc_text = "", $cc_color = "")
+function addPost($conn, $board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $mimetype = "", $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $nofile = 0, $fake_id = "", $cc_text = "", $cc_color = "")
 {
 	global $lang;
 	$config = getConfig($conn);
@@ -279,7 +279,7 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		}
 	}
 	
-	
+	$mimetype = $conn->real_escape_string($mimetype);
 	$md5 = $conn->real_escape_string($md5);
 	$poster_id = "";
 	if (!empty($fake_id))
@@ -321,8 +321,8 @@ function addPost($conn, $board, $name, $email, $subject, $comment, $password, $f
 		$cc_text = $conn->real_escape_string(htmlspecialchars($cc_text));
 		$cc_color = $conn->real_escape_string(htmlspecialchars($cc_color));
 	}
-	$conn->query("INSERT INTO posts (board, date, name, trip, strip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, t_w, t_h, sticky, sage, locked, capcode, raw, cc_text, cc_color)".
-	"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$strip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', ".$t_w.", ".$t_h.", ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.", '".$cc_text."', '".$cc_color."')");
+	$conn->query("INSERT INTO posts (board, date, name, trip, strip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, mimetype, t_w, t_h, sticky, sage, locked, capcode, raw, cc_text, cc_color)".
+	"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$strip."', '".$conn->real_escape_string($poster_id)."', '".processString($conn, $email)."', '".processString($conn, $subject)."', '".preprocessComment($conn, $comment)."', '".md5($password)."', '".processString($conn, $orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', '".$mimetype."', ".$t_w.", ".$t_h.", ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.", '".$cc_text."', '".$cc_color."')");
 	$id = mysqli_insert_id($conn);
 	if (empty($fake_id))
 	{
