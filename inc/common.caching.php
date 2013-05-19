@@ -1618,13 +1618,13 @@ function getFiles($row, $board, $return, $threadno, $embed_table, $extensions)
 				$file .= '<div class="fileInfo">';
 				if ($return == 1)
 				{
-					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler</b></a></span>';
 				
 				} elseif ($threadno != 0)
 				{
-					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="../src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="../src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler</b></a></span>';
 				} else {
-					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler image</b></a></span>';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler</b></a></span>';
 				}
 				$file .= '</div>';
 				if ((isset($extensions[$fileinfo['mimetype']]['image'])) && ($extensions[$fileinfo['mimetype']]['image']==1))
@@ -1653,14 +1653,19 @@ function getFiles($row, $board, $return, $threadno, $embed_table, $extensions)
 			} else {
 				$file .= '<div class="file" id="f'.$row['id']."_".$filenum.'">';
 				$file .= '<div class="fileInfo">';
+				$imgsize = "";
+				if ((isset($extensions[$fileinfo['mimetype']]['image'])) && ($extensions[$fileinfo['mimetype']]['image']==1))
+				{
+					$imgsize = ', '.$fileinfo['imagesize'];
+				}
 				if ($return == 1)
 				{
-					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].$imgsize.', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 				} elseif ($threadno != 0)
 				{
-					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="../src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="../src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].$imgsize.', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 				} else {
-					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="./src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].', '.$fileinfo['imagesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="./src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].$imgsize.', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 				}
 				$file .= '</div>';
 				if ((isset($extensions[$fileinfo['mimetype']]['image'])) && ($extensions[$fileinfo['mimetype']]['image']==1))
