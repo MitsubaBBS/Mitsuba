@@ -226,7 +226,7 @@ if (!empty($_POST['mode']))
 						exit;
 					}
 					$mime = $nfo['mimetype'];
-					$ext = $nfo['extension'];
+					$ext = ".".$nfo['extension'];
 					$fileid = time() . mt_rand(10000000, 999999999);
 					$filename = $fileid . $ext; 
 					$target_path .= $filename;
