@@ -1627,18 +1627,22 @@ function getFiles($row, $board, $return, $threadno, $embed_table, $extensions)
 					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler</b></a></span>';
 				}
 				$file .= '</div>';
-				if ((isset($extensions[$fileinfo['mimetype']]['image'])) && ($extensions[$fileinfo['mimetype']]['image']==1))
+				$filepath = "";
+				$thumbpath = "";
+				if ($return == 1)
 				{
-					if ($return == 1)
-					{
-						$file .= '<a class="fileThumb" href="./'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-					} elseif ($threadno != 0)
-					{
-						$file .= '<a class="fileThumb" href="../src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="../../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-					} else {
-						$file .= '<a class="fileThumb" href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><img src="../img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
-					}
+					$filepath = './'.$board.'/src/'.substr($fileinfo['filename'],8);
+					$thumbpath = './'.$board.'/src/thumb/'.substr($fileinfo['filename'],8);
+				} elseif ($threadno != 0)
+				{
+					$filepath = '../src/'.substr($fileinfo['filename'],8);
+					$thumbpath = '../src/thumb/'.substr($fileinfo['filename'],8);
+				} else {
+					$filepath = './src/'.substr($fileinfo['filename'],8);
+					$thumbpath = './src/thumb/'.substr($fileinfo['filename'],8);
 				}
+
+				$file .= '<a class="fileThumb" href="'.$filepath.'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
 				$file .= '</div>';
 			} elseif (substr($fileinfo['filename'], 0, 6) == "embed:")
 			{
@@ -1668,16 +1672,29 @@ function getFiles($row, $board, $return, $threadno, $embed_table, $extensions)
 					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="./src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].$imgsize.', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 				}
 				$file .= '</div>';
-				if ((isset($extensions[$fileinfo['mimetype']]['image'])) && ($extensions[$fileinfo['mimetype']]['image']==1))
+				$filepath = "";
+				$thumbpath = "";
+				if ($return == 1)
 				{
-					if ($return == 1)
+					$filepath = './'.$board.'/src/'.$fileinfo['filename'];
+					$thumbpath = './'.$board.'/src/thumb/'.$fileinfo['filename'];
+				} elseif ($threadno != 0)
+				{
+					$filepath = '../src/'.$fileinfo['filename'];
+					$thumbpath = '../src/thumb/'.$fileinfo['filename'];
+				} else {
+					$filepath = './src/'.$fileinfo['filename'];
+					$thumbpath = './src/thumb/'.$fileinfo['filename'];
+				}
+
+				if (isset($extensions[$fileinfo['mimetype']]['image']))
+				{
+					if ($extensions[$fileinfo['mimetype']]['image']==1)
 					{
-						$file .= '<a class="fileThumb" href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank"><img src="./'.$board.'/src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
-					} elseif ($threadno != 0)
+						$file .= '<a class="fileThumb" href="'.$filepath.'" target="_blank"><img src="'.$thumbpath.'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+					} elseif ($extensions[$fileinfo['mimetype']]['image']!=0)
 					{
-						$file .= '<a class="fileThumb" href="../src/'.$fileinfo['filename'].'" target="_blank"><img src="../src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
-					} else {
-						$file .= '<a class="fileThumb" href="./src/'.$fileinfo['filename'].'" target="_blank"><img src="./src/thumb/'.$fileinfo['filename'].'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+						$file .= sprintf($extensions[$fileinfo['mimetype']]['image'], $filepath);
 					}
 				}
 				$file .= '</div>';
