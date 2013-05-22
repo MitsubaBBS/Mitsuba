@@ -1,9 +1,9 @@
 <?php
-function rebuildBoardLinks($conn)
+function rebuildBoardLinks($conn, $cacher)
 {
-	updateConfigValue($conn, "boardLinks", generateBoardLinks($conn));
-	updateConfigValue($conn, "boardLinks_thread", generateBoardLinks($conn, 1));
-	updateConfigValue($conn, "boardLinks_index", generateBoardLinks($conn, 2));
+	updateConfigValue($conn, "boardLinks", $cacher->generateBoardLinks());
+	updateConfigValue($conn, "boardLinks_thread", $cacher->generateBoardLinks(1));
+	updateConfigValue($conn, "boardLinks_index", $cacher->generateBoardLinks(2));
 }
 
 function generatePost($conn, $board, $id)
@@ -22,11 +22,11 @@ function generatePost($conn, $board, $id)
 		$post = $result->fetch_assoc();
 		if ($post['resto'] == 0)
 		{
-			generateView($conn, $board, $post['id']);
+			$cacher->generateView($board, $post['id']);
 		} else {
-			generateView($conn, $board, $post['resto']);
+			$cacher->generateView($board, $post['resto']);
 		}
-		generateView($conn, $board);
+		$cacher->generateView($board);
 	}
 }
 ?>

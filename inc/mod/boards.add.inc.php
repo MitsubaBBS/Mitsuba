@@ -76,7 +76,7 @@ reqPermission(3);
 			{
 				$anonymous = $_POST['anonymous'];
 			}
-			if (addBoard($conn, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous) > 0)
+			if (addBoard($conn, $cacher, $_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous) > 0)
 			{
 				logAction($conn, sprintf($lang['log/added_board'], $conn->real_escape_string($_POST['short'])));
 				?>

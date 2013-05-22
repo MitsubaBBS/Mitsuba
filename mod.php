@@ -94,7 +94,7 @@ function deleteEntry($conn, $type, $id, $validate_id = 0)
 		$conn->query("DELETE FROM ".$table." WHERE id=".$id);
 	}
 
-	if ($type == 1) { generateNews($conn); }
+	if ($type == 1) { $cacher->generateNews(); }
 }
 
 function updateEntry($conn, $type, $id, $who, $title, $text, $validate_id = 0)
@@ -122,7 +122,7 @@ function updateEntry($conn, $type, $id, $who, $title, $text, $validate_id = 0)
 		$conn->query("UPDATE ".$table." SET who='".$who."', title='".$title."', text='".$text."' WHERE id=".$id);
 	}
 	
-	if ($type == 1) { generateNews($conn); }
+	if ($type == 1) { $cacher->generateNews(); }
 }
 
 function processEntry($conn, $string)
@@ -180,6 +180,7 @@ if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && ((
 <?php
 }
 $conn = new mysqli($db_host, $db_username, $db_password, $db_database);
+$cacher = new Cacher($conn);
 if ((!empty($_SESSION['logged'])) && ($_SESSION['logged']==1) && ($_SESSION['ip']!=$_SERVER['REMOTE_ADDR']))
 {
 	logAction($conn, sprintf($lang['log/ip_changed'], $_SESSION['ip'], $_SERVER['REMOTE_ADDR']));

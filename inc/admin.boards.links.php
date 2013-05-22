@@ -1,6 +1,6 @@
 <?php
 
-function deleteBoardLink($conn, $id)
+function deleteBoardLink($conn, $cacher, $id)
 {
 	if (!is_numeric($id))
 	{
@@ -8,20 +8,20 @@ function deleteBoardLink($conn, $id)
 	}
 	$conn->query("DELETE FROM links WHERE parent=".$id.";");
 	$conn->query("DELETE FROM links WHERE id=".$id.";");
-	rebuildBoardLinks($conn);
+	$cacher->rebuildBoardLinks();
 }
 
-function addLinkCategory($conn, $name)
+function addLinkCategory($conn, $cacher, $name)
 {
 	$allcat = $conn->query("SELECT * FROM links WHERE url='' AND parent=-1");
 	$catnum = $allcat->num_rows;
 	$name = $conn->real_escape_string($name);
 	$conn->query("INSERT INTO links (parent, url, url_thread, url_index, title, short) VALUES (-1, '', '', '', '".$name."', 'c".($catnum + 1)."');");
-	rebuildBoardLinks($conn);
+	$cacher->rebuildBoardLinks();
 }
 
 
-function updateBoardLink($conn, $id, $url, $url_thread, $url_index, $title, $short)
+function updateBoardLink($conn, $cacher, $id, $url, $url_thread, $url_index, $title, $short)
 {
 	if (!is_numeric($id))
 	{
@@ -36,14 +36,14 @@ function updateBoardLink($conn, $id, $url, $url_thread, $url_index, $title, $sho
 	if ($cat->num_rows == 1)
 	{
 		$conn->query("UPDATE links SET title='".$title."', url='".$url."', url_thread='".$url_thread."', url_index='".$url_index."', short='".$short."' WHERE id=".$id);
-		rebuildBoardLinks($conn);
+		$cacher->rebuildBoardLinks();
 		return 1;
 	} else {
 		return 0;
 	}
 }
 
-function addBoardLink($conn, $parent, $url, $url_thread, $url_index, $title, $short)
+function addBoardLink($conn, $cacher, $parent, $url, $url_thread, $url_index, $title, $short)
 {
 	$parent = $conn->real_escape_string($parent);
 	$title = $conn->real_escape_string($title);
@@ -55,14 +55,14 @@ function addBoardLink($conn, $parent, $url, $url_thread, $url_index, $title, $sh
 	if ($cat->num_rows == 1)
 	{
 		$conn->query("INSERT INTO links (parent, url, url_thread, url_index, title, short) VALUES (".$parent.", '".$url."', '".$url_thread."', '".$url_index."', '".$title."', '".$short."');");
-		rebuildBoardLinks($conn);
+		$cacher->rebuildBoardLinks();
 		return 1;
 	} else {
 		return 0;
 	}
 }
 
-function moveDownCategory($conn, $id)
+function moveDownCategory($conn, $cacher, $id)
 {
 	$result = $conn->query("SELECT * FROM links WHERE id=".$id.";");
 	if ($result->num_rows == 1)
@@ -75,7 +75,7 @@ function moveDownCategory($conn, $id)
 		{
 			$conn->query("UPDATE links SET short='c".($curpos)."' WHERE short='c".($curpos+1)."';");
 			$conn->query("UPDATE links SET short='c".($curpos+1)."' WHERE id=".$id);
-			rebuildBoardLinks($conn);
+			$cacher->rebuildBoardLinks();
 		}
 		return 1;
 	} else {
@@ -83,7 +83,7 @@ function moveDownCategory($conn, $id)
 	}
 }
 
-function moveUpCategory($conn, $id)
+function moveUpCategory($conn, $cacher, $id)
 {
 	$result = $conn->query("SELECT * FROM links WHERE id=".$id.";");
 	if ($result->num_rows == 1)
@@ -96,7 +96,7 @@ function moveUpCategory($conn, $id)
 		{
 			$conn->query("UPDATE links SET short='c".($curpos)."' WHERE short='c".($curpos-1)."';");
 			$conn->query("UPDATE links SET short='c".($curpos-1)."' WHERE id=".$id);
-			rebuildBoardLinks($conn);
+			$cacher->rebuildBoardLinks();
 		}
 		return 1;
 	} else {

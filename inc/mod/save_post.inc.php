@@ -19,10 +19,10 @@ reqPermission(3);
 				$resto = $row['resto'];
 				if ($row['resto'] == 0)
 				{
-					generateView($conn, $_POST['b'], $row['id']);
+					$cacher->generateView($_POST['b'], $row['id']);
 					if ($config['super_caching']==1)
 					{
-						forceGetThread($conn, $_POST['b'], $row['id']);
+						$cacher->forceGetThread($_POST['b'], $row['id']);
 					}
 					if ($config['enable_api']==1)
 					{
@@ -30,17 +30,17 @@ reqPermission(3);
 					}
 					$resto = $row['id'];
 				} else {
-					generateView($conn, $_POST['b'], $row['resto']);
+					$cacher->generateView($_POST['b'], $row['resto']);
 					if ($config['super_caching']==1)
 					{
-						forceGetThread($conn, $_POST['b'], $row['resto']);
+						$cacher->forceGetThread($_POST['b'], $row['resto']);
 					}
 					if ($config['enable_api']==1)
 					{
 						serializeThread($conn, $_POST['b'], $row['resto']);
 					}
 				}
-				generateView($conn, $_POST['b']);
+				$cacher->generateView($_POST['b']);
 				?>
 				<div class="box-outer top-box">
 	<div class="box-inner">

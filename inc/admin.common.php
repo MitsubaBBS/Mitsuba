@@ -4,7 +4,7 @@ function reqPermission($level)
 	if ($_SESSION['type']<$level) { die(); }
 }
 
-function appendToPost($conn, $board, $postid, $text)
+function appendToPost($conn, $cacher, $board, $postid, $text)
 {
 	if (is_numeric($postid))
 	{
@@ -18,19 +18,19 @@ function appendToPost($conn, $board, $postid, $text)
 			$conn->query("UPDATE posts SET comment='".$new_text."', raw=2 WHERE id=".$postid." AND board='".$board."'");
 			if ($pdata['resto'] == 0)
 			{
-				generateView($conn, $board, $pdata['id']);
+				$cacher->generateView($board, $pdata['id']);
 				if ($config['super_caching']==1)
 				{
-					forceGetThread($conn, $board, $pdata['id']);
+					$cacher->forceGetThread($board, $pdata['id']);
 				}
 			} else {
-				generateView($conn, $board, $pdata['resto']);
+				$cacher->generateView($board, $pdata['resto']);
 				if ($config['super_caching']==1)
 				{
-					forceGetThread($conn, $board, $pdata['resto']);
+					$cacher->forceGetThread($board, $pdata['resto']);
 				}
 			}
-			generateView($conn, $board);
+			$cacher->generateView($board);
 		}
 	}
 }

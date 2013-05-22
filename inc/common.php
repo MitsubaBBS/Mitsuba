@@ -15,6 +15,16 @@ function getEmbed($url, $embed_table = null, $s = 250) {
 	
 }
 
+function urlCallback($match)
+{
+	if ((substr($match[0], 0, 5) == "http:") || (substr($match[0], 0, 6) == "https:"))
+	{
+		return "<a href='".$match[0]."'>".$match[0]."</a>";
+	} else {
+		return $match[0];
+	}
+}
+
 function addSystemBan($conn, $ip, $reason, $note, $expires, $boards)
 {
 	if (!empty($ip))

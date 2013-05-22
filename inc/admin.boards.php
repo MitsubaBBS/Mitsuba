@@ -1,9 +1,9 @@
 <?php
 
-function rebuildBoardCache($conn, $board)
+function rebuildBoardCache($conn, $cacher, $board)
 {
-	updateThreads($conn, $board);
-	generateView($conn, $board);
+	$cacher->updateThreads($board);
+	$cacher->generateView($board);
 	regenIDs($conn, $board);
 }
 
@@ -53,7 +53,7 @@ function createDirectories($board)
 	}
 }
 
-function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0, $nodup = 0, $maxchars = 2000, $anonymous = "Anonymous", $extensions = "png,jpg,gif")
+function addBoard($conn, $cacher, $short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0, $nodup = 0, $maxchars = 2000, $anonymous = "Anonymous", $extensions = "png,jpg,gif")
 {
 	$short = $conn->real_escape_string(trim($short, "/ "));
 	$name = $conn->real_escape_string($name);
@@ -121,7 +121,7 @@ function addBoard($conn, $short, $name, $des = "", $message = "", $bumplimit = 0
 	if ($result)
 	{
 		createDirectories($short);
-		generateView($conn,$short);
+		$cacher->generateView($short);
 		return 1;
 	} else {
 		return -1; //error

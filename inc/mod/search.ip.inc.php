@@ -64,9 +64,9 @@ reqPermission(2);
 				{
 					if ($row['raw'] == 2)
 					{
-						$comment = processComment($row['board'], $conn, $row['comment'], $parser, 2, 0);
+						$comment = $cacher->processComment($row['board'], $row['comment'], $parser, 2, 0);
 					} else {
-						$comment = processComment($row['board'], $conn, $row['comment'], $parser, 2);
+						$comment = $cacher->processComment($row['board'], $row['comment'], $parser, 2);
 					}
 				} else {
 					$comment = $row['comment'];

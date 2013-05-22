@@ -19,10 +19,10 @@ reqPermission(3);
 				$resto = $row['resto'];
 				if ($row['resto'] == 0)
 				{
-					generateView($conn, $_GET['b'], $row['id']);
+					$cacher->generateView($_GET['b'], $row['id']);
 					if ($config['super_caching']==1)
 					{
-						forceGetThread($conn, $_GET['b'], $row['id']);
+						$cacher->forceGetThread($_GET['b'], $row['id']);
 					}
 					if ($config['enable_api']==1)
 					{
@@ -30,17 +30,17 @@ reqPermission(3);
 					}
 					$resto = $row['id'];
 				} else {
-					generateView($conn, $_GET['b'], $row['resto']);
+					$cacher->generateView($_GET['b'], $row['resto']);
 					if ($config['super_caching']==1)
 					{
-						forceGetThread($conn, $_GET['b'], $row['resto']);
+						$cacher->forceGetThread($_GET['b'], $row['resto']);
 					}
 					if ($config['enable_api']==1)
 					{
 						serializeThread($conn, $_GET['b'], $row['resto']);
 					}
 				}
-				generateView($conn, $_GET['b']);
+				$cacher->generateView($_GET['b']);
 			}
 		} else {
 			echo json_encode(array('error' => 404));

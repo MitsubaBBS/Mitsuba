@@ -96,10 +96,10 @@ if ($_SESSION['type'] >= 2)
 			}
 			if ($pdata['raw'] == 0)
 			{
-				echo "<td>".processComment($row['board'], $conn, $pdata['comment'], $parser, 2)."</td>";
+				echo "<td>".$cacher->processComment($row['board'], $pdata['comment'], $parser, 2)."</td>";
 			} elseif ($pdata['raw'] == 2)
 			{
-				echo "<td>".processComment($row['board'], $conn, $pdata['comment'], $parser, 2, 0)."</td>";
+				echo "<td>".$cacher->processComment($row['board'], $pdata['comment'], $parser, 2, 0)."</td>";
 			} else {
 				echo "<td>".$pdata['comment']."</td>";
 			}

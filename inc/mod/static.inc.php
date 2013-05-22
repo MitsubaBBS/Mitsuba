@@ -6,12 +6,12 @@ if (!defined("IN_MOD"))
 reqPermission(3);
 		if ((!empty($_POST['frontpage'])) && ($_POST['frontpage']==1))
 		{
-			generateFrontpage($conn);
+			$cacher->generateFrontpage();
 		}
 		
 		if ((!empty($_POST['news'])) && ($_POST['news']==1))
 		{
-			generateNews($conn);
+			$cacher->generateNews();
 		}
 		?>
 					<div class="box-outer top-box">

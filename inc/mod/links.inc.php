@@ -11,14 +11,14 @@ reqPermission(3);
 			if (!empty($_GET['i']))
 			{
 				$id = $conn->real_escape_string($_GET['i']);
-				deleteBoardLink($conn, $id);
+				deleteBoardLink($conn, $cacher, $id);
 			}
 		}
 		if ($_GET['m'] == "addc")
 		{
 			if (!empty($_POST['title']))
 			{
-				addLinkCategory($conn, $_POST['title']);
+				addLinkCategory($conn, $cacher, $_POST['title']);
 			}
 		}
 		
@@ -27,7 +27,7 @@ reqPermission(3);
 			if (!empty($_GET['l']))
 			{
 				$id = $conn->real_escape_string($_GET['l']);
-				moveUpCategory($conn, $id);
+				moveUpCategory($conn, $cacher, $id);
 			}
 		}
 		
@@ -36,7 +36,7 @@ reqPermission(3);
 			if (!empty($_GET['l']))
 			{
 				$id = $conn->real_escape_string($_GET['l']);
-				moveDownCategory($conn, $id);
+				moveDownCategory($conn, $cacher, $id);
 			}
 		}
 	}

@@ -46,7 +46,7 @@ echo "<td><center><a href='?/news/edit&b=".$row['id']."'>".$lang['mod/edit']."</
 echo "<td><center><a href='?/news/delete&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 echo "</td>";
 }
-generateNews($conn);
+$cacher->generateNews();
 ?>
 </tbody>
 </table>

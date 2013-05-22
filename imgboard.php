@@ -33,6 +33,7 @@ if (!empty($_POST['mode']))
 		}
 	}
 	$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
+	$cacher = new Cacher($conn);
 	loadPlugins($conn);
 	$mode = $_POST['mode'];
 	switch($mode)
@@ -367,7 +368,7 @@ if (!empty($_POST['mode']))
 				$embed = 1;
 				$fname = "embed";
 			}
-			$is = addPost($conn, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_color);
+			$is = addPost($conn, $cacher, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_color);
 			if ($is == -16)
 			{
 					echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
@@ -396,7 +397,7 @@ if (!empty($_POST['mode']))
 				{
 					if ($value == "delete")
 					{
-						$done = deletePost($conn, $_POST['board'], $key, $password, $onlyimgdel);
+						$done = deletePost($conn, $cacher, $_POST['board'], $key, $password, $onlyimgdel);
 						if ($done == -1) {
 							echo sprintf($lang["img/post_bad_password"],$key).".<br />";
 						} elseif ($done == -2) {

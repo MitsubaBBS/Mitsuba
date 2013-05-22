@@ -7,7 +7,7 @@ reqPermission(3);
 		if ((!empty($_POST['links'])) && ($_POST['links']==1))
 		{
 			
-			rebuildBoardLinks($conn);
+			$cacher->rebuildBoardLinks();
 		}
 		
 		if ((!empty($_POST['boards'])) && ($_POST['boards']==1))
@@ -15,7 +15,7 @@ reqPermission(3);
 			$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
 			while ($row = $result->fetch_assoc())
 			{
-				rebuildBoardCache($conn, $row['short']);
+				rebuildBoardCache($conn, $cacher, $row['short']);
 			}
 			logAction($conn, $lang['log/rebuilt_cache']);
 		}
@@ -25,15 +25,15 @@ reqPermission(3);
 			$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
 			while ($row = $result->fetch_assoc())
 			{
-				regenThumbnails($conn, $row['short']);
+				$cacher->regenThumbnails($row['short']);
 			}
 			logAction($conn, $lang['log/rebuilt_thumbs']);
 		}
 		
 		if ((!empty($_POST['static'])) && ($_POST['static']==1))
 		{
-			generateFrontpage($conn);
-			generateNews($conn);
+			$cacher->generateFrontpage();
+			$cacher->generateNews();
 		}
 		?>
 					<div class="box-outer top-box">
