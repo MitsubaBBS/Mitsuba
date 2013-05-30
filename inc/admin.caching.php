@@ -6,7 +6,7 @@ function rebuildBoardLinks($conn, $cacher)
 	updateConfigValue($conn, "boardLinks_index", $cacher->generateBoardLinks(2));
 }
 
-function generatePost($conn, $board, $id)
+function generatePost($conn, $cacher, $board, $id)
 {
 	if ((empty($id)) || (!is_numeric($id)))
 	{

@@ -80,6 +80,10 @@ class Cacher
 		$c_lines = 0;
 		foreach ($lines as $line)
 		{
+			if ($line == "")
+			{
+				continue;
+			}
 			if (substr($line, 0, 2) == ">>")
 			{
 				$newline = "";

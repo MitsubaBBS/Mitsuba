@@ -13,7 +13,7 @@ if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b']))
 				if ($pdata['sage'] == 1)
 				{
 					$conn->query("UPDATE posts SET sage=0 WHERE id=".$_GET['t']." AND board='".$_GET['b']."'");
-					generatePost($conn, $_GET['b'], $_GET['t']);
+					generatePost($conn, $cacher, $_GET['b'], $_GET['t']);
 				?>
 	
 								<div class="box-outer top-box">
@@ -25,7 +25,7 @@ if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b']))
 		<?php
 				} else {
 					$conn->query("UPDATE posts SET sage=1 WHERE id=".$_GET['t']." AND board='".$_GET['b']."'");
-					generatePost($conn, $_GET['b'], $_GET['t']);
+					generatePost($conn, $cacher, $_GET['b'], $_GET['t']);
 				?>
 	
 								<div class="box-outer top-box">
