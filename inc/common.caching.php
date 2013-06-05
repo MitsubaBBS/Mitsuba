@@ -822,7 +822,7 @@ class Cacher
 	function getThread($board, $threadno, $return, $adm_type, $parser, $boarddata, $replace_array, $embed_table, $row, $extensions, $force = 0)
 	{
 		global $lang;
-		if (($this->config['super_caching']==1) && ($threadno == 0) && ($return == 0) && ($force == 0) && (file_exists("./".$board."/res/".$row['id']."_index.html")))
+		if (($this->config['caching_mode']==1) && ($threadno == 0) && ($return == 0) && ($force == 0) && (file_exists("./".$board."/res/".$row['id']."_index.html")))
 		{
 			return file_get_contents("./".$board."/res/".$row['id']."_index.html");
 		}
@@ -1182,7 +1182,7 @@ class Cacher
 		
 		$file .= '</div>';
 		$file .= '<hr />';
-		if (($this->config['super_caching']==1) && ($threadno == 0) && ($return == 0))
+		if (($this->config['caching_mode']==1) && ($threadno == 0) && ($return == 0))
 		{
 				$handle = fopen("./".$board."/res/".$row['id']."_index.html", "w");
 				fwrite($handle, $file);
@@ -1219,7 +1219,7 @@ class Cacher
 			{
 				$this->serializeThread($board, $row['id']);
 			}
-			if ($this->config['super_caching']==1)
+			if ($this->config['caching_mode']==1)
 			{
 				$this->forceGetThread($board, $row['id']);
 			}

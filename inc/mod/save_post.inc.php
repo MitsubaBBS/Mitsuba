@@ -20,7 +20,7 @@ reqPermission(3);
 				if ($row['resto'] == 0)
 				{
 					$cacher->generateView($_POST['b'], $row['id']);
-					if ($config['super_caching']==1)
+					if ($config['caching_mode']==1)
 					{
 						$cacher->forceGetThread($_POST['b'], $row['id']);
 					}
@@ -31,7 +31,7 @@ reqPermission(3);
 					$resto = $row['id'];
 				} else {
 					$cacher->generateView($_POST['b'], $row['resto']);
-					if ($config['super_caching']==1)
+					if ($config['caching_mode']==1)
 					{
 						$cacher->forceGetThread($_POST['b'], $row['resto']);
 					}

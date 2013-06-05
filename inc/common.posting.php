@@ -49,7 +49,7 @@ function deletePost($conn, $cacher, $board, $postno, $password, $onlyimgdel = 0,
 					{
 						$cacher->generateView($board, $postdata['resto']);
 
-						if ($config['super_caching']==1)
+						if ($config['caching_mode']==1)
 						{
 							$cacher->forceGetThread($board, $postdata['resto']);
 						}
@@ -57,7 +57,7 @@ function deletePost($conn, $cacher, $board, $postno, $password, $onlyimgdel = 0,
 
 					} else {
 						$cacher->generateView($board, $postno);
-						if ($config['super_caching']==1)
+						if ($config['caching_mode']==1)
 						{
 							$cacher->forceGetThread($board, $postno);
 						}
@@ -131,7 +131,7 @@ function deletePost($conn, $cacher, $board, $postno, $password, $onlyimgdel = 0,
 					}
 					$conn->query("DELETE FROM posts WHERE id=".$postno." AND board='".$board."';");
 					$cacher->generateView($board, $postdata['resto']);
-					if ($config['super_caching']==1)
+					if ($config['caching_mode']==1)
 					{
 						$cacher->forceGetThread($board, $postdata['resto']);
 					}
@@ -389,7 +389,7 @@ function addPost($conn, $cacher, $board, $name, $email, $subject, $comment, $pas
 	if ($resto == 0)
 	{
 		$cacher->generateView($board, $id);
-		if ($config['super_caching']==1)
+		if ($config['caching_mode']==1)
 		{
 			$cacher->forceGetThread($board, $id);
 		}
@@ -399,7 +399,7 @@ function addPost($conn, $cacher, $board, $name, $email, $subject, $comment, $pas
 		}
 	} else {
 		$cacher->generateView($board, $resto);
-		if ($config['super_caching']==1)
+		if ($config['caching_mode']==1)
 		{
 			$cacher->forceGetThread($board, $resto);
 		}

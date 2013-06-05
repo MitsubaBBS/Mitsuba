@@ -300,6 +300,10 @@ $lang['mod/recent_warnings'] = "Recent %s warnings";
 $lang['mod/showing_warnings'] = "Showing recent %s warnings.";
 $lang['mod/shown'] = "Shown";
 $lang['mod/delete_shown_warnings'] = "Delete shown warnings";
-$lang['mod/enable_super_caching'] = "Enable Super Caching&trade;";
+$lang['mod/caching_mode'] = "Caching mode";
+$lang['mod/normal'] = "Normal";
+$lang['mod/super_caching'] = "Super Caching&trade;";
+$lang['mod/apc'] = "APC";
+$lang['mod/apc_memcached'] = "APC + memcached";
 //$lang['mod/'] = "";
 ?>

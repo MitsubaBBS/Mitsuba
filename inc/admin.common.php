@@ -19,13 +19,13 @@ function appendToPost($conn, $cacher, $board, $postid, $text)
 			if ($pdata['resto'] == 0)
 			{
 				$cacher->generateView($board, $pdata['id']);
-				if ($config['super_caching']==1)
+				if ($config['caching_mode']==1)
 				{
 					$cacher->forceGetThread($board, $pdata['id']);
 				}
 			} else {
 				$cacher->generateView($board, $pdata['resto']);
-				if ($config['super_caching']==1)
+				if ($config['caching_mode']==1)
 				{
 					$cacher->forceGetThread($board, $pdata['resto']);
 				}
