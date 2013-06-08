@@ -305,5 +305,11 @@ $lang['mod/normal'] = "Normal";
 $lang['mod/super_caching'] = "Super Caching&trade;";
 $lang['mod/apc'] = "APC";
 $lang['mod/apc_memcached'] = "APC + memcached";
+$lang['mod/all_pages'] = "All pages";
+$lang['mod/edit_page'] = "Edit page";
+$lang['mod/page_updated'] = "Page updated";
+$lang['mod/add_page'] = "Add page";
+$lang['mod/pages'] = "Pages";
+$lang['mod/page_wrong_name'] = "You can't give this name to a page";
 //$lang['mod/'] = "";
 ?>

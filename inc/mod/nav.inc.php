@@ -85,6 +85,7 @@ if ($_SESSION['type'] >= 3)
 <ul>
 <li><a href="?/config" target="main"><?php echo $lang['mod/configuration']; ?></a></li>
 <li><a href="?/boards" target="main"><?php echo $lang['mod/manage_boards']; ?></a></li>
+<li><a href="?/pages" target="main"><?php echo $lang['mod/pages']; ?></a></li>
 <li><a href="?/links" target="main"><?php echo $lang['mod/manage_board_links']; ?></a></li>
 <li><a href="?/users" target="main"><?php echo $lang['mod/manage_users']; ?></a></li>
 <li><a href="?/news/manage" target="main"><?php echo $lang['mod/manage_news_entries']; ?></a></li>

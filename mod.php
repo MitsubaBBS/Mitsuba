@@ -479,6 +479,12 @@ switch ($path)
 	case "/warnings/add":
 		include("inc/mod/warnings.add.inc.php");
 		break;
+	case "/pages":
+		include("inc/mod/pages.inc.php");
+		break;
+	case "/pages/edit":
+		include("inc/mod/pages.edit.inc.php");
+		break;
 	default:
 		echo runHooks("panel", $path);
 		break;

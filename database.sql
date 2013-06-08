@@ -144,6 +144,14 @@ CREATE TABLE IF NOT EXISTS `notes` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `pages` (
+  `name` varchar(60) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `text` text NOT NULL,
+  `raw` int(1) NOT NULL,
+  PRIMARY KEY (`name`)
+);
+
 CREATE TABLE IF NOT EXISTS `pm` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` int(30) NOT NULL,

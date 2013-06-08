@@ -34,6 +34,11 @@ reqPermission(3);
 		{
 			$cacher->generateFrontpage();
 			$cacher->generateNews();
+			$result = $conn->query("SELECT * FROM pages;");
+			while ($row = $result->fetch_assoc())
+			{
+				$cacher->generatePage($row['name']);
+			}
 		}
 		?>
 					<div class="box-outer top-box">

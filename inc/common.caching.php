@@ -762,6 +762,56 @@ class Cacher
 		}
 	}
 
+	function generatePage($name)
+	{
+		global $lang;
+		//markdown parser
+		
+		$result = $this->conn->query("SELECT * FROM pages WHERE name='".$this->conn->real_escape_string($name)."'");
+
+		if (($result->num_rows == 0) && (file_exists("./".$name.".html")))
+		{
+			unlink("./".$name.".html");
+			return;
+		}
+
+		$row = $result->fetch_assoc();
+		$title = $row['title'];
+		$text = $row['text'];
+
+		if ($row['raw'] == 1)
+		{
+			$file = $text;
+		} else {
+			$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+			$file .= '<html>
+				<head>
+				<title>'.$title.'</title>
+				<link rel="stylesheet" href="./styles/index.css" />
+				<link rel="stylesheet" href="./styles/global.css" />
+				<link rel="stylesheet" href="./styles/table.css" />
+				</head>
+				<body>';
+			$file .= '<div id="doc">
+				<br /><br />';
+			$file .= '<div class="box-outer top-box">
+				<div class="box-inner">
+				<div class="boxbar"><h2>'.$title.'</h2></div>
+				<div class="boxcontent">';
+			$file .= $text;
+			$file .= '</div>
+				</div>
+				</div>
+				</div>
+				</body>
+				</html>';
+		}
+		$handle = fopen("./".$name.".html", "w");
+		fwrite($handle, $file);
+		fclose($handle);
+	}
+
 	function forceGetThread($board, $threadno)
 	{
 		global $lang;

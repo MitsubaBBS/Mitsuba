@@ -13,6 +13,15 @@ reqPermission(3);
 		{
 			$cacher->generateNews();
 		}
+
+		$result = $conn->query("SELECT * FROM pages;");
+		while ($row = $result->fetch_assoc())
+		{
+			if ((!empty($_POST[$row['name']])) && ($_POST[$row['name']] == 1))
+			{
+				$cacher->generatePage($row['name']);
+			}
+		}
 		?>
 					<div class="box-outer top-box">
 <div class="box-inner">
