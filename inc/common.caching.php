@@ -799,7 +799,8 @@ class Cacher
 				<div class="box-inner">
 				<div class="boxbar"><h2>'.$title.'</h2></div>
 				<div class="boxcontent">';
-			$file .= $text;
+			require_once("inc/markdown.php");
+			$file .= Markdown($text);
 			$file .= '</div>
 				</div>
 				</div>
