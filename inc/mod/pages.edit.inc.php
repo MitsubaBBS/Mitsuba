@@ -4,12 +4,12 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 reqPermission(3);
-	if ((isset($_GET['b'])) && (is_numeric($_GET['b'])))
+	if (!empty($_GET['b']))
 	{
 	$result = $conn->query("SELECT * FROM pages WHERE name=".$_GET['b']);
 	if ($result->num_rows != 0)
 	{
-	if (empty($_POST['text']))
+	if ((empty($_POST['text'])) || (empty($_POST['name'])))
 	{
 	$data = $result->fetch_assoc();
 	?>
