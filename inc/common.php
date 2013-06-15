@@ -482,36 +482,37 @@ function isFile($conn, $path, $board_files = "*")
 
 function mktripcode($pw)
 {
-    $pw=mb_convert_encoding($pw,'SJIS','UTF-8');
-    $pw=str_replace('&','&amp;',$pw);
-    $pw=str_replace('"','&quot;',$pw);
-    $pw=str_replace("'",'&#39;',$pw);
-    $pw=str_replace('<','&lt;',$pw);
-    $pw=str_replace('>','&gt;',$pw);
-    
-    $salt=substr($pw.'H.',1,2);
-    $salt=preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
-    $salt=strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
-    
-    $trip=substr(crypt($pw,$salt),-10);
-    return $trip;
+	$pw=mb_convert_encoding($pw,'SJIS','UTF-8');
+	$salt=substr($pw.'H.',1,2);
+	$salt=preg_replace('/[^\.-z]/', '.', $salt);
+	$salt=strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
+	$trip=substr(crypt($pw,$salt),-10);
+	return $trip;
 }
 
-function mksecuretripcode($pw, $junk = "cookies")
+function mksecuretripcode($pw, $junk = "r3volution")
 {
-    $pw=mb_convert_encoding($pw,'SJIS','UTF-8');
-    $pw=str_replace('&','&amp;',$pw);
-    $pw=str_replace('"','&quot;',$pw);
-    $pw=str_replace("'",'&#39;',$pw);
-    $pw=str_replace('<','&lt;',$pw);
-    $pw=str_replace('>','&gt;',$pw);
-    
-    $salt=substr($pw.'H!'.time().mt_rand(90, 1681018501).$junk,1,2);
-    $salt=preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
-    $salt=strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
-    
-    $trip=substr(crypt($pw,$salt),-10);
-    return $trip;
+	$pw=mb_convert_encoding($pw,'SJIS','UTF-8');
+	$pw=str_replace('&','&amp;',$pw);
+	$pw=str_replace('"','&quot;',$pw);
+	$pw=str_replace("'",'&#39;',$pw);
+	$pw=str_replace('<','&lt;',$pw);
+	$pw=str_replace('>','&gt;',$pw);
+	$randomstring="";
+	$poststring="";
+	foreach ($_POST as $key => $value)
+	{
+		$poststring .= $key."!".$value;
+	}
+	$poststring=strtr($poststring,':;<=>?@[\]^_`','ABCDEFGabcdef');
+	$randomstring=md5($poststring).time().mt_rand(90, 1681018501).$junk;
+
+	$salt=substr($pw.'H!'.$randomstring,1,2);
+	$salt=preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
+	$salt=strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
+
+	$trip=substr(crypt($pw.$randomstring,$salt),-10);
+	return $trip;
 }
 
 function banMessage($conn, $board)
