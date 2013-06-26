@@ -51,7 +51,6 @@ function toggle(button,area) {
 <li><a href="?/bans" target="main"><?php echo $lang['mod/banlist']; ?></a></li>
 <li><a href="?/warnings" target="main"><?php echo $lang['mod/warnings']; ?></a></li>
 <?php
-echo runHooks("menu", null);
 if ($_SESSION['type'] >= 2)
 {
 ?>

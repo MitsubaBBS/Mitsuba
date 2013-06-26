@@ -1,13 +1,6 @@
 <?php
-interface ILibrary {
-	public function __construct($conn);
-	public function getName();
-	public function getUpdateURL();
-}
-
 interface IPlugin {
 	public function __construct($conn);
-	public function runHook($hook, $params);
 	public function getName();
 	public function getUpdateURL();
 }
@@ -17,32 +10,14 @@ $plugins_array = array();
 function loadPlugins($conn)
 {
 	global $plugins_array;
-	global $libraries_array;
-	$libs = array();
 	$plugins = array();
-	if ($array = glob("./libs/*.php")) { $libs = $array; }
 	if ($array = glob("./plugins/*.php")) { $plugins = $array; }
+	$libs = array();
+	if ($array = glob("./libs/*.php")) { $libs = $array; }
 	foreach ($libs as $libname)
 	{
 		include($libname);
 	}
-	foreach (get_declared_classes() as $classname)
-	{
-		if (substr($classname, 0, 4) == "lib_") {
-			try {
-				$lib = new $classname();
-				if ($lib instanceof ILibrary)
-				{
-					$libraries_array[] = $lib;
-				}
-			} catch (Exception $e)
-			{
-				//we do nothing because we can't
-			}
-			
-		}
-	}
-	
 	foreach ($plugins as $pluginname)
 	{
 		include($pluginname);
@@ -65,7 +40,7 @@ function loadPlugins($conn)
 	}
 }
 
-function runHooks($hook, $params)
+function triggerEvent($event, $eventData)
 {
 	global $plugins_array;
 	$return = "";
@@ -73,9 +48,11 @@ function runHooks($hook, $params)
 	{
 		if ($class instanceof IPlugin)
 		{
-			$return = $class->runHook($hook, $params) . "\n";
+			if (method_exists($class, $event))
+			{
+				$class->$event($eventData);
+			}
 		}
 	}
-	return $return;
 }
 ?>

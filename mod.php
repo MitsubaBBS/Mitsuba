@@ -486,7 +486,6 @@ switch ($path)
 		include("inc/mod/pages.edit.inc.php");
 		break;
 	default:
-		echo runHooks("panel", $path);
 		break;
 }
 if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))) && (substr($path, 0, 5) != "/api/"))
