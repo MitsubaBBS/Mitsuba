@@ -369,7 +369,7 @@ class Cacher
 				$file .= "<script type='text/javascript' src='./js/admin.js'></script>";
 				$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 				$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
-				$file .= "</head><body>";
+				$file .= "</head><body class='modPanel'>";
 				$file .= $this->getBoardLinks(2);
 			} elseif ($threadno != 0)
 			{
@@ -480,17 +480,17 @@ class Cacher
 					if ($return == 1)
 					{
 						$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
-						$file .= '<form action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
+						$file .= '<form id="postform" action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
 					} else {
 						$file .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
-						$file .= '<form action="../../imgboard.php" method="post" enctype="multipart/form-data">';
+						$file .= '<form id="postform" action="../../imgboard.php" method="post" enctype="multipart/form-data">';
 					}
 				} else {
 					if ($return == 1)
 					{
-						$file .= '<form action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
+						$file .= '<form id="postform" action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
 					} else {
-						$file .= '<form action="../imgboard.php" method="post" enctype="multipart/form-data">';
+						$file .= '<form id="postform" action="../imgboard.php" method="post" enctype="multipart/form-data">';
 					}
 				}
 				if ($adm_type <= 0)
@@ -500,14 +500,14 @@ class Cacher
 				$file .= '<input type="hidden" name="mode" value="regist" />
 					<table class="postForm" id="postForm">
 					<tbody>';
-				if (($boarddata['noname'] == 0) || ($adm_type >= 1))
+				if (($boarddata['noname'] == 0) || ($adm_type >= 2))
 				{
 					$file .= '<tr>
 						<td>'.$lang['img/name'].'</td>
 						<td><input name="name" type="text" /></td>
 						</tr>';
 				}
-				if (($boarddata['ids'] == 1) && ($adm_type >= 1))
+				if (($boarddata['ids'] == 1) && ($adm_type >= 2))
 				{
 					$file .= '<tr>
 						<td>'.$lang['img/fake_id'].'</td>

@@ -118,7 +118,12 @@ while ($row = $result->fetch_assoc())
 {
 if (($boards == "*") || (in_array($row['short'], $boards)))
 {
-echo '<li><a href="?/board&b='.$row['short'].'" target="main">/'.$row['short'].'/ - '.$row['name'].'</a></li>';
+if ($row['hidden']==1)
+{
+	echo '<li><a href="?/board&b='.$row['short'].'" target="main">/'.$row['short'].'/ - '.$row['name'].'</a></li>';
+} else {
+	echo '<li><a href="./'.$row['short'].'/" target="main">/'.$row['short'].'/ - '.$row['name'].'</a></li>';
+}
 }
 }
 ?>

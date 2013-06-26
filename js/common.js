@@ -80,9 +80,9 @@ $(document).ready(function () {
 
 	addSettings();
 
-	if ((typeof $.cookie("in_mod") !== "undefined") && ($.cookie("in_mod")==1))
+	if ((typeof $.cookie("in_mod") !== "undefined") && ($.cookie("in_mod")>=1))
 	{
-		//here admin stuff
+		adminStuff("body");
 	}
 });
 
@@ -547,6 +547,62 @@ function addImgExpand(parent)
 		imgExpand($(this).parent());
 		e.preventDefault();
 	});
+}
+
+function adminStuff(parent)
+{
+	var adm_type = $.cookie("in_mod")==1;
+	if ($("body").hasClass("modPanel") != true)
+	{
+		$("#postform").attr("action", $("#postform").attr("action", )+"?mod=2");
+		if (adm_type >= 2)
+		{
+			if ($("#postform input[name='name']").length == 0)
+			{
+				$("#postform input[name='email']").parent().parent().before('<tr> \
+					<td>Name</td> \
+					<td><input name="name" type="text" /></td> \
+					</tr> \
+					<tr> \
+					<td>Fake ID</td> \
+					<td><input name="fake_id" type="text" /></td> \
+					</tr>');
+			} else {
+				$("#postform input[name='email']").parent().parent().before('<tr> \
+					<td>Fake ID</td> \
+					<td><input name="fake_id" type="text" /></td> \
+					</tr>');
+			}
+			var customc = "";
+			if (adm_type==3)
+			{
+				customc = '<input type="radio" name="capcode" value=2 id="custom_cc" />Custom capcode
+						<div style="display: none;" id="cc_fields" value="#FF0000">Text: <input type="text" name="cc_text" /><br />
+						Color: <input type="text" name="cc_color" /></div>';
+			}
+			$("#postform input[name='password']").parent().parent().after('<tr> \
+						<td>Mod</td> \
+						<td><input type="checkbox" name="raw" value=1 />Raw HTML<input type="checkbox" name="sticky" value=1 />Sticky<input type="checkbox" name="lock" value=1 />Locked<br /> \
+					<input type="checkbox" name="nolimit" value=1 selected/>Ignore bump limit<input type="checkbox" name="ignoresizelimit" value=1 />Ignore filesizelimit<input type="checkbox" name="nofile" value=1 />No file</td> \
+					<tr> \
+						<td>Capcode</td> \
+						<td id="capcode_td"><input type="radio" name="capcode" value=0 checked />No capcode<input type="radio" name="capcode" value=1 />Capcode'+customc+' \
+					</td></tr>');
+			if (adm_type==3)
+			{
+				$("input[name='capcode']").change(function() {
+					if ($("#custom_cc").prop("checked"))
+					{
+						$("#cc_fields").css("display", "");
+					} else {
+						$("#cc_fields").css("display", "none");
+						$("#cc_fields input").val("");
+					}
+					});
+			}
+		}
+		
+	}
 }
 
 function imgExpand(element)

@@ -22,14 +22,17 @@ if (!empty($_POST['mode']))
 	}
 	$mod = 0;
 	$mod_type = 0;
-	if ((!empty($_GET['mod'])) && ($_GET['mod']==1))
+	if ((!empty($_GET['mod'])) && ($_GET['mod']>=1))
 	{
 		if ((!empty($_POST['board'])) || (isBoard($conn, $_POST['board'])))
 		{
 			canBoard($_POST['board']);
 			$mod = 1;
 			if (!empty($_SESSION['type'])) { $mod_type = $_SESSION['type']; }
-			$return_url = "mod.php?/board&b=".$_POST['board'];
+			if ($_GET['mod']==1)
+			{
+				$return_url = "mod.php?/board&b=".$_POST['board'];
+			}
 		}
 	}
 	$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
@@ -61,7 +64,7 @@ if (!empty($_POST['mode']))
 				warningMessage($conn);
 			}
 			$ignoresizelimit = 0;
-			if ($mod == 1)
+			if ($mod >= 1)
 			{
 				if ((!empty($_POST['ignoresizelimit'])) && ($_POST['ignoresizelimit']==1) && ($mod_type >= 1))
 				{
@@ -255,7 +258,7 @@ if (!empty($_POST['mode']))
 			{
 				$name = $bdata['anonymous'];
 			}
-			if ((!empty($_POST['name'])) && (($bdata['noname'] == 0) || (($mod == 1) && ($mod_type >= 1)))) { $name = $_POST['name']; }
+			if ((!empty($_POST['name'])) && (($bdata['noname'] == 0) || (($mod >= 1) && ($mod_type >= 1)))) { $name = $_POST['name']; }
 			$resto = 0;
 			if (isset($_POST['resto'])) { $resto = $_POST['resto']; }
 			$password = "";
@@ -311,7 +314,7 @@ if (!empty($_POST['mode']))
 			if ((!empty($_POST['email'])) && ($_POST['email'] != "sage")) { setcookie("mitsuba_email", $_POST['email'], time() + 86400*256); } else { setcookie("mitsuba_email","", time() + 86400*256); }
 			if (!empty($_POST['fake_id'])) { setcookie("mitsuba_fakeid", $_POST['fake_id'], time() + 86400*256); } else { setcookie("mitsuba_fakeid","", time() + 86400*256); }
 			
-			if (($mod == 1) && ($mod_type>=2))
+			if (($mod >= 1) && ($mod_type>=2))
 			{
 				if ((!empty($_POST['nolimit'])) && ($_POST['nolimit']==1))
 				{

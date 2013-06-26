@@ -440,6 +440,9 @@ switch ($path)
 	case "/api/update_post":
 		include("inc/mod/api.update_post.inc.php");
 		break;
+	case "/api/admin_stuff":
+		include("inc/mod/api.admin_stuff.inc.php");
+		break;
 	case "/log":
 		include("inc/mod/log.inc.php");
 		break;
