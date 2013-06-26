@@ -551,10 +551,11 @@ function addImgExpand(parent)
 
 function adminStuff(parent)
 {
-	var adm_type = $.cookie("in_mod")==1;
+	var adm_type = $.cookie("in_mod");
 	if ($("body").hasClass("modPanel") != true)
 	{
-		$("#postform").attr("action", $("#postform").attr("action", )+"?mod=2");
+		var old_action = $("#postform").attr("action");
+		$("#postform").attr("action", old_action+"?mod=2");
 		if (adm_type >= 2)
 		{
 			if ($("#postform input[name='name']").length == 0)
@@ -576,11 +577,11 @@ function adminStuff(parent)
 			var customc = "";
 			if (adm_type==3)
 			{
-				customc = '<input type="radio" name="capcode" value=2 id="custom_cc" />Custom capcode
-						<div style="display: none;" id="cc_fields" value="#FF0000">Text: <input type="text" name="cc_text" /><br />
+				customc = '<input type="radio" name="capcode" value=2 id="custom_cc" />Custom capcode \
+						<div style="display: none;" id="cc_fields" value="#FF0000">Text: <input type="text" name="cc_text" /><br /> \
 						Color: <input type="text" name="cc_color" /></div>';
 			}
-			$("#postform input[name='password']").parent().parent().after('<tr> \
+			$("#postform #postPassword").parent().parent().after('<tr> \
 						<td>Mod</td> \
 						<td><input type="checkbox" name="raw" value=1 />Raw HTML<input type="checkbox" name="sticky" value=1 />Sticky<input type="checkbox" name="lock" value=1 />Locked<br /> \
 					<input type="checkbox" name="nolimit" value=1 selected/>Ignore bump limit<input type="checkbox" name="ignoresizelimit" value=1 />Ignore filesizelimit<input type="checkbox" name="nofile" value=1 />No file</td> \

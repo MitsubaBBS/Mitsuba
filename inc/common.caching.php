@@ -12,9 +12,16 @@ class Cacher
 	function generateBoardLinks($in_thread = 0)
 	{
 		$links = '<div id="boardLinks">';
-		$links .= $this->generateLinks($this->conn, -1, $in_thread);
+		$links .= $this->generateLinks(-1, $in_thread);
 		$links .= '</div>';
 		return $links;
+	}
+
+	function rebuildBoardLinks()
+	{
+		updateConfigValue($this->conn, "boardLinks", $this->generateBoardLinks());
+		updateConfigValue($this->conn, "boardLinks_thread", $this->generateBoardLinks(1));
+		updateConfigValue($this->conn, "boardLinks_index", $this->generateBoardLinks(2));
 	}
 
 	function generateLinks($id, $in_thread = 0)
@@ -47,7 +54,7 @@ class Cacher
 					$links .= '<a href="'.$row['url'].'" title="'.$row['title'].'">'.$row['short'].'</a>';
 				}
 			}
-			$l2 = $this->generateLinks($this->conn, $row['id'], $in_thread);
+			$l2 = $this->generateLinks($row['id'], $in_thread);
 			if (!empty($l2))
 			{
 				$links .= "[".$l2."] ";

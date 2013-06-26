@@ -1,11 +1,4 @@
 <?php
-function rebuildBoardLinks($conn, $cacher)
-{
-	updateConfigValue($conn, "boardLinks", $cacher->generateBoardLinks());
-	updateConfigValue($conn, "boardLinks_thread", $cacher->generateBoardLinks(1));
-	updateConfigValue($conn, "boardLinks_index", $cacher->generateBoardLinks(2));
-}
-
 function generatePost($conn, $cacher, $board, $id)
 {
 	if ((empty($id)) || (!is_numeric($id)))

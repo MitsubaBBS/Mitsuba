@@ -258,7 +258,7 @@ if (!empty($_POST['mode']))
 			{
 				$name = $bdata['anonymous'];
 			}
-			if ((!empty($_POST['name'])) && (($bdata['noname'] == 0) || (($mod >= 1) && ($mod_type >= 1)))) { $name = $_POST['name']; }
+			if ((!empty($_POST['name'])) && (($bdata['noname'] == 0) || (($mod >= 1) && ($mod_type >= 2)))) { $name = $_POST['name']; }
 			$resto = 0;
 			if (isset($_POST['resto'])) { $resto = $_POST['resto']; }
 			$password = "";
@@ -371,7 +371,12 @@ if (!empty($_POST['mode']))
 				$embed = 1;
 				$fname = "embed";
 			}
-			$is = addPost($conn, $cacher, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_color);
+			$redirect = 0;
+			if ($mod == 1)
+			{
+				$redirect = 1;
+			}
+			$is = addPost($conn, $cacher, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_color, $redirect);
 			if ($is == -16)
 			{
 					echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
