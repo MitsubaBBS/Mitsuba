@@ -993,7 +993,7 @@ class Cacher
 					$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'" class="edit">E</a>]';
 				}
 			} else {
-				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a>]</span>';
+				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a>]';
 			}
 			if ($adm_type >= 2)
 			{

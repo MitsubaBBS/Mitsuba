@@ -10,7 +10,7 @@ reqPermission(1);
 			if ($result->num_rows == 1)
 			{
 				$row = $result->fetch_assoc();
-				echo json_encode(array('comment' => htmlspecialchars($row['comment']), 'raw' => $row['raw'], 'id' => $row['id']));
+				echo json_encode(array('ip' => $row['ip'], 'sage' => $row['sage']));
 			} else {
 				echo json_encode(array('error' => 404));
 			}
