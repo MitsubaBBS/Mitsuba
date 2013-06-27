@@ -32,7 +32,7 @@ reqPermission(3);
 </div>
 		<?php
 				} else {
-					updateBoardLink($conn, $id, $_POST['url'], $_POST['url_thread'], $_POST['url_index'], $_POST['title'], $_POST['short']);
+					updateBoardLink($conn, $cacher, $id, $_POST['url'], $_POST['url_thread'], $_POST['url_index'], $_POST['title'], $_POST['short']);
 					
 			?>
 			<meta http-equiv="refresh" content="0;URL='?/links'" />
