@@ -52,7 +52,7 @@ if ((isset($_POST['caching_mode'])) && (is_numeric($_POST['caching_mode'])))
 	$config['caching_mode'] = $_POST['caching_mode'];
 }
 
-$mitsuba->admin->updateConfig($conn, $config);
+$mitsuba->admin->updateConfig($config);
 
 ?>
 <div class="box-outer top-box">
