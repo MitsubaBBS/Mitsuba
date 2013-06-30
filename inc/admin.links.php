@@ -1,4 +1,5 @@
 <?php
+namespace Mitsuba\Admin;
 class Links {
 	private $conn;
 	private $mitsuba;

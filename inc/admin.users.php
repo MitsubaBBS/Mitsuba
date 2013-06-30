@@ -1,4 +1,5 @@
 <?php
+namespace Mitsuba\Admin;
 class Users {
 	private $conn;
 	private $mitsuba;

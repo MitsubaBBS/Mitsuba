@@ -1,4 +1,6 @@
 <?php
+namespace Mitsuba;
+
 class Posting {
 	private $conn;
 	private $mitsuba;
@@ -25,7 +27,7 @@ class Posting {
 			$result = $this->conn->query("SELECT * FROM posts WHERE id=".$postno." AND board='".$board."'");
 			if ($result->num_rows == 1)
 			{
-				$config = $this->mitsuba->common->config;
+				$config = $this->mitsuba->config;
 				$postdata = $result->fetch_assoc();
 				if ($adm_type <= 0)
 				{
@@ -160,7 +162,7 @@ class Posting {
 	function addPost($board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $mimetype = "", $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $nofile = 0, $fake_id = "", $cc_text = "", $cc_color = "", $redirect = 0)
 	{
 		global $lang;
-		$config = $this->mitsuba->common->config;
+		$config = $this->mitsuba->config;
 		if (!$this->mitsuba->common->isBoard($board))
 		{
 			return -16;
@@ -299,7 +301,7 @@ class Posting {
 			{
 				if ($resto != 0)
 				{
-					$poster_id = $this->common->mkid($_SERVER['REMOTE_ADDR'], $resto, $board);
+					$poster_id = $this->mitsuba->common->mkid($_SERVER['REMOTE_ADDR'], $resto, $board);
 				}
 				
 			}

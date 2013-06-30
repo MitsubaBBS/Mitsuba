@@ -1,4 +1,5 @@
 <?php
+namespace Mitsuba;
 class Caching
 {
 	private $conn;

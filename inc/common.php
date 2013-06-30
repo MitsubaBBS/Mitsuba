@@ -1,4 +1,5 @@
 <?php
+namespace Mitsuba;
 class Common {
 	private $conn;
 	private $mitsuba;

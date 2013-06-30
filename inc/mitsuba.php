@@ -12,13 +12,13 @@ class Admin
 		$this->conn = $connection;
 		$this->mitsuba = $mitsuba;
 		include("admin.bans.php");
-		$this->bans = new Bans($this->conn, $this->mitsuba);
+		$this->bans = new \Mitsuba\Admin\Bans($this->conn, $this->mitsuba);
 		include("admin.boards.php");
-		$this->boards = new Boards($this->conn, $this->mitsuba);
+		$this->boards = new \Mitsuba\Admin\Boards($this->conn, $this->mitsuba);
 		include("admin.links.php");
-		$this->links = new Links($this->conn, $this->mitsuba);
+		$this->links = new \Mitsuba\Admin\Links($this->conn, $this->mitsuba);
 		include("admin.users.php");
-		$this->users = new Users($this->conn, $this->mitsuba);
+		$this->users = new \Mitsuba\Admin\Users($this->conn, $this->mitsuba);
 	}
 
 	function reqPermission($level)
@@ -107,11 +107,11 @@ class Mitsuba
 		$this->conn = $connection;
 		$this->config = $this->getConfig();
 		include("caching.php");
-		$this->caching = new Caching($this->conn, $this);
+		$this->caching = new \Mitsuba\Caching($this->conn, $this);
 		include("common.php");
-		$this->common = new Common($this->conn, $this);
+		$this->common = new \Mitsuba\Common($this->conn, $this);
 		include("posting.php");
-		$this->posting = new Posting($this->conn, $this);
+		$this->posting = new \Mitsuba\Posting($this->conn, $this);
 		$this->admin = new Admin($this->conn, $this);
 	}
 

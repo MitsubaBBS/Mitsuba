@@ -1,4 +1,5 @@
 <?php
+namespace Mitsuba\Admin;
 class Bans {
 	private $conn;
 	private $mitsuba;

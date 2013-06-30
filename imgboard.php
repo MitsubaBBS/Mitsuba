@@ -7,6 +7,7 @@ header("Location: ./install.php");
 
 include("config.php");
 include("inc/mitsuba.php");
+include("inc/common.plugins.php");
 include("inc/strings/imgboard.strings.php");
 
 if (!empty($_POST['mode']))
