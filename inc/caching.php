@@ -377,7 +377,7 @@ class Caching
 				{
 					if ($first_default == 1)
 					{
-						$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index"), $row['relative'].'">';
+						$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'">';
 						$first_default = 0;
 					}
 					$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
