@@ -310,7 +310,7 @@ class Caching
 		}
 		
 		require_once( "./jbbcode/Parser.php" );
-		$parser = new JBBCode\Parser();
+		$parser = new \JBBCode\Parser();
 		if ($boarddata['bbcode']==1)
 		{
 			$bbcode = $this->conn->query("SELECT * FROM bbcodes;");
@@ -859,7 +859,7 @@ class Caching
 					}
 				}
 				require_once( "./jbbcode/Parser.php" );
-				$parser = new JBBCode\Parser();
+				$parser = new \JBBCode\Parser();
 				if ($boarddata['bbcode']==1)
 				{
 					$bbcode = $this->conn->query("SELECT * FROM bbcodes;");
@@ -1306,7 +1306,7 @@ class Caching
 			{
 				$row = $thread->fetch_assoc();
 				require_once( "./jbbcode/Parser.php" );
-				$parser = new JBBCode\Parser();
+				$parser = new \JBBCode\Parser();
 				$boarddata = $this->mitsuba->common->getBoardData($board);
 				if ($boarddata['bbcode']==1)
 				{

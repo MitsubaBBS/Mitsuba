@@ -55,7 +55,7 @@ if ($_SESSION['type'] >= 2)
 <tbody>
 <?php
 		require_once( "./jbbcode/Parser.php" );
-		$parser = new JBBCode\Parser();
+		$parser = new \JBBCode\Parser();
 		$bbcode = $conn->query("SELECT * FROM bbcodes;");
 		
 		while ($row = $bbcode->fetch_assoc())
