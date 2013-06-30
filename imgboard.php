@@ -16,6 +16,9 @@ if (!empty($_POST['mode']))
 	{
 		$return_url = "./".$_POST['board']."/";
 	}
+	$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
+	$mitsuba = new Mitsuba($conn);
+	loadPlugins($conn);
 	$mod = 0;
 	$mod_type = 0;
 	if ((!empty($_GET['mod'])) && ($_GET['mod']>=1))
@@ -31,9 +34,6 @@ if (!empty($_POST['mode']))
 			}
 		}
 	}
-	$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
-	$mitsuba = new Mitsuba($conn);
-	loadPlugins($conn);
 	$mode = $_POST['mode'];
 	switch($mode)
 	{

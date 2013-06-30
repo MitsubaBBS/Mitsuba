@@ -235,8 +235,7 @@ CREATE TABLE IF NOT EXISTS `styles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   `path` varchar(60) NOT NULL,
-  `path_thread` varchar(60) NOT NULL,
-  `path_index` varchar(60) NOT NULL,
+  `relative` int(1) NOT NULL,
   `default` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 );
@@ -318,24 +317,24 @@ INSERT INTO `embeds` (`name`, `regex`, `code`) VALUES
 ('youtu.be', '/http(s)?:\\/\\/(www\\.)?youtu\\.be\\/([^&]+)/', '<iframe width="%1$s" height="%1$s" src="http://www.youtube.com/embed/%4$s" frameborder="0" allowfullscreen></iframe>');
 
 INSERT INTO `extensions` (`ext`, `name`, `mimetype`, `image`, `default`) VALUES
-('jpg', 'JPEG Image', 'image/jpeg', '1', 1),
-('png', 'PNG Image', 'image/png', '1', 1),
-('gif', 'GIF Image', 'image/gif', '1', 1),
-('mp3', 'MP3 Audio File', 'audio/mpeg', '0', 0),
-('mp3', 'MP3 Audio File', 'audio/mp3', '0', 0),
-('mp3', 'MP3 Audio File', 'audio/mpg', '0', 0),
-('wav', 'WAV Audio File', 'audio/wav', '0', 0),
-('mp3', 'MP3 Audio File', 'audio/x-mpeg', '0', 0),
-('mp3', 'MP3 Audio File', 'audio/x-mp3', '0', 0),
-('mp3', 'MP3 Audio File', 'audio/x-mpg', '0', 0),
-('wav', 'WAV Audio File', 'audio/x-wav', '0', 0),
-('swf', 'Flash Application', 'application/x-shockwave-flash', '0', 0),
-('mp4', 'MP4 Video File', 'video/mp4', '0', 0),
-('mpg', 'MPG Video File', 'video/mpeg', '0', 0),
-('webm', 'WEBM Video File', 'video/webm', '0', 0),
-('avi', 'AVI Video File', 'video/avi', '0', 0),
-('mkv', 'Matroska Video File', 'video/x-matroska', '0', 0);
+('jpg', 'JPEG Image', 'image/jpeg', 1, 1),
+('png', 'PNG Image', 'image/png', 1, 1),
+('gif', 'GIF Image', 'image/gif', 1, 1),
+('mp3', 'MP3 Audio File', 'audio/mpeg', 0, 0),
+('mp3', 'MP3 Audio File', 'audio/mp3', 0, 0),
+('mp3', 'MP3 Audio File', 'audio/mpg', 0, 0),
+('wav', 'WAV Audio File', 'audio/wav', 0, 0),
+('mp3', 'MP3 Audio File', 'audio/x-mpeg', 0, 0),
+('mp3', 'MP3 Audio File', 'audio/x-mp3', 0, 0),
+('mp3', 'MP3 Audio File', 'audio/x-mpg', 0, 0),
+('wav', 'WAV Audio File', 'audio/x-wav', 0, 0),
+('swf', 'Flash Application', 'application/x-shockwave-flash', 0, 0),
+('mp4', 'MP4 Video File', 'video/mp4', 0, 0),
+('mpg', 'MPG Video File', 'video/mpeg', 0, 0),
+('webm', 'WEBM Video File', 'video/webm', 0, 0),
+('avi', 'AVI Video File', 'video/avi', 0, 0),
+('mkv', 'Matroska Video File', 'video/x-matroska', 0, 0);
 
-INSERT INTO `styles` (`name`, `path`, `path_thread`, `path_index`, `default`) VALUES 
-('Yotsuba', '../styles/stylesheet.css', '../../styles/stylesheet.css', './styles/stylesheet.css', '1'),
-('Yotsuba Blue', '../styles/yotsubablue.css', '../../styles/yotsubablue.css', './styles/yotsubablue.css', '0');
+INSERT INTO `styles` (`name`, `path`, `default`) VALUES 
+('Mitsuba', './styles/mitsuba.css', 1, 1),
+('Mitsuba Blue', './styles/mitsubablue.css', 1, 0);

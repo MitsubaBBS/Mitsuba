@@ -144,5 +144,28 @@ class Mitsuba
 		$value = $this->conn->real_escape_string($value);
 		$this->conn->query("UPDATE config SET value='".$value."' WHERE name='".$name."';");
 	}
+
+	function getPath($path, $location, $relative)
+	{
+		if ($relative == 1)
+		{
+			return $path;
+		}
+		switch ($location)
+		{
+			case "index":
+				return $path;
+				break;
+			case "board":
+				return ".".$path;
+				break;
+			case "thread":
+				return "../.".$path;
+				break;
+			default:
+				return $path;
+				break;
+		}
+	}
 }
 ?>

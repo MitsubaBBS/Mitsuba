@@ -368,7 +368,7 @@ class Caching
 				if ($style->num_rows > 0)
 				{
 					$sdata = $style->fetch_assoc();
-					$file .= '<link rel="stylesheet" id="switch" href="'.$sdata['path_index'].'">';
+					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($sdata['path'], "index", $sdata['relative']).'">';
 				} else {
 					$first_default = 1;
 				}
@@ -377,10 +377,10 @@ class Caching
 				{
 					if ($first_default == 1)
 					{
-						$file .= '<link rel="stylesheet" id="switch" href="'.$row['path_index'].'">';
+						$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index"), $row['relative'].'">';
 						$first_default = 0;
 					}
-					$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$row['path_index'].'" title="'.$row['name'].'">';
+					$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
 				}
 				$file .= "<script type='text/javascript' src='./js/jquery.js'></script>";
 				$file .= "<script type='text/javascript' src='./js/jquery.cookie.js'></script>";
@@ -398,7 +398,7 @@ class Caching
 				if (mysqli_num_rows($style) > 0)
 				{
 					$sdata = $style->fetch_assoc();
-					$file .= '<link rel="stylesheet" id="switch" href="'.$sdata['path_thread'].'">';
+					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($sdata['path'], "thread", $sdata['relative']).'">';
 				} else {
 					$first_default = 1;
 				}
@@ -407,10 +407,10 @@ class Caching
 				{
 					if ($first_default == 1)
 					{
-						$file .= '<link rel="stylesheet" id="switch" href="'.$row['path_thread'].'">';
+						$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "thread", $row['relative']).'">';
 						$first_default = 0;
 					}
-					$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$row['path_thread'].'" title="'.$row['name'].'">';
+					$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "thread", $row['relative']).'" title="'.$row['name'].'">';
 				}
 				$file .= "<script type='text/javascript' src='../../js/jquery.js'></script>";
 				$file .= "<script type='text/javascript' src='../../js/jquery.cookie.js'></script>";
@@ -426,7 +426,7 @@ class Caching
 				if (mysqli_num_rows($style) > 0)
 				{
 					$sdata = $style->fetch_assoc();
-					$file .= '<link rel="stylesheet" id="switch" href="'.$sdata['path'].'">';
+					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($sdata['path'], "board", $sdata['relative']).'">';
 				} else {
 					$first_default = 1;
 				}
@@ -435,10 +435,10 @@ class Caching
 				{
 					if ($first_default == 1)
 					{
-						$file .= '<link rel="stylesheet" id="switch" href="'.$row['path'].'">';
+						$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "board", $row['relative']).'">';
 						$first_default = 0;
 					}
-					$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$row['path'].'" title="'.$row['name'].'">';
+					$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "board", $row['relative']).'" title="'.$row['name'].'">';
 				}
 				$file .= "<script type='text/javascript' src='../js/jquery.js'></script>";
 				$file .= "<script type='text/javascript' src='../js/jquery.cookie.js'></script>";
@@ -1298,7 +1298,7 @@ class Caching
 
 	function serializeThread($board, $thread_id)
 	{
-		if ($this->mitsuba->common->isBoard($this->conn, $board))
+		if ($this->mitsuba->common->isBoard($board))
 		{
 			$thread = $this->conn->query("SELECT * FROM posts WHERE board='".$board."' AND id=".$thread_id);
 			if ($thread->num_rows == 1)
