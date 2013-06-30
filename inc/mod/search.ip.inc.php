@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(2);
+$mitsuba->admin->reqPermission(2);
 		if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
 		{
 			?>
@@ -64,9 +64,9 @@ reqPermission(2);
 				{
 					if ($row['raw'] == 2)
 					{
-						$comment = $cacher->processComment($row['board'], $row['comment'], $parser, 2, 0);
+						$comment = $mitsuba->caching->processComment($row['board'], $row['comment'], $parser, 2, 0);
 					} else {
-						$comment = $cacher->processComment($row['board'], $row['comment'], $parser, 2);
+						$comment = $mitsuba->caching->processComment($row['board'], $row['comment'], $parser, 2);
 					}
 				} else {
 					$comment = $row['comment'];

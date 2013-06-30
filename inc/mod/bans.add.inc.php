@@ -11,7 +11,7 @@ if (empty($_GET['r']))
 		$post = "";
 		$board = "";
 		$postinfo = "";
-		if ((!empty($_GET['p'])) && (!empty($_GET['b'])) && (is_numeric($_GET['p'])) && (isBoard($conn, $_GET['b'])))
+		if ((!empty($_GET['p'])) && (!empty($_GET['b'])) && (is_numeric($_GET['p'])) && ($mitsuba->common->isBoard($_GET['b'])))
 		{
 			$board = $conn->real_escape_string($_GET['b']);
 			$post = $_GET['p'];
@@ -89,7 +89,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 		$post = "";
 		$board = "";
 		$postinfo = "";
-		if ((!empty($_POST['post'])) && (!empty($_POST['board'])) && (is_numeric($_POST['post'])) && (isBoard($conn, $_POST['board'])))
+		if ((!empty($_POST['post'])) && (!empty($_POST['board'])) && (is_numeric($_POST['post'])) && ($mitsuba->common->isBoard($_POST['board'])))
 		{
 			$board = $conn->real_escape_string($_POST['board']);
 			$post = $_POST['post'];
@@ -131,19 +131,19 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 					$append = 1;
 				}
 			}
-			$result = addBanRequest($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $board, $post, $append);
+			$result = $mitsuba->admin->bans->addBanRequest($_POST['ip'], $_POST['reason'], $_POST['note'], $board, $post, $append);
 			$what = 2;
 		} else {
-			$result = addBan($conn, $_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
+			$result = $mitsuba->admin->bans->addBan($_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
 			if ($result != -2)
 			{
 				if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
 				{
-					deletePost($conn, $cacher, $board, $post, "", 0, $_SESSION['type']);
+					$mitsuba->posting->deletePost($board, $post, "", 0, $_SESSION['type']);
 				} else {
 					if ((!empty($post)) && (!empty($_POST['append'])) && ($_POST['append'] == 1))
 					{
-						appendToPost($conn, $cacher, $board, $post, $_POST['append_text']);
+						$mitsuba->admin->appendToPost($board, $post, $_POST['append_text']);
 					}
 				}
 			}

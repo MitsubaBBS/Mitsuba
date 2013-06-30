@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 		if (!empty($_GET['n']))
 		{
 		$result = $conn->query("SELECT * FROM spamfilter WHERE id=".$conn->real_escape_string($_GET['n']));

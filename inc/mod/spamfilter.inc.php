@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 		$search = "";
 		$reason = "";
 		$expires = "";
@@ -38,7 +38,7 @@ reqPermission(3);
 				{
 					$expires = "never";
 				} else {
-					$expirex = parse_time($expires);
+					$expirex = $mitsuba->common->parse_time($expires);
 					if (($expirex == false) && ($perma == 0))
 					{
 						echo "<b style='color: red;'>".$lang['mod/fool']."</b>";
@@ -81,7 +81,7 @@ reqPermission(3);
 				{
 					$expires = "never";
 				} else {
-					$expirex = parse_time($expires);
+					$expirex = $mitsuba->common->parse_time($expires);
 					if (($expirex == false) && ($perma == 0))
 					{
 						echo "<b style='color: red;'>".$lang['mod/fool']."</b>";

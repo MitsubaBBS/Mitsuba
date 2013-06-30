@@ -6,11 +6,7 @@ header("Location: ./install.php");
 }
 
 include("config.php");
-include("inc/common.php");
-include("inc/common.caching.php");
-include("inc/common.posting.php");
-include("inc/common.plugins.php");
-include("inc/admin.common.php");
+include("inc/mitsuba.php");
 include("inc/strings/imgboard.strings.php");
 
 if (!empty($_POST['mode']))
@@ -24,9 +20,9 @@ if (!empty($_POST['mode']))
 	$mod_type = 0;
 	if ((!empty($_GET['mod'])) && ($_GET['mod']>=1))
 	{
-		if ((!empty($_POST['board'])) || (isBoard($conn, $_POST['board'])))
+		if ((!empty($_POST['board'])) || ($mitsuba->common->isBoard($_POST['board'])))
 		{
-			canBoard($_POST['board']);
+			$mitsuba->admin->canBoard($_POST['board']);
 			$mod = 1;
 			if (!empty($_SESSION['type'])) { $mod_type = $_SESSION['type']; }
 			if ($_GET['mod']==1)
@@ -36,7 +32,7 @@ if (!empty($_POST['mode']))
 		}
 	}
 	$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
-	$cacher = new Cacher($conn);
+	$mitsuba = new Mitsuba($conn);
 	loadPlugins($conn);
 	$mode = $_POST['mode'];
 	switch($mode)
@@ -58,10 +54,10 @@ if (!empty($_POST['mode']))
 				exit;
 			}
 			$board = $_POST['board'];
-			if (($mod == 0) && (isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) < 1))
+			if (($mod == 0) && ($mitsuba->common->isWhitelisted($_SERVER['REMOTE_ADDR']) < 1))
 			{
-				banMessage($conn, $board);
-				warningMessage($conn);
+				$mitsuba->common->banMessage($board);
+				$mitsuba->common->warningMessage();
 			}
 			$ignoresizelimit = 0;
 			if ($mod >= 1)
@@ -80,14 +76,14 @@ if (!empty($_POST['mode']))
 <body>
 <center><h1><?php echo $lang['img/updating_index']; ?></h1></center>
 			<?php
-			if (!isBoard($conn, $_POST['board']))
+			if (!$mitsuba->common->isBoard($_POST['board']))
 			{
 				echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
 			}
 			
 			
 			$md5 = "";
-			$bdata = getBoardData($conn, $_POST['board']);
+			$bdata = $mitsuba->common->getBoardData($_POST['board']);
 			if ($bdata['hidden'] == 1)
 			{
 				echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
@@ -111,7 +107,7 @@ if (!empty($_POST['mode']))
 							{
 								try {
 									if (preg_match($row['search'], $_POST['com']) !== false) {
-										addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+										$mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
 										echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 										die();
 									}
@@ -121,7 +117,7 @@ if (!empty($_POST['mode']))
 								}
 							} else {
 								if (stripos($_POST['com'], $row['search']) !== false) {
-									addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+									$mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
 									echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 									die();
 								}
@@ -132,7 +128,7 @@ if (!empty($_POST['mode']))
 						{
 							try {
 								if (preg_match($row['search'], $_POST['com']) !== false) {
-									addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+									$mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
 									echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 									die();
 								}
@@ -142,7 +138,7 @@ if (!empty($_POST['mode']))
 							}
 						} else {
 							if (stripos($_POST['com'], $row['search']) !== false) {
-									addSystemBan($conn, $_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+									$mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
 									echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 									die();
 							}
@@ -155,7 +151,7 @@ if (!empty($_POST['mode']))
 				echo "<center><h1>".$lang['img/choose_one']."</h1></center></body></html>";
 				exit;
 			}
-			if ((isWhitelisted($conn, $_SERVER['REMOTE_ADDR']) != 2) && (($mod == 0) || ($mod_type==0)))
+			if (($mitsuba->common->isWhitelisted($_SERVER['REMOTE_ADDR']) != 2) && (($mod == 0) || ($mod_type==0)))
 			{
 				if ((empty($_POST['resto'])) || ($_POST['resto']==0))
 				{
@@ -201,7 +197,7 @@ if (!empty($_POST['mode']))
 				{
 					$embed_table[] = $row;
 				}
-				if (isEmbed($_POST['embed'], $embed_table))
+				if ($mitsuba->common->isEmbed($_POST['embed'], $embed_table))
 				{
 					$filename = "embed:".$_POST['embed'];
 				} else {
@@ -224,7 +220,7 @@ if (!empty($_POST['mode']))
 						echo "<h1>".$lang['img/file_too_big']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
 						exit;
 					}
-					if (!($nfo = isFile($conn, $_FILES['upfile']['tmp_name'], $bdata['extensions'])))
+					if (!($nfo = $mitsuba->common->isFile($_FILES['upfile']['tmp_name'], $bdata['extensions'])))
 					{
 						echo "<h1>".$lang['img/file_not_img']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
 						exit;
@@ -268,7 +264,7 @@ if (!empty($_POST['mode']))
 				{
 					$password = $_COOKIE['password'];
 				} else {
-					$password = randomPassword();
+					$password = $mitsuba->common->randomPassword();
 				}
 			} else {
 				$password = $_POST['pwd'];
@@ -281,7 +277,7 @@ if (!empty($_POST['mode']))
 				{
 					if ($resto != 0)
 					{
-						$returned = thumb($board, $fileid.$ext, 125);
+						$returned = $mitsuba->common->thumb($board, $fileid.$ext, 125);
 						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
 							unlink($target_path);
@@ -290,7 +286,7 @@ if (!empty($_POST['mode']))
 						$thumb_w = $returned['width'];
 						$thumb_h = $returned['height'];
 					} else {
-						$returned = thumb($board, $fileid.$ext);
+						$returned = $mitsuba->common->thumb($board, $fileid.$ext);
 						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
 							unlink($target_path);
@@ -376,7 +372,7 @@ if (!empty($_POST['mode']))
 			{
 				$redirect = 1;
 			}
-			$is = addPost($conn, $cacher, $_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_color, $redirect);
+			$is = $mitsuba->posting->addPost($_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_color, $redirect);
 			if ($is == -16)
 			{
 					echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
@@ -393,7 +389,7 @@ if (!empty($_POST['mode']))
 					exit;
 				}
 				$board = $_POST['board'];
-				banMessage($conn, $board);
+				$mitsuba->common->banMessage($board);
 				$password = "";
 				if ($mod == 0)
 				{
@@ -405,7 +401,7 @@ if (!empty($_POST['mode']))
 				{
 					if ($value == "delete")
 					{
-						$done = deletePost($conn, $cacher, $_POST['board'], $key, $password, $onlyimgdel);
+						$done = $mitsuba->posting->deletePost($_POST['board'], $key, $password, $onlyimgdel);
 						if ($done == -1) {
 							echo sprintf($lang["img/post_bad_password"],$key).".<br />";
 						} elseif ($done == -2) {
@@ -433,12 +429,12 @@ if (!empty($_POST['mode']))
 					exit;
 				}
 				$board = $_POST['board'];
-				banMessage($conn, $board);
+				$mitsuba->common->banMessage($board);
 				foreach ($_POST as $key => $value)
 				{
 					if ($value == "delete")
 					{
-						$done = reportPost($conn, $_POST['board'], $key, $_POST['reason']);
+						$done = $mitsuba->posting->reportPost($_POST['board'], $key, $_POST['reason']);
 						if ($done == 1)
 						{
 							echo sprintf($lang['img/post_reported'], $key)."<br />";
@@ -460,7 +456,7 @@ if (!empty($_POST['mode']))
 				$msg = $conn->real_escape_string(htmlspecialchars($_POST['msg']));
 				$email = $conn->real_escape_string(htmlspecialchars($_POST['email']));
 				$ip = $_SERVER['REMOTE_ADDR'];
-				$ban = isBanned($conn, $ip, $_POST['board']);
+				$ban = $mitsuba->common->isBanned($ip, $_POST['board']);
 				$ban_id = $ban['id'];
 				$range = 0;
 				if (!empty($bandata['start_ip'])) { $range = 1; }

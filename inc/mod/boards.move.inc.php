@@ -3,12 +3,12 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
-		if (isBoard($conn, $_GET['board']))
+$mitsuba->admin->reqPermission(3);
+		if ($mitsuba->common->isBoard($_GET['board']))
 		{
 			if (!empty($_POST['new']))
 			{
-				$result = moveBoard($conn, $_GET['board'], $_POST['new']);
+				$result = $mitsuba->admin->boards->moveBoard($conn, $_GET['board'], $_POST['new']);
 				logAction($conn, sprintf($lang['log/moved_board'], $conn->real_escape_string($_GET['board']), $conn->real_escape_string($_POST['new'])));
 				if($result == 1)
 				{

@@ -76,9 +76,9 @@ if (!defined("IN_MOD"))
 				{
 					if ($row['raw'] == 2)
 					{
-						$comment = $cacher->processComment($row['board'], $row['comment'], $parser, 2, 0);
+						$comment = $mitsuba->caching->processComment($row['board'], $row['comment'], $parser, 2, 0);
 					} else {
-						$comment = $cacher->processComment($row['board'], $row['comment'], $parser, 2);
+						$comment = $mitsuba->caching->processComment($row['board'], $row['comment'], $parser, 2);
 					}
 				} else {
 					$comment = $row['comment'];

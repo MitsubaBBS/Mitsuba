@@ -75,9 +75,9 @@ if ((!empty($_GET['max'])) && (is_numeric($_GET['max'])))
 				{
 					if ($row['raw'] == 2)
 					{
-						$comment = $this->processComment($row['board'], $row['comment'], $parser, 2, 0);
+						$comment = $mitsuba->caching->processComment($row['board'], $row['comment'], $parser, 2, 0);
 					} else {
-						$comment = $this->processComment($row['board'], $row['comment'], $parser, 2);
+						$comment = $mitsuba->caching->processComment($row['board'], $row['comment'], $parser, 2);
 					}
 				} else {
 					$comment = $row['comment'];

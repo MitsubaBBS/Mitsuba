@@ -3,10 +3,10 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(2);
-		if ((!empty($_GET['board'])) && (isBoard($conn, $_GET['board'])))
+$mitsuba->admin->reqPermission(2);
+		if ((!empty($_GET['board'])) && ($mitsuba->common->isBoard($_GET['board'])))
 		{
-			rebuildBoardCache($conn, $_GET['board']);
+			$mitsuba->caching->rebuildBoardCache($_GET['board']);
 			logAction($conn, sprintf($lang['log/rebuilt_board'], $conn->real_escape_string($_GET['board'])));
 		?>
 							<div class="box-outer top-box">

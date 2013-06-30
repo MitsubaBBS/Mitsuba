@@ -3,10 +3,10 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
-		if (isBoard($conn, $_GET['board']))
+$mitsuba->admin->reqPermission(3);
+		if ($mitsuba->common->isBoard($_GET['board']))
 		{
-			$data = getBoardData($conn, $_GET['board']);
+			$data = $mitsuba->common->getBoardData($_GET['board']);
 			?>
 <div class="box-outer top-box">
 <div class="box-inner">

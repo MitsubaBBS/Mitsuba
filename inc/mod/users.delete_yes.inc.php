@@ -3,13 +3,13 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 			$id = $_GET['id'];
-			if ($username = isUser($conn, $id))
+			if ($username = $mitsuba->admin->users->isUser($id))
 			{
-				delUser($conn, $id);
+				$mitsuba->admin->users->delUser($id);
 				logAction($conn, sprintf($lang['log/deleted_user'], $username));
 					?>
 								<div class="box-outer top-box">

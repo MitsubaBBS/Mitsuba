@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 		if (isset($_GET['i']))
 		{
 			$id = $conn->real_escape_string($_GET['i']);
@@ -32,7 +32,7 @@ reqPermission(3);
 </div>
 		<?php
 				} else {
-					updateBoardLink($conn, $cacher, $id, $_POST['url'], $_POST['url_thread'], $_POST['url_index'], $_POST['title'], $_POST['short']);
+					$mitsuba->admin->links->updateBoardLink($id, $_POST['url'], $_POST['url_thread'], $_POST['url_index'], $_POST['title'], $_POST['short']);
 					
 			?>
 			<meta http-equiv="refresh" content="0;URL='?/links'" />

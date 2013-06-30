@@ -1,12 +1,14 @@
 <?php
-class Cacher
+class Caching
 {
 	private $conn;
 	private $config;
+	private $mitsuba;
 
-	function __construct($connection) {
+	function __construct($connection, $mitsuba) {
 		$this->conn = $connection;
-		$this->config = getConfig($this->conn);
+		$this->mitsuba = $mitsuba;
+		$this->config = $this->mitsuba->config;
 	}
 
 	function generateBoardLinks($in_thread = 0)
@@ -19,9 +21,9 @@ class Cacher
 
 	function rebuildBoardLinks()
 	{
-		updateConfigValue($this->conn, "boardLinks", $this->generateBoardLinks());
-		updateConfigValue($this->conn, "boardLinks_thread", $this->generateBoardLinks(1));
-		updateConfigValue($this->conn, "boardLinks_index", $this->generateBoardLinks(2));
+		$this->mitsuba->updateConfigValue("boardLinks", $this->generateBoardLinks());
+		$this->mitsuba->updateConfigValue("boardLinks_thread", $this->generateBoardLinks(1));
+		$this->mitsuba->updateConfigValue("boardLinks_index", $this->generateBoardLinks(2));
 	}
 
 	function generateLinks($id, $in_thread = 0)
@@ -132,7 +134,17 @@ class Cacher
 			$new = $parser->getAsHtml();
 		}
 		$rurl = "&\\b$rexProtocol$rexDomain$rexPort$rexPath$rexQuery$rexFragment(?=[?.!,;:\"]?(\s|$))&";
-		$new = preg_replace_callback($rurl, "urlCallback", $new);
+		$new = preg_replace_callback($rurl,
+			function ($match)
+			{
+				if ((substr($match[0], 0, 5) == "http:") || (substr($match[0], 0, 6) == "https:"))
+				{
+					return "<a href='".$match[0]."'>".$match[0]."</a>";
+				} else {
+					return $match[0];
+				}
+			},
+			$new);
 		if (($c_lines > 15) && ($thread == 0) && (is_numeric($id)) && ($id > 0))
 		{
 			if ($resto == 0)
@@ -185,7 +197,7 @@ class Cacher
 		} elseif ((substr($link, 0, 3) == ">>/") || (substr($link, 0, 4) == ">>>/"))
 		{
 			$parts = explode("/", $link);
-			if (isBoard($this->conn, $parts[1]))
+			if ($this->mitsuba->common->isBoard($parts[1]))
 			{
 				if (is_numeric($parts[2]))
 				{
@@ -246,11 +258,11 @@ class Cacher
 	{
 		global $lang;
 		$board = $this->conn->real_escape_string($board);
-		if (!isBoard($this->conn, $board))
+		if (!$this->mitsuba->common->isBoard($board))
 		{
 			return -16;
 		}
-		$boarddata = getBoardData($this->conn, $board);
+		$boarddata = $this->mitsuba->common->getBoardData($board);
 		if (($boarddata['hidden'] == 1) && ($return == 0))
 		{
 			return -666;
@@ -823,13 +835,13 @@ class Cacher
 	function forceGetThread($board, $threadno)
 	{
 		global $lang;
-		if (isBoard($this->conn, $board))
+		if ($this->mitsuba->common->isBoard($board))
 		{
 			$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."'");
 			if ($result->num_rows == 1)
 			{
 				$trow = $result->fetch_assoc();
-				$boarddata = getBoardData($this->conn, $board);
+				$boarddata = $this->mitsuba->common->getBoardData($board);
 				$wfresult = $this->conn->query("SELECT * FROM wordfilter WHERE active=1");
 				$replace_array = array();
 				while ($row = $wfresult->fetch_assoc())
@@ -1265,7 +1277,7 @@ class Cacher
 	function updateThreads($board)
 	{
 		$board = $this->conn->real_escape_string($board);
-		if (!isBoard($this->conn, $board))
+		if (!$this->mitsuba->common->isBoard($board))
 		{
 			return -16;
 		}
@@ -1286,7 +1298,7 @@ class Cacher
 
 	function serializeThread($board, $thread_id)
 	{
-		if (isBoard($this->conn, $board))
+		if ($this->mitsuba->common->isBoard($this->conn, $board))
 		{
 			$thread = $this->conn->query("SELECT * FROM posts WHERE board='".$board."' AND id=".$thread_id);
 			if ($thread->num_rows == 1)
@@ -1294,7 +1306,7 @@ class Cacher
 				$row = $thread->fetch_assoc();
 				require_once( "./jbbcode/Parser.php" );
 				$parser = new JBBCode\Parser();
-				$boarddata = getBoardData($this->conn, $board);
+				$boarddata = $this->mitsuba->common->getBoardData($board);
 				if ($boarddata['bbcode']==1)
 				{
 					$bbcode = $this->conn->query("SELECT * FROM bbcodes;");
@@ -1326,7 +1338,7 @@ class Cacher
 	function regenThumbnails($board)
 	{
 		$board = $this->conn->real_escape_string($board);
-		if (!isBoard($this->conn, $board))
+		if (!$this->mitsuba->common->isBoard($board))
 		{
 			return -16;
 		}
@@ -1339,13 +1351,13 @@ class Cacher
 				{
 					if ($row['resto'] != 0)
 					{
-						$info = thumb($board, substr($row['filename'], 8), 125);
+						$info = $this->mitsuba->common->thumb($board, substr($row['filename'], 8), 125);
 						if (!empty($info['width']))
 						{
 							$this->conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
 						}
 					} else {
-						$info = thumb($board, substr($row['filename'], 8));
+						$info = $this->mitsuba->common->thumb($board, substr($row['filename'], 8));
 						if (!empty($info['width']))
 						{
 							$this->conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
@@ -1354,13 +1366,13 @@ class Cacher
 				} elseif (substr($row['filename'], 0, 6) != "embed:") {
 					if ($row['resto'] != 0)
 					{
-						$info = thumb($board, $row['filename'], 125);
+						$info = $this->mitsuba->common->thumb($board, $row['filename'], 125);
 						if (!empty($info['width']))
 						{
 							$this->conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
 						}
 					} else {
-						$info = thumb($board, $row['filename']);
+						$info = $this->mitsuba->common->thumb($board, $row['filename']);
 						if (!empty($info['width']))
 						{
 							$this->conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
@@ -1707,7 +1719,7 @@ class Cacher
 					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <b>Embed</b></span>';
 					
 					$file .= '</div>';
-					$file .= '<a class="fileThumb">'.getEmbed(substr($fileinfo['filename'], 6), $embed_table).'</a>';
+					$file .= '<a class="fileThumb">'.$mitsuba->common->getEmbed(substr($fileinfo['filename'], 6), $embed_table).'</a>';
 					
 					$file .= '</div>';
 				} else {
@@ -1948,6 +1960,63 @@ class Cacher
 			}
 		}
 	return $post;
+	}
+
+	function rebuildBoardCache($board)
+	{
+		$this->updateThreads($board);
+		$this->generateView($board);
+		$this->regenIDs($board);
+	}
+
+	function regenIDs($board)
+	{
+		if ($this->mitsuba->common->isBoard($board))
+		{
+			$bdata = $this->mitsuba->common->getBoardData($board);
+			if ($bdata['ids'] == 1)
+			{
+				$result = $this->conn->query("SELECT * FROM posts WHERE board='".$board."'");
+				while ($row = $result->fetch_assoc())
+				{
+					$poster_id = "";
+					if (empty($row['poster_id']))
+					{
+						if ($row['resto'] != 0)
+						{
+							$poster_id = $this->mitsuba->common->mkid($row['ip'], $row['resto'], $board);
+						} else {
+							$poster_id = $this->mitsuba->common->mkid($row['ip'], $row['id'], $board);
+						}
+						$this->conn->query("UPDATE posts SET poster_id='".$poster_id."' WHERE id=".$row['id']." AND board='".$board."'");
+					}
+				}
+			}
+		}
+	}
+
+	function generatePost($board, $id)
+	{
+		if ((empty($id)) || (!is_numeric($id)))
+		{
+			return -15;
+		}
+		if ((empty($id)) || (!$this->mitsuba->common->isBoard($board)))
+		{
+			return -16;
+		}
+		$result = $this->conn->query("SELECT * FROM posts WHERE id=".$id." AND board='".$board."'");
+		if ($result->num_rows == 1)
+		{
+			$post = $result->fetch_assoc();
+			if ($post['resto'] == 0)
+			{
+				$this->generateView($board, $post['id']);
+			} else {
+				$this->generateView($board, $post['resto']);
+			}
+			$this->generateView($board);
+		}
 	}
 }
 ?>

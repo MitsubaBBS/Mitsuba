@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 		if ((!empty($_POST['username'])) && (!empty($_POST['password'])) && (is_numeric($_POST['type'])))
 		{
 			$type = $_POST['type'];
@@ -25,7 +25,7 @@ reqPermission(3);
 				}
 			}
 			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-			$result = addUser($conn, $_POST['username'], $_POST['password'], $type, $boards);
+			$result = $mitsuba->admin->users->addUser($_POST['username'], $_POST['password'], $type, $boards);
 			if ($result == 1)
 			{
 				logAction($conn, sprintf($lang['log/user_added'], $conn->real_escape_string($_POST['username'])));

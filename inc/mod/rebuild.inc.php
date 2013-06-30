@@ -3,8 +3,8 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
-	$config = getConfig($conn);
+$mitsuba->admin->reqPermission(3);
+	$config = $mitsuba->config;
 	?>
 			<div class="box-outer top-box">
 <div class="box-inner">

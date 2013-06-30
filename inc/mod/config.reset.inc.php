@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 
 $config = array();
 
@@ -15,7 +15,7 @@ $config['sitename'] = "Mitsuba";
 $config['enable_api'] = 0;
 $config['caching_mode'] = 0;
 
-updateConfig($conn, $config);
+$mitsuba->admin->updateConfig($conn, $config);
 
 ?>
 <div class="box-outer top-box">

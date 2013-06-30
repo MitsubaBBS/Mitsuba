@@ -3,10 +3,10 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 		if (isset($_POST['message']))
 		{
-			updateConfigValue($conn, "global_message", $_POST['message']);
+			$mitsuba->updateConfigValue("global_message", $_POST['message']);
 		?>
 							<div class="box-outer top-box">
 <div class="box-inner">
@@ -19,7 +19,7 @@ reqPermission(3);
 </div>
 		<?php
 		} else {
-		$config = getConfig($conn);
+		$config = $mitsuba->config;
 		$msg = $config['global_message'];
 		
 		?>

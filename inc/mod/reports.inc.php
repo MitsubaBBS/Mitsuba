@@ -12,7 +12,7 @@ if ((!empty($_GET['cl'])) && ($_GET['cl']==1))
 	}
 	if ((!empty($_GET['m'])) && (!empty($_GET['i'])) && (is_numeric($_GET['i'])))
 	{
-		reqPermission(2);
+		$mitsuba->admin->reqPermission(2);
 		switch($_GET['m'])
 		{
 			case "wtr":
@@ -96,10 +96,10 @@ if ($_SESSION['type'] >= 2)
 			}
 			if ($pdata['raw'] == 0)
 			{
-				echo "<td>".$cacher->processComment($row['board'], $pdata['comment'], $parser, 2)."</td>";
+				echo "<td>".$mitsuba->caching->processComment($row['board'], $pdata['comment'], $parser, 2)."</td>";
 			} elseif ($pdata['raw'] == 2)
 			{
-				echo "<td>".$cacher->processComment($row['board'], $pdata['comment'], $parser, 2, 0)."</td>";
+				echo "<td>".$mitsuba->caching->processComment($row['board'], $pdata['comment'], $parser, 2, 0)."</td>";
 			} else {
 				echo "<td>".$pdata['comment']."</td>";
 			}

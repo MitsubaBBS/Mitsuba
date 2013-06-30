@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 	if (!empty($_GET['b']))
 	{
 	$result = $conn->query("SELECT * FROM pages WHERE name=".$_GET['b']);
@@ -39,7 +39,7 @@ reqPermission(3);
 			$result = $conn->query("UPDATE pages SET name='".$conn->real_escape_string($_POST['name'])."', title='".$conn->real_escape_string($_POST['title'])."', text='".$conn->real_escape_string($_POST['text'])."' WHERE name='".$conn->real_escape_string($_GET['b'])."'");
 			if ($result)
 			{
-				$cacher->generatePage($_POST['name']);
+				$mitsuba->caching->generatePage($_POST['name']);
 				?>
 		<div class="box-outer top-box">
 <div class="box-inner">

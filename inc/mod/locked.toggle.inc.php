@@ -3,9 +3,9 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['t'])))
+if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && ($mitsuba->common->isBoard($_GET['b'])) && (is_numeric($_GET['t'])))
 		{
-			canBoard($_GET['b']);
+			$mitsuba->admin->canBoard($_GET['b']);
 			$result = $conn->query("SELECT * FROM posts WHERE id=".$_GET['t']." AND resto=0 AND board='".$_GET['b']."'");
 			if ($result->num_rows == 1)
 			{
@@ -13,7 +13,7 @@ if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b']))
 				if ($pdata['locked'] == 1)
 				{
 					$conn->query("UPDATE posts SET locked=0 WHERE id=".$_GET['t']." AND board='".$_GET['b']."'");
-					generatePost($conn, $cacher, $_GET['b'], $_GET['t']);
+					$mitsuba->caching->generatePost($_GET['b'], $_GET['t']);
 				?>
 	
 								<div class="box-outer top-box">
@@ -25,7 +25,7 @@ if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && (isBoard($conn, $_GET['b']))
 		<?php
 				} else {
 					$conn->query("UPDATE posts SET locked=1 WHERE id=".$_GET['t']." AND board='".$_GET['b']."'");
-					generatePost($conn, $cacher, $_GET['b'], $_GET['t']);
+					$mitsuba->caching->generatePost($_GET['b'], $_GET['t']);
 				?>
 	
 								<div class="box-outer top-box">

@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(2);
+$mitsuba->admin->reqPermission(2);
 	if ((isset($_GET['b'])) && (is_numeric($_GET['b'])))
 	{
 	$result = $conn->query("SELECT * FROM announcements WHERE id=".$_GET['b']);

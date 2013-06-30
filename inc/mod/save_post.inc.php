@@ -3,8 +3,8 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
-		if ((!empty($_POST['b'])) && (!empty($_POST['p'])) && (isBoard($conn, $_POST['b'])) && (is_numeric($_POST['p'])) && (!empty($_POST['text'])))
+$mitsuba->admin->reqPermission(3);
+		if ((!empty($_POST['b'])) && (!empty($_POST['p'])) && ($mitsuba->common->isBoard($_POST['b'])) && (is_numeric($_POST['p'])) && (!empty($_POST['text'])))
 		{
 			$result = $conn->query("SELECT * FROM posts WHERE id=".$_POST['p']." AND board='".$_POST['b']."'");
 			if ($result->num_rows == 1)
@@ -15,32 +15,32 @@ reqPermission(3);
 				{
 					$raw = 1;
 				}
-				$conn->query("UPDATE posts SET comment='".preprocessComment($conn, $_POST['text'])."', raw=".$raw." WHERE id=".$_POST['p']." AND board='".$_POST['b']."'");
+				$conn->query("UPDATE posts SET comment='".$mitsuba->common->preprocessComment($_POST['text'])."', raw=".$raw." WHERE id=".$_POST['p']." AND board='".$_POST['b']."'");
 				$resto = $row['resto'];
 				if ($row['resto'] == 0)
 				{
-					$cacher->generateView($_POST['b'], $row['id']);
+					$mitsuba->caching->generateView($_POST['b'], $row['id']);
 					if ($config['caching_mode']==1)
 					{
-						$cacher->forceGetThread($_POST['b'], $row['id']);
+						$mitsuba->caching->forceGetThread($_POST['b'], $row['id']);
 					}
 					if ($config['enable_api']==1)
 					{
-						serializeThread($conn, $_POST['b'], $row['id']);
+						$mitsuba->caching->serializeThread($_POST['b'], $row['id']);
 					}
 					$resto = $row['id'];
 				} else {
-					$cacher->generateView($_POST['b'], $row['resto']);
+					$mitsuba->caching->generateView($_POST['b'], $row['resto']);
 					if ($config['caching_mode']==1)
 					{
-						$cacher->forceGetThread($_POST['b'], $row['resto']);
+						$mitsuba->caching->forceGetThread($_POST['b'], $row['resto']);
 					}
 					if ($config['enable_api']==1)
 					{
-						serializeThread($conn, $_POST['b'], $row['resto']);
+						$mitsuba->caching->serializeThread($_POST['b'], $row['resto']);
 					}
 				}
-				$cacher->generateView($_POST['b']);
+				$mitsuba->caching->generateView($_POST['b']);
 				?>
 				<div class="box-outer top-box">
 	<div class="box-inner">

@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(2);
+$mitsuba->admin->reqPermission(2);
 	if (empty($_POST['text']))
 	{
 	?>
@@ -46,7 +46,7 @@ echo "<td><center><a href='?/news/edit&b=".$row['id']."'>".$lang['mod/edit']."</
 echo "<td><center><a href='?/news/delete&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 echo "</td>";
 }
-$cacher->generateNews();
+$mitsuba->caching->generateNews();
 ?>
 </tbody>
 </table>

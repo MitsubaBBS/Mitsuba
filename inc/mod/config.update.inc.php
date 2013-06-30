@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 /*
 <?php echo $lang['mod/frontpage_style']; ?>: <select name="frontpage_style">
 		<option value="0" <?php if ($config['frontpage_style'] == 0) { echo "selected"; } ?>>Kusaba X</option>
@@ -52,7 +52,7 @@ if ((isset($_POST['caching_mode'])) && (is_numeric($_POST['caching_mode'])))
 	$config['caching_mode'] = $_POST['caching_mode'];
 }
 
-updateConfig($conn, $config);
+$mitsuba->admin->updateConfig($conn, $config);
 
 ?>
 <div class="box-outer top-box">

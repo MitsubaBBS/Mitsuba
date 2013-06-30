@@ -3,11 +3,11 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 		if ((!empty($_POST['links'])) && ($_POST['links']==1))
 		{
 			
-			$cacher->rebuildBoardLinks();
+			$mitsuba->caching->rebuildBoardLinks();
 		}
 		
 		if ((!empty($_POST['boards'])) && ($_POST['boards']==1))
@@ -15,7 +15,7 @@ reqPermission(3);
 			$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
 			while ($row = $result->fetch_assoc())
 			{
-				rebuildBoardCache($conn, $cacher, $row['short']);
+				$mitsuba->caching->rebuildBoardCache($row['short']);
 			}
 			logAction($conn, $lang['log/rebuilt_cache']);
 		}
@@ -25,19 +25,19 @@ reqPermission(3);
 			$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
 			while ($row = $result->fetch_assoc())
 			{
-				$cacher->regenThumbnails($row['short']);
+				$mitsuba->caching->regenThumbnails($row['short']);
 			}
 			logAction($conn, $lang['log/rebuilt_thumbs']);
 		}
 		
 		if ((!empty($_POST['static'])) && ($_POST['static']==1))
 		{
-			$cacher->generateFrontpage();
-			$cacher->generateNews();
+			$mitsuba->caching->generateFrontpage();
+			$mitsuba->caching->generateNews();
 			$result = $conn->query("SELECT * FROM pages;");
 			while ($row = $result->fetch_assoc())
 			{
-				$cacher->generatePage($row['name']);
+				$mitsuba->caching->generatePage($row['name']);
 			}
 		}
 		?>

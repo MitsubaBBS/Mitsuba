@@ -33,10 +33,10 @@ if (!defined("IN_MOD"))
 		echo "<td><center><a href='?/board&b=".$thread['board']."&t=".$thread['id']."#p".$thread['id']."'>/".$thread['board']."/".$thread['id']."</a></center></td>";
 		if ($thread['raw'] == 0)
 		{
-			echo "<td>".$cacher->processComment($thread['board'], $thread['comment'], $parser, 2)."</td>";
+			echo "<td>".$mitsuba->caching->processComment($thread['board'], $thread['comment'], $parser, 2)."</td>";
 		} elseif ($thread['raw'] == 2)
 		{
-			echo "<td>".$cacher->processComment($thread['board'], $thread['comment'], $parser, 2, 0)."</td>";
+			echo "<td>".$mitsuba->caching->processComment($thread['board'], $thread['comment'], $parser, 2, 0)."</td>";
 		} else {
 			echo "<td>".$thread['comment']."</td>";
 		}

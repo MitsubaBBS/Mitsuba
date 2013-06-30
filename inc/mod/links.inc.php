@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 	if (!empty($_GET['m']))
 	{
 		if ($_GET['m'] == "del")
@@ -11,14 +11,14 @@ reqPermission(3);
 			if (!empty($_GET['i']))
 			{
 				$id = $conn->real_escape_string($_GET['i']);
-				deleteBoardLink($conn, $cacher, $id);
+				$mitsuba->admin->links->deleteBoardLink($id);
 			}
 		}
 		if ($_GET['m'] == "addc")
 		{
 			if (!empty($_POST['title']))
 			{
-				addLinkCategory($conn, $cacher, $_POST['title']);
+				$mitsuba->admin->links->addLinkCategory($_POST['title']);
 			}
 		}
 		
@@ -27,7 +27,7 @@ reqPermission(3);
 			if (!empty($_GET['l']))
 			{
 				$id = $conn->real_escape_string($_GET['l']);
-				moveUpCategory($conn, $cacher, $id);
+				$mitsuba->admin->links->moveUpCategory($id);
 			}
 		}
 		
@@ -36,7 +36,7 @@ reqPermission(3);
 			if (!empty($_GET['l']))
 			{
 				$id = $conn->real_escape_string($_GET['l']);
-				moveDownCategory($conn, $cacher, $id);
+				$mitsuba->admin->links->moveDownCategory($id);
 			}
 		}
 	}
@@ -47,7 +47,7 @@ reqPermission(3);
 <div class="boxcontent">
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <?php
-echo getLinkTable($conn, -1);
+echo $mitsuba->admin->links->getLinkTable(-1);
 ?>
 </div>
 </div>

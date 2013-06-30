@@ -16,7 +16,7 @@ if (!defined("IN_MOD"))
 				}
 			}
 			$conn->query("DELETE FROM posts WHERE ip='".$_GET['ip']."'");
-			rebuildBoardCache($conn, $row['short']);
+			$mitsuba->caching->rebuildBoardCache($row['short']);
 				?>
 	
 								<div class="box-outer top-box">

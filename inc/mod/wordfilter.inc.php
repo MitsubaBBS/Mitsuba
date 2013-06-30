@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 		$search = "";
 		$replace = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))

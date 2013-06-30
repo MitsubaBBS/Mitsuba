@@ -3,11 +3,11 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 			$id = $_GET['id'];
-			if ($username = isUser($conn, $id))
+			if ($username = $mitsuba->admin->users->isUser($id))
 			{
 				if ((!empty($_POST['username'])) && (is_numeric($_POST['type'])))
 				{
@@ -34,7 +34,7 @@ reqPermission(3);
 					}
 					logAction($conn, sprintf($lang['log/edited_user'], $username));
 					if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
-					updateUser($conn, $id, $_POST['username'], $_POST['password'], $_POST['type'], $boards);
+					$mitsuba->admin->users->updateUser($id, $_POST['username'], $_POST['password'], $_POST['type'], $boards);
 					?>
 					<div class="box-outer top-box">
 <div class="box-inner">

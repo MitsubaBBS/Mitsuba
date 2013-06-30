@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 if (!empty($_GET['m']))
 {
 	switch ($_GET['m'])
@@ -16,7 +16,7 @@ if (!empty($_GET['m']))
 					echo $lang['mod/page_wrong_name'];
 				} else {
 					$result = $conn->query("INSERT INTO pages (`name`,`title`,`text`) VALUES ('".$conn->real_escape_string($_POST['name'])."', '".$conn->real_escape_string($_POST['title'])."', '".$conn->real_escape_string($_POST['text'])."')");
-					$cacher->generatePage($_POST['name']);
+					$mitsuba->caching->generatePage($_POST['name']);
 				}
 			} else {
 				echo $lang['mod/fill_all_fields'];

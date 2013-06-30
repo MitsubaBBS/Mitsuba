@@ -3,8 +3,8 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
-		if (isBoard($conn, $_GET['board']))
+$mitsuba->admin->reqPermission(3);
+		if ($mitsuba->common->isBoard($_GET['board']))
 		{
 			if (!empty($_POST['name']))
 			{
@@ -92,7 +92,7 @@ reqPermission(3);
 				{
 					$anonymous = $_POST['anonymous'];
 				}
-				if (updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous))
+				if ($mitsuba->admin->boards->updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous))
 				{
 				logAction($conn, sprintf($lang['log/updated_board'], $conn->real_escape_string($_GET['board'])));
 				?>

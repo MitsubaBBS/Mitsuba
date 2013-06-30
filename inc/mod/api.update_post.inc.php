@@ -3,8 +3,8 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
-		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && (isBoard($conn, $_GET['b'])) && (is_numeric($_GET['p'])))
+$mitsuba->admin->reqPermission(3);
+		if ((!empty($_GET['b'])) && (!empty($_GET['p'])) && ($mitsuba->common->isBoard($_GET['b'])) && (is_numeric($_GET['p'])))
 		{
 			$result = $conn->query("SELECT * FROM posts WHERE id=".$_GET['p']." AND board='".$_GET['b']."'");
 			if ($result->num_rows == 1)
@@ -15,32 +15,32 @@ reqPermission(3);
 				{
 					$raw = 1;
 				}
-				$conn->query("UPDATE posts SET comment='".preprocessComment($conn, $_POST['comment'])."', raw=".$raw." WHERE id=".$_GET['p']." AND board='".$_GET['b']."'");
+				$conn->query("UPDATE posts SET comment='".$mitsuba->common->preprocessComment($_POST['comment'])."', raw=".$raw." WHERE id=".$_GET['p']." AND board='".$_GET['b']."'");
 				$resto = $row['resto'];
 				if ($row['resto'] == 0)
 				{
-					$cacher->generateView($_GET['b'], $row['id']);
+					$mitsuba->caching->generateView($_GET['b'], $row['id']);
 					if ($config['caching_mode']==1)
 					{
-						$cacher->forceGetThread($_GET['b'], $row['id']);
+						$mitsuba->caching->forceGetThread($_GET['b'], $row['id']);
 					}
 					if ($config['enable_api']==1)
 					{
-						serializeThread($conn, $_GET['b'], $row['id']);
+						$mitsuba->caching->serializeThread($_GET['b'], $row['id']);
 					}
 					$resto = $row['id'];
 				} else {
-					$cacher->generateView($_GET['b'], $row['resto']);
+					$mitsuba->caching->generateView($_GET['b'], $row['resto']);
 					if ($config['caching_mode']==1)
 					{
-						$cacher->forceGetThread($_GET['b'], $row['resto']);
+						$mitsuba->caching->forceGetThread($_GET['b'], $row['resto']);
 					}
 					if ($config['enable_api']==1)
 					{
-						serializeThread($conn, $_GET['b'], $row['resto']);
+						$mitsuba->caching->serializeThread($_GET['b'], $row['resto']);
 					}
 				}
-				$cacher->generateView($_GET['b']);
+				$mitsuba->caching->generateView($_GET['b']);
 			}
 		} else {
 			echo json_encode(array('error' => 404));

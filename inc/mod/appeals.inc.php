@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(2);
+$mitsuba->admin->reqPermission(2);
 if (!empty($_GET['m']))
 {
 	if ($_GET['m'] == "clear")

@@ -3,13 +3,13 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-reqPermission(3);
+$mitsuba->admin->reqPermission(3);
 		if (!empty($_GET['board']))
 		{
 			$board = $conn->real_escape_string($_GET['board']);
-			if (isBoard($conn, $board))
+			if ($mitsuba->common->isBoard($board))
 			{
-				deleteBoard($conn, $board);
+				$mitsuba->admin->boards->deleteBoard($board);
 				logAction($conn, sprintf($lang['log/deleted_board'], $board));
 					?>
 								<div class="box-outer top-box">
