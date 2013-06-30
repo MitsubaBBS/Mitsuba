@@ -111,7 +111,7 @@ class Mitsuba
 		include("common.php");
 		$this->common = new Common($this->conn, $this);
 		include("posting.php");
-		$this->common = new Posting($this->conn, $this);
+		$this->posting = new Posting($this->conn, $this);
 		$this->admin = new Admin($this->conn, $this);
 	}
 
