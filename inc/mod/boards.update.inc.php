@@ -92,7 +92,7 @@ $mitsuba->admin->reqPermission(3);
 				{
 					$anonymous = $_POST['anonymous'];
 				}
-				if ($mitsuba->admin->boards->updateBoard($conn, $_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous))
+				if ($mitsuba->admin->boards->updateBoard($_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous))
 				{
 				logAction($conn, sprintf($lang['log/updated_board'], $conn->real_escape_string($_GET['board'])));
 				?>

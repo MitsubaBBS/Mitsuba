@@ -59,7 +59,7 @@ $mitsuba->caching->generateNews();
 		$who = $_SESSION['username'];
 		if (!empty($_POST['who'])) { $who = $_POST['who']; }
 		$conn->query("INSERT INTO news (date, who, title, text, mod_id) VALUES (".time().", '".$who."', '".$conn->real_escape_string(htmlspecialchars($_POST['title']))."', '".$text."', ".$_SESSION['id'].");");
-		generateNews($conn);
+		$mitsuba->caching->generateNews();
 		
 		?>
 		<div class="box-outer top-box">

@@ -94,7 +94,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 		
 		$result = 0;
 		
-		$result = addWarning($conn, $_POST['ip'], $_POST['reason'], $_POST['note']);
+		$result = $mitsuba->admin->bans->addWarning($_POST['ip'], $_POST['reason'], $_POST['note']);
 		if ($result != -2)
 		{
 			if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
