@@ -28,14 +28,14 @@ class Users {
 
 	function addUser($username, $password, $type, $boards)
 	{
-		$username = $conn->real_escape_string($username);
+		$username = $this->conn->real_escape_string($username);
 		$password = hash("sha512", $password);
 		if (!is_numeric($type))
 		{
 			return -1;
 		}
-		$boards = $conn->real_escape_string($boards);
-		$result = $conn->query("INSERT INTO users (username, password, type, boards) VALUES ('".$username."', '".$password."', ".$type.", '".$boards."')");
+		$boards = $this->conn->real_escape_string($boards);
+		$result = $this->conn->query("INSERT INTO users (username, password, type, boards) VALUES ('".$username."', '".$password."', ".$type.", '".$boards."')");
 		if ($result)
 		{
 			return 1;
@@ -50,8 +50,8 @@ class Users {
 		{
 			return -1;
 		}
-		$conn->query("DELETE FROM users WHERE id=".$id);
-		$conn->query("DELETE FROM notes WHERE mod_id=".$id);
+		$this->conn->query("DELETE FROM users WHERE id=".$id);
+		$this->conn->query("DELETE FROM notes WHERE mod_id=".$id);
 	}
 
 	function updateUser($id, $username, $password, $type, $boards)
@@ -64,16 +64,16 @@ class Users {
 		{
 			return -1;
 		}
-		$username = $conn->real_escape_string($username);
+		$username = $this->conn->real_escape_string($username);
 		$password_db = "";
 		if (!empty($password))
 		{
 			$password_db = ", password='".hash("sha512", $password)."'";
 		}
 		
-		$type = $conn->real_escape_string($type);
-		$boards = $conn->real_escape_string($boards);
-		$conn->query("UPDATE users SET username='".$username."'".$password_db.", type=".$type.", boards='".$boards."' WHERE id=".$id);
+		$type = $this->conn->real_escape_string($type);
+		$boards = $this->conn->real_escape_string($boards);
+		$this->conn->query("UPDATE users SET username='".$username."'".$password_db.", type=".$type.", boards='".$boards."' WHERE id=".$id);
 
 	}
 
@@ -83,7 +83,7 @@ class Users {
 		{
 			return 0;
 		}
-		$result = $conn->query("SELECT * FROM users WHERE id=".$conn->real_escape_string($id));
+		$result = $this->conn->query("SELECT * FROM users WHERE id=".$this->conn->real_escape_string($id));
 		if ($result->num_rows == 1)
 		{
 			$row = $result->fetch_assoc();
