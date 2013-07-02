@@ -1442,7 +1442,7 @@ class Caching
 			}
 			
 			$file .= '<div title="(R)eplies / (I)mages" id="meta-'.$row['id'].'" class="meta">R: <b>'.$row['replies'].'</b> / I: <b>'.$row['img_replies'].'</b></div>';
-			$file .= '<div class="teaser">'.htmlspecialchars(strtr($row['comment'], $wf_table)).'</div>';
+			$file .= '<div class="teaser">'.htmlspecialchars(strtr($row['comment'], $replace_array)).'</div>';
 			$file .= '</div>';
 		}
 		$file .= '</div>';
@@ -1453,14 +1453,9 @@ class Caching
 		$file .= '<div style="text-align: center; font-size: x-small!important; padding-bottom: 4px; padding-top: 10px; color: #333;"><span class="absBotDisclaimer">- <a href="http://github.com/MitsubaBBS/Mitsuba" target="_top" rel="nofollow">mitsuba</a> -</span></div>';
 		$file .= '<div id="bottom"></div>';
 		$file .= "</body></html>";
-		if ($return != 1)
-		{
-			$handle = fopen("./".$board."/catalog.html", "w");
-			fwrite($handle, $file);
-			fclose($handle);
-		} else {
-			return $file;
-		}
+		$handle = fopen("./".$board."/catalog.html", "w");
+		fwrite($handle, $file);
+		fclose($handle);
 	}
 
 	function updateThreads($board)
