@@ -255,6 +255,140 @@ class Caching
 		return $return;
 	}
 
+	function getHtmlDefinition()
+	{
+		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml">';	
+	}
+
+	function getBoardHeader($board, $boarddata, $return, $catalog = 0)
+	{
+		$file = $this->getHtmlDefinition();
+		if ($return == 1)
+		{
+			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
+			$style = $this->conn->query("SELECT * FROM styles WHERE `default`=1");
+			$first_default = 0;
+			if ($style->num_rows > 0)
+			{
+				$sdata = $style->fetch_assoc();
+				$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($sdata['path'], "index", $sdata['relative']).'">';
+			} else {
+				$first_default = 1;
+			}
+			$styles = $this->conn->query("SELECT * FROM styles");
+			while ($row = $styles->fetch_assoc())
+			{
+				if ($first_default == 1)
+				{
+					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'">';
+					$first_default = 0;
+				}
+				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
+			}
+			if ($catalog == 1)
+			{
+				$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath("./styles/catalog.css", "index", $row['relative']).'">';
+			}
+			$file .= "<script type='text/javascript' src='./js/jquery.js'></script>";
+			$file .= "<script type='text/javascript' src='./js/jquery.cookie.js'></script>";
+			$file .= "<script type='text/javascript' src='./js/common.js'></script>";
+			$file .= "<script type='text/javascript' src='./js/admin.js'></script>";
+			$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+			$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
+			$file .= "</head><body class='modPanel'>";
+			$file .= $this->getBoardLinks(2);
+		} elseif ($threadno != 0)
+		{
+			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
+			$style = $this->conn->query("SELECT * FROM styles WHERE `default`=1;");
+			$first_default = 0;
+			if (mysqli_num_rows($style) > 0)
+			{
+				$sdata = $style->fetch_assoc();
+				$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($sdata['path'], "thread", $sdata['relative']).'">';
+			} else {
+				$first_default = 1;
+			}
+			$styles = $this->conn->query("SELECT * FROM styles");
+			while ($row = $styles->fetch_assoc())
+			{
+				if ($first_default == 1)
+				{
+					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "thread", $row['relative']).'">';
+					$first_default = 0;
+				}
+				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "thread", $row['relative']).'" title="'.$row['name'].'">';
+			}
+			if ($catalog == 1)
+			{
+				$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath("./styles/catalog.css", "thread", $row['relative']).'">';
+			}
+			$file .= "<script type='text/javascript' src='../../js/jquery.js'></script>";
+			$file .= "<script type='text/javascript' src='../../js/jquery.cookie.js'></script>";
+			$file .= "<script type='text/javascript' src='../../js/common.js'></script>";
+			$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+			$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
+			$file .= "</head><body>";
+			$file .= $this->getBoardLinks(1);
+		} else {
+			$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
+			$style = $this->conn->query("SELECT * FROM styles WHERE `default`=1;");
+			$first_default = 0;
+			if (mysqli_num_rows($style) > 0)
+			{
+				$sdata = $style->fetch_assoc();
+				$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($sdata['path'], "board", $sdata['relative']).'">';
+			} else {
+				$first_default = 1;
+			}
+			$styles = $this->conn->query("SELECT * FROM styles");
+			while ($row = $styles->fetch_assoc())
+			{
+				if ($first_default == 1)
+				{
+					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "board", $row['relative']).'">';
+					$first_default = 0;
+				}
+				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "board", $row['relative']).'" title="'.$row['name'].'">';
+			}
+			if ($catalog == 1)
+			{
+				$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath("./styles/catalog.css", "board", $row['relative']).'">';
+			}
+			$file .= "<script type='text/javascript' src='../js/jquery.js'></script>";
+			$file .= "<script type='text/javascript' src='../js/jquery.cookie.js'></script>";
+			$file .= "<script type='text/javascript' src='../js/common.js'></script>";
+			$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+			$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
+			$file .= "</head><body>";
+			$file .= $this->getBoardLinks(0);
+		}
+		$file .= '<div class="boardBanner">';
+		$imagesDir = './rnd/';
+		$images = glob($imagesDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+		$imagesDirBoard = './rnd/'.$board.'/';
+		if (is_dir($imagesDirBoard))
+		{
+			$images = array_merge($images, glob($imagesDirBoard . '*.{jpg,jpeg,png,gif}', GLOB_BRACE));
+		}
+		$randomImage = $images[array_rand($images)]; 
+		if ($return == 1)
+		{
+			$file .= '<img class="title" src="'.$randomImage.'" alt="Mitsuba" />';
+		} elseif ($threadno != 0)
+		{
+			$file .= '<img class="title" src="../.'.$randomImage.'" alt="Mitsuba" />';
+		} else {
+			$file .= '<img class="title" src=".'.$randomImage.'" alt="Mitsuba" />';
+		}
+		$file .= '<div class="boardTitle">/'.$boarddata['short'].'/ - '.$boarddata['name'].'</div>';
+		$file .= '<div class="boardSubtitle">'.$boarddata['des'].'</div>';
+		$file .= '</div>';
+		return $file;
+	}
+
 	function generateView($board, $threadno = 0, $return = 0, $mode = 0, $adm_type = 0, $overboard = 0)
 	{
 		global $lang;
@@ -354,122 +488,7 @@ class Caching
 		
 		for ($pg = $page; $pg <= $pages; $pg++)
 		{
-			$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-				<html xmlns="http://www.w3.org/1999/xhtml">';
-			
-			if ($return == 1)
-			{
-				$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-					"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-					<html xmlns="http://www.w3.org/1999/xhtml">';
-				$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
-				$style = $this->conn->query("SELECT * FROM styles WHERE `default`=1");
-				$first_default = 0;
-				if ($style->num_rows > 0)
-				{
-					$sdata = $style->fetch_assoc();
-					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($sdata['path'], "index", $sdata['relative']).'">';
-				} else {
-					$first_default = 1;
-				}
-				$styles = $this->conn->query("SELECT * FROM styles");
-				while ($row = $styles->fetch_assoc())
-				{
-					if ($first_default == 1)
-					{
-						$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'">';
-						$first_default = 0;
-					}
-					$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
-				}
-				$file .= "<script type='text/javascript' src='./js/jquery.js'></script>";
-				$file .= "<script type='text/javascript' src='./js/jquery.cookie.js'></script>";
-				$file .= "<script type='text/javascript' src='./js/common.js'></script>";
-				$file .= "<script type='text/javascript' src='./js/admin.js'></script>";
-				$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-				$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
-				$file .= "</head><body class='modPanel'>";
-				$file .= $this->getBoardLinks(2);
-			} elseif ($threadno != 0)
-			{
-				$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
-				$style = $this->conn->query("SELECT * FROM styles WHERE `default`=1;");
-				$first_default = 0;
-				if (mysqli_num_rows($style) > 0)
-				{
-					$sdata = $style->fetch_assoc();
-					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($sdata['path'], "thread", $sdata['relative']).'">';
-				} else {
-					$first_default = 1;
-				}
-				$styles = $this->conn->query("SELECT * FROM styles");
-				while ($row = $styles->fetch_assoc())
-				{
-					if ($first_default == 1)
-					{
-						$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "thread", $row['relative']).'">';
-						$first_default = 0;
-					}
-					$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "thread", $row['relative']).'" title="'.$row['name'].'">';
-				}
-				$file .= "<script type='text/javascript' src='../../js/jquery.js'></script>";
-				$file .= "<script type='text/javascript' src='../../js/jquery.cookie.js'></script>";
-				$file .= "<script type='text/javascript' src='../../js/common.js'></script>";
-				$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-				$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
-				$file .= "</head><body>";
-				$file .= $this->getBoardLinks(1);
-			} else {
-				$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
-				$style = $this->conn->query("SELECT * FROM styles WHERE `default`=1;");
-				$first_default = 0;
-				if (mysqli_num_rows($style) > 0)
-				{
-					$sdata = $style->fetch_assoc();
-					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($sdata['path'], "board", $sdata['relative']).'">';
-				} else {
-					$first_default = 1;
-				}
-				$styles = $this->conn->query("SELECT * FROM styles");
-				while ($row = $styles->fetch_assoc())
-				{
-					if ($first_default == 1)
-					{
-						$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "board", $row['relative']).'">';
-						$first_default = 0;
-					}
-					$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "board", $row['relative']).'" title="'.$row['name'].'">';
-				}
-				$file .= "<script type='text/javascript' src='../js/jquery.js'></script>";
-				$file .= "<script type='text/javascript' src='../js/jquery.cookie.js'></script>";
-				$file .= "<script type='text/javascript' src='../js/common.js'></script>";
-				$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-				$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
-				$file .= "</head><body>";
-				$file .= $this->getBoardLinks(0);
-			}
-			$file .= '<div class="boardBanner">';
-			$imagesDir = './rnd/';
-			$images = glob($imagesDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-			$imagesDirBoard = './rnd/'.$board.'/';
-			if (is_dir($imagesDirBoard))
-			{
-				$images = array_merge($images, glob($imagesDirBoard . '*.{jpg,jpeg,png,gif}', GLOB_BRACE));
-			}
-			$randomImage = $images[array_rand($images)]; 
-			if ($return == 1)
-			{
-				$file .= '<img class="title" src="'.$randomImage.'" alt="Mitsuba" />';
-			} elseif ($threadno != 0)
-			{
-				$file .= '<img class="title" src="../.'.$randomImage.'" alt="Mitsuba" />';
-			} else {
-				$file .= '<img class="title" src=".'.$randomImage.'" alt="Mitsuba" />';
-			}
-			$file .= '<div class="boardTitle">/'.$boarddata['short'].'/ - '.$boarddata['name'].'</div>';
-			$file .= '<div class="boardSubtitle">'.$boarddata['des'].'</div>';
-			$file .= '</div>';
+			$file = $this->getBoardHeader($board, $boarddata, $return);
 			$file .= '<br />';
 			$file .= '<hr />';
 				
@@ -1263,16 +1282,177 @@ class Caching
 		
 	}
 
-	function generateCatalog($board, $return = 0)
+	function generateCatalog($board)
 	{
-			if ($return != 1)
+		global $lang;
+		$board = $this->conn->real_escape_string($board);
+		if (!$this->mitsuba->common->isBoard($board))
+		{
+			return -16;
+		}
+		$boarddata = $this->mitsuba->common->getBoardData($board);
+		if ($boarddata['hidden'] == 1)
+		{
+			return -666;
+		}
+		if ($boarddata['catalog'] == 0)
+		{
+			return -1;
+		}
+		$extensions = array();
+		$result = $this->conn->query("SELECT * FROM extensions;");
+		while ($row = $result->fetch_assoc())
+		{
+			$extensions[$row['mimetype']]['image'] = $row['image'];
+		}
+		$wfresult = $this->conn->query("SELECT * FROM wordfilter WHERE active=1");
+		$replace_array = array();
+		while ($row = $wfresult->fetch_assoc())
+		{
+			if ($row['boards'] != "*")
 			{
-				$handle = fopen("./".$board."/catalog.html", "w");
-				fwrite($handle, $file);
-				fclose($handle);
+				$boards = explode(",", $row['boards']);
+				if (in_array($board, $boards))
+				{
+					$replace_array[$row['search']] = $row['replace'];
+				}
 			} else {
-				return $file;
+				$replace_array[$row['search']] = $row['replace'];
 			}
+		}
+		$file = $this->getBoardHeader($board, $boarddata, 0, 1);
+		$file .= '<br />';
+		$file .= '<hr />';
+		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != "") AS 'img_replies' FROM posts WHERE resto=0 AND board='b' ORDER BY sticky DESC, lastbumped DESC");
+				$file .= '<div class="navLinks">[<a href="./" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
+		$file .= '<div id="content">';
+		$file .= '<div id="threads" class="extended-small">';
+		while ($row = $threads->fetch_assoc())
+		{
+			$file .= '<div id="thread-'.$row['id'].'" class="thread">';
+			if (!empty($row['filename']))
+			{
+				$files = array();
+				if (substr($row['filename'], 0, 6) == "multi;")
+				{
+					$filenames = explode(";", $row['filename']);
+					$orig_filenames = explode(";", $row['orig_filename']);
+					$filesizes = explode(";", $row['filesize']);
+					$imagesizes = explode(";", $row['imagesize']);
+					$mimetypes = explode(";", $row['mimetype']);
+					$t_ws = explode(";", $row['t_w']);
+					$t_hs = explode(";", $row['t_h']);
+					$num = 0;
+					foreach($filenames as $filename)
+					{
+						$files[$num]['filename'] = $filenames[$num+1];
+						$files[$num]['orig_filename'] = $orig_filenames[$num];
+						$files[$num]['filesize'] = $filesizes[$num];
+						$files[$num]['imagesize'] = $imagesizes[$num];
+						$files[$num]['mimetype'] = $mimetypes[$num];
+						$files[$num]['t_w'] = $t_ws[$num];
+						$files[$num]['t_h'] = $t_hs[$num];
+						$num++;
+					}
+				} else {
+					$files[0]['filename'] = $row['filename'];
+					$files[0]['orig_filename'] = $row['orig_filename'];
+					$files[0]['filesize'] = $row['filesize'];
+					$files[0]['imagesize'] = $row['imagesize'];
+					$files[0]['mimetype'] = $row['mimetype'];
+					$files[0]['t_w'] = $row['t_w'];
+					$files[0]['t_h'] = $row['t_h'];
+				}
+				$filenum = 0;
+				$filenum = 0;
+				foreach($files as $fileinfo)
+				{
+					if ($fileinfo['filename'] == "deleted")
+					{
+						
+						$file .= '<a href="./res/'.$row['id'].'.html">';
+						$file .= '<img alt="" id="thumb-'.$row['id'].'-'.$filenum.'" class="thumb" width="127" height="13" src="./img/deleted.gif">';
+						$file .= '</a>';
+					} elseif (substr($fileinfo['filename'], 0, 8) == "spoiler:")
+					{
+						$file .= '<a href="./res/'.$row['id'].'.html">';
+						$file .= '<img alt="" id="thumb-'.$row['id'].'-'.$filenum.'" class="thumb" width="100" height="100" src="./img/spoiler.png">';
+						$file .= '</a>';
+					} elseif (substr($fileinfo['filename'], 0, 6) == "embed:")
+					{
+						$file .= '<a href="./res/'.$row['id'].'.html">';
+						$file .= '<b>Embed</b>';
+						$file .= '</a>';
+					} else {
+						$imgsize = "";
+						if ((isset($extensions[$fileinfo['mimetype']]['image'])) && ($extensions[$fileinfo['mimetype']]['image']==1))
+						{
+							$imgsize = ', '.$fileinfo['imagesize'];
+						}
+						$thumbpath = './src/thumb/'.$fileinfo['filename'];
+
+						if (isset($extensions[$fileinfo['mimetype']]['image']))
+						{
+							if ($extensions[$fileinfo['mimetype']]['image']==1)
+							{
+								$w = $fileinfo['t_w'];
+								$h = $fileinfo['t_h'];
+								$new_w = 0;
+								$new_h = 0;
+								if (($w > 150) || ($h > 150))
+								{
+									if ($w > $h)
+									{
+										$new_w = 150;
+										$new_h = ($new_w/$w)*$h;
+									} elseif ($w < $h) {
+										$new_h = 150;
+										$new_w = ($new_h/$h)*$w;
+									} elseif ($w == $h) {
+										$new_h = 150;
+										$new_w = 150;
+									}
+								}
+								$file .= '<a href="./res/'.$row['id'].'.html">';
+								$file .= '<img alt="" id="thumb-'.$row['id'].'-'.$filenum.'" class="thumb" width="'.$new_w.'" height="'$new_h.'" src="'.$thumbpath.'">';
+								$file .= '</a>';
+							} elseif ($extensions[$fileinfo['mimetype']]['image']!=0)
+							{
+								$file .= '<a href="./res/'.$row['id'].'.html">';
+								$file .= '<b>Other file</b>';
+								$file .= '</a>';
+							}
+						}
+						$file .= '</div>';
+					}
+					$filenum++;
+				}
+			} else {
+				$file .= '<a href="./res/'.$row['id'].'.html">';
+				$file .= '<b>No file</b>';
+				$file .= '</a>';
+			}
+			
+			$file .= '<div title="(R)eplies / (I)mages" id="meta-'.$row['id'].'" class="meta">R: <b>'.$row['replies'].'</b> / I: <b>'.$row['img_replies'].'</b></div>';
+			$file .= '<div class="teaser">'.$row['comment'].'</div>';
+			$file .= '</div>';
+		}
+		$file .= '</div>';
+		$file .= '</div>';
+		$file .= '<div class="navLinks">[<a href="./" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#top">'.$lang['img/top'].'</a>]</div>';
+		$file .= '<div class="stylechanger" id="stylechangerDiv" style="display:none;">'.$lang['img/style'].' <select id="stylechanger"></select></div>
+			</div>';
+		$file .= '<div style="text-align: center; font-size: x-small!important; padding-bottom: 4px; padding-top: 10px; color: #333;"><span class="absBotDisclaimer">- <a href="http://github.com/MitsubaBBS/Mitsuba" target="_top" rel="nofollow">mitsuba</a> -</span></div>';
+		$file .= '<div id="bottom"></div>';
+		$file .= "</body></html>";
+		if ($return != 1)
+		{
+			$handle = fopen("./".$board."/catalog.html", "w");
+			fwrite($handle, $file);
+			fclose($handle);
+		} else {
+			return $file;
+		}
 	}
 
 	function updateThreads($board)
@@ -1967,6 +2147,7 @@ class Caching
 	{
 		$this->updateThreads($board);
 		$this->generateView($board);
+		$this->generateCatalog($board);
 		$this->regenIDs($board);
 	}
 

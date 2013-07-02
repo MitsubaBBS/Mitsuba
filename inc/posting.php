@@ -59,7 +59,6 @@ class Posting {
 						if ($postdata['resto'] != 0)
 						{
 							$this->mitsuba->caching->generateView($board, $postdata['resto']);
-
 							if ($config['caching_mode']==1)
 							{
 								$this->mitsuba->caching->forceGetThread($board, $postdata['resto']);
@@ -73,6 +72,10 @@ class Posting {
 								$this->mitsuba->caching->forceGetThread($board, $postno);
 							}
 							$this->mitsuba->caching->generateView($board);
+						}
+						if ($bdata['catalog']==1)
+						{
+							$this->mitsuba->caching->generateCatalog($board);
 						}
 						return 1; //done-image
 					} else {
@@ -418,6 +421,10 @@ class Posting {
 			{
 				$this->mitsuba->caching->serializeThread($board, $resto);
 			}
+		}
+		if ($bdata['catalog']==1)
+		{
+			$this->mitsuba->caching->generateCatalog($board);
 		}
 		$this->mitsuba->caching->generateView($board);
 		

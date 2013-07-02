@@ -20,6 +20,7 @@ $mitsuba->admin->reqPermission(3);
 				if ($row['resto'] == 0)
 				{
 					$mitsuba->caching->generateView($_GET['b'], $row['id']);
+					$mitsuba->caching->generateCatalog($_GET['b']);
 					if ($config['caching_mode']==1)
 					{
 						$mitsuba->caching->forceGetThread($_GET['b'], $row['id']);
