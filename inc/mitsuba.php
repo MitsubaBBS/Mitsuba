@@ -40,19 +40,19 @@ class Admin
 				$this->conn->query("UPDATE posts SET comment='".$new_text."', raw=2 WHERE id=".$postid." AND board='".$board."'");
 				if ($pdata['resto'] == 0)
 				{
-					$mitsuba->caching->generateView($board, $pdata['id']);
+					$this->mitsuba->caching->generateView($board, $pdata['id']);
 					if ($config['caching_mode']==1)
 					{
-						$mitsuba->caching->forceGetThread($board, $pdata['id']);
+						$this->mitsuba->caching->forceGetThread($board, $pdata['id']);
 					}
 				} else {
-					$mitsuba->caching->generateView($board, $pdata['resto']);
+					$this->mitsuba->caching->generateView($board, $pdata['resto']);
 					if ($config['caching_mode']==1)
 					{
-						$mitsuba->caching->forceGetThread($board, $pdata['resto']);
+						$this->mitsuba->caching->forceGetThread($board, $pdata['resto']);
 					}
 				}
-				$mitsuba->caching->generateView($board);
+				$this->mitsuba->caching->generateView($board);
 			}
 		}
 	}
@@ -147,7 +147,7 @@ class Mitsuba
 
 	function getPath($path, $location, $relative)
 	{
-		if ($relative == 1)
+		if ($relative == 0)
 		{
 			return $path;
 		}

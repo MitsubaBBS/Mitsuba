@@ -335,6 +335,6 @@ INSERT INTO `extensions` (`ext`, `name`, `mimetype`, `image`, `default`) VALUES
 ('avi', 'AVI Video File', 'video/avi', 0, 0),
 ('mkv', 'Matroska Video File', 'video/x-matroska', 0, 0);
 
-INSERT INTO `styles` (`name`, `path`, `default`) VALUES 
+INSERT INTO `styles` (`name`, `path`, `relative`, `default`) VALUES 
 ('Mitsuba', './styles/mitsuba.css', 1, 1),
 ('Mitsuba Blue', './styles/mitsubablue.css', 1, 0);
