@@ -521,7 +521,9 @@ class Caching
 						$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
 						$file .= '<form id="postform" action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
 					} else {
-						$file .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
+						$file .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]';
+						if ($boarddata['catalog']==1) { $file .= ' [<a href="../catalog.html">Catalog</a>]'; }
+						$file .= '</div>';
 						$file .= '<form id="postform" action="../../imgboard.php" method="post" enctype="multipart/form-data">';
 					}
 				} else {
@@ -674,7 +676,9 @@ class Caching
 				{
 					$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#top">'.$lang['img/top'].'</a>]</div>';
 				} else {
-					$file .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#top">'.$lang['img/top'].'</a>]</div>';
+					$file .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#top">'.$lang['img/top'].'</a>]';
+					if ($boarddata['catalog']==1) { $file .= ' [<a href="../catalog.html">Catalog</a>]'; }
+					$file .= '</div>';
 				}
 			}
 			$file .= '<div class="deleteform">
@@ -775,6 +779,10 @@ class Caching
 					$file .= '<span>'.$lang['img/next'].'</span>';
 				}
 				$file .= '</div>';
+				if ($boarddata['catalog']==1)
+				{
+					$file .= '<div class="pages cataloglink"><a href="./catalog.html">Catalog</a></div>';
+				}
 				$file .= '</div>';
 			}
 			$file .= '<div style="text-align: center; font-size: x-small!important; padding-bottom: 4px; padding-top: 10px; color: #333;"><span class="absBotDisclaimer">- <a href="http://github.com/MitsubaBBS/Mitsuba" target="_top" rel="nofollow">mitsuba</a> -</span></div>';
@@ -1323,8 +1331,8 @@ class Caching
 		$file = $this->getBoardHeader($board, $boarddata, 0, 1);
 		$file .= '<br />';
 		$file .= '<hr />';
-		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != "") AS 'img_replies' FROM posts WHERE resto=0 AND board='b' ORDER BY sticky DESC, lastbumped DESC");
-				$file .= '<div class="navLinks">[<a href="./" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
+		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != \"\") AS 'img_replies' FROM posts WHERE resto=0 AND board='b' ORDER BY sticky DESC, lastbumped DESC");
+		$file .= '<div class="navLinks">[<a href="./" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
 		$file .= '<div id="content">';
 		$file .= '<div id="threads" class="extended-small">';
 		while ($row = $threads->fetch_assoc())
