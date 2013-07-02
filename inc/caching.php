@@ -262,7 +262,7 @@ class Caching
 		<html xmlns="http://www.w3.org/1999/xhtml">';	
 	}
 
-	function getBoardHeader($board, $boarddata, $return, $catalog = 0)
+	function getBoardHeader($board, $boarddata, $return, $threadno, $catalog = 0)
 	{
 		$file = $this->getHtmlDefinition();
 		if ($return == 1)
@@ -488,7 +488,7 @@ class Caching
 		
 		for ($pg = $page; $pg <= $pages; $pg++)
 		{
-			$file = $this->getBoardHeader($board, $boarddata, $return);
+			$file = $this->getBoardHeader($board, $boarddata, $return, $threadno);
 			$file .= '<br />';
 			$file .= '<hr />';
 				
@@ -1328,7 +1328,7 @@ class Caching
 				$replace_array[$row['search']] = $row['replace'];
 			}
 		}
-		$file = $this->getBoardHeader($board, $boarddata, 0, 1);
+		$file = $this->getBoardHeader($board, $boarddata, 0, 0, 1);
 		$file .= '<br />';
 		$file .= '<hr />';
 		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != \"\") AS 'img_replies' FROM posts WHERE resto=0 AND board='b' ORDER BY sticky DESC, lastbumped DESC");
@@ -1442,7 +1442,7 @@ class Caching
 			}
 			
 			$file .= '<div title="(R)eplies / (I)mages" id="meta-'.$row['id'].'" class="meta">R: <b>'.$row['replies'].'</b> / I: <b>'.$row['img_replies'].'</b></div>';
-			$file .= '<div class="teaser">'.$row['comment'].'</div>';
+			$file .= '<div class="teaser">'.htmlspecialchars(strtr($row['comment'], $wf_table).'</div>';
 			$file .= '</div>';
 		}
 		$file .= '</div>';
