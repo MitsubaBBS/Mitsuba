@@ -1442,7 +1442,7 @@ class Caching
 			}
 			
 			$file .= '<div title="(R)eplies / (I)mages" id="meta-'.$row['id'].'" class="meta">R: <b>'.$row['replies'].'</b> / I: <b>'.$row['img_replies'].'</b></div>';
-			$file .= '<div class="teaser">'.htmlspecialchars(strtr($row['comment'], $wf_table).'</div>';
+			$file .= '<div class="teaser">'.htmlspecialchars(strtr($row['comment'], $wf_table)).'</div>';
 			$file .= '</div>';
 		}
 		$file .= '</div>';
