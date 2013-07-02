@@ -1422,7 +1422,7 @@ class Caching
 									}
 								}
 								$file .= '<a href="./res/'.$row['id'].'.html">';
-								$file .= '<img alt="" id="thumb-'.$row['id'].'-'.$filenum.'" class="thumb" width="'.$new_w.'" height="'$new_h.'" src="'.$thumbpath.'">';
+								$file .= '<img alt="" id="thumb-'.$row['id'].'-'.$filenum.'" class="thumb" width="'.$new_w.'" height="'.$new_h.'" src="'.$thumbpath.'">';
 								$file .= '</a>';
 							} elseif ($extensions[$fileinfo['mimetype']]['image']!=0)
 							{

@@ -13,7 +13,6 @@ Planned features
 ----------------
 
 * reCaptcha support
-* catalog feature (like 4chan)
 
 API
 ---
