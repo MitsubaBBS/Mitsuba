@@ -8,7 +8,7 @@ $mitsuba->admin->reqPermission(3);
 		{
 			if (!empty($_POST['new']))
 			{
-				$result = $mitsuba->admin->boards->moveBoard($conn, $_GET['board'], $_POST['new']);
+				$result = $mitsuba->admin->boards->moveBoard($_GET['board'], $_POST['new']);
 				logAction($conn, sprintf($lang['log/moved_board'], $conn->real_escape_string($_GET['board']), $conn->real_escape_string($_POST['new'])));
 				if($result == 1)
 				{

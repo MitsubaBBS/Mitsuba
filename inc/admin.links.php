@@ -17,7 +17,7 @@ class Links {
 		}
 		$this->conn->query("DELETE FROM links WHERE parent=".$id.";");
 		$this->conn->query("DELETE FROM links WHERE id=".$id.";");
-		$mitsuba->caching->rebuildBoardLinks();
+		$this->mitsuba->caching->rebuildBoardLinks();
 	}
 
 	function addLinkCategory($name)
@@ -26,7 +26,7 @@ class Links {
 		$catnum = $allcat->num_rows;
 		$name = $this->conn->real_escape_string($name);
 		$this->conn->query("INSERT INTO links (parent, url, url_thread, url_index, title, short) VALUES (-1, '', '', '', '".$name."', 'c".($catnum + 1)."');");
-		$mitsuba->caching->rebuildBoardLinks();
+		$this->mitsuba->caching->rebuildBoardLinks();
 	}
 
 
@@ -45,7 +45,7 @@ class Links {
 		if ($cat->num_rows == 1)
 		{
 			$this->conn->query("UPDATE links SET title='".$title."', url='".$url."', url_thread='".$url_thread."', url_index='".$url_index."', short='".$short."' WHERE id=".$id);
-			$mitsuba->caching->rebuildBoardLinks();
+			$this->mitsuba->caching->rebuildBoardLinks();
 			return 1;
 		} else {
 			return 0;
@@ -64,7 +64,7 @@ class Links {
 		if ($cat->num_rows == 1)
 		{
 			$this->conn->query("INSERT INTO links (parent, url, url_thread, url_index, title, short) VALUES (".$parent.", '".$url."', '".$url_thread."', '".$url_index."', '".$title."', '".$short."');");
-			$mitsuba->caching->rebuildBoardLinks();
+			$this->mitsuba->caching->rebuildBoardLinks();
 			return 1;
 		} else {
 			return 0;
@@ -84,7 +84,7 @@ class Links {
 			{
 				$this->conn->query("UPDATE links SET short='c".($curpos)."' WHERE short='c".($curpos+1)."';");
 				$this->conn->query("UPDATE links SET short='c".($curpos+1)."' WHERE id=".$id);
-				$mitsuba->caching->rebuildBoardLinks();
+				$this->mitsuba->caching->rebuildBoardLinks();
 			}
 			return 1;
 		} else {
@@ -105,7 +105,7 @@ class Links {
 			{
 				$this->conn->query("UPDATE links SET short='c".($curpos)."' WHERE short='c".($curpos-1)."';");
 				$this->conn->query("UPDATE links SET short='c".($curpos-1)."' WHERE id=".$id);
-				$mitsuba->caching->rebuildBoardLinks();
+				$this->mitsuba->caching->rebuildBoardLinks();
 			}
 			return 1;
 		} else {

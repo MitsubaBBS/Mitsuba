@@ -132,6 +132,9 @@ class Common {
 					if ($geo2['height']>$most_height) { $most_height = $geo2['height']; }
 					$frame->setImagePage($geo2['width'], $geo2['height'], 0, 0);
 				}
+			} else {
+				$most_width = $oig['width'];
+				$most_height = $oig['height'];
 			}
 			//$img->setImageCompressionQuality(60); 
 			$img->writeImages($thumb_dir.$filename, true);
