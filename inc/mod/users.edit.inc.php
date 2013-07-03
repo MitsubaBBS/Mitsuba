@@ -30,20 +30,16 @@ $mitsuba->admin->reqPermission(3);
 					}
 					if ($username != $_POST['username'])
 					{
-						logAction($conn, sprintf($lang['log/changed_username'], $username, $_POST['username']));
+						$mitsuba->admin->logAction(sprintf($lang['log/changed_username'], $username, $_POST['username']));
 					}
-					logAction($conn, sprintf($lang['log/edited_user'], $username));
+					$mitsuba->admin->logAction(sprintf($lang['log/edited_user'], $username));
 					if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
 					$mitsuba->admin->users->updateUser($id, $_POST['username'], $_POST['password'], $_POST['type'], $boards);
 					?>
-					<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/user_updated']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/user_updated']); ?>
+
 <a href="?/users"><?php echo $lang['mod/back']; ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 					<?php
 				} else {
 					$result = $conn->query("SELECT * FROM users WHERE id=".$_GET['id']);
@@ -51,10 +47,8 @@ $mitsuba->admin->reqPermission(3);
 					$boards = $data['boards'];
 					if ($data['boards'] != "*") { $board = explode(",", $data['boards']); }
 		?>
-				<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/edit_user']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/edit_user']); ?>
+
 <form action="?/users/edit&id=<?php echo $id; ?>" method="POST">
 <?php echo $lang['mod/username']; ?>: <input type="text" name="username" value="<?php echo $data['username']; ?>"/><br />
 <?php echo $lang['mod/password_leave_blank']; ?>: <input type="password" name="password"/><br />
@@ -84,14 +78,12 @@ switch ($data['type'])
 
 <br /><br />
 <?php
-getBoardList($conn, $boards);
+$mitsuba->admin->ui->getBoardList($boards);
 ?>
 <br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div><br />
+<?php $mitsuba->admin->ui->endSection(); ?><br />
 <?php
 				}
 			}

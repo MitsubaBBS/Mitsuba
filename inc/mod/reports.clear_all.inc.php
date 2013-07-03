@@ -6,9 +6,5 @@ if (!defined("IN_MOD"))
 $mitsuba->admin->reqPermission(2);
 		?>
 	
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/want_clear_reports']; ?></h2></div>
-<div class="boxcontent"><a href="?/reports"><?php echo $lang['mod/no_big']; ?></a> <a href="?/reports/clear_all_yes"><?php echo $lang['mod/yes_big']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/want_clear_reports']); ?>
+<a href="?/reports"><?php echo $lang['mod/no_big']; ?></a> <a href="?/reports/clear_all_yes"><?php echo $lang['mod/yes_big']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>

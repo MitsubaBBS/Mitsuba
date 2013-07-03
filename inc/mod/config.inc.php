@@ -6,10 +6,8 @@ if (!defined("IN_MOD"))
 $mitsuba->admin->reqPermission(3);
 $config = $mitsuba->config;
 		?>
-				<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/configuration']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/configuration']); ?>
+
 <a href="?/config/reset">Reset config</a>
 		<form action="?/config/update" method="POST">
 		<?php echo $lang['mod/frontpage_style']; ?>: <select name="frontpage_style">
@@ -23,6 +21,4 @@ $config = $mitsuba->config;
 		<?php echo $lang['mod/caching_mode']; ?>: <input type="radio" name="caching_mode" value="0" checked /> Normal <input type="radio" name="caching_mode" value="1" <?php if ($config['caching_mode']==1) { echo "checked"; } ?> /> <?php echo $lang['mod/super_caching']; ?> <input type="radio" name="caching_mode" value="2" <?php if ($config['caching_mode']==2) { echo "checked"; } ?> /> <?php echo $lang['mod/apc']; ?> <input type="radio" name="caching_mode" value="3" <?php if ($config['caching_mode']==3) { echo "checked"; } ?> /> <?php echo $lang['mod/apc_memcached']; ?><br />
 		<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 		</form>
-		</div>
-		</div>
-		</div>
+		<?php $mitsuba->admin->ui->endSection(); ?>

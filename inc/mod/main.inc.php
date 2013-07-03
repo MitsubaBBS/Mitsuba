@@ -21,16 +21,12 @@ if ((isset($_SESSION['logged'])) && ($_SESSION['logged']==1))
 		} else {
 			?>
 
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/log_in']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/log_in']); ?>
+
 <form action="?/login" method="POST">
 <center><?php echo $lang['mod/username']; ?>: <input type="text" name="username" /> | <?php echo $lang['mod/password']; ?>: <input type="password" name="password" /> <input type="submit" value="<?php echo $lang['mod/log_in']; ?>" /></center>
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		}
 ?>

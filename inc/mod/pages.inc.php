@@ -32,10 +32,8 @@ if (!empty($_GET['m']))
 	}
 }
 	?>
-	<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/all_pages']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/all_pages']); ?>
+
 <table>
 <thead>
 <tr>
@@ -60,14 +58,10 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/add_page']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/add_page']); ?>
+
 <form action="?/pages&m=add" method="POST">
 <?php echo $lang['mod/name']; ?>: <input type="text" name="name" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" /><br />
@@ -76,6 +70,4 @@ echo "</tr>";
 <input type="checkbox" name="raw" value="1" /><?php echo $lang['mod/raw_html']; ?><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

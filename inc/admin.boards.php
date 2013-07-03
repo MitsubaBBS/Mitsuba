@@ -102,6 +102,10 @@ class Boards {
 		{
 			$this->createDirectories($short);
 			$this->mitsuba->caching->generateView($short);
+			if ($catalog == 1)
+			{
+				$this->mitsuba->caching->generateCatalog($short);
+			}
 			return 1;
 		} else {
 			return -1; //error
@@ -115,29 +119,29 @@ class Boards {
 		$this->mitsuba->common->delTree("./".$short);
 	}
 
-	function updateBoard($short, $new_name, $new_des, $new_msg, $new_limit = 0, $new_spoilers = 0, $new_noname = 0, $new_ids = 0, $new_embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0, $nodup = 0, $maxchars = 2000, $anonymous = "Anonymous", $extensions = "png,jpg,gif", $catalog = 0)
+	function updateBoard($short, $name, $des, $msg, $limit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0, $nodup = 0, $maxchars = 2000, $anonymous = "Anonymous", $extensions = "png,jpg,gif", $catalog = 0)
 	{
 		if ($this->mitsuba->common->isBoard($short))
 		{
-			if (!is_numeric($new_limit))
+			if (!is_numeric($limit))
 			{
-				$new_limit = 0;
+				$limit = 0;
 			}
-			if (!is_numeric($new_spoilers))
+			if (!is_numeric($spoilers))
 			{
-				$new_spoilers = 0;
+				$spoilers = 0;
 			}
-			if (!is_numeric($new_noname))
+			if (!is_numeric($noname))
 			{
-				$new_noname = 0;
+				$noname = 0;
 			}
-			if (!is_numeric($new_ids))
+			if (!is_numeric($ids))
 			{
-				$new_ids = 0;
+				$ids = 0;
 			}
-			if (!is_numeric($new_embeds))
+			if (!is_numeric($embeds))
 			{
-				$new_embeds = 0;
+				$embeds = 0;
 			}
 			if (!is_numeric($bbcode))
 			{
@@ -179,8 +183,12 @@ class Boards {
 			{
 				$catalog = 0;
 			}
-			$this->conn->query("UPDATE boards SET name='".$this->conn->real_escape_string($new_name)."', des='".$this->conn->real_escape_string($new_des)."', message='".$this->conn->real_escape_string($new_msg)."', bumplimit=".$new_limit.", spoilers=".$new_spoilers.", noname=".$new_noname.", ids=".$new_ids.", embeds=".$new_embeds.", bbcode=".$bbcode.", time_between_posts=".$time_between_posts.", time_between_threads=".$time_between_threads.", time_to_delete=".$time_to_delete.", filesize=".$filesize.", pages=".$pages.", hidden=".$hidden.", nodup=".$nodup.", maxchars=".$maxchars.", anonymous='".$this->conn->real_escape_string($anonymous)."', extensions='".$this->conn->real_escape_string($extensions)."', catalog=".$catalog." WHERE short='".$this->conn->real_escape_string($short)."'");
+			$this->conn->query("UPDATE boards SET name='".$this->conn->real_escape_string($name)."', des='".$this->conn->real_escape_string($des)."', message='".$this->conn->real_escape_string($msg)."', bumplimit=".$limit.", spoilers=".$spoilers.", noname=".$noname.", ids=".$ids.", embeds=".$embeds.", bbcode=".$bbcode.", time_between_posts=".$time_between_posts.", time_between_threads=".$time_between_threads.", time_to_delete=".$time_to_delete.", filesize=".$filesize.", pages=".$pages.", hidden=".$hidden.", nodup=".$nodup.", maxchars=".$maxchars.", anonymous='".$this->conn->real_escape_string($anonymous)."', extensions='".$this->conn->real_escape_string($extensions)."', catalog=".$catalog." WHERE short='".$this->conn->real_escape_string($short)."'");
 			$this->mitsuba->caching->rebuildBoardCache($short);
+			if (($catalog == 0) && (file_exists("./".$short."/catalog.html")))
+			{
+				unlink("./".$short."/catalog.html");
+			}
 			return 1;
 		} else {
 			return 0;

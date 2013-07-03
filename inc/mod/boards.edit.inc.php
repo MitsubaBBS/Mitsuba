@@ -8,10 +8,8 @@ $mitsuba->admin->reqPermission(3);
 		{
 			$data = $mitsuba->common->getBoardData($_GET['board']);
 			?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php printf($lang['mod/edit_board'], $_GET['board']); ?></h2></div>
-<div class="boxcontent">
+<div class="boxbar"><h2><?php $mitsuba->admin->ui->startSection(sprintf($lang['mod/edit_board'], $_GET['board'])); ?></h2></div>
+
 <form action="?/boards/update&board=<?php echo $_GET['board']; ?>" method="POST">
 <?php echo $lang['mod/board_directory']; ?>: <input disabled type="text" name="short" maxlength=10 value="<?php echo $data['short']; ?>" /><br />
 <?php echo $lang['mod/board_name']; ?>: <input type="text" name="name" maxlength=40 value="<?php echo $data['name']; ?>" /><br />
@@ -29,29 +27,18 @@ $mitsuba->admin->reqPermission(3);
 <input type="checkbox" name="embeds" value="1" <?php if ($data['embeds'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_embeds']; ?> <input type="checkbox" name="bbcode" value="1" <?php if ($data['bbcode'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_bbcode']; ?> <input type="checkbox" name="hidden" value="1" <?php if ($data['hidden'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_hidden']; ?> <input type="checkbox" name="nodup" value="1" <?php if ($data['nodup'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_nodup']; ?><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div><br />
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php printf($lang['mod/move_board'], $_GET['board']); ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->endSection(); ?><br />
+<?php $mitsuba->admin->ui->startSection(sprintf($lang['mod/move_board'], $_GET['board'])); ?>
 <form action="?/boards/move&board=<?php echo $_GET['board']; ?>" method="POST">
 <?php echo $lang['mod/board_new_dir']; ?>: <input type="text" name="new" maxlength=10 /><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <?php
 		} else {
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
-<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/board_not_found']); ?>
+<a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		}
 ?>

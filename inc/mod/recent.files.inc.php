@@ -10,11 +10,9 @@ if (!defined("IN_MOD"))
 		} else {
 			$max = 50;
 		}
+		$mitsuba->admin->ui->startSection(sprintf($lang['mod/recent_n_posts_images'], $max));
 		?>
-			<div class="box-outer top-box">
-			<div class="box-inner">
-			<div class="boxbar"><h2><?php printf($lang['mod/recent_n_posts_images'], $max); ?></h2></div>
-			<div class="boxcontent">
+
 			<?php echo $lang['mod/show_recent_none']; ?>: <a href="?/recent/files">50</a> <a href="?/recent/files&max=100">100</a> <a href="?/recent/files&max=250">250</a> <a href="?/recent/files&max=500">500</a> 
 			<table>
 			<thead>
@@ -105,6 +103,4 @@ if (!defined("IN_MOD"))
 			?>
 			</tbody>
 			</table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

@@ -16,13 +16,9 @@ if ((!empty($_GET['m'])) && ($_GET['m']=="add"))
 		if (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))
 		{
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/ip_syntax_wrong']; ?></h2></div>
-<div class="boxcontent"><a href="?/whitelist"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/ip_syntax_wrong']); ?>
+<a href="?/whitelist"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
 </body>
 </html>
 		<?php
@@ -37,10 +33,8 @@ if ((!empty($_GET['m'])) && ($_GET['m']=="add"))
 		
 }
 	?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/manage_whitelist']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/manage_whitelist']); ?>
+
 <table>
 <thead>
 <tr>
@@ -70,19 +64,13 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/add_whitelist']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->endSection(); ?>
+<?php $mitsuba->admin->ui->startSection($lang['mod/add_whitelist']); ?>
+
 <form action="?/whitelist&m=add" method="POST">
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" /><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />
 <input type="checkbox" name="nolimits" value="1"/><?php echo $lang['mod/nolimits']; ?><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

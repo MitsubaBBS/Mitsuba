@@ -13,10 +13,8 @@ $mitsuba->admin->reqPermission(2);
 	{
 	$data = $result->fetch_assoc();
 	?>
-	<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/edit_news_entry']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/edit_news_entry']); ?>
+
 <form action="?/news/edit&b=<?php echo $_GET['b']; ?>" method="POST">
 <?php echo $lang['mod/by']; ?>: <input type="text" name="who" value="<?php echo $data['who']; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $data['title']; ?>"/><br />
@@ -24,9 +22,7 @@ $mitsuba->admin->reqPermission(2);
 <textarea name="text" cols="70" rows="10"><?php echo $data['text']; ?></textarea>
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div><br />
+<?php $mitsuba->admin->ui->endSection(); ?><br />
 	<?php
 	} else {
 		if ($_SESSION['type']==3)
@@ -36,12 +32,8 @@ $mitsuba->admin->reqPermission(2);
 		updateEntry($conn, 1, $_GET['b'], $_POST['who'], $_POST['title'], $_POST['text'], 1);
 		}
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/post_updated']; ?></h2></div>
-<div class="boxcontent"><a href="?/news"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/post_updated']); ?>
+<a href="?/news"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 	}
 	} else {

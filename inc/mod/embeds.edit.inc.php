@@ -11,10 +11,8 @@ $mitsuba->admin->reqPermission(3);
 		{
 		$binfo = $result->fetch_assoc();
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/edit_embed']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/edit_embed']); ?>
+
 <form action="?/embeds" method="POST">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="name2" value="<?php echo $conn->real_escape_string($_GET['n']); ?>">
@@ -23,9 +21,7 @@ $mitsuba->admin->reqPermission(3);
 <?php echo $lang['mod/html_code']; ?>: <textarea cols=40 rows=9 name="code"><?php echo $binfo['code']; ?></textarea><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		}
 		}

@@ -16,11 +16,9 @@ $ip = "";
 		if (empty($ip))
 		{
 		?>
-			<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/no_ip']; ?></h2></div>
-<div class="boxcontent"><a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a></div>
-</div></div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/no_ip']); ?>
+<a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
 
 			<?php
 		} else {
@@ -29,11 +27,9 @@ $ip = "";
 				$note = processEntry($conn, $_POST['note']);
 				$conn->query("INSERT INTO ip_notes (ip, text, created, mod_id) VALUES ('".$ip."', '".$note."', ".time().", ".$_SESSION['id'].")");
 				?>
-				<div class="box-outer top-box">
-	<div class="box-inner">
-	<div class="boxbar"><h2><?php echo $lang['mod/ip_note_added']; ?></h2></div>
-	<div class="boxcontent"><a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a></div>
-	</div></div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/ip_note_added']); ?>
+<a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
 
 				<?php
 			}
@@ -41,11 +37,9 @@ $ip = "";
 		if (empty($_POST['note']))
 		{
 		?>
-			<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/fill_all_fields']; ?></h2></div>
-<div class="boxcontent"><a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a></div>
-</div></div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/fill_all_fields']); ?>
+<a href="?/ipnotes"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
 
 			<?php
 		}

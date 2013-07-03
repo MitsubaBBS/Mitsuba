@@ -13,12 +13,8 @@ $mitsuba->admin->reqPermission(2);
 			deleteEntry($conn, 1, $_GET['b'], 1);
 		}
 	?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/post_deleted']; ?></h2></div>
-<div class="boxcontent"><a href="?/news"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/post_deleted']); ?>
+<a href="?/news"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 	}
 ?>

@@ -7,10 +7,8 @@ $mitsuba->admin->reqPermission(2);
 	if (empty($_POST['text']))
 	{
 	?>
-	<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/new_announcement']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/new_announcement']); ?>
+
 <form action="?/announcements/add" method="POST">
 <?php echo $lang['mod/by']; ?>: <input type="text" name="who" value="<?php echo $_SESSION['username']; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title"/><br />
@@ -18,13 +16,9 @@ $mitsuba->admin->reqPermission(2);
 <textarea name="text" cols="70" rows="10"></textarea>
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div><br />
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/your_entries']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->endSection(); ?><br />
+<?php $mitsuba->admin->ui->startSection($lang['mod/your_entries']); ?>
+
 <table>
 <thead>
 <tr>
@@ -49,9 +43,7 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 	<?php
 	} else {
 		$text = processEntry($conn, $_POST['text']);
@@ -59,12 +51,8 @@ echo "</tr>";
 		if (!empty($_POST['who'])) { $who = $_POST['who']; }
 		$conn->query("INSERT INTO announcements (date, who, title, text, mod_id) VALUES (".time().", '".$who."', '".$conn->real_escape_string(htmlspecialchars($_POST['title']))."', '".$text."', ".$_SESSION['id'].");");
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/post_added']; ?></h2></div>
-<div class="boxcontent"><a href="?/announcements"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/post_added']); ?>
+<a href="?/announcements"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 	}
 ?>

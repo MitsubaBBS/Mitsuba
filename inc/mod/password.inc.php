@@ -13,49 +13,33 @@ if ((!empty($_POST['old'])) && (!empty($_POST['new'])) && (!empty($_POST['new2']
 				if ($row['password'] != hash("sha512", $_POST['old']))
 				{
 							?>
-			<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/pwd_no_match']; ?></h2></div>
-<div class="boxcontent"><a href="?/password"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/pwd_no_match']); ?>
+<a href="?/password"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 			<?php
 				} else {
 					$conn->query("UPDATE users SET password='".hash("sha512", $_POST['new'])."' WHERE id=".$_SESSION['id']);
 				?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/pwd_updated']; ?></h2></div>
-<div class="boxcontent"><a href="?/password"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/pwd_updated']); ?>
+<a href="?/password"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 				}
 			} else {
 				?>
-			<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/pwd_wrong']; ?></h2></div>
-<div class="boxcontent"><a href="?/password"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/pwd_wrong']); ?>
+<a href="?/password"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 			<?php
 			}
 		} else {
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/pwd_change']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/pwd_change']); ?>
+
 <form action="?/password" method="POST">
 <?php echo $lang['mod/pwd_current']; ?>: <input type="password" name="old"><br />
 <?php echo $lang['mod/pwd_new']; ?>: <input type="password" name="new"><br />
 <?php echo $lang['mod/pwd_confirm']; ?>: <input type="password" name="new2"><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>"><br />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		}
 ?>

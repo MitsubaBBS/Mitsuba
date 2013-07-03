@@ -13,11 +13,8 @@ $mitsuba->admin->reqPermission(3);
 				$data = $link->fetch_assoc();
 				if (empty($_POST['title']))
 				{
+$mitsuba->admin->ui->startSection($lang['mod/edit_link']);
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2></h2></div>
-<div class="boxcontent">
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links/edit&i=<?php echo $id; ?>" method="POST">
 <?php echo $lang['mod/short']; ?>: <input type="text" name="short" value="<?php echo $data['short']; ?>" /><br />
@@ -27,9 +24,7 @@ $mitsuba->admin->reqPermission(3);
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $data['title']; ?>" /><br />
 <br /><input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 				} else {
 					$mitsuba->admin->links->updateBoardLink($id, $_POST['url'], $_POST['url_thread'], $_POST['url_index'], $_POST['title'], $_POST['short']);

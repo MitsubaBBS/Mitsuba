@@ -20,7 +20,7 @@ if ((!empty($_POST['username'])) && (!empty($_POST['password'])))
 					$_SESSION['boards']=$data['boards'];
 					$_SESSION['ip']=$_SERVER['REMOTE_ADDR'];
 					$_SESSION['cookie_set']=2;
-					logAction($conn, sprintf($lang['log/logged_in'], $_SERVER['REMOTE_ADDR']));
+					$mitsuba->admin->logAction(sprintf($lang['log/logged_in'], $_SERVER['REMOTE_ADDR']));
 					header("Location: ./mod.php");
 				} else {
 					die($lang['mod/bad_password']);

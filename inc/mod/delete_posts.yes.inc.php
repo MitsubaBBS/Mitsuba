@@ -19,12 +19,8 @@ if (!defined("IN_MOD"))
 			$mitsuba->caching->rebuildBoardCache($row['short']);
 				?>
 	
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/posts_deleted']; ?></h2></div>
-<div class="boxcontent"><a href="?/info&ip=<?php echo $_GET['ip']; ?>"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/posts_deleted']); ?>
+<a href="?/info&ip=<?php echo $_GET['ip']; ?>"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		}
 ?>

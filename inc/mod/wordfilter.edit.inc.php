@@ -11,22 +11,18 @@ $mitsuba->admin->reqPermission(3);
 		{
 		$info = $result->fetch_assoc();
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/wf_edit']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/wf_edit']); ?>
+
 <form action="?/wordfilter" method="POST">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="id" value="<?php echo $_GET['n']; ?>">
 <?php echo $lang['mod/wf_search']; ?>: <input type="text" name="search" value="<?php echo htmlspecialchars($info['search']); ?>"/><br />
 <?php echo $lang['mod/wf_replace']; ?>: <input type="text" name="replace" value="<?php echo htmlspecialchars($info['replace']); ?>"/><br />
 <br /><br />
-<?php getBoardList($conn, $info['boards']); ?>
+<?php $mitsuba->admin->ui->getBoardList($info['boards']); ?>
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		}
 		}

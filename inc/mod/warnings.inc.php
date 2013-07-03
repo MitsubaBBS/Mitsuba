@@ -12,10 +12,8 @@ if ((isset($_GET['del'])) && ($_GET['del']==1))
 		}
 	}
 	?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/warnings']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/warnings']); ?>
+
 <table>
 <thead>
 <tr>
@@ -55,6 +53,4 @@ echo "</tr>";
 </tbody>
 </table>
 <?php printf($lang['mod/showing_warnings'], 15); ?> <a href="?/warnings/all"><?php echo $lang['mod/show_all']; ?></a> <a href="?/warnings/recent&c=100"><?php printf($lang['mod/show_recent'], 100); ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

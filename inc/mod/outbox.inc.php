@@ -4,10 +4,8 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 ?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/outbox']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/outbox']); ?>
+
 <table>
 <thead>
 <td><?php echo $lang['mod/title']; ?></td>
@@ -32,4 +30,4 @@ if (!defined("IN_MOD"))
 		}
 		?>
 		</tbody>
-		</div></div></div>
+<?php $mitsuba->admin->ui->endSection(); ?>

@@ -41,6 +41,11 @@ $mitsuba->admin->reqPermission(3);
 			{
 				$nodup = 1;
 			}
+			$catalog = 0;
+			if ((!empty($_POST['catalog'])) && ($_POST['catalog'] == 1))
+			{
+				$catalog = 1;
+			}
 			$filesize = 2097152;
 			if ((!empty($_POST['filesize'])) && (is_numeric($_POST['filesize'])))
 			{
@@ -76,35 +81,24 @@ $mitsuba->admin->reqPermission(3);
 			{
 				$anonymous = $_POST['anonymous'];
 			}
-			if ($mitsuba->admin->boards->addBoard($_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous) > 0)
+			$extensions = "png,jpg,gif";
+			if ($mitsuba->admin->boards->addBoard($_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous, $extensions, $catalog) > 0)
 			{
-				logAction($conn, sprintf($lang['log/added_board'], $conn->real_escape_string($_POST['short'])));
+				$mitsuba->admin->logAction(sprintf($lang['log/added_board'], $conn->real_escape_string($_POST['short'])));
 				?>
-							<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/board_created']; ?></h2></div>
-<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/board_created']); ?>
+<script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 			} else {
 			?>
-						<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/board_exists_mysql_error']; ?></h2></div>
-<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/board_exists_mysql_error']); ?>
+<a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 			<?php
 			}
 		} else {
 	?>
-			<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/fill_all_fields']; ?></h2></div>
-<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/fill_all_fields']); ?>
+<a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 	<?php
 		}
 ?>

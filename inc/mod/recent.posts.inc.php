@@ -9,11 +9,9 @@ if ((!empty($_GET['max'])) && (is_numeric($_GET['max'])))
 		} else {
 			$max = 50;
 		}
+		$mitsuba->admin->ui->startSection(sprintf($lang['mod/recent_n_posts'], $max)); 
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php printf($lang['mod/recent_n_posts'], $max); ?></h2></div>
-<div class="boxcontent">
+
 			<?php echo $lang['mod/show_recent_none']; ?>: <a href="?/recent/posts">50</a> <a href="?/recent/posts&max=100">100</a> <a href="?/recent/posts&max=250">250</a> <a href="?/recent/posts&max=500">500</a>
 <table>
 			<thead>
@@ -106,6 +104,4 @@ if ((!empty($_GET['max'])) && (is_numeric($_GET['max'])))
 			?>
 			</tbody>
 			</table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

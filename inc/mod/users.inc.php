@@ -5,10 +5,8 @@ if (!defined("IN_MOD"))
 }
 $mitsuba->admin->reqPermission(3);
 	?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/new_user']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/new_user']); ?>
+
 <form action="?/users/add" method="POST">
 <?php echo $lang['mod/username']; ?>: <input type="text" name="username" /><br />
 <?php echo $lang['mod/password']; ?>: <input type="password" name="password"/><br />
@@ -16,18 +14,14 @@ $mitsuba->admin->reqPermission(3);
 
 <br /><br />
 <?php
-getBoardList($conn);
+$mitsuba->admin->ui->getBoardList();
 ?>
 <br />
 <input type="submit" value="<?php echo $lang['mod/add_user']; ?>" />
 </form>
-</div>
-</div>
-</div><br />
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/all_users']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->endSection(); ?><br />
+<?php $mitsuba->admin->ui->startSection($lang['mod/all_users']); ?>
+
 <table>
 <thead>
 <tr>
@@ -79,6 +73,4 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

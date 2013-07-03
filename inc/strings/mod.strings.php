@@ -311,5 +311,6 @@ $lang['mod/page_updated'] = "Page updated";
 $lang['mod/add_page'] = "Add page";
 $lang['mod/pages'] = "Pages";
 $lang['mod/page_wrong_name'] = "You can't give this name to a page";
+$lang['mod/board_catalog'] = "Catalog";
 //$lang['mod/'] = "";
 ?>

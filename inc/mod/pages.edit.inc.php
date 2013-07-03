@@ -13,10 +13,8 @@ $mitsuba->admin->reqPermission(3);
 	{
 	$data = $result->fetch_assoc();
 	?>
-	<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/edit_page']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/edit_page']); ?>
+
 <form action="?/pages/edit&b=<?php echo $_GET['b']; ?>" method="POST">
 <?php echo $lang['mod/name']; ?>: <input type="text" name="name" value="<?php echo $data['name']; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $data['title']; ?>"/><br />
@@ -25,9 +23,7 @@ $mitsuba->admin->reqPermission(3);
 <input type="checkbox" name="raw" value="1" <?php if ($data['raw'] == 1) { echo "checked='checked'"; }?> /><?php echo $lang['mod/raw_html']; ?><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div><br />
+<?php $mitsuba->admin->ui->endSection(); ?><br />
 	<?php
 	} else {
 		if ($_SESSION['type']==2)
@@ -41,21 +37,13 @@ $mitsuba->admin->reqPermission(3);
 			{
 				$mitsuba->caching->generatePage($_POST['name']);
 				?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/page_updated']; ?></h2></div>
-<div class="boxcontent"><a href="?/pages"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/page_updated']); ?>
+<a href="?/pages"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 			} else {
 				?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/error']; ?></h2></div>
-<div class="boxcontent"><a href="?/pages"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/error']); ?>
+<a href="?/pages"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 			}
 		}

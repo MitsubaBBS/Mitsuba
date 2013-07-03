@@ -12,10 +12,8 @@ $mitsuba->admin->reqPermission(2);
 			}
 		}
 	?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/ban_requests']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/ban_requests']); ?>
+
 <table>
 <thead>
 <tr>
@@ -54,7 +52,5 @@ echo "</tr>";
 </tbody>
 </table>
 <?php printf($lang['mod/showing_requests'], 15); ?> <a href="?/ban_requests/all"><?php echo $lang['mod/show_all']; ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <script type="text/javascript">parent.nav.location.reload();</script>

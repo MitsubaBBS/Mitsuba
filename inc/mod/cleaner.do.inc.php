@@ -13,11 +13,7 @@ $mitsuba->admin->reqPermission(3);
 			$conn->query("DELETE FROM warnings WHERE shown=1");
 		}
 		?>
-					<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/cleaning_done']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/cleaning_done']); ?>
+
 <a href="?/cleaner"><?php echo $lang['mod/back']; ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

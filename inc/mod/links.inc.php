@@ -41,25 +41,17 @@ $mitsuba->admin->reqPermission(3);
 		}
 	}
 		?>
-				<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/manage_board_links']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/manage_board_links']); ?>
+
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <?php
 echo $mitsuba->admin->links->getLinkTable(-1);
 ?>
-</div>
-</div>
-</div>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/add_link_category']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->endSection(); ?>
+<?php $mitsuba->admin->ui->startSection($lang['mod/add_link_category']); ?>
+
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links&m=addc" method="POST">
 <?php echo $lang['mod/name']; ?>: <input type="text" name="title" value="<?php echo $lang['mod/category']; ?>" /><input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

@@ -49,10 +49,8 @@ $mitsuba->admin->reqPermission(3);
 		}
 		?>
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/manage_bbcodes']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/manage_bbcodes']); ?>
+
 <table>
 <thead>
 <tr>
@@ -75,20 +73,14 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <br /><br />
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/add_bbcode']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/add_bbcode']); ?>
+
 <form action="?/bbcodes" method="POST">
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/bbcode']; ?>: <input type="text" name="name" value="<?php echo $name; ?>"/><br />
 <?php echo $lang['mod/html_code']; ?>: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

@@ -18,11 +18,7 @@ $config['caching_mode'] = 0;
 $mitsuba->admin->updateConfig($conn, $config);
 
 ?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/config_updated']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/config_updated']); ?>
+
 <a href="?/config"><?php echo $lang['mod/back']; ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

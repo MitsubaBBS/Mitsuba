@@ -5,10 +5,8 @@ if (!defined("IN_MOD"))
 }
 $mitsuba->admin->reqPermission(3);
 ?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/create_new_board']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/create_new_board']); ?>
+
 <form action="?/boards/add" method="POST">
 <?php echo $lang['mod/board_directory']; ?>: <input type="text" name="short" maxlength=10 /><br />
 <?php echo $lang['mod/board_name']; ?>: <input type="text" name="name" maxlength=40 /><br />
@@ -22,18 +20,22 @@ $mitsuba->admin->reqPermission(3);
 <?php echo $lang['mod/board_filesize']; ?>: <input type="text" name="filesize" maxlength=20 value="2097152" /><br />
 <?php echo $lang['mod/board_maxchars']; ?>: <input type="text" name="maxchars" maxlength=8 value="2000" /><br />
 <?php echo $lang['mod/board_default_name']; ?>: <input type="text" name="anonymous" maxlength=60 value="<?php echo $lang['img/anonymous']; ?>" /><br />
-<?php echo $lang['mod/board_options']; ?>: <br /><input type="checkbox" name="spoilers" value="1" /><?php echo $lang['mod/board_spoilers']; ?> <br /><input type="checkbox" name="noname" value="1" /><?php echo $lang['mod/board_no_name']; ?> <br /><input type="checkbox" name="ids" value="1" /><?php echo $lang['mod/board_ids']; ?><br />
-<input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?> <br /><input type="checkbox" name="bbcode" value="1" checked/><?php echo $lang['mod/board_bbcode']; ?> <br /><input type="checkbox" name="hidden" value="1"/><?php echo $lang['mod/board_hidden']; ?> <br /><input type="checkbox" name="nodup" value="1"/><?php echo $lang['mod/board_nodup']; ?><br />
+<?php echo $lang['mod/board_options']; ?>: 
+<br /><input type="checkbox" name="spoilers" value="1" /><?php echo $lang['mod/board_spoilers']; ?>
+<br /><input type="checkbox" name="noname" value="1" /><?php echo $lang['mod/board_no_name']; ?>
+<br /><input type="checkbox" name="ids" value="1" /><?php echo $lang['mod/board_ids']; ?>
+<br /><input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?>
+<br /><input type="checkbox" name="bbcode" value="1" checked/><?php echo $lang['mod/board_bbcode']; ?>
+<br /><input type="checkbox" name="hidden" value="1"/><?php echo $lang['mod/board_hidden']; ?>
+<br /><input type="checkbox" name="nodup" value="1"/><?php echo $lang['mod/board_nodup']; ?>
+<br /><input type="checkbox" name="catalog" value="1"/><?php echo $lang['mod/board_catalog']; ?>
+<br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <br />
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/manage_boards']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/manage_boards']); ?>
+
 <?php echo $lang['mod/all_boards']; ?>: <br />
 <table>
 <thead>
@@ -81,6 +83,4 @@ echo '</tr>';
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

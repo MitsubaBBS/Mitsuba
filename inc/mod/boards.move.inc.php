@@ -9,45 +9,29 @@ $mitsuba->admin->reqPermission(3);
 			if (!empty($_POST['new']))
 			{
 				$result = $mitsuba->admin->boards->moveBoard($_GET['board'], $_POST['new']);
-				logAction($conn, sprintf($lang['log/moved_board'], $conn->real_escape_string($_GET['board']), $conn->real_escape_string($_POST['new'])));
+				$mitsuba->admin->logAction(sprintf($lang['log/moved_board'], $conn->real_escape_string($_GET['board']), $conn->real_escape_string($_POST['new'])));
 				if($result == 1)
 				{
 				?>
-							<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/board_moved']; ?></h2></div>
-<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/board_moved']); ?>
+<script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 				} elseif ($result == 0) {
 				?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
-<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/board_not_found']); ?>
+<a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 				} elseif ($result == -1) {
 				?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php printf($lang['mod/board_exists'], $_POST['new']); ?></h2></div>
-<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection(sprintf($lang['mod/board_exists'], $_POST['new'])); ?>
+<a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 				}
 			}
 		} else {
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
-<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/board_not_found']); ?>
+<a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		}
 ?>

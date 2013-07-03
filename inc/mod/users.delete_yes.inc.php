@@ -10,24 +10,16 @@ $mitsuba->admin->reqPermission(3);
 			if ($username = $mitsuba->admin->users->isUser($id))
 			{
 				$mitsuba->admin->users->delUser($id);
-				logAction($conn, sprintf($lang['log/deleted_user'], $username));
+				$mitsuba->admin->logAction(sprintf($lang['log/deleted_user'], $username));
 					?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/user_deleted']; ?></h2></div>
-<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/user_deleted']); ?>
+<a href="?/users"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 			} else {
 			
 					?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/user_not_exists']; ?></h2></div>
-<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/user_not_exists']); ?>
+<a href="?/users"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 			}
 			

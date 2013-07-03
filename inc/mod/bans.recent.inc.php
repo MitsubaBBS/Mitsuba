@@ -5,11 +5,8 @@ if (!defined("IN_MOD"))
 }
 if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	{
+	$mitsuba->admin->ui->startSection(sprintf($lang['mod/recent_bans'], $_GET['c']));
 	?>
-	<div class="box-outer top-box">
-	<div class="box-inner">
-	<div class="boxbar"><h2><?php printf($lang['mod/recent_bans'], $_GET['c']); ?></h2></div>
-	<div class="boxcontent">
 	<table>
 	<thead>
 	<tr>
@@ -50,9 +47,7 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	?>
 	</tbody>
 	</table>
-	</div>
-	</div>
-	</div>
+	<?php $mitsuba->admin->ui->endSection(); ?>
 	<?php
 	}
 ?>

@@ -7,21 +7,13 @@ if (!defined("IN_MOD"))
 		if (!empty($_GET['id']))
 		{
 					?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/user_want_delete']; ?></h2></div>
-<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/no_big']; ?></a> <a href="?/users/delete_yes&id=<?php echo $_GET['id']; ?>"><?php echo $lang['mod/yes_big']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/user_want_delete']); ?>
+<a href="?/users"><?php echo $lang['mod/no_big']; ?></a> <a href="?/users/delete_yes&id=<?php echo $_GET['id']; ?>"><?php echo $lang['mod/yes_big']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		} else {
 						?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/user_not_exists']; ?></h2></div>
-<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/user_not_exists']); ?>
+<a href="?/users"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		}
 ?>

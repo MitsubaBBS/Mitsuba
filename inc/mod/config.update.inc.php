@@ -4,15 +4,6 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 $mitsuba->admin->reqPermission(3);
-/*
-<?php echo $lang['mod/frontpage_style']; ?>: <select name="frontpage_style">
-		<option value="0" <?php if ($config['frontpage_style'] == 0) { echo "selected"; } ?>>Kusaba X</option>
-		<option value="1" <?php if ($config['frontpage_style'] == 1) { echo "selected"; } ?>>4chan</option></select><br />
-		<?php echo $lang['mod/frontpage_url']; ?>: <input type="text" name="frontpage_url" value="<?php echo $config['frontpage_url']; ?>" /><br />
-		<?php echo $lang['mod/frontpage_menu_url']; ?>: <input type="text" name="frontpage_menu_url"  value="<?php echo $config['frontpage_menu_url']; ?>" /><br />
-		<?php echo $lang['mod/news_url']; ?>: <input type="text" name="news_url" value="<?php echo $config['news_url']; ?>" /><br />
-		<?php echo $lang['mod/sitename']; ?>: <input type="text" name="sitename" value="<?php echo $config['sitename']; ?>"  /><br />
-		*/
 
 $config = array();
 if (!empty($_POST['frontpage_style']))
@@ -55,11 +46,7 @@ if ((isset($_POST['caching_mode'])) && (is_numeric($_POST['caching_mode'])))
 $mitsuba->admin->updateConfig($config);
 
 ?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/config_updated']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/config_updated']); ?>
+
 <a href="?/config"><?php echo $lang['mod/back']; ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

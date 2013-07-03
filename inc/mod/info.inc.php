@@ -6,10 +6,7 @@ if (!defined("IN_MOD"))
 if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
 		{
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php printf($lang['mod/ip_info'], $_GET['ip']); ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection(sprintf($lang['mod/ip_info'], $_GET['ip'])); ?>
 <?php
 if ($_SESSION['type']>=2)
 {
@@ -82,20 +79,14 @@ echo "</td>";
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div><br />
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/add_note']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->endSection(); ?><br />
+<?php $mitsuba->admin->ui->startSection($lang['mod/add_note']); ?>
+
 <form action="?/ipnotes/add&ip=<?php echo $_GET['ip']; ?>" method="POST">
 <textarea name="note" cols=70 rows=12></textarea><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		}
 ?>

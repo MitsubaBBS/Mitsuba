@@ -10,24 +10,16 @@ $mitsuba->admin->reqPermission(3);
 			if ($mitsuba->common->isBoard($board))
 			{
 				$mitsuba->admin->boards->deleteBoard($board);
-				logAction($conn, sprintf($lang['log/deleted_board'], $board));
+				$mitsuba->admin->logAction(sprintf($lang['log/deleted_board'], $board));
 					?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/board_deleted']; ?></h2></div>
-<div class="boxcontent"><script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/board_deleted']); ?>
+<script type="text/javascript">parent.nav.location.reload();</script><a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 			} else {
 			
 					?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/board_not_found']; ?></h2></div>
-<div class="boxcontent"><a href="?/boards"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/board_not_found']); ?>
+<a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 			}
 			

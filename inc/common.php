@@ -621,7 +621,7 @@ class Common {
 	<br /><br />
 	<div class="box-outer top-box">
 	<div class="box-inner">
-	<div class="boxbar"><h2>You are banned ;_;</h2></div>
+	<div class="boxbar"><h2>You were issued a warning! ;_;</h2></div>
 	<div class="boxcontent">
 	<?php
 	$imagesDir = './rnd/banned/';

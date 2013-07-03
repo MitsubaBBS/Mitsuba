@@ -4,10 +4,8 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 ?>
-	<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/recent_ip_notes']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/recent_ip_notes']); ?>
+
 	<table>
 <thead>
 <td><?php echo $lang['mod/created']; ?></td>
@@ -29,18 +27,12 @@ echo "</tr>";
 </tbody>
 </table>
 <?php printf($lang['mod/showing_notes'], 15); ?> <a href="?/ipnotes/all"><?php echo $lang['mod/show_all']; ?></a>
-</div>
-</div>
-</div><br />
-	<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/add_ip_note']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->endSection(); ?><br />
+<?php $mitsuba->admin->ui->startSection($lang['mod/add_ip_note']); ?>
+
 <form action="?/ipnotes/add" method="POST">
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" /><br />
 <textarea name="note" cols=70 rows=12></textarea><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

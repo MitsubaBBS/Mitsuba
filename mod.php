@@ -21,49 +21,6 @@ include("inc/strings/imgboard.strings.php");
 include("inc/strings/log.strings.php");
 include("inc/common.plugins.php");
 
-function getBoardList($conn, $boards = "")
-{
-	global $lang;
-	if ($boards == "*")
-	{
-	?>
-	<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1 checked/> <?php echo $lang['mod/all']; ?><br/>
-	<select name="boards[]" id="boardSelect" multiple style="display: none;">
-	<?php
-	} else {
-	?>
-	<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
-	<select name="boards[]" id="boardSelect" multiple>
-	<?php
-	}
-	?>
-	<?php
-	if (($boards != "*") && ($boards != "")) { $boards = substr($boards, 0, strlen($boards) - 1); }
-	$result = $conn->query("SELECT * FROM boards;");
-	while ($row = $result->fetch_assoc())
-	{
-	$checked = "";
-	if (($boards !== "*") && ($boards !== ""))
-	{
-		if (in_array($boards, $row['short']))
-		{
-			$checked = " checked ";
-		}
-	}
-	echo "<option onClick='document.getElementById(\"all\").checked=false;' value='".$row['short']."'".$checked.">/".$row['short']."/ - ".$row['name']."</option>";
-	}
-	?>
-	</select>
-	<?php
-}
-
-function logAction($conn, $text)
-{
-	$conn->query("DELETE FROM log WHERE date<".(time()-(60*60*24*7)));
-	$text = $conn->real_escape_string($text);
-	$conn->query("INSERT INTO log (date, event, mod_id) VALUES (".time().", '".$text."', ".$_SESSION['id'].")");
-}
-
 function deleteEntry($conn, $type, $id, $validate_id = 0)
 {
 	if (!is_numeric($id))
@@ -175,7 +132,7 @@ $conn = new mysqli($db_host, $db_username, $db_password, $db_database);
 $mitsuba = new Mitsuba($conn);
 if ((!empty($_SESSION['logged'])) && ($_SESSION['logged']==1) && ($_SESSION['ip']!=$_SERVER['REMOTE_ADDR']))
 {
-	logAction($conn, sprintf($lang['log/ip_changed'], $_SESSION['ip'], $_SERVER['REMOTE_ADDR']));
+	$mitsuba->admin->logAction(sprintf($lang['log/ip_changed'], $_SESSION['ip'], $_SERVER['REMOTE_ADDR']));
 	$_SESSION['ip']=$_SERVER['REMOTE_ADDR'];
 }
 loadPlugins($conn);

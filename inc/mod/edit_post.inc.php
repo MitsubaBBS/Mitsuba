@@ -11,10 +11,8 @@ $mitsuba->admin->reqPermission(3);
 			{
 			$row = $result->fetch_assoc();
 			?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/edit_post']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/edit_post']); ?>
+
 			<form action="?/save_post" method="POST">
 			<input type="hidden" name="b" value="<?php echo $_GET['b']; ?>" />
 			<input type="hidden" name="p" value="<?php echo $_GET['p']; ?>" />
@@ -22,9 +20,7 @@ $mitsuba->admin->reqPermission(3);
 			<?php echo $lang['mod/options']; ?>: <input type="checkbox" name="raw" value="1" <?php if ($row['raw'] == 1) { echo "checked='checked'"; }?> /><?php echo $lang['mod/raw_html']; ?><br />
 			<input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 			</form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 			<?php
 			} else {
 			

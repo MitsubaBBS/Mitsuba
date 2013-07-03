@@ -110,6 +110,26 @@ function fillFields(parent)
 	}
 }
 
+function addStylechanger()
+{
+	$("#stylechangerDiv").css("display", "block");
+	$("link[rel='alternate stylesheet']").each(function () {
+		var selected = "";
+		if (typeof $.cookie("mitsuba_style") !== "undefined")
+		{
+			if (absolutizeURI(window.location.href, $(this).attr("href")) == $.cookie("mitsuba_style"))
+			{
+				selected = " selected";
+			}
+		}
+		$("#stylechanger").append("<option value='"+$(this).attr("href")+"'"+selected+">"+$(this).attr("title")+"</option>");
+	});
+	$("#stylechanger").change(function (e) {
+		$("#switch").attr("href", e.target.options[e.target.selectedIndex].value);
+		$.cookie("mitsuba_style", absolutizeURI(window.location.href, e.target.options[e.target.selectedIndex].value), {expires: 31, path: '/'});
+	});
+}
+
 /* 
  * ==============================
  * | URI manipulation functions |

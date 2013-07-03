@@ -48,10 +48,8 @@ $mitsuba->admin->reqPermission(3);
 		}
 		?>
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/manage_styles']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/manage_styles']); ?>
+
 <table>
 <thead>
 <tr>
@@ -81,14 +79,10 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <br /><br />
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/upload_style']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/upload_style']); ?>
+
 <form action="?/styles" method="POST" enctype="multipart/form-data">
 <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
 <input type="hidden" name="mode" value="upload">
@@ -96,6 +90,4 @@ echo "</tr>";
 <?php echo $lang['mod/name']; ?>: <input type="text" name="name"/><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

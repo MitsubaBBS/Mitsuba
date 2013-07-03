@@ -13,49 +13,33 @@ if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 				{
 					$conn->query("DELETE FROM notes WHERE id=".$_GET['id']);
 					?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/note_deleted']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/note_deleted']); ?>
+
 <a href="?/notes"><?php echo $lang['mod/back']; ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <?php
 				} else {
 				?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/error']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/error']); ?>
+
 <a href="?/notes"><?php echo $lang['mod/back']; ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <?php
 				}
 			} else {
 			?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/error']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/error']); ?>
+
 <a href="?/notes"><?php echo $lang['mod/back']; ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <?php
 			}
 		} else {
 				?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/error']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/error']); ?>
+
 <a href="?/notes"><?php echo $lang['mod/back']; ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <?php
 		}
 ?>

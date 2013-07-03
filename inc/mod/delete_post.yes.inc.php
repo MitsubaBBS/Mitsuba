@@ -17,22 +17,14 @@ $mitsuba->admin->reqPermission(2);
 			{
 			?>
 	
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/file_deleted']; ?></h2></div>
-<div class="boxcontent"><a href="?/board&b=<?php echo $_GET['b']; ?>"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/file_deleted']); ?>
+<a href="?/board&b=<?php echo $_GET['b']; ?>"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 			} else {
 			?>
 	
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/post_deleted_short']; ?></h2></div>
-<div class="boxcontent"><a href="?/board&b=<?php echo $_GET['b']; ?>"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/post_deleted_short']); ?>
+<a href="?/board&b=<?php echo $_GET['b']; ?>"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		}
 		} else {

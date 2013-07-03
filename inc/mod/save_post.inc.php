@@ -43,12 +43,8 @@ $mitsuba->admin->reqPermission(3);
 				}
 				$mitsuba->caching->generateView($_POST['b']);
 				?>
-				<div class="box-outer top-box">
-	<div class="box-inner">
-	<div class="boxbar"><h2><?php echo $lang['mod/post_updated']; ?></h2></div>
-	</div>
-	</div>
-	</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/post_updated']); ?>
+	<?php $mitsuba->admin->ui->endSection(); ?>
 	<meta http-equiv="refresh" content="2;URL='?/board&b=<?php echo $_POST['b']; ?>&t=<?php echo $resto; ?>#p<?php echo $row['id']; ?>'" />
 				<?php
 			}

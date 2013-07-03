@@ -13,10 +13,8 @@ $mitsuba->admin->reqPermission(3);
 				if (empty($_POST['title']))
 				{
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/add_link']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/add_link']); ?>
+
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links/add&p=<?php echo $id; ?>" method="POST">
 <?php echo $lang['mod/short']; ?>: <input type="text" name="short" value="" /><br />
@@ -26,9 +24,7 @@ $mitsuba->admin->reqPermission(3);
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="" /><br />
 <br /><input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 				} else {
 				//$parent, $url, $url_thread, $title, $short

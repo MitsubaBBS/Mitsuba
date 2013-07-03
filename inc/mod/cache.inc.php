@@ -17,7 +17,7 @@ $mitsuba->admin->reqPermission(3);
 			{
 				$mitsuba->caching->rebuildBoardCache($row['short']);
 			}
-			logAction($conn, $lang['log/rebuilt_cache']);
+			$mitsuba->admin->logAction($lang['log/rebuilt_cache']);
 		}
 		
 		if ((!empty($_POST['thumbs'])) && ($_POST['thumbs']==1))
@@ -27,7 +27,7 @@ $mitsuba->admin->reqPermission(3);
 			{
 				$mitsuba->caching->regenThumbnails($row['short']);
 			}
-			logAction($conn, $lang['log/rebuilt_thumbs']);
+			$mitsuba->admin->logAction($lang['log/rebuilt_thumbs']);
 		}
 		
 		if ((!empty($_POST['static'])) && ($_POST['static']==1))
@@ -41,11 +41,7 @@ $mitsuba->admin->reqPermission(3);
 			}
 		}
 		?>
-					<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/rebuilding_done']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/rebuilding_done']); ?>
+
 <a href="?/rebuild"><?php echo $lang['mod/back']; ?></a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

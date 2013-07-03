@@ -26,10 +26,8 @@ if (!defined("IN_MOD"))
 			}
 		}
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/add_warning']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/add_warning']); ?>
+
 <form action="?/warnings/add" method="POST">
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" /><br />
@@ -56,21 +54,15 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 <br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		} else {
 		if (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))
 		{
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/ip_syntax_wrong']; ?></h2></div>
-<div class="boxcontent"><a href="?/warnings/add"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/ip_syntax_wrong']); ?>
+<a href="?/warnings/add"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
 </body>
 </html>
 		<?php
@@ -111,21 +103,15 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 		if ($result == 1)
 		{
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/user_warned']; ?></h2></div>
-<div class="boxcontent"><a href="?/warnings"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/user_warned']); ?>
+<a href="?/warnings"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		} else {
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/filled_wrong']; ?></h2></div>
-<div class="boxcontent"><a href="javascript:history.back(-1);"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/filled_wrong']); ?>
+<a href="javascript:history.back(-1);"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		}
 		}

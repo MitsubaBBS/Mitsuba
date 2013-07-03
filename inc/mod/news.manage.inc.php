@@ -5,10 +5,8 @@ if (!defined("IN_MOD"))
 }
 $mitsuba->admin->reqPermission(3);
 		?>
-	<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/all_news_entries']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/all_news_entries']); ?>
+
 <table>
 <thead>
 <tr>
@@ -33,6 +31,4 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

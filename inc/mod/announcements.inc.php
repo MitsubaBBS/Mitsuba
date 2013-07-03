@@ -4,10 +4,8 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 ?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/announcements']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/announcements']); ?>
+
 <?php
 $result = $conn->query("SELECT * FROM announcements ORDER BY date DESC;");
 while ($row = $result->fetch_assoc())
@@ -18,6 +16,4 @@ echo $row['text'];
 echo '</div>';
 }
 ?>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

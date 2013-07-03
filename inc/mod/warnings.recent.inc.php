@@ -11,11 +11,9 @@ if ((isset($_GET['del'])) && ($_GET['del']==1))
 			$conn->query("DELETE FROM warnings WHERE id=".$_GET['b']);
 		}
 	}
+	$mitsuba->admin->ui->startSection(sprintf($lang['mod/recent_warnings'], $_GET['c'])); 
 	?>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php printf($lang['mod/recent_warnings'], $_GET['c']); ?></h2></div>
-<div class="boxcontent">
+
 <table>
 <thead>
 <tr>
@@ -54,6 +52,4 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

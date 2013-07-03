@@ -14,18 +14,14 @@ if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 					$conn->query("UPDATE pm SET read_msg=1 WHERE id=".$_GET['id']);
 				}
 				?>
-				<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/read_msg']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/read_msg']); ?>
+
 <?php echo $lang['mod/from']; ?>: <b><?php echo $row['username']; ?></b><br />
 <?php echo $lang['mod/title']; ?>: <b><?php echo $row['title']; ?></b><br />
 <?php echo $lang['mod/text']; ?>:<br />
 <?php echo $row['text']; ?><br /><br />
 <a href="?/inbox/new&id=<?php $_GET['id']; ?>">[ <?php echo $lang['mod/reply']; ?> ]</a>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <script type="text/javascript">parent.nav.location.reload();</script>
 				<?php
 			}

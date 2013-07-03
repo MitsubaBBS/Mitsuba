@@ -13,19 +13,15 @@ if ((!empty($_POST['to'])) && (!empty($_POST['title'])) && (!empty($_POST['text'
 				$title = $conn->real_escape_string($_POST['title']);
 				$conn->query("INSERT INTO pm (created, from_user, to_user, title, text, read_msg, resto) VALUES (".time().", ".$_SESSION['id'].", ".$row['id'].", '".$title."', '".$text."', 0, 0)");
 			?>
-			<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/msg_sent']; ?></h2></div>
-<div class="boxcontent"><a href="?/inbox/new"><?php echo $lang['mod/back']; ?></a></div>
-</div></div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/msg_sent']); ?>
+<a href="?/inbox/new"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
 			<?php
 			} else {
 			?>
-			<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/user_not_found']; ?></h2></div>
-<div class="boxcontent"><a href="?/inbox/new"><?php echo $lang['mod/back']; ?></a></div>
-</div></div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/user_not_found']); ?>
+<a href="?/inbox/new"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
 			<?php
 			}
 		} else {
@@ -42,10 +38,8 @@ if ((!empty($_POST['to'])) && (!empty($_POST['title'])) && (!empty($_POST['text'
 			}
 		}
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/send_message']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/send_message']); ?>
+
 <form action="?/inbox/new" method="POST">
 <?php echo $lang['mod/to']; ?>: <input type="text" name="to" value="<?php echo $username; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $title; ?>" /><br />
@@ -53,9 +47,7 @@ if ((!empty($_POST['to'])) && (!empty($_POST['title'])) && (!empty($_POST['text'
 <textarea name="text" cols=40 rows=9></textarea><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		}
 ?>

@@ -28,33 +28,21 @@ $mitsuba->admin->reqPermission(3);
 			$result = $mitsuba->admin->users->addUser($_POST['username'], $_POST['password'], $type, $boards);
 			if ($result == 1)
 			{
-				logAction($conn, sprintf($lang['log/user_added'], $conn->real_escape_string($_POST['username'])));
+				$mitsuba->admin->logAction(sprintf($lang['log/user_added'], $conn->real_escape_string($_POST['username'])));
 			?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/user_added']; ?></h2></div>
-<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/user_added']); ?>
+<a href="?/users"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 			} else {
 			?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/user_exists']; ?></h2></div>
-<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/user_exists']); ?>
+<a href="?/users"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 			}
 		} else {
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/fill_all_fields']; ?></h2></div>
-<div class="boxcontent"><a href="?/users"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/fill_all_fields']); ?>
+<a href="?/users"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		}
 ?>

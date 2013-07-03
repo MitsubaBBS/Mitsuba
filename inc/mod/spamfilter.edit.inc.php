@@ -11,10 +11,8 @@ $mitsuba->admin->reqPermission(3);
 		{
 		$info = $result->fetch_assoc();
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/wf_edit']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/wf_edit']); ?>
+
 <form action="?/spamfilter" method="POST">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="id" value="<?php echo $_GET['n']; ?>">
@@ -22,12 +20,10 @@ $mitsuba->admin->reqPermission(3);
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($info['replace']); ?>"/><br />
 <?php echo $lang['mod/expires']; ?>: <input type="text" name="expires" value="<?php echo htmlspecialchars($info['expires']); ?>"/><br />
 <br /><br />
-<?php getBoardList($conn, $info['boards']); ?>
+<?php $mitsuba->admin->ui->getBoardList($info['boards']); ?>
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		}
 		}

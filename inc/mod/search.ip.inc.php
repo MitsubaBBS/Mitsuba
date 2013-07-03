@@ -6,11 +6,8 @@ if (!defined("IN_MOD"))
 $mitsuba->admin->reqPermission(2);
 		if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
 		{
+			$mitsuba->admin->ui->startSection(sprintf($lang['mod/showing_posts'], $_GET['ip']));
 			?>
-			<div class="box-outer top-box">
-			<div class="box-inner">
-			<div class="boxbar"><h2><?php printf($lang['mod/showing_posts'], $_GET['ip']); ?></h2></div>
-			<div class="boxcontent">
 			<a href="?/delete_posts&ip=<?php echo $_GET['ip']; ?>"><?php echo $lang['mod/delete_ip']; ?></a>
 			<table>
 			<thead>
@@ -95,8 +92,8 @@ $mitsuba->admin->reqPermission(2);
 			?>
 			</tbody>
 			</table>
-			</div>
-			</div></div>
+
+<?php $mitsuba->admin->ui->endSection(); ?>
 			<?php
 		}
 ?>

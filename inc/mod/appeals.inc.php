@@ -20,10 +20,8 @@ if (!empty($_GET['m']))
 	}
 }
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/appeals']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/appeals']); ?>
+
 <a href="?/appeals/clear_all"><?php echo $lang['mod/clear_all']; ?></a>
 <table>
 <thead>
@@ -82,7 +80,5 @@ while ($row = $appeals->fetch_assoc())
 }
 ?>
 </tbody>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <script type="text/javascript">parent.nav.location.reload();</script>

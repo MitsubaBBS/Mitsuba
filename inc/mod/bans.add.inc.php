@@ -26,11 +26,15 @@ if (empty($_GET['r']))
 				$board = "";
 			}
 		}
+		$title = "";
+		if ($_SESSION['type']>=2)
+		{ 
+			$title = $lang['mod/add_ban'];
+		} else {
+			$title = $lang['mod/add_ban_request'];
+		}
+		$mitsuba->admin->ui->startSection($title);
 		?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php if ($_SESSION['type']>=2) { echo $lang['mod/add_ban']; } else { echo $lang['mod/add_ban_request']; } ?></h2></div>
-<div class="boxcontent">
 <form action="?/bans/add" method="POST">
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" /><br />
@@ -39,7 +43,7 @@ if (empty($_GET['r']))
 if ($_SESSION['type']>=1) {
 ?>
 <?php echo $lang['mod/expires_eg']; ?>: <input type="text" name="expires" /><br />
-<?php getBoardList($conn); ?><br />
+<?php $mitsuba->admin->ui->getBoardList(); ?><br />
 <br />
 <?php
 }
@@ -66,20 +70,14 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 <br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		} else {
 		if (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))
 		{
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/ip_syntax_wrong']; ?></h2></div>
-<div class="boxcontent"><a href="?/bans/add"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/ip_syntax_wrong']); ?>
+<a href="?/bans/add"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 </div>
 </body>
 </html>
@@ -151,31 +149,19 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 		if (($what == 1) && ($result == 1))
 		{
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/user_banned']; ?></h2></div>
-<div class="boxcontent"><a href="?/bans"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/user_banned']); ?>
+<a href="?/bans"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		} elseif (($what == 2) && ($result == 1))
 		{
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/request_sent']; ?></h2></div>
-<div class="boxcontent"><a href="javascript:history.go(-2);"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/request_sent']); ?>
+<a href="javascript:history.go(-2);"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		} else {
 		?>
-								<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/filled_wrong']; ?></h2></div>
-<div class="boxcontent"><a href="javascript:history.back(-1);"><?php echo $lang['mod/back']; ?></a></div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->startSection($lang['mod/filled_wrong']); ?>
+<a href="javascript:history.back(-1);"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		}
 		}
@@ -198,18 +184,22 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 					$post = "";
 					$board = "";
 				}
-					?>
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php if ($_SESSION['type']>=2) { echo $lang['mod/add_ban']; } else { echo $lang['mod/add_ban_request']; } ?></h2></div>
-<div class="boxcontent">
+				$title = "";
+				if ($_SESSION['type']>=2)
+				{ 
+					$title = $lang['mod/add_ban'];
+				} else {
+					$title = $lang['mod/add_ban_request'];
+				}
+				$mitsuba->admin->ui->startSection($title);
+			?>
 <form action="?/bans/add" method="POST">
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo $request['reason']; ?>"/><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" value="<?php echo $request['note']; ?>"/><br />
 <?php echo $lang['mod/expires_eg']; ?>: <input type="text" name="expires" /><br />
 <br /><br />
-<?php getBoardList($conn); ?><br />
+<?php $mitsuba->admin->ui->getBoardList(); ?><br />
 <br />
 <?php
 if (!empty($postinfo))
@@ -233,9 +223,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 <br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 				}
 			}

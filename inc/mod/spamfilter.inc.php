@@ -102,10 +102,8 @@ $mitsuba->admin->reqPermission(3);
 		}
 		?>
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
-		<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/manage_spamfilter']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/manage_spamfilter']); ?>
+
 <table>
 <thead>
 <tr>
@@ -132,32 +130,19 @@ echo "</tr>";
 ?>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>
 <br /><br />
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/wf_add']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/wf_add']); ?>
+
 <form action="?/spamfilter" method="POST">
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/wf_search']; ?>: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($reason); ?>"/><br />
 <?php echo $lang['mod/expires']; ?>: <input type="text" name="expires" value="<?php echo htmlspecialchars($expires); ?>"/><br />
 <br /><br />
-<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
-<select name="boards[]" id="boardSelect" multiple>
 <?php
-$result = $conn->query("SELECT * FROM boards;");
-while ($row = $result->fetch_assoc())
-{
-echo "<option onClick='document.getElementById(\"all\").checked=false;' value='".$row['short']."'>/".$row['short']."/ - ".$row['name']."</option>";
-}
-?>
-</select><br />
+$mitsuba->admin->ui->getBoardList();
+?><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

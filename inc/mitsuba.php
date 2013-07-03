@@ -6,6 +6,7 @@ class Admin
 	public $bans;
 	public $boards;
 	public $links;
+	public $ui;
 	public $users;
 
 	function __construct($connection, $mitsuba) {
@@ -17,6 +18,8 @@ class Admin
 		$this->boards = new \Mitsuba\Admin\Boards($this->conn, $this->mitsuba);
 		include("admin.links.php");
 		$this->links = new \Mitsuba\Admin\Links($this->conn, $this->mitsuba);
+		include("admin.ui.php");
+		$this->ui = new \Mitsuba\Admin\UI($this->conn, $this->mitsuba);
 		include("admin.users.php");
 		$this->users = new \Mitsuba\Admin\Users($this->conn, $this->mitsuba);
 	}
@@ -84,6 +87,14 @@ class Admin
 			//magic here
 		}
 	}
+
+	function logAction($text)
+	{
+		$this->conn->query("DELETE FROM log WHERE date<".(time()-(60*60*24*7)));
+		$text = $conn->real_escape_string($text);
+		$this->conn->query("INSERT INTO log (date, event, mod_id) VALUES (".time().", '".$text."', ".$_SESSION['id'].")");
+	}
+
 
 	function updateConfig($config)
 	{

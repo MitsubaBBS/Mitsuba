@@ -6,10 +6,8 @@ if (!defined("IN_MOD"))
 $mitsuba->admin->reqPermission(3);
 	$config = $mitsuba->config;
 	?>
-			<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/rebuild_cache']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/rebuild_cache']); ?>
+
 <form action="?/cache" method="POST">
 <input type="checkbox" name="links" value=1 /><?php echo $lang['mod/board_links']; ?><br />
 <input type="checkbox" name="boards" value=1 /><?php echo $lang['mod/all_boards']; ?><br />
@@ -17,13 +15,9 @@ $mitsuba->admin->reqPermission(3);
 <input type="checkbox" name="static" value=1 /><?php echo $lang['mod/all_static']; ?><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>"><br />
 </form>
-</div>
-</div>
-</div>
-<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/rebuild_static']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->endSection(); ?>
+<?php $mitsuba->admin->ui->startSection($lang['mod/rebuild_static']); ?>
+
 <form action="?/static" method="POST">
 <input type="checkbox" name="frontpage" value=1 /><?php echo $lang['mod/frontpage']; ?> (./<?php echo $config['frontpage_url']; ?>)</input><br />
 <input type="checkbox" name="news" value=1 /><?php echo $lang['mod/news_page']; ?> (./<?php echo $config['news_url']; ?>)</input><br />
@@ -36,6 +30,4 @@ while ($row = $result->fetch_assoc())
 ?>
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>"><br />
 </form>
-</div>
-</div>
-</div>
+<?php $mitsuba->admin->ui->endSection(); ?>

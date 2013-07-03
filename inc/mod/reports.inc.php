@@ -29,10 +29,8 @@ if ((!empty($_GET['cl'])) && ($_GET['cl']==1))
 		}
 	}
 	?>
-	<div class="box-outer top-box">
-<div class="box-inner">
-<div class="boxbar"><h2><?php echo $lang['mod/reports']; ?></h2></div>
-<div class="boxcontent">
+<?php $mitsuba->admin->ui->startSection($lang['mod/reports']); ?>
+
 <?php
 if ($_SESSION['type'] >= 2)
 {
@@ -120,7 +118,5 @@ if ($_SESSION['type'] >= 2)
 		?>
 		</tbody>
 		</table>
-		</div>
-		</div>
-		</div>
+		<?php $mitsuba->admin->ui->endSection(); ?>
 		<script type="text/javascript">parent.nav.location.reload();</script>
