@@ -23,7 +23,7 @@ class UI {
 		<?php
 		}
 		?>
-		<div id="boardSelect">
+		<fieldset id="boardSelect">
 		<?php
 		if (($boards != "*") && ($boards != "")) { $boards = substr($boards, 0, strlen($boards) - 1); }
 		$result = $this->conn->query("SELECT * FROM boards;");
@@ -37,10 +37,11 @@ class UI {
 				$checked = " checked ";
 			}
 		}
-		echo "<input type='checkbox' onClick='document.getElementById(\"all\").checked=false;' name='boards[]' value='".$row['short']."'".$checked.">/".$row['short']."/ - ".$row['name']."</input>";
+		echo "<label for='boards'>/".$row['short']."/ - ".$row['name']."</label>";
+		echo "<input type='checkbox' onClick='document.getElementById(\"all\").checked=false;' name='boards[]' value='".$row['short']."'".$checked."/>";
 		}
 		?>
-		</div>
+		</fieldset>
 		<?php
 	}
 
@@ -54,7 +55,7 @@ class UI {
 		<?php
 	}
 
-	function endPage()
+	function endSection()
 	{
 		?>
 		</div>

@@ -91,7 +91,7 @@ class Admin
 	function logAction($text)
 	{
 		$this->conn->query("DELETE FROM log WHERE date<".(time()-(60*60*24*7)));
-		$text = $conn->real_escape_string($text);
+		$text = $this->conn->real_escape_string($text);
 		$this->conn->query("INSERT INTO log (date, event, mod_id) VALUES (".time().", '".$text."', ".$_SESSION['id'].")");
 	}
 
