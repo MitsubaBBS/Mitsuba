@@ -8,7 +8,7 @@ $mitsuba->admin->reqPermission(3);
 		{
 			$data = $mitsuba->common->getBoardData($_GET['board']);
 			?>
-<div class="boxbar"><h2><?php $mitsuba->admin->ui->startSection(sprintf($lang['mod/edit_board'], $_GET['board'])); ?></h2></div>
+<?php $mitsuba->admin->ui->startSection(sprintf($lang['mod/edit_board'], $_GET['board'])); ?>
 
 <form action="?/boards/update&board=<?php echo $_GET['board']; ?>" method="POST">
 <?php echo $lang['mod/board_directory']; ?>: <input disabled type="text" name="short" maxlength=10 value="<?php echo $data['short']; ?>" /><br />
@@ -38,7 +38,8 @@ $mitsuba->admin->reqPermission(3);
 		} else {
 		?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/board_not_found']); ?>
-<a href="?/boards"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
+<a href="?/boards"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
 		}
 ?>
