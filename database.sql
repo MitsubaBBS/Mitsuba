@@ -200,14 +200,15 @@ CREATE TABLE IF NOT EXISTS `posts` (
 ) ENGINE=MyISAM;
 
 CREATE TABLE IF NOT EXISTS `rangebans` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(30) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(50) NOT NULL,
+  `mod_id` int(10) NOT NULL,
+  `reason` text NOT NULL,
+  `note` text NOT NULL,
   `created` int(30) NOT NULL,
   `expires` int(30) NOT NULL,
-  `start_ip` int(50) NOT NULL,
-  `end_ip` int(50) NOT NULL,
-  `reason` text NOT NULL,
-  `mod_id` int(10) NOT NULL,
-  `note` text NOT NULL,
+  `appeal` int(30) NOT NULL,
+  `boards` text NOT NULL,
   PRIMARY KEY (`id`)
 );
 

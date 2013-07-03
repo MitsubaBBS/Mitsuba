@@ -118,7 +118,7 @@ class Common {
 			$thumb_dir = './'.$board.'/src/thumb/'; //thumbnail directory
 			$width = $s; //output width
 			$height = $s; //output height
-			$img = new Imagick($fname);
+			$img = new \Imagick($fname);
 			$most_width = 0;
 			$most_height = 0;
 			$oig = $img->getImageGeometry();
@@ -236,23 +236,56 @@ class Common {
 		}
 	}
 	  
+	function startsWith($haystack, $needle)
+	{
+		return !strncmp($haystack, $needle, strlen($needle));
+	}
+
+	function endsWith($haystack, $needle)
+	{
+		$length = strlen($needle);
+		if ($length == 0) {
+			return true;
+		}
+
+		return (substr($haystack, -$length) === $needle);
+	}
+
 	function isBanned($ip, $board)
 	{
 		
 		$ipbans = $this->conn->query("SELECT * FROM bans WHERE ip='".$ip."' AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
-		$rangebans = $this->conn->query("SELECT * FROM rangebans WHERE INET_ATON('".$ip."') BETWEEN start_ip AND end_ip AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
+		$rangebans = $this->conn->query("SELECT * FROM rangebans ORDER BY expires DESC;");
 		$ipbandata = null;
 		$rangebandata = null;
 		$bandata = null;
+		while ($row = $rangebans->fetch_assoc())
+		{
+			$range = str_replace('*','(.*)', $row['ip']);
+			if ($this->startsWith($range, "."))
+			{
+				if ((strpos($ip, $range) !== FALSE))
+				{
+					$rangebandata = $row;
+					$rangebandata['range'] = 1;
+					break;
+				}
+			} elseif ($this->startsWith($ip, $range))
+			{
+				$rangebandata = $row;
+				$rangebandata['range'] = 1;
+				break;
+			} elseif (preg_match('/'.$range.'/', $ip))
+			{
+				$rangebandata = $row;
+				$rangebandata['range'] = 1;
+				break;
+			}
+		}
 		
 		if ($ipbans->num_rows == 1)
 		{
 			$ipbandata = $ipbans->fetch_assoc();
-		}
-		
-		if ($rangebans->num_rows == 1)
-		{
-			$rangebandata = $rangebans->fetch_assoc();
 		}
 		
 		if (($ipbandata != null) && ($rangebandata != null))
@@ -529,13 +562,13 @@ class Common {
 		}
 	}
 	?>
-	<p>You have been <?php if ($left == -1) { echo "<b>permamently</b>"; } ?> banned from <b><?php if ($boards == 1) { echo "all "; } else { echo "few "; } ?></b>boards for the following reason:</p>
+	<p>You have been <?php if ($left == -1) { echo "<b>permamently</b>"; } ?> <?php if (!empty($bandata['range'])) { echo "<b>range-</b>"; } ?>banned from <b><?php if ($boards == 1) { echo "all "; } else { echo "few "; } ?></b>boards for the following reason:</p>
 	<p><?php echo $bandata['reason']; ?></p>
-	<p>You were <?php if (!empty($bandata['start_ip'])) { echo "<b>range-</b>"; } ?>banned on <b><?php echo date("d/m/Y (D) H:i:s", $bandata['created']); ?></b> and your ban expires  
+	<p>You were banned on <b><?php echo date("d/m/Y (D) H:i:s", $bandata['created']); ?></b> and your ban expires  
 	<b><?php if ($left != -1) { echo " on ".date("d/m/Y (D) H:i:s", $bandata['expires']).", which is <b>".$left."</b> days from now."; } else { echo " never"; }; ?></b>.</p>
 	<?php
 	$range = 0;
-	if (!empty($bandata['start_ip'])) { $range = 1; }
+	if (!empty($bandata['range_ip'])) { $range = 1; }
 	$appeals = $this->conn->query("SELECT * FROM appeals WHERE ban_id=".$bandata['id']." AND rangeban=".$range);
 	if ((($left > 3) || ($left == -1)) && ($appeals->num_rows == 0))
 	{
