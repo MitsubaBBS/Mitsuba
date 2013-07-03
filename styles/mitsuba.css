@@ -317,6 +317,7 @@ div.deleteform input[type=checkbox] {
 }
 
 div.stylechanger {
+    float: right;
     font-size: 10pt;
     clear: both;
 }
