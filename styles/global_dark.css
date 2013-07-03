@@ -416,3 +416,18 @@ span.postertrip {
 	text-decoration: none;
 	color: #000000;
 }
+
+
+fieldset input, label {
+    display: block;
+    float: left;
+    margin-bottom: 10px;
+    width: auto;
+}
+
+fieldset label {
+    font-size: 12px;
+    text-align: right;
+    width: 175px;
+    padding-right: 20px;
+}
