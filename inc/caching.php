@@ -1855,7 +1855,7 @@ class Caching
 					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <b>Embed</b></span>';
 					
 					$file .= '</div>';
-					$file .= '<a class="fileThumb">'.$mitsuba->common->getEmbed(substr($fileinfo['filename'], 6), $embed_table).'</a>';
+					$file .= '<a class="fileThumb">'.$this->mitsuba->common->getEmbed(substr($fileinfo['filename'], 6), $embed_table).'</a>';
 					
 					$file .= '</div>';
 				} else {
