@@ -1,6 +1,6 @@
 <?php
 interface IPlugin {
-	public function __construct($conn);
+	public function __construct($conn, &$mitsuba);
 	public function getName();
 	public function getUpdateURL();
 }
@@ -142,10 +142,10 @@ class Mitsuba
 			if (substr($classname, 0, 7) == "plugin_")
 			{
 				try {
-					$plugin = new $classname($conn);
+					$plugin = new $classname($this->conn, $this);
 					if ($plugin instanceof IPlugin)
 					{
-						$plugins_array[] = $plugin;
+						$this->plugins_array[] = $plugin;
 					} 
 				} catch (Exception $e)
 				{
@@ -181,9 +181,7 @@ class Mitsuba
 			{
 				if (method_exists($class, $event))
 				{
-					$temp = $eventData;
-					$class->$event($temp);
-					$eventData = $temp;
+					$class->$event($eventData);
 				}
 			}
 		}

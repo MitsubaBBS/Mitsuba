@@ -283,6 +283,33 @@ class Posting {
 				$email = "";
 			}*/
 		}
+		//$board, $name, $email, $subject, $comment, $password, $filename, $orig_filename,
+		//$mimetype = "", $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0,
+		//$adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0,
+		//$nofile = 0, $fake_id = "", $cc_text = "", $cc_color = "", $redirect = 0
+		if ($raw == 0)
+		{
+			htmlspecialchars($comment);
+		}
+		$pdata = array("board" => $board, "name" => $name, "trip" => $trip, "strip" => $strip,
+			"email" => $email, "subject" => $subject, "comment" => $comment,
+			"password" => $password, "filename" => $filename, "orig_filename" => $orig_filename,
+			"mimetype" => $mimetype, "resto" => $resto, "md5" => $md5, "t_w" => $t_w,
+			"t_h" => $t_h, "spoiler" => $spoiler, "embed" => $embed, "adm_type" => $adm_type,
+			"capcode" => $capcode, "raw" => $raw, "sticky" => $sticky, "locked" => $locked, 
+			"nolimit" => $nolimit, "nofile" => $nofile, "fake_id" => $fake_id,
+			"cc_text" => $cc_text, "cc_color" => $cc_color);
+		$this->mitsuba->triggerEvent("onPost", $pdata);
+		$name = $pdata['name'];
+		$trip = $pdata['trip'];
+		$strip = $pdata['strip'];
+		$email = $pdata['email'];
+		$subject = $pdata['subject'];
+		$comment = $pdata['comment'];
+		$password = $pdata['password'];
+		$spoiler = $pdata['spoiler'];
+		$embed = $pdata['embed'];
+		$raw = $pdata['raw'];
 		$old_email = $email;
 		if (($bdata['noname'] == 1) && (!empty($email)) && ($adm_type <= 0))
 		{

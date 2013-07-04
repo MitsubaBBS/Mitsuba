@@ -30,6 +30,8 @@ if (!empty($_POST['mode']))
 			if ($_GET['mod']==1)
 			{
 				$return_url = "mod.php?/board&b=".$_POST['board'];
+			} else {
+				$mod = 2;
 			}
 		}
 	}
@@ -247,6 +249,11 @@ if (!empty($_POST['mode']))
 						$filename = "";
 					}
 				}
+			}
+			$name = $lang['img/anonymous'];
+			if (!empty($bdata['anonymous']))
+			{
+				$name = $bdata['anonymous'];
 			}
 			if ((!empty($_POST['name'])) && (($bdata['noname'] == 0) || (($mod >= 1) && ($mod_type >= 2)))) { $name = $_POST['name']; }
 			$resto = 0;
