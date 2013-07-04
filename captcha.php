@@ -93,7 +93,7 @@ class SimpleCaptcha {
      * directory to another location outise the web server
      *
      */
-    public $resourcesPath = 'resources';
+    public $resourcesPath = 'libs/cool-php-captcha/resources';
 
     /** Min word length (for non-dictionary random text generation) */
     public $minWordLength = 5;
