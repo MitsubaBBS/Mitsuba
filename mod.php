@@ -19,7 +19,6 @@ include("inc/mitsuba.php");
 include("inc/strings/mod.strings.php");
 include("inc/strings/imgboard.strings.php");
 include("inc/strings/log.strings.php");
-include("inc/common.plugins.php");
 
 function deleteEntry($conn, $type, $id, $validate_id = 0)
 {
@@ -135,7 +134,6 @@ if ((!empty($_SESSION['logged'])) && ($_SESSION['logged']==1) && ($_SESSION['ip'
 	$mitsuba->admin->logAction(sprintf($lang['log/ip_changed'], $_SESSION['ip'], $_SERVER['REMOTE_ADDR']));
 	$_SESSION['ip']=$_SERVER['REMOTE_ADDR'];
 }
-loadPlugins($conn);
 switch ($path)
 {
 	case "/":

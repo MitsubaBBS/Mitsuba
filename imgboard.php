@@ -7,7 +7,6 @@ header("Location: ./install.php");
 
 include("config.php");
 include("inc/mitsuba.php");
-include("inc/common.plugins.php");
 include("inc/strings/imgboard.strings.php");
 
 if (!empty($_POST['mode']))
@@ -19,7 +18,6 @@ if (!empty($_POST['mode']))
 	}
 	$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
 	$mitsuba = new Mitsuba($conn);
-	loadPlugins($conn);
 	$mod = 0;
 	$mod_type = 0;
 	if ((!empty($_GET['mod'])) && ($_GET['mod']>=1))
@@ -249,11 +247,6 @@ if (!empty($_POST['mode']))
 						$filename = "";
 					}
 				}
-			}
-			$name = $lang['img/anonymous'];
-			if (!empty($bdata['anonymous']))
-			{
-				$name = $bdata['anonymous'];
 			}
 			if ((!empty($_POST['name'])) && (($bdata['noname'] == 0) || (($mod >= 1) && ($mod_type >= 2)))) { $name = $_POST['name']; }
 			$resto = 0;

@@ -4,7 +4,7 @@ class Boards {
 	private $conn;
 	private $mitsuba;
 
-	function __construct($connection, $mitsuba) {
+	function __construct($connection, &$mitsuba) {
 		$this->conn = $connection;
 		$this->mitsuba = $mitsuba;
 	}

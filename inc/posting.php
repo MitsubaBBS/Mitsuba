@@ -5,7 +5,7 @@ class Posting {
 	private $conn;
 	private $mitsuba;
 
-	function __construct($connection, $mitsuba) {
+	function __construct($connection, &$mitsuba) {
 		$this->conn = $connection;
 		$this->mitsuba = $mitsuba;
 	}
@@ -273,7 +273,11 @@ class Posting {
 			$name = $arr['name'];
 			$strip = $arr['strip'];
 		} else {
-			$name = "Anonymous";
+			$name = $lang['img/anonymous'];
+			if (!empty($bdata['anonymous']))
+			{
+				$name = $bdata['anonymous'];
+			}
 			/*if (($email != "nonoko") || ($email != "nonokosage") || ($email != "noko") || ($email != "nokosage") || ($email != "sage"))
 			{
 				$email = "";

@@ -1,4 +1,10 @@
 <?php
+interface IPlugin {
+	public function __construct($conn);
+	public function getName();
+	public function getUpdateURL();
+}
+
 class Admin
 {
 	private $conn;
@@ -9,7 +15,8 @@ class Admin
 	public $ui;
 	public $users;
 
-	function __construct($connection, $mitsuba) {
+
+	function __construct($connection, &$mitsuba) {
 		$this->conn = $connection;
 		$this->mitsuba = $mitsuba;
 		include("admin.bans.php");
@@ -107,6 +114,7 @@ class Admin
 
 class Mitsuba
 {
+	private $plugins_array = array();
 	private $conn;
 	public $config;
 	public $caching;
@@ -117,6 +125,34 @@ class Mitsuba
 	function __construct($connection) {
 		$this->conn = $connection;
 		$this->config = $this->getConfig();
+		$plugins = array();
+		if ($array = glob("./plugins/*.php")) { $plugins = $array; }
+		$libs = array();
+		if ($array = glob("./libs/*.php")) { $libs = $array; }
+		foreach ($libs as $libname)
+		{
+			include($libname);
+		}
+		foreach ($plugins as $pluginname)
+		{
+			include($pluginname);
+		}
+		foreach (get_declared_classes() as $classname)
+		{
+			if (substr($classname, 0, 7) == "plugin_")
+			{
+				try {
+					$plugin = new $classname($conn);
+					if ($plugin instanceof IPlugin)
+					{
+						$plugins_array[] = $plugin;
+					} 
+				} catch (Exception $e)
+				{
+					//we do nothing because we can't
+				}
+			}
+		}
 		include("caching.php");
 		$this->caching = new \Mitsuba\Caching($this->conn, $this);
 		include("common.php");
@@ -135,6 +171,22 @@ class Mitsuba
 			$array[$row['name']] = $row['value'];
 		}
 		return $array;
+	}
+
+	function triggerEvent($event, &$eventData)
+	{
+		foreach ($this->plugins_array as $class)
+		{
+			if ($class instanceof IPlugin)
+			{
+				if (method_exists($class, $event))
+				{
+					$temp = $eventData;
+					$class->$event($temp);
+					$eventData = $temp;
+				}
+			}
+		}
 	}
 
 	function getConfigValue($name)
