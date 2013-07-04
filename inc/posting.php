@@ -289,7 +289,7 @@ class Posting {
 		//$nofile = 0, $fake_id = "", $cc_text = "", $cc_color = "", $redirect = 0
 		if ($raw == 0)
 		{
-			htmlspecialchars($comment);
+			$comment = htmlspecialchars($comment);
 		}
 		$pdata = array("board" => $board, "name" => $name, "trip" => $trip, "strip" => $strip,
 			"email" => $email, "subject" => $subject, "comment" => $comment,
