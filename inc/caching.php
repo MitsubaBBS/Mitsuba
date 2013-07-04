@@ -793,8 +793,8 @@ class Caching
 				<div class="box-inner">
 				<div class="boxbar"><h2>'.$title.'</h2></div>
 				<div class="boxcontent">';
-			require_once("libs/markdown.php");
-			$file .= Markdown($text);
+			require_once("libs/Michelf/Markdown.php");
+			$file .= \Michelf\Markdown::defaultTransform($text);
 			$file .= '</div>
 				</div>
 				</div>
