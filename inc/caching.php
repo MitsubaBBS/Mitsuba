@@ -380,7 +380,7 @@ class Caching
 			$pages = 0;
 		}
 		
-		require_once( "./jbbcode/Parser.php" );
+		require_once( "../libs/jbbcode/Parser.php" );
 		$parser = new \JBBCode\Parser();
 		if ($boarddata['bbcode']==1)
 		{
@@ -793,7 +793,7 @@ class Caching
 				<div class="box-inner">
 				<div class="boxbar"><h2>'.$title.'</h2></div>
 				<div class="boxcontent">';
-			require_once("inc/markdown.php");
+			require_once("libs/markdown.php");
 			$file .= Markdown($text);
 			$file .= '</div>
 				</div>
@@ -832,7 +832,7 @@ class Caching
 						$replace_array[$row['search']] = $row['replace'];
 					}
 				}
-				require_once( "./jbbcode/Parser.php" );
+				require_once( "../libs/jbbcode/Parser.php" );
 				$parser = new \JBBCode\Parser();
 				if ($boarddata['bbcode']==1)
 				{
@@ -1440,7 +1440,7 @@ class Caching
 			if ($thread->num_rows == 1)
 			{
 				$row = $thread->fetch_assoc();
-				require_once( "./jbbcode/Parser.php" );
+				require_once( "../libs/jbbcode/Parser.php" );
 				$parser = new \JBBCode\Parser();
 				$boarddata = $this->mitsuba->common->getBoardData($board);
 				if ($boarddata['bbcode']==1)

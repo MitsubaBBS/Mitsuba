@@ -25,17 +25,6 @@ define( 'MARKDOWN_VERSION',  "1.0.1p" ); # Sun 13 Jan 2013
 # Define the width of a tab for code blocks.
 @define( 'MARKDOWN_TAB_WIDTH',     4 );
 
-
-#
-# WordPress settings:
-#
-
-# Change to false to remove Markdown from posts and/or comments.
-@define( 'MARKDOWN_WP_POSTS',      true );
-@define( 'MARKDOWN_WP_COMMENTS',   true );
-
-
-
 ### Standard Function Interface ###
 
 @define( 'MARKDOWN_PARSER_CLASS',  'Markdown_Parser' );

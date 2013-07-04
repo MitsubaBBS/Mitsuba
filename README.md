@@ -32,3 +32,5 @@ hardkurahen - javascripts
 License
 --------
 See [LICENSE](https://github.com/MitsubaBBS/Mitsuba/blob/master/LICENSE).
+
+Mitsuba contains code from [PHP Markdown by Michel Fortin (custom license, available on website)](http://michelf.ca/projects/php-markdown/), [jBBCode by Jackson Owens (MIT license)](http://jbbcode.com/) and [cool-php-captcha by José Rodríguez (GPLv3)](https://code.google.com/p/cool-php-captcha/).

@@ -127,12 +127,6 @@ class Mitsuba
 		$this->config = $this->getConfig();
 		$plugins = array();
 		if ($array = glob("./plugins/*.php")) { $plugins = $array; }
-		$libs = array();
-		if ($array = glob("./libs/*.php")) { $libs = $array; }
-		foreach ($libs as $libname)
-		{
-			include($libname);
-		}
 		foreach ($plugins as $pluginname)
 		{
 			include($pluginname);
