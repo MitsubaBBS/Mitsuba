@@ -821,6 +821,7 @@ class Caching
 		$file .= '<link rel="stylesheet" href="'.$this->mitsuba->getPath("./styles/meny.css", $location, 1).'">';
 		$file .= "<script type='text/javascript' src='".$this->mitsuba->getPath("./js/meny.min.js", $location, 1)."'></script>";
 		$file .= '<script type="text/javascript">';
+		$file .= 'if ( window.self === window.top ) {';
 		$file .= "var meny = Meny.create({
 		    menuElement: document.querySelector( '.meny' ),
 		    contentsElement: document.querySelector( '.contents' ),
@@ -829,6 +830,9 @@ class Caching
 		    mouse: true,
 		    touch: true
 		});";
+		$file .= '} else {';
+		$file .= '$(".meny").css("display", "none");';
+		$file .= '}';
 		$file .= "</script>";
 		return $file;
 	}
