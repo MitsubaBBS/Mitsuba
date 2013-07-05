@@ -150,10 +150,18 @@ class SimpleCaptcha {
 
 
 		if ($this->debug) {
-			imagestring($this->im, 1, 1, $this->height-8,
-				"$text {$fontcfg['font']} ".round((microtime(true)-$ini)*1000)."ms",
-				$this->GdFgColor
-			);
+			if ($this->useImageMagick)
+			{
+				$draw = new ImagickDraw();
+				$draw->setFontSize(9);
+				$draw->setFillColor(new ImagickPixel("black"));
+				$this->im->annotateImage($draw, 10, 10, 0, "$text {$fontcfg['font']} ".round((microtime(true)-$ini)*1000)."ms");
+			} else {
+				imagestring($this->im, 1, 1, $this->height-8,
+					"$text {$fontcfg['font']} ".round((microtime(true)-$ini)*1000)."ms",
+					$this->GdFgColor
+				);
+			}
 		}
 
 
@@ -369,14 +377,14 @@ class SimpleCaptcha {
 		$length = strlen($text);
 		if ($this->useImageMagick)
 		{
+			$draw = new ImagickDraw();
+			$draw->setFont($fontfile);
 			for ($i=0; $i<$length; $i++) {
 				$degree   = rand($this->maxRotation*-1, $this->maxRotation);
-				$fontsize = rand($fontcfg['minSize'], $fontcfg['maxSize'])*$this->scale*$fontSizefactor;
+				$fontsize = rand($fontcfg['minSize'], $fontcfg['maxSize'])*$this->scale*$fontSizefactor*1.5;
 				$letter   = substr($text, $i, 1);
-
-				$draw = new ImagickDraw();
-				$draw->setFont($fontfile);
 				$draw->setFontSize($fontsize);
+
 				if ($this->shadowColor) {
 					$draw->setFillColor($this->GdShadowColor);
 					$this->im->annotateImage($draw, $x+$this->scale, $y+$this->scale, $degree, $letter);
@@ -414,7 +422,10 @@ class SimpleCaptcha {
 	protected function WaveImage() {
 		if ($this->useImageMagick)
 		{
-			$this->im->waveImage($this->Xamplitude, rand(70, 100));
+			$this->im->waveImage($this->Xamplitude, $this->scale*$this->Xperiod*rand(1,3)*4);
+			$this->im->rotateImage(new ImagickPixel('none'), 90); 
+			$this->im->waveImage($this->Yamplitude, $this->scale*$this->Yperiod*rand(1,3)*4);
+			$this->im->rotateImage(new ImagickPixel('none'), -90); 
 		} else {
 			// X-axis wave generation
 			$xp = $this->scale*$this->Xperiod*rand(1,3);
@@ -461,6 +472,10 @@ class SimpleCaptcha {
 	protected function WriteImage() {
 		if ($this->useImageMagick)
 		{
+			if ($this->debug)
+			{
+				$this->im->borderImage(new ImagickPixel("rgb(220,220,220)"), 1, 1);
+			}
 			$this->im->setImageFormat('png');
 			header("Content-type: image/png");
 			echo $this->im->getImageBlob();
