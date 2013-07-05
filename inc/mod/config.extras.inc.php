@@ -1,7 +1,7 @@
 <?php
 if (isset($_GET['m']))
 {
-	switch ($GET['m'])
+	switch ($_GET['m'])
 	{
 		case "ecatalog":
 			$conn->query("UPDATE boards SET catalog=1;");
@@ -16,13 +16,10 @@ if (isset($_GET['m']))
 			$conn->query("UPDATE boards SET captcha=0;");
 			break;
 	}
-	if ((!empty($_POST['boards'])) && ($_POST['boards']==1))
+	$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
+	while ($row = $result->fetch_assoc())
 	{
-		$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
-		while ($row = $result->fetch_assoc())
-		{
-			$mitsuba->caching->rebuildBoardCache($row['short']);
-		}
+		$mitsuba->caching->rebuildBoardCache($row['short']);
 	}
 }
 ?>

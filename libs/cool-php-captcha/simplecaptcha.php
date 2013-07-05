@@ -118,6 +118,9 @@ class SimpleCaptcha {
 
 	public $useImageMagick = false;
 
+	/** Get image as <img> element with base64 string **/
+	public $getImageAsBase64String = false;
+
 	public function __construct($config = array()) {
 	}
 
@@ -480,17 +483,21 @@ class SimpleCaptcha {
 				$this->im->borderImage(new ImagickPixel("rgb(220,220,220)"), 1, 1);
 			}
 			$this->im->setImageFormat('png');
-			header("Content-type: image/png");
-			echo $this->im->getImageBlob();
+			if ($this->getImageAsBase64String)
+			{
+				echo "<img src='data:image/jpg;base64,".base64_encode($this->im->getImageBlob())."' alt='Captcha'/>";
+			} else {
+				header("Content-type: image/png");
+				echo $this->im->getImageBlob();
+			}
 		} else {
-
-		}
-		if ($this->imageFormat == 'png' && function_exists('imagepng')) {
-			header("Content-type: image/png");
-			imagepng($this->im);
-		} else {
-			header("Content-type: image/jpeg");
-			imagejpeg($this->im, null, 80);
+			if ($this->imageFormat == 'png' && function_exists('imagepng')) {
+				header("Content-type: image/png");
+				imagepng($this->im);
+			} else {
+				header("Content-type: image/jpeg");
+				imagejpeg($this->im, null, 80);
+			}
 		}
 	}
 
