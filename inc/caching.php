@@ -791,7 +791,7 @@ class Caching
 			$file .= '<div id="bottom"></div>';
 			if ($this->config['enable_meny']==1)
 			{
-				$file .= $this->getMenyConfig();
+				$file .= $this->getMenyConfig($location);
 			}
 			$file .= "</body></html>";
 			if ($return != 1)
@@ -1487,7 +1487,7 @@ class Caching
 		$file .= '<div id="bottom"></div>';
 		if ($this->config['enable_meny']==1)
 		{
-			$file .= $this->getMenyConfig();
+			$file .= $this->getMenyConfig("board");
 		}
 		$file .= "</body></html>";
 		$handle = fopen("./".$board."/catalog.html", "w");
