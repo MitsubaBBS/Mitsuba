@@ -29,6 +29,7 @@ $mitsuba->admin->reqPermission(3);
 <br /><input type="checkbox" name="hidden" value="1"/><?php echo $lang['mod/board_hidden']; ?>
 <br /><input type="checkbox" name="nodup" value="1"/><?php echo $lang['mod/board_nodup']; ?>
 <br /><input type="checkbox" name="catalog" value="1"/><?php echo $lang['mod/board_catalog']; ?>
+<br /><input type="checkbox" name="captcha" value="1"/><?php echo $lang['mod/board_captcha']; ?>
 <br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
@@ -74,6 +75,9 @@ if ($row['ids']==1) { echo "<b>".$lang['mod/ids']."</b><br />"; }
 if ($row['embeds']==1) { echo "<b>".$lang['mod/embeds']."</b><br />"; }
 if ($row['bbcode']==1) { echo "<b>".$lang['mod/board_bbcode']."</b><br />"; }
 if ($row['hidden']==1) { echo "<b>".$lang['mod/board_hidden']."</b><br />"; }
+if ($row['nodup']==1) { echo "<b>".$lang['mod/board_nodup']."</b><br />"; }
+if ($row['catalog']==1) { echo "<b>".$lang['mod/board_catalog']."</b><br />"; }
+if ($row['captcha']==1) { echo "<b>".$lang['mod/board_captcha']."</b><br />"; }
 echo "</td>";
 echo "<td><center><a href='?/boards/edit&board=".$row['short']."'>".$lang['mod/edit']."</a></center></td>";
 echo "<td><center><a href='?/boards/delete&board=".$row['short']."'>".$lang['mod/delete']."</a></center></td>";

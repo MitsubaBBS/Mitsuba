@@ -435,6 +435,9 @@ switch ($path)
 	case "/pages/edit":
 		include("inc/mod/pages.edit.inc.php");
 		break;
+	case "/config/extras":
+		include("inc/mod/config.extras.inc.php");
+		break;
 	default:
 		break;
 }

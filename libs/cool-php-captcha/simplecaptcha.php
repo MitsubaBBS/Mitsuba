@@ -19,7 +19,7 @@
 class SimpleCaptcha {
 
 	/** Width of the image */
-	public $width  = 200;
+	public $width  = 300;
 
 	/** Height of the image */
 	public $height = 70;
@@ -476,6 +476,8 @@ class SimpleCaptcha {
 			{
 				$this->im->borderImage(new ImagickPixel("rgb(220,220,220)"), 1, 1);
 			}
+			$this->im->setImageBackgroundColor('white');
+			$this->im = $this->im->flattenImages();
 			$this->im->setImageFormat('png');
 			header("Content-type: image/png");
 			echo $this->im->getImageBlob();

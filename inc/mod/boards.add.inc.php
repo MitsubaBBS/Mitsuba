@@ -46,6 +46,11 @@ $mitsuba->admin->reqPermission(3);
 			{
 				$catalog = 1;
 			}
+			$captcha = 0;
+			if ((!empty($_POST['captcha'])) && ($_POST['captcha'] == 1))
+			{
+				$captcha = 1;
+			}
 			$filesize = 2097152;
 			if ((!empty($_POST['filesize'])) && (is_numeric($_POST['filesize'])))
 			{
@@ -82,7 +87,7 @@ $mitsuba->admin->reqPermission(3);
 				$anonymous = $_POST['anonymous'];
 			}
 			$extensions = "png,jpg,gif";
-			if ($mitsuba->admin->boards->addBoard($_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous, $extensions, $catalog) > 0)
+			if ($mitsuba->admin->boards->addBoard($_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $nodup, $maxchars, $anonymous, $extensions, $catalog, $captcha) > 0)
 			{
 				$mitsuba->admin->logAction(sprintf($lang['log/added_board'], $conn->real_escape_string($_POST['short'])));
 				?>

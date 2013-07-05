@@ -69,4 +69,8 @@ $lang['img/mod_nocapcode'] = "No capcode";
 $lang['img/mod_customcapcode'] = "Custom capcode";
 $lang['img/color'] = "Color";
 $lang['img/text'] = "Text";
+$lang['img/wrong_captcha'] = "Wrong CAPTCHA entered";
+$lang['img/captcha'] = "CAPTCHA";
+$lang['img/click_here'] = "Click here";
+$lang['img/new_captcha'] = "New CAPTCHA";
 ?>

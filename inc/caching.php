@@ -520,8 +520,18 @@ class Caching
 					<tr>
 					<td>'.$lang['img/comment'].'</td>
 					<td><textarea name="com" cols="35" rows="4"></textarea></td>
-					</tr>
-					<tr>
+					</tr>';
+				if ($boarddata['captcha']==1)
+				{
+					$file .= '<tr id="captcha">
+						<td>'.$lang['img/captcha'].'</td>
+						<td>
+						<div style="width: 300px; height: 70px; background-color: white;"><a href="#" id="captchaClickHere" style="vertical-align: middle; align: center;">'.$lang['img/click_here'].'</a></div>
+						<input name="captcha" type="text" placeholder="Type the word from the image"/>
+						</td>
+						</tr>';
+				}
+				$file .= '<tr>
 					<td>'.$lang['img/file'].'</td>
 					<td><input id="postFile" name="upfile" type="file" />';
 				if ($boarddata['spoilers'] == 1)
@@ -578,6 +588,20 @@ class Caching
 					</tbody>
 					</table>
 					</form>';
+			if ($boarddata['captcha']==1)
+			{
+				$captchaUrl = $this->mitsuba->getPath("./captcha.php", $location, 1);
+				$file .= '<script type="text/javascript">
+					$("#captchaClickHere").click(function () {
+						$(this).parent().after("<a style=\'display: block;\' href=\'#\' id=\'reloadCaptcha\'><img id=\'captchaImage\' src=\''.$captchaUrl.'\' /></a>");
+						$("#reloadCaptcha").click(function () {
+							d = new Date();
+							$("#captchaImage").attr("src", "'.$captchaUrl.'?"+d.getTime());
+						});
+						$(this).parent().hide();
+					});
+					</script>';
+			}
 			} else {
 				$file .= "<div class='closed'><h1>".$lang['img/locked']."</h1></div>";
 			}

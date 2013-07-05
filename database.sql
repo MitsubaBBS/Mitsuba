@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `anonymous` varchar(60) NOT NULL,
   `extensions` text NOT NULL,
   `catalog` int(1) NOT NULL,
+  `captcha` int(1) NOT NULL,
   PRIMARY KEY (`short`)
 );
 

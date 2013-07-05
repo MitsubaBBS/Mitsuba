@@ -23,8 +23,16 @@ $mitsuba->admin->reqPermission(3);
 <?php echo $lang['mod/board_filesize']; ?>: <input type="text" name="filesize" maxlength=20 value="<?php echo $data['filesize']; ?>" /><br />
 <?php echo $lang['mod/board_maxchars']; ?>: <input type="text" name="maxchars" maxlength=8 value="<?php echo $data['maxchars']; ?>" /><br />
 <?php echo $lang['mod/board_default_name']; ?>: <input type="text" name="anonymous" maxlength=60 value="<?php echo $data['anonymous']; ?>" /><br />
-<?php echo $lang['mod/board_options']; ?>: <input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_spoilers']; ?> <input type="checkbox" name="noname" value="1" <?php if ($data['noname'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_no_name']; ?> <input type="checkbox" name="ids" value="1" <?php if ($data['ids'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_ids']; ?><br />
-<input type="checkbox" name="embeds" value="1" <?php if ($data['embeds'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_embeds']; ?> <input type="checkbox" name="bbcode" value="1" <?php if ($data['bbcode'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_bbcode']; ?> <input type="checkbox" name="hidden" value="1" <?php if ($data['hidden'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_hidden']; ?> <input type="checkbox" name="nodup" value="1" <?php if ($data['nodup'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_nodup']; ?><br />
+<?php echo $lang['mod/board_options']; ?>:
+<input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_spoilers']; ?><br />
+<input type="checkbox" name="noname" value="1" <?php if ($data['noname'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_no_name']; ?><br />
+<input type="checkbox" name="ids" value="1" <?php if ($data['ids'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_ids']; ?><br /><br />
+<input type="checkbox" name="embeds" value="1" <?php if ($data['embeds'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_embeds']; ?><br />
+<input type="checkbox" name="bbcode" value="1" <?php if ($data['bbcode'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_bbcode']; ?><br />
+<input type="checkbox" name="hidden" value="1" <?php if ($data['hidden'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_hidden']; ?><br />
+<input type="checkbox" name="nodup" value="1" <?php if ($data['nodup'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_nodup']; ?><br />
+<input type="checkbox" name="catalog" value="1" <?php if ($data['catalog'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_catalog']; ?><br />
+<input type="checkbox" name="captcha" value="1" <?php if ($data['captcha'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_captcha']; ?> <br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 <?php $mitsuba->admin->ui->endSection(); ?><br />

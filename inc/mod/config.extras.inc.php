@@ -1,0 +1,31 @@
+<?php
+if (isset($_GET['m']))
+{
+	switch ($GET['m'])
+	{
+		case "ecatalog":
+			$conn->query("UPDATE boards SET catalog=1;");
+			break;
+		case "dcatalog":
+			$conn->query("UPDATE boards SET catalog=0;");
+			break;
+		case "ecaptcha":
+			$conn->query("UPDATE boards SET captcha=1;");
+			break;
+		case "dcaptcha":
+			$conn->query("UPDATE boards SET captcha=0;");
+			break;
+	}
+	if ((!empty($_POST['boards'])) && ($_POST['boards']==1))
+	{
+		$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
+		while ($row = $result->fetch_assoc())
+		{
+			$mitsuba->caching->rebuildBoardCache($row['short']);
+		}
+	}
+}
+<?php $mitsuba->admin->ui->startSection($lang['mod/config_updated']); ?>
+<a href="?/config"><?php echo $lang['mod/back']; ?></a>
+<?php $mitsuba->admin->ui->endSection(); ?>
+?>
