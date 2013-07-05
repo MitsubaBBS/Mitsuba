@@ -90,7 +90,7 @@ if (!empty($_POST['mode']))
 				echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
 			}
 			
-			if (($mod_type < 1) && ($bdata['captcha'] == 1) && (empty($_SESSION['captcha']) || strtolower(trim($_POST['captcha'])) != $_SESSION['captcha']))
+			if (($mod_type < 1) && ($bdata['captcha'] == 1) && (empty($_SESSION['captcha']) || empty($_POST['captcha']) || strtolower(trim($_POST['captcha'])) != $_SESSION['captcha']))
 			{
 				echo "<h1>".$lang['img/wrong_captcha']."</h1></body></html>"; exit;
 			}
