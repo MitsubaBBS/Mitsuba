@@ -527,7 +527,7 @@ class Caching
 						<td>'.$lang['img/captcha'].'</td>
 						<td>
 						<div style="width: 300px; height: 70px; background-color: white;"><a href="#" id="captchaClickHere" style="vertical-align: middle; align: center;">'.$lang['img/click_here'].'</a></div>
-						<input name="captcha" type="text" placeholder="Type the word from the image"/>
+						<input name="captcha" style="width: 300px;" type="text" placeholder="Type the word from the image"/>
 						</td>
 						</tr>';
 				}
@@ -593,7 +593,7 @@ class Caching
 				$captchaUrl = $this->mitsuba->getPath("./captcha.php", $location, 1);
 				$file .= '<script type="text/javascript">
 					$("#captchaClickHere").click(function () {
-						$(this).parent().after("<a style=\'display: block;\' href=\'#\' id=\'reloadCaptcha\'><img id=\'captchaImage\' src=\''.$captchaUrl.'\' /></a>");
+						$(this).parent().after("<a style=\'display: block; border: 1px solid #000000;\' href=\'#\' id=\'reloadCaptcha\'><img id=\'captchaImage\' src=\''.$captchaUrl.'\' /></a>");
 						$("#reloadCaptcha").click(function () {
 							d = new Date();
 							$("#captchaImage").attr("src", "'.$captchaUrl.'?"+d.getTime());
