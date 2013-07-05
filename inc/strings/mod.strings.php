@@ -284,6 +284,7 @@ $lang['mod/wait_post'] = "You'll have to wait more before posting a new post!";
 $lang['mod/add_whitelist'] = "Add IP to whitelist";
 $lang['mod/board_maxchars'] = "Maximum characters for single post";
 $lang['mod/enable_api'] = "Enable API";
+$lang['mod/enable_meny'] = "Enable Meny";
 $lang['mod/wf_search'] = "Search"; //wordfilter
 $lang['mod/wf_replace'] = "Replace"; //wordfilter
 $lang['mod/wf_add'] = "Add wodrfilter";

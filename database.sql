@@ -306,6 +306,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('sitename', 'Mitsuba'),
 ('enable_api', '0'),
 ('enable_rss', '0'),
+('enable_meny', '0'),
 ('caching_mode', '0'),
 ('overboard_enabled', '0'),
 ('overboard_boards', ''),

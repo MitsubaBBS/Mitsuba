@@ -150,7 +150,7 @@ var settingsShown = 0;
 
 function addSettings()
 {
-	$("body").prepend("<span style='float:right;'>[<a id='settingsbutton' href='#'>Settings</a>]</span>");
+	$("#boardLinks").before("<span style='float:right;'>[<a id='settingsbutton' href='#'>Settings</a>]</span>");
 	$("body").prepend("<div id='settingsDivWrap' style='z-index:9000; display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.247);'><div id='settingsDiv' style='width: 400px; height: 100%; margin: auto; background: rgb(241, 225, 215); overflow: auto; z-index: 9001;'> \
 		<span id='settingstitle' style='font-size:20px; display: block; text-align: center; background: #ffccaa;'>Settings</span> \
 		<hr /> \

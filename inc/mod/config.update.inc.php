@@ -38,6 +38,13 @@ if (!empty($_POST['enable_api']))
 	$config['enable_api'] = 0;
 }
 
+if (!empty($_POST['enable_meny']))
+{
+	$config['enable_meny'] = 1;
+} else {
+	$config['enable_meny'] = 0;
+}
+
 if ((isset($_POST['caching_mode'])) && (is_numeric($_POST['caching_mode'])))
 {
 	$config['caching_mode'] = $_POST['caching_mode'];

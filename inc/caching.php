@@ -327,6 +327,14 @@ class Caching
 		} else {
 			$file .= "</head><body>";
 		}
+		if ($this->config['enable_meny']==1)
+		{
+			$file .= '<div class="meny">';
+			$file .= $this->getMenu($location);
+			$file .= '</div>';
+			$file .= '<div class="meny-arrow"></div>';
+			$file .= '<div class="contents">';
+		}
 		$file .= $this->getBoardLinks($location);
 		$file .= '<div class="boardBanner">';
 		$imagesDir = './rnd/';
@@ -781,6 +789,10 @@ class Caching
 			}
 			$file .= '<div style="text-align: center; font-size: x-small!important; padding-bottom: 4px; padding-top: 10px; color: #333;"><span class="absBotDisclaimer">- <a href="http://github.com/MitsubaBBS/Mitsuba" target="_top" rel="nofollow">mitsuba</a> -</span></div>';
 			$file .= '<div id="bottom"></div>';
+			if ($this->config['enable_meny']==1)
+			{
+				$file .= $this->getMenyConfig();
+			}
 			$file .= "</body></html>";
 			if ($return != 1)
 			{
@@ -801,6 +813,24 @@ class Caching
 				return $file;
 			}
 		}
+	}
+
+	function getMenyConfig($location = "board")
+	{
+		$file = "</div>";
+		$file .= '<link rel="stylesheet" href="'.$this->mitsuba->getPath("./styles/meny.css", $location, 1).'">';
+		$file .= "<script type='text/javascript' src='".$this->mitsuba->getPath("./js/meny.min.js", $location, 1)."'></script>";
+		$file .= '<script type="text/javascript">';
+		$file .= "var meny = Meny.create({
+		    menuElement: document.querySelector( '.meny' ),
+		    contentsElement: document.querySelector( '.contents' ),
+		    position: 'left',
+		    width: 260,
+		    mouse: true,
+		    touch: true
+		});";
+		$file .= "</script>";
+		return $file;
 	}
 
 	function generatePage($name)
@@ -845,8 +875,12 @@ class Caching
 			$file .= '</div>
 				</div>
 				</div>
-				</div>
-				</body>
+				</div>';
+			if ($this->config['enable_meny']==1)
+			{
+				$file .= '</div>';
+			}
+			$file .= '</body>
 				</html>';
 		}
 		$handle = fopen("./".$name.".html", "w");
@@ -1451,6 +1485,10 @@ class Caching
 			</div>';
 		$file .= '<div style="text-align: center; font-size: x-small!important; padding-bottom: 4px; padding-top: 10px; color: #333;"><span class="absBotDisclaimer">- <a href="http://github.com/MitsubaBBS/Mitsuba" target="_top" rel="nofollow">mitsuba</a> -</span></div>';
 		$file .= '<div id="bottom"></div>';
+		if ($this->config['enable_meny']==1)
+		{
+			$file .= $this->getMenyConfig();
+		}
 		$file .= "</body></html>";
 		$handle = fopen("./".$board."/catalog.html", "w");
 		fwrite($handle, $file);
@@ -1566,6 +1604,34 @@ class Caching
 		}
 	}
 
+	function getMenu($location, $target = "")
+	{
+		if (!empty($target)) { $target = ' target="'.$target.'"'; }
+		$menu = "<h1>".$this->config['sitename']."</h1>";
+		$cats = $this->conn->query("SELECT * FROM links WHERE parent=-1;");
+		while ($row = $cats->fetch_assoc())
+		{
+			$menu .= '<h2>'.$row['title'].'</h2>';
+			$menu .= '<div id="'.$row['short'].'" style="">
+				<ul>';
+			$children = $this->conn->query("SELECT * FROM links WHERE parent=".$row['id']);
+			while ($child = $children->fetch_assoc())
+			{
+				if ($row['relative'] == 1)
+				{
+					$menu .= '<li><a href="'.$this->mitsuba->getPath($child['url'], $location, 1).'"'.$target.'>/'.$child['short'].'/ - '.$child['title'].'</a></li>';
+				} elseif ($row['relative'] == 2)
+				{
+					$menu .= '<li><a href="'.$this->mitsuba->getPath("./".$child['url']."/", $location, 1).'"'.$target.'>/'.$child['short'].'/ - '.$child['title'].'</a></li>';
+				} else {
+					$menu .= '<li><a href="'.$child['url'].'"'.$target.'>/'.$child['short'].'/ - '.$child['title'].'</a></li>';
+				}
+			}
+			$menu .= '</ul></div>';
+		}
+		return $menu;
+	}
+
 	function generateFrontpage()
 	{
 		if ($this->config['frontpage_style'] == 0) //Kusaba X style
@@ -1594,39 +1660,9 @@ class Caching
 			
 			$menu = '<title>Mitsuba Navigation</title>
 				<link rel="stylesheet" href="./styles/menu.css" />
-				<script type="text/javascript">
-				function toggle(button,area) {
-				var tog=document.getElementById(area);
-				if(tog.style.display)	{
-					tog.style.display="";
-				}	else {
-					tog.style.display="none";
-				}';
-			$menu .= "button.innerHTML=(tog.style.display)?'+':'&minus;';
-				createCookie('nav_show_'+area, tog.style.display?'0':'1', 365);
-				}";
-			$menu .= '</script>
 				</head>
 				<body>';
-			$menu .= "<h1>".$this->config['sitename']."</h1>";
-			$cats = $this->conn->query("SELECT * FROM links WHERE parent=-1;");
-			while ($row = $cats->fetch_assoc())
-			{
-				$menu .= '<h2><span class="coll" onclick="toggle(this,' ."'".$row['short']."');". '" title="Toggle Category">&minus;</span>'.$row['title'].'</h2>';
-				$menu .= '<div id="'.$row['short'].'" style="">
-					<ul>';
-				$children = $this->conn->query("SELECT * FROM links WHERE parent=".$row['id']);
-				while ($child = $children->fetch_assoc())
-				{
-					if (!empty($child['url_index']))
-					{
-						$menu .= '<li><a href="'.$child['url_index'].'" target="main">/'.$child['short'].'/ - '.$child['title'].'</a></li>';
-					} else {
-						$menu .= '<li><a href="'.$child['url'].'" target="main">/'.$child['short'].'/ - '.$child['title'].'</a></li>';
-					}
-				}
-				$menu .= '</ul></div>';
-			}
+			$menu .= $this->getMenu("index", "main");
 			$handle = fopen("./".$this->config['frontpage_menu_url'], "w");
 			fwrite($handle, $menu);
 			fclose($handle);
