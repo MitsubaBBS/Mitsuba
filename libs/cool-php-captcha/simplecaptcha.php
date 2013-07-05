@@ -11,7 +11,6 @@
  *
  */
 
-
 /**
  * SimpleCaptcha class
  *
@@ -187,6 +186,8 @@ class SimpleCaptcha {
 				$this->backgroundColor[2].")"
 			);
 			$this->im->newImage($this->width*$this->scale, $this->height*$this->scale, $this->GdBgColor);
+			$this->im->setImageBackgroundColor($this->GdBgColor);
+			$this->im->setImageMatteColor($this->GdBgColor);
 			// Foreground color
 			$color           = $this->colors[mt_rand(0, sizeof($this->colors)-1)];
 			$this->GdFgColor = new ImagickPixel("rgb(".
@@ -426,6 +427,8 @@ class SimpleCaptcha {
 			$this->im->rotateImage(new ImagickPixel('none'), 90); 
 			$this->im->waveImage($this->Yamplitude, $this->scale*$this->Yperiod*rand(1,3)*4);
 			$this->im->rotateImage(new ImagickPixel('none'), -90); 
+			$this->im->setImageBackgroundColor($this->GdBgColor);
+			$this->im = $this->im->flattenImages();
 		} else {
 			// X-axis wave generation
 			$xp = $this->scale*$this->Xperiod*rand(1,3);
@@ -476,8 +479,6 @@ class SimpleCaptcha {
 			{
 				$this->im->borderImage(new ImagickPixel("rgb(220,220,220)"), 1, 1);
 			}
-			$this->im->setImageBackgroundColor('white');
-			$this->im = $this->im->flattenImages();
 			$this->im->setImageFormat('png');
 			header("Content-type: image/png");
 			echo $this->im->getImageBlob();
