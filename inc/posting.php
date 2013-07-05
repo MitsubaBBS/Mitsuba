@@ -10,6 +10,13 @@ class Posting {
 		$this->mitsuba = $mitsuba;
 	}
 	
+	function escapeMitsubaSpecialCharacters($text)
+	{
+		$new = str_replace("<+", '<\+', $text);
+		$new = str_replace("+>", '+\>', $text);
+		return $new;
+	}
+
 	function deletePost($board, $postno, $password, $onlyimgdel = 0, $adm_type = -1)
 	{
 		if (!is_numeric($adm_type))
@@ -299,7 +306,7 @@ class Posting {
 		//$nofile = 0, $fake_id = "", $cc_text = "", $cc_color = "", $redirect = 0
 		if ($raw == 0)
 		{
-			$comment = htmlspecialchars($comment);
+			$comment = $this->escapeMitsubaSpecialCharacters($comment);
 		}
 		$pdata = array("board" => $board, "name" => $name, "trip" => $trip, "strip" => $strip,
 			"email" => $email, "subject" => $subject, "comment" => $comment,

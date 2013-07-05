@@ -11,6 +11,7 @@ if (isset($_GET['t']))
 	$captcha->blur = true;
 	if (extension_loaded('imagick'))
 	{
+		$captcha->reduceImageColors = true;
 		$captcha->useImageMagick = true;
 	}
 	$captcha->CreateImage();

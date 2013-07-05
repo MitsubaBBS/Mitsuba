@@ -156,10 +156,27 @@ class Caching
 				$new .= '<br/><span class="abbr">'.sprintf($lang['img/comment_long'], '<a href="./res/'.$resto.'.html#p'.$id.'">', '</a>').'</span>';
 			}
 		}
+		$new = preg_replace_callback("/<\+(.*?)\+>/",
+			function ($match)
+			{
+				return htmlspecialchars_decode($match[1]);
+			},
+			$new);
+		$new = preg_replace_callback("/&lt;\+(.*?)\+&gt;/",
+			function ($match)
+			{
+				return htmlspecialchars_decode($match[1]);
+			},
+			$new);
+		$new = str_replace('&lt;\+', "&lt;+", $new);
+		$new = str_replace('+\&gt;', "+&gt;", $new);
+		$new = str_replace('<\+', "<+", $new);
+		$new = str_replace('+\>;', "+>", $new);
 		if ($wordfilter == 1)
 		{
 			$new = strtr($new, $wf_table);
 		}
+
 		return $new;
 	}
 

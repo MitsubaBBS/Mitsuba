@@ -46,7 +46,7 @@ class Admin
 			{
 				$pdata = $post->fetch_assoc();
 				$text = $this->conn->real_escape_string($text);
-				$new_text = $this->conn->real_escape_string($pdata['comment'])."\n\n".$text;
+				$new_text = $this->conn->real_escape_string($pdata['comment'])."\n\n<+".$text."+>";
 				$this->conn->query("UPDATE posts SET comment='".$new_text."', raw=2 WHERE id=".$postid." AND board='".$board."'");
 				if ($pdata['resto'] == 0)
 				{

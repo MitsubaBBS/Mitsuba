@@ -118,8 +118,13 @@ class SimpleCaptcha {
 
 	public $useImageMagick = false;
 
-	/** Get image as <img> element with base64 string **/
+	/** Get image as <img> element with base64 string [imagick] **/
 	public $getImageAsBase64String = false;
+
+	/** Reduce image colours to 18 [imagick] **/
+	public $reduceImageColors = false;
+
+
 
 	public function __construct($config = array()) {
 	}
@@ -144,7 +149,7 @@ class SimpleCaptcha {
 		$this->WaveImage();
 		if (($this->useImageMagick) && ($this->blur))
 		{
-			$this->im->gaussianBlurImage(3, 1);
+			$this->im->gaussianBlurImage(4, 1);
 		} elseif ($this->blur && function_exists('imagefilter')) {
 			imagefilter($this->im, IMG_FILTER_GAUSSIAN_BLUR);
 		}
@@ -376,8 +381,8 @@ class SimpleCaptcha {
 		$fontSizefactor = 1+($lettersMissing*0.09);
 
 		// Text generation (char by char)
-		$x      = 20*$this->scale;
-		$y      = round(($this->height*27/40)*$this->scale);
+		$x      = ($this->width*0.15)*$this->scale;
+		$y      = round(($this->height*0.75)*$this->scale);
 		$length = strlen($text);
 		if ($this->useImageMagick)
 		{
@@ -385,7 +390,7 @@ class SimpleCaptcha {
 			$draw->setFont($fontfile);
 			for ($i=0; $i<$length; $i++) {
 				$degree   = rand($this->maxRotation*-1, $this->maxRotation);
-				$fontsize = rand($fontcfg['minSize'], $fontcfg['maxSize'])*$this->scale*$fontSizefactor*1.5;
+				$fontsize = rand($fontcfg['minSize'], $fontcfg['maxSize'])*$this->scale*($this->width/250)*$fontSizefactor*1.5;
 				$letter   = substr($text, $i, 1);
 				$draw->setFontSize($fontsize);
 
@@ -401,7 +406,7 @@ class SimpleCaptcha {
 		} else {
 			for ($i=0; $i<$length; $i++) {
 				$degree   = rand($this->maxRotation*-1, $this->maxRotation);
-				$fontsize = rand($fontcfg['minSize'], $fontcfg['maxSize'])*$this->scale*$fontSizefactor;
+				$fontsize = rand($fontcfg['minSize'], $fontcfg['maxSize'])*$this->scale*($this->width/250)*$fontSizefactor;
 				$letter   = substr($text, $i, 1);
 			
 				if ($this->shadowColor) {
@@ -487,6 +492,10 @@ class SimpleCaptcha {
 			{
 				echo "<img src='data:image/jpg;base64,".base64_encode($this->im->getImageBlob())."' alt='Captcha'/>";
 			} else {
+				if ($this->reduceImageColors)
+				{
+					$this->im->posterizeImage(18, true);
+				}
 				header("Content-type: image/png");
 				echo $this->im->getImageBlob();
 			}
