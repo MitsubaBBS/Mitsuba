@@ -833,7 +833,6 @@ class Caching
 		$file .= '} else {'."\n";
 		$file .= '$(".meny").css("display", "none");'."\n";
 		$file .= '}'."\n";
-		$file .= '$(".contents:first").focus();'."\n";
 		$file .= "</script>\n";
 		return $file;
 	}
