@@ -569,6 +569,7 @@ function adminStuff(parent)
 					<td>Fake ID</td> \
 					<td><input name="fake_id" type="text" /></td> \
 					</tr>');
+				$("#captcha").css("display", "none");
 			} else {
 				$("#postform input[name='email']").parent().parent().before('<tr> \
 					<td>Fake ID</td> \
