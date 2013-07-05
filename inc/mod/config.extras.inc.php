@@ -25,7 +25,7 @@ if (isset($_GET['m']))
 		}
 	}
 }
+?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/config_updated']); ?>
 <a href="?/config"><?php echo $lang['mod/back']; ?></a>
 <?php $mitsuba->admin->ui->endSection(); ?>
-?>
