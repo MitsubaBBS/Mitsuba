@@ -18,21 +18,30 @@ $mitsuba->admin->reqPermission(3);
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links/add&p=<?php echo $id; ?>" method="POST">
 <?php echo $lang['mod/short']; ?>: <input type="text" name="short" value="" /><br />
-<?php echo $lang['mod/url']; ?>: <input type="text" name="url" value="../" /><br />
-<?php echo $lang['mod/url_thread']; ?>: <input type="text" name="url_thread" value="../../" /><br />
-<?php echo $lang['mod/url_index']; ?>: <input type="text" name="url_index" value="./" /><br />
+<?php echo $lang['mod/url']; ?>: <input type="text" name="url" value="./" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="" /><br />
+<?php echo $lang['mod/relativity']; ?>: <input type="radio" name="relative" value="0" />Absolute <input type="radio" name="relative" value="1" checked/>Relative (to board index/mod.php) <input type="radio" name="relative" value="2" />Board link 
 <br /><input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 <?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 				} else {
 				//$parent, $url, $url_thread, $title, $short
-					$mitsuba->admin->links->addBoardLink($id, $_POST['url'], $_POST['url_thread'], $_POST['url_index'],  $_POST['title'], $_POST['short']);
+					if (($_POST['relative'] == 2) && (!$mitsuba->common->isBoard($_POST['url'])))
+					{
+						$mitsuba->admin->ui->startSection(sprintf($lang['mod/board_not_exists'], $_POST['url']));
+						?>
+<a href="?/links"><?php echo $lang['mod/back']; ?></a>
+						<?php 
+						$mitsuba->admin->ui->endSection();
+					} else {
+						$mitsuba->admin->links->addBoardLink($id, $_POST['url'], $_POST['relative'],  $_POST['title'], $_POST['short']);
+						?>
+						<meta http-equiv="refresh" content="0;URL='?/links'" />
+						<?php
+					}
 					
-					?>
-					<meta http-equiv="refresh" content="0;URL='?/links'" />
-					<?php
+					
 				}
 			} else {
 			?>

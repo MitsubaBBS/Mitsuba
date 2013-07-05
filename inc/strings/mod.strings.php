@@ -119,6 +119,7 @@ $lang['mod/board_updated'] = "Board updated successfully!";
 $lang['mod/some_error'] = "Some sort of error happened ;_;";
 $lang['mod/board_moved'] = "Board moved!";
 $lang['mod/board_exists'] = "The board /%s/ does exist!";
+$lang['mod/board_not_exists'] = "The board /%s/ does not exist!";
 $lang['mod/edit_board'] = "Edit board /%s/";
 $lang['mod/move_board'] = "Move board /%s/";
 $lang['mod/board_new_dir'] = "New board directory (without /'s)";
@@ -312,5 +313,9 @@ $lang['mod/add_page'] = "Add page";
 $lang['mod/pages'] = "Pages";
 $lang['mod/page_wrong_name'] = "You can't give this name to a page";
 $lang['mod/board_catalog'] = "Catalog";
+$lang['mod/relativity'] = "Relativity";
+$lang['mod/absolute'] = "Absolute";
+$lang['mod/relative'] = "Relative (to board index/mod.php)";
+$lang['mod/board_link'] = "Board link (replace URL with board 'short')";
 //$lang['mod/'] = "";
 ?>

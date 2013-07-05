@@ -25,12 +25,12 @@ class Links {
 		$allcat = $this->conn->query("SELECT * FROM links WHERE url='' AND parent=-1");
 		$catnum = $allcat->num_rows;
 		$name = $this->conn->real_escape_string($name);
-		$this->conn->query("INSERT INTO links (parent, url, url_thread, url_index, title, short) VALUES (-1, '', '', '', '".$name."', 'c".($catnum + 1)."');");
+		$this->conn->query("INSERT INTO links (parent, url, relative, title, short) VALUES (-1, '', 0, '".$name."', 'c".($catnum + 1)."');");
 		$this->mitsuba->caching->rebuildBoardLinks();
 	}
 
 
-	function updateBoardLink($id, $url, $url_thread, $url_index, $title, $short)
+	function updateBoardLink($id, $url, $relativity, $title, $short)
 	{
 		if (!is_numeric($id))
 		{
@@ -38,13 +38,15 @@ class Links {
 		}
 		$title = $this->conn->real_escape_string($title);
 		$url = $this->conn->real_escape_string($url);
-		$url_thread = $this->conn->real_escape_string($url_thread);
-		$url_index = $this->conn->real_escape_string($url_index);
+		if (!is_numeric($relativity))
+		{
+			$relativity = 1;
+		}
 		$short = $this->conn->real_escape_string($short);
 		$cat = $this->conn->query("SELECT * FROM links WHERE id=".$id);
 		if ($cat->num_rows == 1)
 		{
-			$this->conn->query("UPDATE links SET title='".$title."', url='".$url."', url_thread='".$url_thread."', url_index='".$url_index."', short='".$short."' WHERE id=".$id);
+			$this->conn->query("UPDATE links SET title='".$title."', url='".$url."', relative=".$relativity.", short='".$short."' WHERE id=".$id);
 			$this->mitsuba->caching->rebuildBoardLinks();
 			return 1;
 		} else {
@@ -52,18 +54,20 @@ class Links {
 		}
 	}
 
-	function addBoardLink($parent, $url, $url_thread, $url_index, $title, $short)
+	function addBoardLink($parent, $url, $relativity, $title, $short)
 	{
 		$parent = $this->conn->real_escape_string($parent);
 		$title = $this->conn->real_escape_string($title);
 		$url = $this->conn->real_escape_string($url);
-		$url_thread = $this->conn->real_escape_string($url_thread);
-		$url_index = $this->conn->real_escape_string($url_index);
 		$short = $this->conn->real_escape_string($short);
+		if (!is_numeric($relativity))
+		{
+			$relativity = 1;
+		}
 		$cat = $this->conn->query("SELECT * FROM links WHERE id=".$parent);
 		if ($cat->num_rows == 1)
 		{
-			$this->conn->query("INSERT INTO links (parent, url, url_thread, url_index, title, short) VALUES (".$parent.", '".$url."', '".$url_thread."', '".$url_index."', '".$title."', '".$short."');");
+			$this->conn->query("INSERT INTO links (parent, url, relative, title, short) VALUES (".$parent.", '".$url."', ".$relativity.", '".$title."', '".$short."');");
 			$this->mitsuba->caching->rebuildBoardLinks();
 			return 1;
 		} else {

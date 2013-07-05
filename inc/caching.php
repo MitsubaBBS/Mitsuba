@@ -12,22 +12,22 @@ class Caching
 		$this->config = $this->mitsuba->config;
 	}
 
-	function generateBoardLinks($in_thread = 0)
+	function generateBoardLinks($location = "board")
 	{
 		$links = '<div id="boardLinks">';
-		$links .= $this->generateLinks(-1, $in_thread);
+		$links .= $this->generateLinks(-1, $location);
 		$links .= '</div>';
 		return $links;
 	}
 
 	function rebuildBoardLinks()
 	{
-		$this->mitsuba->updateConfigValue("boardLinks", $this->generateBoardLinks());
-		$this->mitsuba->updateConfigValue("boardLinks_thread", $this->generateBoardLinks(1));
-		$this->mitsuba->updateConfigValue("boardLinks_index", $this->generateBoardLinks(2));
+		$this->mitsuba->updateConfigValue("boardLinks", $this->generateBoardLinks("index"));
+		$this->mitsuba->updateConfigValue("boardLinks_thread", $this->generateBoardLinks("thread"));
+		$this->mitsuba->updateConfigValue("boardLinks_board", $this->generateBoardLinks("board"));
 	}
 
-	function generateLinks($id, $in_thread = 0)
+	function generateLinks($id, $location = "board")
 	{
 		// MAGIC IS HAPPENING HERE, DO NOT EDIT
 		// MAGIC IS HAPPENING HERE, DO NOT EDIT
@@ -47,17 +47,18 @@ class Caching
 			if (!empty($row['url']))
 			{
 				if ($no > 0) { $links .= ' / '; }
-				if ((!empty($row['url_index'])) && ($in_thread == 2))
+				if ($row['relative'] == 1)
 				{
-					$links .= '<a href="'.$row['url_index'].'" title="'.$row['title'].'">'.$row['short'].'</a>';
-				} elseif ((!empty($row['url_thread'])) && ($in_thread == 1))
+					$links .= '<a href="'.$this->mitsuba->getPath($row['url'], $location, 1).'" title="'.$row['title'].'">'.$row['short'].'</a>';
+				} elseif ($row['relative'] == 2)
 				{
-					$links .= '<a href="'.$row['url_thread'].'" title="'.$row['title'].'">'.$row['short'].'</a>';
+					$links .= '<a href="'.$this->mitsuba->getPath("./".$row['url']."/", $location, 1).'" title="'.$row['title'].'">'.$row['short'].'</a>';
 				} else {
 					$links .= '<a href="'.$row['url'].'" title="'.$row['title'].'">'.$row['short'].'</a>';
 				}
+				
 			}
-			$l2 = $this->generateLinks($row['id'], $in_thread);
+			$l2 = $this->generateLinks($row['id'], $location);
 			if (!empty($l2))
 			{
 				$links .= "[".$l2."] ";
@@ -67,15 +68,15 @@ class Caching
 		return $links;
 	}
 
-	function getBoardLinks($in_thread = 0)
+	function getBoardLinks($location = "board")
 	{
-		if ($in_thread == 1)
+		if ($location == "board")
 		{
+			return $this->config['boardLinks_board'];
+		} elseif ($location == "thread") {
 			return $this->config['boardLinks_thread'];
-		} elseif ($in_thread == 0) {
+		} elseif ($location == "index") {
 			return $this->config['boardLinks'];
-		} else {
-			return $this->config['boardLinks_index'];
 		}
 	}
 
@@ -309,7 +310,7 @@ class Caching
 		} else {
 			$file .= "</head><body>";
 		}
-		$file .= $this->getBoardLinks(2);
+		$file .= $this->getBoardLinks($location);
 		$file .= '<div class="boardBanner">';
 		$imagesDir = './rnd/';
 		$images = glob($imagesDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
@@ -422,20 +423,20 @@ class Caching
 				$pages = $all_pages - 1;
 			}
 		}
-		
+		$location = "";
+		if ($return == 1)
+		{
+			$location = "index";
+		} elseif ($threadno != 0)
+		{
+			$location = "thread";
+		} else {
+			$location = "board";
+		}
+		$header = $this->getBoardHeader($board, $boarddata, $location);
 		for ($pg = $page; $pg <= $pages; $pg++)
 		{
-			$location = "";
-			if ($return == 1)
-			{
-				$location = "index";
-			} elseif ($threadno != 0)
-			{
-				$location = "thread";
-			} else {
-				$location = "board";
-			}
-			$file = $this->getBoardHeader($board, $boarddata, $location);
+			$file = $header;
 			$file .= '<br />';
 			$file .= '<hr />';
 				

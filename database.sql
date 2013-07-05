@@ -112,8 +112,7 @@ CREATE TABLE IF NOT EXISTS `links` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `parent` int(5) NOT NULL,
   `url` varchar(100) NOT NULL,
-  `url_thread` varchar(100) NOT NULL,
-  `url_index` varchar(100) NOT NULL,
+  `relative` int(1) NOT NULL,
   `title` varchar(40) NOT NULL,
   `short` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
@@ -295,9 +294,9 @@ INSERT INTO `bbcodes` (`name`, `code`) VALUES
 ('spoiler', '<s>{param}</s>');
 
 INSERT INTO `config` (`name`, `value`) VALUES
-('boardLinks', ''),
+('boardLinks_board', ''),
 ('boardLinks_thread', ''),
-('boardLinks_index', ''),
+('boardLinks', ''),
 ('frontpage_menu_url', 'menu.html'),
 ('frontpage_style', '0'),
 ('frontpage_url', 'index.html'),

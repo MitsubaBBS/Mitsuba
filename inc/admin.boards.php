@@ -203,8 +203,12 @@ class Boards {
 		{
 			if (!$this->mitsuba->common->isBoard($new))
 			{
-				$this->conn->query("UPDATE boards SET short='".$this->conn->real_escape_string($new)."' WHERE short='".$this->conn->real_escape_string($short)."'");
-				$this->conn->query("UPDATE posts SET board='".$this->conn->real_escape_string($new)."' WHERE board='".$this->conn->real_escape_string($short))."'";
+				$new_e = $this->conn->real_escape_string($new);
+				$short_e = $this->conn->real_escape_string($short);
+				$this->conn->query("UPDATE boards SET short='".$new_e."' WHERE short='".$short_e."'");
+				$this->conn->query("UPDATE posts SET board='".$new_e."' WHERE board='".$short_e."'");
+				$this->conn->query("UPDATE links SET url='".$new_e."' WHERE url='".$short_e."' AND relativity=2");
+				$this->mitsuba->caching->rebuildBoardLinks();
 				rename("./".$short, "./".$new);
 				$this->mitsuba->caching->rebuildBoardCache($new);
 				return 1;
