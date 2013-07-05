@@ -380,7 +380,7 @@ class Caching
 			$pages = 0;
 		}
 		
-		require_once( "../libs/jbbcode/Parser.php" );
+		require_once( "libs/jbbcode/Parser.php" );
 		$parser = new \JBBCode\Parser();
 		if ($boarddata['bbcode']==1)
 		{
@@ -832,7 +832,7 @@ class Caching
 						$replace_array[$row['search']] = $row['replace'];
 					}
 				}
-				require_once( "../libs/jbbcode/Parser.php" );
+				require_once( "libs/jbbcode/Parser.php" );
 				$parser = new \JBBCode\Parser();
 				if ($boarddata['bbcode']==1)
 				{
@@ -1440,7 +1440,7 @@ class Caching
 			if ($thread->num_rows == 1)
 			{
 				$row = $thread->fetch_assoc();
-				require_once( "../libs/jbbcode/Parser.php" );
+				require_once( "libs/jbbcode/Parser.php" );
 				$parser = new \JBBCode\Parser();
 				$boarddata = $this->mitsuba->common->getBoardData($board);
 				if ($boarddata['bbcode']==1)

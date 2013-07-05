@@ -16,7 +16,7 @@ if (!defined("IN_MOD"))
 </thead>
 <tbody>
 	<?php
-	require_once( "../libs/jbbcode/Parser.php" );
+	require_once( "libs/jbbcode/Parser.php" );
 	$parser = new \JBBCode\Parser();
 	$bbcode = $conn->query("SELECT * FROM bbcodes;");
 	

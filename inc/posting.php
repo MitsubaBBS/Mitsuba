@@ -126,6 +126,11 @@ class Posting {
 							unlink("./".$board."/res/".$postno.".html");
 						}
 						//$this->mitsuba->caching->generateView($board, $postno);
+
+						if ($bdata['catalog']==1)
+						{
+							$this->mitsuba->caching->generateCatalog($board);
+						}
 						$this->mitsuba->caching->generateView($board);
 						return 2; //done post
 					} else {
@@ -148,6 +153,11 @@ class Posting {
 						if ($config['caching_mode']==1)
 						{
 							$this->mitsuba->caching->forceGetThread($board, $postdata['resto']);
+						}
+						
+						if ($bdata['catalog']==1)
+						{
+							$this->mitsuba->caching->generateCatalog($board);
 						}
 						$this->mitsuba->caching->generateView($board);
 						return 2;
