@@ -280,6 +280,17 @@ class Caching
 		<html xmlns="http://www.w3.org/1999/xhtml">';	
 	}
 
+	function getAds($board, $position)
+	{
+		$ads = $this->conn->query("SELECT * FROM ads WHERE board=('".$this->conn->real_escape_string($board)."' OR '*' OR '') AND position='".$position."' AND `show`=1;");
+		$text = "";
+		while ($ad = $ads->fetch_assoc())
+		{
+			$text .= $ad['text'];
+		}
+		return $text;
+	}
+
 	function getBoardHeader($board, $boarddata, $location, $catalog = 0)
 	{
 		$file = $this->getHtmlDefinition();
@@ -321,6 +332,7 @@ class Caching
 		}
 		$file .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 		$file .= '<meta property="og:boardname" content="'.$boarddata['short'].'" />';
+		$file .= $this->getAds($boarddata['short'], "head");
 		if ($location == "index")
 		{
 			$file .= "</head><body class='modPanel'>";
@@ -349,6 +361,9 @@ class Caching
 		$file .= '<div class="boardTitle">/'.$boarddata['short'].'/ - '.$boarddata['name'].'</div>';
 		$file .= '<div class="boardSubtitle">'.$boarddata['des'].'</div>';
 		$file .= '</div>';
+		$file .= '<br />';
+		$file .= '<hr />';
+		$file .= $this->getAds($boarddata['short'], "aboveform");
 		return $file;
 	}
 
@@ -462,8 +477,6 @@ class Caching
 		for ($pg = $page; $pg <= $pages; $pg++)
 		{
 			$file = $header;
-			$file .= '<br />';
-			$file .= '<hr />';
 				
 			$locked = 0;
 			
@@ -635,6 +648,7 @@ class Caching
 			} else {
 				$file .= "<div class='closed'><h1>".$lang['img/locked']."</h1></div>";
 			}
+			$file .= $this->getAds($boarddata['short'], "underform");
 			$file .= "<hr />";
 			if (!empty($this->config['global_message']))
 			{
@@ -698,6 +712,7 @@ class Caching
 			$file .= '<div class="stylechanger" id="stylechangerDiv" style="display:none;">'.$lang['img/style'].' <select id="stylechanger"></select></div>
 				</div>';
 			$file .= "</form>";
+			$file .= $this->getAds($boarddata['short'], "footer");
 			if (($return == 1) && ($threadno == 0))
 			{
 				$file .= '<div class="pagelist">';
@@ -793,6 +808,7 @@ class Caching
 			{
 				$file .= $this->getMenyConfig($location);
 			}
+			$file .= $this->getAds($boarddata['short'], "bottom");
 			$file .= "</body></html>";
 			if ($return != 1)
 			{
@@ -1361,8 +1377,7 @@ class Caching
 			}
 		}
 		$file = $this->getBoardHeader($board, $boarddata, "board", 1);
-		$file .= '<br />';
-		$file .= '<hr />';
+		$file .= $this->getAds($boarddata['short'], "underform");
 		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != \"\") AS 'img_replies' FROM posts WHERE resto=0 AND board='b' ORDER BY sticky DESC, lastbumped DESC");
 		$file .= '<div class="navLinks">[<a href="./" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
 		$file .= '<div id="content">';
@@ -1487,12 +1502,14 @@ class Caching
 		$file .= '<div class="navLinks">[<a href="./" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#top">'.$lang['img/top'].'</a>]</div>';
 		$file .= '<div class="stylechanger" id="stylechangerDiv" style="display:none;">'.$lang['img/style'].' <select id="stylechanger"></select></div>
 			</div>';
+		$file .= $this->getAds($boarddata['short'], "footer");
 		$file .= '<div style="text-align: center; font-size: x-small!important; padding-bottom: 4px; padding-top: 10px; color: #333;"><span class="absBotDisclaimer">- <a href="http://github.com/MitsubaBBS/Mitsuba" target="_top" rel="nofollow">mitsuba</a> -</span></div>';
 		$file .= '<div id="bottom"></div>';
 		if ($this->config['enable_meny']==1)
 		{
 			$file .= $this->getMenyConfig("board");
 		}
+		$file .= $this->getAds($boarddata['short'], "bottom");
 		$file .= "</body></html>";
 		$handle = fopen("./".$board."/catalog.html", "w");
 		fwrite($handle, $file);

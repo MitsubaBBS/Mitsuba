@@ -438,6 +438,12 @@ switch ($path)
 	case "/config/extras":
 		include("inc/mod/config.extras.inc.php");
 		break;
+	case "/ads":
+		include("inc/mod/ads.inc.php");
+		break;
+	case "/ads/edit":
+		include("inc/mod/ads.edit.inc.php");
+		break;
 	default:
 		break;
 }

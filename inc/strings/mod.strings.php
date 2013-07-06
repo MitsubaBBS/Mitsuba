@@ -324,5 +324,17 @@ $lang['mod/captcha_enable_all'] = "Enable CAPTCHA on all boards";
 $lang['mod/captcha_disable_all'] = "Disable CAPTCHA on all boards";
 $lang['mod/catalog_enable_all'] = "Enable catalog on all boards";
 $lang['mod/catalog_disable_all'] = "Disable catalog on all boards";
+
+$lang['mod/manage_ads'] = "Manage ads";
+$lang['mod/board'] = "Board";
+$lang['mod/position'] = "Position";
+$lang['mod/edit_ad'] = "Edit ad";
+$lang['mod/add_ad'] = "Add ad";
+$lang['mod/pos_head'] = "&lt;head&gt; tag";
+$lang['mod/pos_aboveform'] = "Above posting form";
+$lang['mod/pos_underform'] = "Under posting form";
+$lang['mod/pos_footer'] = "Above style select/delete form";
+$lang['mod/pos_bottom'] = "Above &lt;/body&gt;";
+$lang['mod/ad_not_found'] = "Ad not found";
 //$lang['mod/'] = "";
 ?>

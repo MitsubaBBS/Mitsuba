@@ -27,6 +27,13 @@ var Meny = {
 				POSITION_B = 'bottom',
 				POSITION_L = 'left';
 
+			// Feature detection for 3D transforms
+			var supportsTransitions =  'WebkitTransition' in document.body.style ||
+										'MozTransition' in document.body.style ||
+										'msTransition' in document.body.style ||
+										'OTransition' in document.body.style ||
+										'transition' in document.body.style;
+
 			// Default options, gets extended by passed in arguments
 			var config = {
 				width: 300,
@@ -108,9 +115,9 @@ var Meny = {
 					case POSITION_T:
 						// Primary transform:
 						menuTransformOrigin = '50% 0%';
-						menuTransformClosed = 'rotateX( 30deg ) translateY( -100% ) translateY( '+ config.overlap +'px )';
+						menuTransformClosed = 'translateY( -100% ) translateY( '+ config.overlap +'px )';
 						contentsTransformOrigin = '50% 0';
-						contentsTransformOpened = 'translateY( '+ config.height +'px ) rotateX( -15deg )';
+						contentsTransformOpened = 'translateY( '+ config.height +'px )';
 
 						// Position fallback:
 						menuStyleClosed = { top: '-' + (config.height-config.overlap) + 'px' };
@@ -122,9 +129,9 @@ var Meny = {
 					case POSITION_R:
 						// Primary transform:
 						menuTransformOrigin = '100% 50%';
-						menuTransformClosed = 'rotateY( 30deg ) translateX( 100% ) translateX( -2px ) scale( 1.01 )';
+						menuTransformClosed = 'translateX( 100% ) translateX( -2px ) scale( 1.01 )';
 						contentsTransformOrigin = '100% 50%';
-						contentsTransformOpened = 'translateX( -'+ config.width +'px ) rotateY( -15deg )';
+						contentsTransformOpened = 'translateX( -'+ config.width +'px )';
 
 						// Position fallback:
 						menuStyleClosed = { right: '-' + (config.width-config.overlap) + 'px' };
@@ -136,9 +143,9 @@ var Meny = {
 					case POSITION_B:
 						// Primary transform:
 						menuTransformOrigin = '50% 100%';
-						menuTransformClosed = 'rotateX( -30deg ) translateY( 100% ) translateY( -'+ config.overlap +'px )';
+						menuTransformClosed = 'translateY( 100% ) translateY( -'+ config.overlap +'px )';
 						contentsTransformOrigin = '50% 100%';
-						contentsTransformOpened = 'translateY( -'+ config.height +'px ) rotateX( 15deg )';
+						contentsTransformOpened = 'translateY( -'+ config.height +'px )';
 
 						// Position fallback:
 						menuStyleClosed = { bottom: '-' + (config.height-config.overlap) + 'px' };
@@ -150,9 +157,9 @@ var Meny = {
 					default:
 						// Primary transform:
 						menuTransformOrigin = '100% 50%';
-						menuTransformClosed = 'translateX( -100% ) translateX( '+ config.overlap +'px ) scale( 1.01 ) rotateY( -30deg )';
+						menuTransformClosed = 'translateX( -100% ) translateX( '+ config.overlap +'px ) scale( 1.01 )';
 						contentsTransformOrigin = '0 50%';
-						contentsTransformOpened = 'translateX( '+ config.width +'px ) rotateY( 15deg )';
+						contentsTransformOpened = 'translateX( '+ config.width +'px )';
 
 						// Position fallback:
 						menuStyleClosed = { left: '-' + (config.width-config.overlap) + 'px' };
@@ -206,6 +213,10 @@ var Meny = {
 				}
 				catch( e ) {}
 
+				if( supportsTransitions ) {
+					dom.cover.style[ Meny.prefix( 'transition' ) ] = 'all ' + config.transitionDuration +' '+ config.transitionEasing;
+				}
+
 				dom.contents.appendChild( dom.cover );
 			}
 
@@ -243,7 +254,15 @@ var Meny = {
 				style.position = 'fixed';
 				style.display = 'block';
 				style.zIndex = 1;
-				Meny.extend( style, menuStyleClosed );
+
+				if( supportsTransitions ) {
+					style[ Meny.prefix( 'transform' ) ] = menuTransformClosed;
+					style[ Meny.prefix( 'transformOrigin' ) ] = menuTransformOrigin;
+					style[ Meny.prefix( 'transition' ) ] = 'all ' + config.transitionDuration +' '+ config.transitionEasing;
+				}
+				else {
+					Meny.extend( style, menuStyleClosed );
+				}
 			}
 
 			/**
@@ -253,8 +272,16 @@ var Meny = {
 			function setupContents() {
 				// Shorthand
 				var style = dom.contents.style;
-				style.position = style.position.match( /relative|absolute|fixed/gi ) ? style.position : 'relative';
-				Meny.extend( style, contentsStyleClosed );
+
+				if( supportsTransitions ) {
+					style[ Meny.prefix( 'transform' ) ] = contentsTransformClosed;
+					style[ Meny.prefix( 'transformOrigin' ) ] = contentsTransformOrigin;
+					style[ Meny.prefix( 'transition' ) ] = 'all ' + config.transitionDuration +' '+ config.transitionEasing;
+				}
+				else {
+					style.position = style.position.match( /relative|absolute|fixed/gi ) ? style.position : 'relative';
+					Meny.extend( style, contentsStyleClosed );
+				}
 			}
 
 			/**
@@ -296,12 +323,24 @@ var Meny = {
 
 					dom.cover.style.height = dom.contents.scrollHeight + 'px';
 					dom.cover.style.visibility = 'visible';
-					menuAnimation && menuAnimation.stop();
-					menuAnimation = Meny.animate( dom.menu, menuStyleOpened, 500 );
-					contentsAnimation && contentsAnimation.stop();
-					contentsAnimation = Meny.animate( dom.contents, contentsStyleOpened, 500 );
-					coverAnimation && coverAnimation.stop();
-					coverAnimation = Meny.animate( dom.cover, { opacity: 1 }, 500 );
+
+					// Use transforms and transitions if available...
+					if( supportsTransitions ) {
+						dom.cover.style.opacity = 1;
+
+						dom.contents.style[ Meny.prefix( 'transform' ) ] = contentsTransformOpened;
+						dom.menu.style[ Meny.prefix( 'transform' ) ] = menuTransformOpened;
+					}
+					// ...fall back on JS animation
+					else {
+						menuAnimation && menuAnimation.stop();
+						menuAnimation = Meny.animate( dom.menu, menuStyleOpened, 500 );
+						contentsAnimation && contentsAnimation.stop();
+						contentsAnimation = Meny.animate( dom.contents, contentsStyleOpened, 500 );
+						coverAnimation && coverAnimation.stop();
+						coverAnimation = Meny.animate( dom.cover, { opacity: 1 }, 500 );
+					}
+
 					Meny.dispatchEvent( dom.menu, 'open' );
 				}
 			}
@@ -315,13 +354,23 @@ var Meny = {
 
 					Meny.removeClass( dom.wrapper, 'meny-active' );
 
-					menuAnimation && menuAnimation.stop();
-					menuAnimation = Meny.animate( dom.menu, menuStyleClosed, 500 );
-					contentsAnimation && contentsAnimation.stop();
-					contentsAnimation = Meny.animate( dom.contents, contentsStyleClosed, 500 );
-					coverAnimation && coverAnimation.stop();
-					coverAnimation = Meny.animate( dom.cover, { opacity: 0 }, 500, function() { dom.cover.style.visibility = 'hidden'; } );
+					// Use transforms and transitions if available...
+					if( supportsTransitions ) {
+						dom.cover.style.visibility = 'hidden';
+						dom.cover.style.opacity = 0;
 
+						dom.contents.style[ Meny.prefix( 'transform' ) ] = contentsTransformClosed;
+						dom.menu.style[ Meny.prefix( 'transform' ) ] = menuTransformClosed;
+					}
+					// ...fall back on JS animation
+					else {
+						menuAnimation && menuAnimation.stop();
+						menuAnimation = Meny.animate( dom.menu, menuStyleClosed, 500 );
+						contentsAnimation && contentsAnimation.stop();
+						contentsAnimation = Meny.animate( dom.contents, contentsStyleClosed, 500 );
+						coverAnimation && coverAnimation.stop();
+						coverAnimation = Meny.animate( dom.cover, { opacity: 0 }, 500, function() { dom.cover.style.visibility = 'hidden'; } );
+					}
 
 					Meny.dispatchEvent( dom.menu, 'close' );
 				}

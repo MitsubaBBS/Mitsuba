@@ -1,3 +1,12 @@
+CREATE TABLE IF NOT EXISTS `ads` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `board` varchar(10) NOT NULL,
+  `position` varchar(10) NOT NULL,
+  `text` text NOT NULL,
+  `show` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `announcements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` int(30) NOT NULL,
