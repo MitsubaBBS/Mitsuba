@@ -1383,6 +1383,7 @@ class Caching
 		}
 		$file = $this->getBoardHeader($board, $boarddata, "board", 1);
 		$file .= $this->getAds($boarddata['short'], "underform");
+		$location = "board";
 		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != \"\") AS 'img_replies' FROM posts WHERE resto=0 AND board='b' ORDER BY sticky DESC, lastbumped DESC");
 		$file .= '<div class="navLinks">[<a href="./" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
 		$file .= '<div id="content">';
@@ -1432,12 +1433,12 @@ class Caching
 					{
 						
 						$file .= '<a href="./res/'.$row['id'].'.html">';
-						$file .= '<img alt="" id="thumb-'.$row['id'].'-'.$filenum.'" class="thumb" width="127" height="13" src="./img/deleted.gif">';
+						$file .= '<img alt="" id="thumb-'.$row['id'].'-'.$filenum.'" class="thumb" width="127" height="13" src="'.$this->mitsuba->getPath("./img/deleted.gif", $location, 1).'">';
 						$file .= '</a>';
 					} elseif (substr($fileinfo['filename'], 0, 8) == "spoiler:")
 					{
 						$file .= '<a href="./res/'.$row['id'].'.html">';
-						$file .= '<img alt="" id="thumb-'.$row['id'].'-'.$filenum.'" class="thumb" width="100" height="100" src="./img/spoiler.png">';
+						$file .= '<img alt="" id="thumb-'.$row['id'].'-'.$filenum.'" class="thumb" width="100" height="100" src="'.$this->mitsuba->getPath("./img/spoiler.png", $location, 1).'">';
 						$file .= '</a>';
 					} elseif (substr($fileinfo['filename'], 0, 6) == "embed:")
 					{

@@ -92,8 +92,10 @@ if (!empty($_POST['mode']))
 			
 			if (($mod_type < 1) && ($bdata['captcha'] == 1) && (empty($_SESSION['captcha']) || empty($_POST['captcha']) || strtolower(trim($_POST['captcha'])) != $_SESSION['captcha']))
 			{
+				$_SESSION['captcha'] = "";
 				echo "<h1>".$lang['img/wrong_captcha']."</h1></body></html>"; exit;
 			}
+			$_SESSION['captcha'] = "";
 
 			if (strlen($_POST['com']) > $bdata['maxchars'])
 			{
