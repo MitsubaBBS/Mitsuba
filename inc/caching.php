@@ -1868,6 +1868,15 @@ class Caching
 	function getFiles($row, $board, $return, $threadno, $embed_table, $extensions)
 	{
 		$file = "";
+		if ($return == 1)
+		{
+			$location = "index";
+		} elseif ($threadno != 0)
+		{
+			$location = "thread";
+		} else {
+			$location = "board";
+		}
 		if (!empty($row['filename']))
 		{
 			$files = array();
@@ -1950,7 +1959,7 @@ class Caching
 						$thumbpath = './src/thumb/'.substr($fileinfo['filename'],8);
 					}
 
-					$file .= '<a class="fileThumb" href="'.$filepath.'" target="_blank"><img src="./img/spoiler.png" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+					$file .= '<a class="fileThumb" href="'.$filepath.'" target="_blank"><img src="'.$this->mitsuba->getPath("./img/spoiler.png", $location, 1).'" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
 					$file .= '</div>';
 				} elseif (substr($fileinfo['filename'], 0, 6) == "embed:")
 				{
