@@ -958,7 +958,6 @@ class Caching
 					$extensions[$row['mimetype']]['image'] = $row['image'];
 				}
 
-				$file = "";
 				$file = $this->getThread($trow['board'], 0, 0, 0, $parser, $boarddata, $replace_array, $embed_table, $trow, $extensions, 1);
 			
 			}
@@ -1164,6 +1163,12 @@ class Caching
 		if ($row1[0] == 0)
 		{
 			$file .= '</div><hr />';
+			if (($this->config['caching_mode'] == 1) && ($threadno == 0) && ($return == 0))
+			{
+				$handle = fopen("./".$board."/res/".$row['id']."_index.html", "w");
+				fwrite($handle, $file);
+				fclose($handle);
+			}
 			return $file;
 		}
 		if ($row1[0] > 3)
@@ -1526,15 +1531,48 @@ class Caching
 		$result = $this->conn->query("SELECT id FROM posts WHERE resto=0 AND board='".$board."'");
 		while ($row = $result->fetch_assoc())
 		{
+			if ($this->config['caching_mode']==1)
+			{
+				$this->forceGetThread($board, $row['id']);
+			}
 			$this->generateView($board, $row['id']);
 			if ($this->config['enable_api']==1)
 			{
 				$this->serializeThread($board, $row['id']);
 			}
-			if ($this->config['caching_mode']==1)
+		}
+	}
+
+	function serializeBoard($board)
+	{
+		if ($this->config['enable_api']==0)
+		{
+			return;
+		}
+		if ($this->mitsuba->common->isBoard($board))
+		{
+			$boardposts = $this->conn->query("SELECT * FROM posts WHERE board='".$board."'");
+			$api_posts = array();
+			require_once( "libs/jbbcode/Parser.php" );
+			$parser = new \JBBCode\Parser();
+			$boarddata = $this->mitsuba->common->getBoardData($board);
+			if ($boarddata['bbcode']==1)
 			{
-				$this->forceGetThread($board, $row['id']);
+				$bbcode = $this->conn->query("SELECT * FROM bbcodes;");
+				
+				while ($row = $bbcode->fetch_assoc())
+				{
+					$parser->addBBCode($row['name'], $row['code']);
+				}
 			}
+			while ($row = $boardposts->fetch_assoc())
+			{
+				$api_posts[] = $this->serializePost($row, $boarddata, $parser);
+			}
+			$api_handle = fopen("./".$board."/board.json", "w");
+			$api['posts'] = $api_posts;
+			fwrite($api_handle, json_encode($api));
+			fclose($api_handle);
 		}
 	}
 
@@ -2213,10 +2251,11 @@ class Caching
 
 	function rebuildBoardCache($board)
 	{
+		$this->regenIDs($board);
 		$this->updateThreads($board);
 		$this->generateView($board);
 		$this->generateCatalog($board);
-		$this->regenIDs($board);
+		$this->serializeBoard($board);
 	}
 
 	function regenIDs($board)
@@ -2261,11 +2300,13 @@ class Caching
 			$post = $result->fetch_assoc();
 			if ($post['resto'] == 0)
 			{
+				$this->generateCatalog($board);
 				$this->generateView($board, $post['id']);
 			} else {
 				$this->generateView($board, $post['resto']);
 			}
 			$this->generateView($board);
+			$this->serializeBoard($board);
 		}
 	}
 }

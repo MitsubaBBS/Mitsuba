@@ -139,6 +139,7 @@ class Posting {
 							$this->mitsuba->caching->generateCatalog($board);
 						}
 						$this->mitsuba->caching->generateView($board);
+
 						return 2; //done post
 					} else {
 						if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
@@ -169,6 +170,10 @@ class Posting {
 						$this->mitsuba->caching->generateView($board);
 						return 2;
 					}
+				}
+				if ($config['enable_api']==1)
+				{
+					$mitsuba->caching->serializeBoard($_GET['b']);
 				}
 					
 			} else {
@@ -479,6 +484,11 @@ class Posting {
 		if ($config['frontpage_style'] == 1)
 		{
 			$this->mitsuba->caching->generateFrontpage();
+		}
+
+		if ($config['enable_api']==1)
+		{
+			$mitsuba->caching->serializeBoard($_GET['b']);
 		}
 	}
 

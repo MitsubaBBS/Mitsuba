@@ -10,7 +10,7 @@ if (isset($_POST['mode']))
 	{
 		case "add":
 			$shown = 1;
-			if ((is_numeric($_POST['shown'])) && ($_POST['shown']==0)) { $shown = 0; }
+			if ((!empty($_POST['shown'])) && (is_numeric($_POST['shown'])) && ($_POST['shown']==0)) { $shown = 0; }
 			$text = "";
 			$board = "*";
 			$position = "head";
@@ -24,7 +24,7 @@ if (isset($_POST['mode']))
 			if (is_numeric($_POST['id']))
 			{
 				$shown = 1;
-				if ((is_numeric($_POST['shown'])) && ($_POST['shown']==0)) { $shown = 0; }
+				if ((!empty($_POST['shown'])) && (is_numeric($_POST['shown'])) && ($_POST['shown']==0)) { $shown = 0; }
 				$text = "";
 				$board = "*";
 				$position = "head";

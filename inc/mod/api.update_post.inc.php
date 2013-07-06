@@ -41,6 +41,10 @@ $mitsuba->admin->reqPermission(3);
 						$mitsuba->caching->serializeThread($_GET['b'], $row['resto']);
 					}
 				}
+				if ($config['enable_api']==1)
+				{
+					$mitsuba->caching->serializeBoard($_GET['b']);
+				}
 				$mitsuba->caching->generateView($_GET['b']);
 			}
 		} else {
