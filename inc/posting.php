@@ -23,6 +23,7 @@ class Posting {
 		{
 			$adm_type = -1;
 		}
+		if ($adm_type == 0) { $adm_type = -1; }
 		if (is_numeric($postno))
 		{
 			$board = $this->conn->real_escape_string($board);
