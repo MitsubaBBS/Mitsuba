@@ -185,7 +185,7 @@ class Caching
 		$return = $link;
 		if ((substr($link, 0, 2) == ">>") && (is_numeric(substr($link, 2))))
 		{
-			$result = $this->conn->query("SELECT * FROM posts WHERE id='".substr($link, 2)."' AND board='".$board."';");
+			$result = $this->conn->query("SELECT * FROM posts WHERE id='".substr($link, 2)."' AND board='".$board."' AND deleted=0;");
 			if ($result->num_rows == 1)
 			{
 				
@@ -220,7 +220,7 @@ class Caching
 			{
 				if (is_numeric($parts[2]))
 				{
-					$result = $this->conn->query("SELECT * FROM posts WHERE id='".$parts[2]."' AND board='".$parts[1]."';");
+					$result = $this->conn->query("SELECT * FROM posts WHERE id='".$parts[2]."' AND board='".$parts[1]."' AND deleted=0;");
 					if ($result->num_rows == 1)
 					{
 						$row = $result->fetch_assoc();
@@ -451,7 +451,7 @@ class Caching
 		
 		if ($threadno == 0)
 		{
-			$cnt = $this->conn->query("SELECT id FROM posts WHERE resto=0 AND board='".$board."'");
+			$cnt = $this->conn->query("SELECT id FROM posts WHERE resto=0 AND board='".$board."' AND deleted=0");
 			$all_pages = ceil(($cnt->num_rows)/10);
 			if ($all_pages == 0) { $all_pages = 1; }
 			if (($max_pages+1) < $all_pages)
@@ -486,7 +486,7 @@ class Caching
 				
 			} elseif ($threadno != 0)
 			{
-				$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."';");
+				$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."' AND deleted=0;");
 				if ($result->num_rows == 1)
 				{
 					$tdata = $result->fetch_assoc();
@@ -676,10 +676,10 @@ class Caching
 			}
 			if ($threadno != 0)
 			{
-				$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."';");
+				$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."' AND deleted=0;");
 			} else {
 				
-				$result = $this->conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
+				$result = $this->conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' AND deleted=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
 			}
 			while ($row = $result->fetch_assoc())
 			{
@@ -913,7 +913,7 @@ class Caching
 		global $lang;
 		if ($this->mitsuba->common->isBoard($board))
 		{
-			$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."'");
+			$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."' AND deleted=0");
 			if ($result->num_rows == 1)
 			{
 				$trow = $result->fetch_assoc();
@@ -1156,9 +1156,9 @@ class Caching
 		
 		if ($threadno != 0)
 		{
-			$posts = $this->conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC");
+			$posts = $this->conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' AND deleted=0 ORDER BY id ASC");
 		} else {
-		$postnos = $this->conn->query("SELECT COUNT(*) FROM posts WHERE resto=".$row['id']." AND board='".$row['board']."'");
+		$postnos = $this->conn->query("SELECT COUNT(*) FROM posts WHERE resto=".$row['id']." AND board='".$row['board']."' AND deleted=0");
 		$row1 = $postnos->fetch_row();
 		if ($row1[0] == 0)
 		{
@@ -1186,7 +1186,7 @@ class Caching
 			$offset = $row1[0] - 3;
 			
 		}
-		$posts = $this->conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' ORDER BY id ASC LIMIT ".$offset.",3");
+		$posts = $this->conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' AND deleted=0 ORDER BY id ASC LIMIT ".$offset.",3");
 			
 		}
 		while ($row2 = $posts->fetch_assoc())
@@ -1384,7 +1384,7 @@ class Caching
 		$file = $this->getBoardHeader($board, $boarddata, "board", 1);
 		$file .= $this->getAds($boarddata['short'], "underform");
 		$location = "board";
-		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != \"\") AS 'img_replies' FROM posts WHERE resto=0 AND board='b' ORDER BY sticky DESC, lastbumped DESC");
+		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.deleted=0) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != \"\" AND replies.deleted=0) AS 'img_replies' FROM posts WHERE resto=0 AND board='b' AND deleted=0 ORDER BY sticky DESC, lastbumped DESC");
 		$file .= '<div class="navLinks">[<a href="./" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
 		$file .= '<div id="content">';
 		$file .= '<div id="threads" class="extended-small">';
@@ -1529,7 +1529,7 @@ class Caching
 		{
 			return -16;
 		}
-		$result = $this->conn->query("SELECT id FROM posts WHERE resto=0 AND board='".$board."'");
+		$result = $this->conn->query("SELECT id FROM posts WHERE resto=0 AND board='".$board."' AND deleted=0");
 		while ($row = $result->fetch_assoc())
 		{
 			if ($this->config['caching_mode']==1)
@@ -1552,7 +1552,7 @@ class Caching
 		}
 		if ($this->mitsuba->common->isBoard($board))
 		{
-			$boardposts = $this->conn->query("SELECT * FROM posts WHERE board='".$board."'");
+			$boardposts = $this->conn->query("SELECT * FROM posts WHERE board='".$board."' AND deleted=0");
 			$api_posts = array();
 			require_once( "libs/jbbcode/Parser.php" );
 			$parser = new \JBBCode\Parser();
@@ -1581,7 +1581,7 @@ class Caching
 	{
 		if ($this->mitsuba->common->isBoard($board))
 		{
-			$thread = $this->conn->query("SELECT * FROM posts WHERE board='".$board."' AND id=".$thread_id);
+			$thread = $this->conn->query("SELECT * FROM posts WHERE board='".$board."' AND id=".$thread_id." AND deleted=0");
 			if ($thread->num_rows == 1)
 			{
 				$row = $thread->fetch_assoc();
@@ -1793,7 +1793,7 @@ class Caching
 								</div>
 
 								<div class="boxcontent">';
-			$recent_images = $this->conn->query("SELECT posts.*, boards.hidden FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 AND filename<>'' AND filename<>'deleted' AND filename NOT LIKE 'embed%' AND filename NOT LIKE 'spoiler%' ORDER BY date DESC LIMIT 0, 3;");
+			$recent_images = $this->conn->query("SELECT posts.*, boards.hidden FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 AND filename<>'' AND filename<>'deleted' AND filename NOT LIKE 'embed%' AND filename NOT LIKE 'spoiler%' AND deleted=0 ORDER BY date DESC LIMIT 0, 3;");
 			while ($row = $recent_images->fetch_assoc())
 			{
 				$postfile = $row['id'].".html#p".$row['id'];
@@ -1818,7 +1818,7 @@ class Caching
 									<div class="yui-skin-sam menubutton" id="options-container"></div>
 								</div>
 								<div class="boxcontent">';
-			$recent_posts = $this->conn->query("SELECT posts.*, boards.hidden, boards.name AS bname FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 ORDER BY date DESC LIMIT 0, 15;");
+			$recent_posts = $this->conn->query("SELECT posts.*, boards.hidden, boards.name AS bname FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 AND deleted=0 ORDER BY date DESC LIMIT 0, 15;");
 			while ($row = $recent_posts->fetch_assoc())
 			{
 				$postfile = $row['id'].".html#p".$row['id'];
@@ -2295,7 +2295,7 @@ class Caching
 		{
 			return -16;
 		}
-		$result = $this->conn->query("SELECT * FROM posts WHERE id=".$id." AND board='".$board."'");
+		$result = $this->conn->query("SELECT * FROM posts WHERE id=".$id." AND board='".$board."' AND deleted=0");
 		if ($result->num_rows == 1)
 		{
 			$post = $result->fetch_assoc();

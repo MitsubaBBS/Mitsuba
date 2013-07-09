@@ -103,7 +103,10 @@ class Posting {
 							if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
 							{
 								unlink("./".$board."/src/".$filename);
-								unlink("./".$board."/src/thumb/".$filename);
+								if (file_exists("./".$board."/src/thumb/".$filename))
+								{
+									unlink("./".$board."/src/thumb/".$filename);
+								}
 							}
 						}
 						if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
@@ -116,11 +119,14 @@ class Posting {
 							if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
 							{
 								unlink("./".$board."/src/".$filename);
-								unlink("./".$board."/src/thumb/".$filename);
+								if (file_exists("./".$board."/src/thumb/".$filename))
+								{
+									unlink("./".$board."/src/thumb/".$filename);
+								}
 							}
 						}
-						$this->conn->query("DELETE FROM posts WHERE resto=".$postno." AND board='".$board."';");
-						$this->conn->query("DELETE FROM posts WHERE id=".$postno." AND board='".$board."';");
+						$this->conn->query("UPDATE posts SET deleted=".time()." WHERE resto=".$postno." AND board='".$board."';");
+						$this->conn->query("UPDATE posts SET deleted=".time()." WHERE id=".$postno." AND board='".$board."';");
 						if ($bdata['hidden'] == 0)
 						{
 							if (file_exists("./".$board."/res/".$postno.".json"))
@@ -157,7 +163,7 @@ class Posting {
 								unlink("./".$board."/src/thumb/".$filename);
 							}
 						}
-						$this->conn->query("DELETE FROM posts WHERE id=".$postno." AND board='".$board."';");
+						$this->conn->query("UPDATE posts SET deleted=".time()." WHERE id=".$postno." AND board='".$board."';");
 						$this->mitsuba->caching->generateView($board, $postdata['resto']);
 						if ($config['caching_mode']==1)
 						{
@@ -389,8 +395,8 @@ class Posting {
 			$cc_text = $this->conn->real_escape_string(htmlspecialchars($cc_text));
 			$cc_color = $this->conn->real_escape_string(htmlspecialchars($cc_color));
 		}
-		$this->conn->query("INSERT INTO posts (board, date, name, trip, strip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, mimetype, t_w, t_h, sticky, sage, locked, capcode, raw, cc_text, cc_color)".
-		"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$strip."', '".$this->conn->real_escape_string($poster_id)."', '".$this->mitsuba->common->processString($email)."', '".$this->mitsuba->common->processString($subject)."', '".$this->mitsuba->common->preprocessComment($comment)."', '".md5($password)."', '".$this->mitsuba->common->processString($orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', '".$mimetype."', ".$t_w.", ".$t_h.", ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.", '".$cc_text."', '".$cc_color."')");
+		$this->conn->query("INSERT INTO posts (board, date, name, trip, strip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, mimetype, t_w, t_h, sticky, sage, locked, capcode, raw, cc_text, cc_color, deleted)".
+		"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$strip."', '".$this->conn->real_escape_string($poster_id)."', '".$this->mitsuba->common->processString($email)."', '".$this->mitsuba->common->processString($subject)."', '".$this->mitsuba->common->preprocessComment($comment)."', '".md5($password)."', '".$this->mitsuba->common->processString($orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', '".$mimetype."', ".$t_w.", ".$t_h.", ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.", '".$cc_text."', '".$cc_color."', 0)");
 		$id = mysqli_insert_id($this->conn);
 		if (empty($fake_id))
 		{

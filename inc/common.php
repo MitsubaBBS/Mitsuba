@@ -517,7 +517,7 @@ class Common {
 		$salt=preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
 		$salt=strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
 
-		$trip=substr(crypt($pw.$randomstring,$salt),-10);
+		$trip=crypt($pw.$randomstring,$salt);
 		return $trip;
 	}
 
@@ -658,17 +658,84 @@ class Common {
 			return -16;
 		}
 		$bdata = $this->getBoardData($board);
-		$threads = $this->conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' ORDER BY sticky DESC, lastbumped DESC LIMIT ".(($bdata['pages']+2)*10).", 2000");
+		$threads = $this->conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' AND deleted=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".(($bdata['pages']+2)*10).", 2000");
 		while ($row = $threads->fetch_assoc())
 		{
 			$files = $this->conn->query("SELECT * FROM posts WHERE filename != '' AND resto=".$row['id']." AND board='".$board."'");
 			while ($file = $files->fetch_assoc())
 			{
-				unlink("./".$board."/src/".$file['filename']);
-				unlink("./".$board."/src/thumb/".$file['filename']);
+				$filename = $file['filename'];
+				if (substr($filename, 0, 8) == "spoiler:")
+				{
+					$filename = substr($filename, 8);
+				}
+				if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
+				{
+					unlink("./".$board."/src/".$filename);
+					if (file_exists("./".$board."/src/thumb/".$filename))
+					{
+						unlink("./".$board."/src/thumb/".$filename);
+					}
+				}
 			}
-			unlink("./".$board."/src/".$row['filename']);
-			unlink("./".$board."/src/thumb/".$row['filename']);
+			$filename = $row['filename'];
+			if (substr($filename, 0, 8) == "spoiler:")
+			{
+				$filename = substr($filename, 8);
+			}
+			if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
+			{
+				unlink("./".$board."/src/".$filename);
+				if (file_exists("./".$board."/src/thumb/".$filename))
+				{
+					unlink("./".$board."/src/thumb/".$filename);
+				}
+			}
+			
+			$this->conn->query("DELETE FROM posts WHERE resto=".$row['id']." AND board='".$board."'");
+			$this->conn->query("DELETE FROM posts WHERE id=".$row['id']." AND board='".$board."'");
+			if ($bdata['hidden'] == 0)
+			{
+				unlink("./".$board."/res/".$row['id'].".html");
+			}
+		}
+		$deleted_posts = $this->conn->query("SELECT * FROM posts WHERE board='".$board."' AND deleted<".(time()-3600*$this->mitsuba->config['keep_hours'])." AND deleted<>0");
+		while ($row = $deleted_posts->fetch_assoc())
+		{
+			if ($row['resto']==0)
+			{
+				$files = $this->conn->query("SELECT * FROM posts WHERE filename != '' AND resto=".$row['id']." AND board='".$board."'");
+				while ($file = $files->fetch_assoc())
+				{
+					$filename = $file['filename'];
+					if (substr($filename, 0, 8) == "spoiler:")
+					{
+						$filename = substr($filename, 8);
+					}
+					if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
+					{
+						unlink("./".$board."/src/".$filename);
+						if (file_exists("./".$board."/src/thumb/".$filename))
+						{
+							unlink("./".$board."/src/thumb/".$filename);
+						}
+					}
+				}
+			}
+			
+			$filename = $row['filename'];
+			if (substr($filename, 0, 8) == "spoiler:")
+			{
+				$filename = substr($filename, 8);
+			}
+			if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
+			{
+				unlink("./".$board."/src/".$filename);
+				if (file_exists("./".$board."/src/thumb/".$filename))
+				{
+					unlink("./".$board."/src/thumb/".$filename);
+				}
+			}
 			
 			$this->conn->query("DELETE FROM posts WHERE resto=".$row['id']." AND board='".$board."'");
 			$this->conn->query("DELETE FROM posts WHERE id=".$row['id']." AND board='".$board."'");

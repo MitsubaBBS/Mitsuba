@@ -205,6 +205,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `raw` int(1) NOT NULL,
   `cc_color` varchar(12) NOT NULL,
   `cc_text` varchar(50) NOT NULL,
+  `deleted` int(30) NOT NULL,
   PRIMARY KEY (`board`, `id`)
 ) ENGINE=MyISAM;
 
@@ -316,6 +317,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('enable_api', '0'),
 ('enable_rss', '0'),
 ('enable_meny', '0'),
+('keep_hours', '6'),
 ('caching_mode', '0'),
 ('overboard_enabled', '0'),
 ('overboard_boards', ''),
