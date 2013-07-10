@@ -38,7 +38,7 @@ class Frontpage
 			<link rel="stylesheet" href="./styles/menu.css" />
 			</head>
 			<body>';
-		$menu .= $this->getMenu("index", "main");
+		$menu .= $this->mitsuba->caching->getMenu("index", "main");
 		$handle = fopen("./".$this->config['frontpage_menu_url'], "w");
 		fwrite($handle, $menu);
 		fclose($handle);
