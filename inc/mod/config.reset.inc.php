@@ -14,7 +14,7 @@ $config['news_url'] = "news.html";
 $config['sitename'] = "Mitsuba";
 $config['enable_api'] = 0;
 $config['enable_meny'] = 0;
-$config['caching_mode'] = 0;
+$config['caching_mode'] = "kusabalike.php";
 
 $mitsuba->admin->updateConfig($conn, $config);
 

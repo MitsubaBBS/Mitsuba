@@ -309,7 +309,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('boardLinks_thread', ''),
 ('boardLinks', ''),
 ('frontpage_menu_url', 'menu.html'),
-('frontpage_style', '0'),
+('frontpage_style', 'kusabalike.php'),
 ('frontpage_url', 'index.html'),
 ('global_message', ''),
 ('news_url', 'news.html'),

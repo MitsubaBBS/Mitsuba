@@ -45,7 +45,7 @@ if (!empty($_POST['enable_meny']))
 	$config['enable_meny'] = 0;
 }
 
-if ((isset($_POST['caching_mode'])) && (is_numeric($_POST['caching_mode'])))
+if (isset($_POST['caching_mode']))
 {
 	$config['caching_mode'] = $_POST['caching_mode'];
 }

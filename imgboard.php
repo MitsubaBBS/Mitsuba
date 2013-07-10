@@ -43,13 +43,12 @@ if (!empty($_POST['mode']))
 			if (empty($_POST['board']))
 			{
 			?>
-			
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php echo $lang['img/error']; ?></title>
-</head>
-<body>
+				<html>
+				<head>
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+				<title><?php echo $lang['img/error']; ?></title>
+				</head>
+				<body>
 			<?php
 				echo "<center><h1>".$lang['img/no_board']."</h1></center></body></html>";
 				exit;
@@ -103,56 +102,7 @@ if (!empty($_POST['mode']))
 			}
 			if ($mod_type < 1)
 			{
-				$spam = $conn->query("SELECT * FROM spamfilter WHERE active=1");
-				while ($row = $spam->fetch_assoc())
-				{
-					if ($row['boards'] != "*")
-					{
-						$boards = explode(",", $row['boards']);
-						if (in_array($board, $boards))
-						{
-							if ($row['regex'] == 1)
-							{
-								try {
-									if (preg_match($row['search'], $_POST['com']) !== false) {
-										$mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
-										echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
-										die();
-									}
-								} catch (Exception $ex)
-								{
-
-								}
-							} else {
-								if (stripos($_POST['com'], $row['search']) !== false) {
-									$mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
-									echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
-									die();
-								}
-							}
-						}
-					} else {
-						if ($row['regex'] == 1)
-						{
-							try {
-								if (preg_match($row['search'], $_POST['com']) !== false) {
-									$mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
-									echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
-									die();
-								}
-							} catch (Exception $ex)
-							{
-
-							}
-						} else {
-							if (stripos($_POST['com'], $row['search']) !== false) {
-									$mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
-									echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
-									die();
-							}
-						}
-					}
-				}
+				$mitsuba->board->checkSpam($_POST['com'], $_POST['board']);
 			}
 			if ((!empty($_POST['embed'])) && (!empty($_FILES['upfile']['tmp_name'])))
 			{
@@ -163,55 +113,14 @@ if (!empty($_POST['mode']))
 			{
 				if ((empty($_POST['resto'])) || ($_POST['resto']==0))
 				{
-					$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND resto=0 AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
-					if ($lastdate->num_rows == 1)
-					{
-						$pdate = $lastdate->fetch_assoc();
-						$pdate = $pdate['date'];
-						
-						if (($pdate + $bdata['time_between_threads']) > time())
-						{
-							echo "<center><h1>".$lang['img/wait_more_thread']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></center></body></html>";
-							exit;
-						}
-					}
+					$mitsuba->board->checkThreadDate($bdata, $return_url);
 				}
-				
-				$lastdate = $conn->query("SELECT date FROM posts WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND board='".$_POST['board']."' ORDER BY date DESC LIMIT 0, 1");
-				if ($lastdate->num_rows == 1)
-				{
-					$pdate = $lastdate->fetch_assoc();
-					$pdate = $pdate['date'];
-					
-					if (($pdate + $bdata['time_between_posts']) > time())
-					{
-						echo "<center><h1>".$lang['img/wait_more_post']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></center></body></html>";
-						exit;
-					}
-				}
+				$mitsuba->board->checkPostDate($bdata, $return_url);
 			}
 			$mime = "";
 			if (!empty($_POST['embed']))
 			{
-				if ($bdata['embeds']==0)
-				{
-					echo "<center><h1>".$lang['img/embed_not_supported']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></center></body></html>";
-					exit;
-				}
-				
-				$embed_table = array();
-				$result = $conn->query("SELECT * FROM embeds;");
-				while ($row = $result->fetch_assoc())
-				{
-					$embed_table[] = $row;
-				}
-				if ($mitsuba->common->isEmbed($_POST['embed'], $embed_table))
-				{
-					$filename = "embed:".$_POST['embed'];
-				} else {
-					echo "<center><h1>".$lang['img/embed_not_supported']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></center></body></html>";
-					exit;
-				}
+				$filename = $mitsuba->checkEmbed($bdata, $_POST['embed'], $return_url);
 			} else {
 				if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 				{

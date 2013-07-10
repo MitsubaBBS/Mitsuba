@@ -116,6 +116,7 @@ class Mitsuba
 {
 	private $plugins_array = array();
 	private $conn;
+	public $board;
 	public $config;
 	public $caching;
 	public $common;
@@ -147,6 +148,8 @@ class Mitsuba
 				}
 			}
 		}
+		include("board.php");
+		$this->board = new \Mitsuba\Board($this->conn, $this);
 		include("caching.php");
 		$this->caching = new \Mitsuba\Caching($this->conn, $this);
 		include("common.php");

@@ -1694,214 +1694,22 @@ class Caching
 
 	function generateFrontpage()
 	{
-		if ($this->config['frontpage_style'] == 0) //Kusaba X style
+		if (file_exists("./inc/frontpage/".$this->config['frontpage_style']))
 		{
-		
-			$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-			$file .= '<html>
-				<head>
-				<title>'.$this->config['sitename'].'</title>
-				<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-				</head>
-				<frameset cols="200px,*" frameborder="1" border="1" bordercolor="#800">
-				<frame src="'.$this->config['frontpage_menu_url'].'" id="nav">
-				<frame src="'.$this->config['news_url'].'" name="main" id="main">
-				<noframes>
-				<h1>'.$this->config['sitename'].'</h1>
-				<p>This page uses frames!</p>
-				</noframes>
-				</frameset>
-				</html>';
-			$handle = fopen("./".$this->config['frontpage_url'], "w");
-			fwrite($handle, $file);
-			fclose($handle);
-			
-			
-			$menu = '<title>Mitsuba Navigation</title>
-				<link rel="stylesheet" href="./styles/menu.css" />
-				</head>
-				<body>';
-			$menu .= $this->getMenu("index", "main");
-			$handle = fopen("./".$this->config['frontpage_menu_url'], "w");
-			fwrite($handle, $menu);
-			fclose($handle);
-		} elseif ($this->config['frontpage_style'] == 1) //4chan style
-		{
-			
-			$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-
-			$file .= '<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-		<title>'.$this->config['sitename'].'</title>
-		<link href="./styles/global.css" rel="stylesheet" type="text/css" />
-		<link href="./styles/index.css" rel="stylesheet" type="text/css" />
-	</head>';
-
-			$file .= '<body>
-		<div id="doc">
-			<div id="hd">
-				<div id="logo">
-					<h1>'.$this->config['sitename'].'</h1>
-				</div>
-			</div>
-
-			<div id="bd">';
-			$file .= '<div class="box-outer top-box" id="boards">
-					<div class="box-inner">
-						<div class="boxbar">
-							<h2>Boards</h2>
-						</div>
-
-						<div class="boxcontent">';
-			$cats = $this->conn->query("SELECT * FROM links WHERE parent=-1;");
-			while ($row = $cats->fetch_assoc())
-			{
-				$file .= '<div class="column">';
-				$file .= '<h3 style="text-decoration: underline; display: inline;">'.$row['title'].'</h3>';
-				$file .= '<ul>';
-				$children = $this->conn->query("SELECT * FROM links WHERE parent=".$row['id']);
-				while ($child = $children->fetch_assoc())
-				{
-					if (!empty($child['url_index']))
-					{
-						$file .= '<li>
-							<a class="boardlink" href="'.$child['url_index'].'" title="'.$child['title'].'">'.$child['title'].'</a>
-						</li>';
-					} else {
-						$file .= '<li>
-							<a class="boardlink" href="'.$child['url'].'" title="'.$child['title'].'">'.$child['title'].'</a>
-						</li>';
-					}
-				}
-				$file .= '</div>';
-			}
-
-			$file .= '<br class="clear-bug" />
-						</div>
-					</div>
-				</div>';
-
-			$file .= '<div class="wrapper">
-					<div class="left-boxes">
-						<div class="box-outer left-box" id="recent-images">
-							<div class="box-inner">
-								<div class="boxbar">
-									<h2>Recent Images</h2>
-								</div>
-
-								<div class="boxcontent">';
-			$recent_images = $this->conn->query("SELECT posts.*, boards.hidden FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 AND filename<>'' AND filename<>'deleted' AND filename NOT LIKE 'embed%' AND filename NOT LIKE 'spoiler%' AND deleted=0 ORDER BY date DESC LIMIT 0, 3;");
-			while ($row = $recent_images->fetch_assoc())
-			{
-				$postfile = $row['id'].".html#p".$row['id'];
-				if (!empty($row['resto'])) { $postfile = $row['resto'].".html#p".$row['id']; }
-				$file .= '<ul>
-					<li>
-						<a class="tooltiplink-ws boardlink" href="./'.$row['board'].'/res/'.$postfile.'" /><img alt="'.$row['orig_filename'].'" height="'.$row['t_h'].'" src="./'.$row['board'].'/src/thumb/'.$row['filename'].'" width="'.$row['t_w'].'" /></a>
-					</li>
-				</ul>';
-			}
-			$file .= '</div>
-							</div>
-						</div>
-					</div>';
-
-			$file .= '<div class="right-boxes">
-						<div class="box-outer right-box" id="recent-threads">
-							<div class="box-inner">
-								<div class="boxbar">
-									<h2>Latest Posts</h2>
-
-									<div class="yui-skin-sam menubutton" id="options-container"></div>
-								</div>
-								<div class="boxcontent">';
-			$recent_posts = $this->conn->query("SELECT posts.*, boards.hidden, boards.name AS bname FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 AND deleted=0 ORDER BY date DESC LIMIT 0, 15;");
-			while ($row = $recent_posts->fetch_assoc())
-			{
-				$postfile = $row['id'].".html#p".$row['id'];
-				if (!empty($row['resto'])) { $postfile = $row['resto'].".html#p".$row['id']; }
-				$file .= '<ul>
-										<li>'.$row['bname'].': <a class="tooltiplink-ws boardlink" href="./'.$row['board'].'/res/'.$postfile.'" >'.htmlspecialchars(substr($row['comment'], 0, 30)).'...</a>
-										</li>
-									</ul>';
-			}
-			$file .= '</div>
-							</div>
-						</div>';
-
-			$file .= '<div class="box-outer right-box">
-							<div class="box-inner">
-								<div class="boxbar">
-									<h2>Stats</h2>
-								</div>
-
-								<div class="boxcontent">
-									<ul>
-										<li>Total Posts: 1,235,062,437</li>
-
-										<li>Current Users: 127,915</li>
-
-										<li>Active Content: 107 GB</li>
-									</ul>
-								</div>
-							</div>';
-			$file .= '</div>
-					</div>
-				</div>
-			</div>
-			<div id="ft" class=" ">
-				<br class="clear-bug">
-				<div id="copyright" class=" ">- <a href="http://github.com/MitsubaBBS/Mitsuba">mitsuba</a> -</div>
-			</div>
-		</div>
-	</body>
-	</html>';
-			
-			$handle = fopen("./".$this->config['frontpage_url'], "w");
-			fwrite($handle, $file);
-			fclose($handle);
+			include("./inc/frontpage/".$this->config['frontpage_style']);
+			$fpage = new Frontpage($this->conn, $this->mitsuba);
+			$fpage->generateFrontpage();
 		}
 	}
 
 	function generateNews()
 	{
-		
-		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-		$file .= '<html>
-			<head>
-			<title>'.$this->config['sitename'].'</title>
-			<link rel="stylesheet" href="./styles/index.css" />
-			<link rel="stylesheet" href="./styles/global.css" />
-			<link rel="stylesheet" href="./styles/table.css" />
-			</head>
-			<body>';
-		$file .= '<div id="doc">
-			<br /><br />';
-		$file .= '<div class="box-outer top-box">
-			<div class="box-inner">
-			<div class="boxbar"><h2>News</h2></div>
-			<div class="boxcontent">';
-		$result = $this->conn->query("SELECT * FROM news ORDER BY date DESC;");
-		while ($row = $result->fetch_assoc())
+		if (file_exists("./inc/frontpage/".$this->config['frontpage_style']))
 		{
-			$file .= '<div class="content">';
-			$file .= '<h3><span class="newssub">'.$row['title'].' by '.$row['who'].' - '.date("d/m/Y @ H:i", $row['date']).'</span></span></h3>';
-			$file .= $row['text'];
-			$file .= '</div>';
+			include("./inc/frontpage/".$this->config['frontpage_style']);
+			$fpage = new Frontpage($this->conn, $this->mitsuba);
+			$fpage->generateNews();
 		}
-		$file .= '</div>
-			</div>
-			</div>
-			</div>
-			</body>
-			</html>';
-		$handle = fopen("./".$this->config['news_url'], "w");
-		fwrite($handle, $file);
-		fclose($handle);
 	}
 
 	function getFiles($row, $board, $return, $threadno, $embed_table, $extensions)
