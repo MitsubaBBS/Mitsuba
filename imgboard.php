@@ -84,7 +84,7 @@ if (!empty($_POST['mode']))
 			
 			$md5 = "";
 			$bdata = $mitsuba->common->getBoardData($_POST['board']);
-			if ($bdata['hidden'] == 1)
+			if (($bdata['hidden'] == 1) && ($mod_type < 1))
 			{
 				echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
 			}

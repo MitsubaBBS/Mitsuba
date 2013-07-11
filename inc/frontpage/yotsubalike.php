@@ -79,7 +79,7 @@ class Frontpage
 							</div>
 
 							<div class="boxcontent">';
-		$recent_images = $this->conn->query("SELECT posts.*, boards.hidden FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 AND filename<>'' AND filename<>'deleted' AND filename NOT LIKE 'embed%' AND filename NOT LIKE 'spoiler%' AND deleted=0 ORDER BY date DESC LIMIT 0, 3;");
+		$recent_images = $this->conn->query("SELECT posts.*, boards.hidden, boards.unlisted FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 AND boards.unlisted=0 AND filename<>'' AND filename<>'deleted' AND filename NOT LIKE 'embed%' AND filename NOT LIKE 'spoiler%' AND deleted=0 ORDER BY date DESC LIMIT 0, 3;");
 		while ($row = $recent_images->fetch_assoc())
 		{
 			$postfile = $row['id'].".html#p".$row['id'];
@@ -104,7 +104,7 @@ class Frontpage
 								<div class="yui-skin-sam menubutton" id="options-container"></div>
 							</div>
 							<div class="boxcontent">';
-		$recent_posts = $this->conn->query("SELECT posts.*, boards.hidden, boards.name AS bname FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 AND deleted=0 ORDER BY date DESC LIMIT 0, 15;");
+		$recent_posts = $this->conn->query("SELECT posts.*, boards.hidden, boards.unlisted, boards.name AS bname FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 AND boards.unlisted=0 AND deleted=0 ORDER BY date DESC LIMIT 0, 15;");
 		while ($row = $recent_posts->fetch_assoc())
 		{
 			$postfile = $row['id'].".html#p".$row['id'];
@@ -126,11 +126,11 @@ class Frontpage
 
 							<div class="boxcontent">
 								<ul>
-									<li>Total Posts: 1,235,062,437</li>
+									<li>Total Posts: </li>
 
-									<li>Current Users: 127,915</li>
+									<li>Current Users: </li>
 
-									<li>Active Content: 107 GB</li>
+									<li>Active Content: </li>
 								</ul>
 							</div>
 						</div>';

@@ -30,6 +30,7 @@ $mitsuba->admin->reqPermission(3);
 <input type="checkbox" name="embeds" value="1" <?php if ($data['embeds'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_embeds']; ?><br />
 <input type="checkbox" name="bbcode" value="1" <?php if ($data['bbcode'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_bbcode']; ?><br />
 <input type="checkbox" name="hidden" value="1" <?php if ($data['hidden'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_hidden']; ?><br />
+<input type="checkbox" name="unlisted" value="1" <?php if ($data['unlisted'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_unlisted']; ?><br />
 <input type="checkbox" name="nodup" value="1" <?php if ($data['nodup'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_nodup']; ?><br />
 <input type="checkbox" name="catalog" value="1" <?php if ($data['catalog'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_catalog']; ?><br />
 <input type="checkbox" name="captcha" value="1" <?php if ($data['captcha'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_captcha']; ?> <br />

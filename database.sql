@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `filesize` int(20) NOT NULL,
   `pages` int(4) NOT NULL,
   `hidden` int(1) NOT NULL,
+  `unlisted` int(1) NOT NULL,
   `nodup` int(1) NOT NULL,
   `maxchars` int(8) NOT NULL,
   `multifile` int(2) NOT NULL,
