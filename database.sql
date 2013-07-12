@@ -266,6 +266,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `username` varchar(40) NOT NULL,
   `password` varchar(130) NOT NULL,
+  `salt` varchar(20) NOT NULL,
   `type` int(1) NOT NULL,
   `boards` text NOT NULL,
   PRIMARY KEY (`id`),

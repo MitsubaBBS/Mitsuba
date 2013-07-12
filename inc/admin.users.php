@@ -29,13 +29,14 @@ class Users {
 	function addUser($username, $password, $type, $boards)
 	{
 		$username = $this->conn->real_escape_string($username);
-		$password = hash("sha512", $password);
 		if (!is_numeric($type))
 		{
 			return -1;
 		}
 		$boards = $this->conn->real_escape_string($boards);
-		$result = $this->conn->query("INSERT INTO users (username, password, type, boards) VALUES ('".$username."', '".$password."', ".$type.", '".$boards."')");
+		$salt = $this->conn->real_escape_string($this->mitsuba->common->randomSalt());
+		$password = hash("sha512", $password.$salt);
+		$result = $this->conn->query("INSERT INTO users (username, password, salt, type, boards) VALUES ('".$username."', '".$password."', '".$salt."', ".$type.", '".$boards."')");
 		if ($result)
 		{
 			return 1;
@@ -64,17 +65,20 @@ class Users {
 		{
 			return -1;
 		}
-		$username = $this->conn->real_escape_string($username);
-		$password_db = "";
-		if (!empty($password))
+		$user = $this->conn->query("SELECT * FROM users WHERE id=".$id);
+		if ($user->num_rows == 1)
 		{
-			$password_db = ", password='".hash("sha512", $password)."'";
+			$userdata = $user->fetch_assoc();
+			$username = $this->conn->real_escape_string($username);
+			$password_db = "";
+			if (!empty($password))
+			{
+				$password_db = ", password='".hash("sha512", $password.$userdata['salt'])."'";
+			}
+			$type = $this->conn->real_escape_string($type);
+			$boards = $this->conn->real_escape_string($boards);
+			$this->conn->query("UPDATE users SET username='".$username."'".$password_db.", type=".$type.", boards='".$boards."' WHERE id=".$id);
 		}
-		
-		$type = $this->conn->real_escape_string($type);
-		$boards = $this->conn->real_escape_string($boards);
-		$this->conn->query("UPDATE users SET username='".$username."'".$password_db.", type=".$type.", boards='".$boards."' WHERE id=".$id);
-
 	}
 
 	function isUser($id)
