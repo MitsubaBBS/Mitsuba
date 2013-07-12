@@ -716,7 +716,7 @@ function adminInlineEdit(event)
 			{
 				raw = "checked='checked'";
 			}
-			$(block).html("<textarea rows='5' cols='50' id='edit_"+json.id+"'>"+json.comment+"</textarea><br /><input type='checkbox' "+raw+" value='1' id='raw_"+json.id+"' />Raw HTML<input type='submit' value='Update!' id='s_"+json.id+"' /><input type='submit' value='Cancel' id='cancel_"+json.id+"' />");
+			$(block).html("<form action='' method='POST'><textarea rows='5' cols='50' id='edit_"+json.id+"'>"+json.comment+"</textarea><br /><input type='checkbox' "+raw+" value='1' id='raw_"+json.id+"' />Raw HTML<input type='submit' value='Update!' id='s_"+json.id+"' /><input type='submit' value='Cancel' id='cancel_"+json.id+"' /></form>");
 			
 			$(element).replaceWith("<b>E</b>");
 			
