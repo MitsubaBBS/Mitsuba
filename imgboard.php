@@ -318,7 +318,8 @@ if (!empty($_POST['mode']))
 				{
 					if ($value == "delete")
 					{
-						$done = $mitsuba->posting->deletePost($_POST['board'], $key, $password, $onlyimgdel, $mod_type);
+						$keys = explode("/", substr($key, 4));
+						$done = $mitsuba->posting->deletePost($keys[0], $keys[1], $password, $onlyimgdel, $mod_type);
 						if ($done == -1) {
 							echo sprintf($lang["img/post_bad_password"],$key).".<br />";
 						} elseif ($done == -2) {

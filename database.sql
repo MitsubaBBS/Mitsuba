@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS `bbcodes` (
 
 CREATE TABLE IF NOT EXISTS `boards` (
   `short` varchar(10) NOT NULL,
+  `board_type` varchar(60) NOT NULL,
   `name` varchar(40) NOT NULL,
   `des` varchar(100) NOT NULL,
   `message` text NOT NULL,
@@ -85,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `extensions` text NOT NULL,
   `catalog` int(1) NOT NULL,
   `captcha` int(1) NOT NULL,
+  `overboard_boards` text NOT NULL,
   PRIMARY KEY (`short`)
 );
 
@@ -320,10 +322,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('enable_rss', '0'),
 ('enable_meny', '0'),
 ('keep_hours', '6'),
-('caching_mode', '0'),
-('overboard_enabled', '0'),
-('overboard_boards', ''),
-('overboard_name', '*');
+('caching_mode', '0');
 
 INSERT INTO `embeds` (`name`, `regex`, `code`) VALUES
 ('dailymotion', '/http(s)?:\\/\\/(www\\.)?dailymotion\\.com\\/video\\/([^&]+)/', '<iframe width="%1$s" height=""%1$s" src="http://www.dailymotion.com/embed/video/"%4$s" frameborder="0" allowfullscreen></iframe>'),

@@ -194,18 +194,18 @@ class Caching
 				{
 					if ($thread == 1)
 					{
-						$return = '<a href="../res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
+						$return = '<a href="../../'.$board.'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
 					} elseif ($thread == 0) {
-						$return = '<a href="./res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
+						$return = '<a href="../'.$board.'/res/'.$row['resto'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
 					} else {
 						$return = '<a href="?/board&b='.$board.'&t='.$row['resto'].'#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
 					}
 				} else {
 					if ($thread == 1)
 					{
-						$return = '<a href="../res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
+						$return = '<a href="../../'.$board.'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
 					} elseif ($thread == 0) {
-						$return = '<a href="./res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
+						$return = '<a href="../'.$board.'/res/'.$row['id'].'.html#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
 					} else {
 						$return = '<a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" class="quotelink">'.$link.'</a>';
 					}
@@ -367,9 +367,11 @@ class Caching
 		return $file;
 	}
 
-	function generateView($board, $threadno = 0, $return = 0, $mode = 0, $adm_type = 0, $overboard = 0)
+	function generateView($board, $threadno = 0, $return = 0, $mode = 0, $adm_type = 0)
 	{
 		global $lang;
+		$overboard = 0;
+		$overboard_boards = array();
 		$board = $this->conn->real_escape_string($board);
 		if (!$this->mitsuba->common->isBoard($board))
 		{
@@ -380,19 +382,50 @@ class Caching
 		{
 			return -666;
 		}
+		if ($boarddata['board_type']=="overboard")
+		{
+			$overboard = 1
+			$overboard_boards = explode(",", $boarddata['overboard_boards']);
+		}
+
 		$wfresult = $this->conn->query("SELECT * FROM wordfilter WHERE active=1");
 		$replace_array = array();
+		if ($overboard==0)
+		{
+			$replace_array[$board] = array();
+		} else {
+			foreach ($overboard_boards as $short) {
+				$replace_array[$short] = array();
+			}
+		}
 		while ($row = $wfresult->fetch_assoc())
 		{
 			if ($row['boards'] != "*")
 			{
 				$boards = explode(",", $row['boards']);
-				if (in_array($board, $boards))
+				if ($overboard==0)
 				{
-					$replace_array[$row['search']] = $row['replace'];
+					if (in_array($board, $boards))
+					{
+						$replace_array[$board][$row['search']] = $row['replace'];
+					}
+				} else {
+					foreach ($overboard_boards as $short) {
+						if (in_array($short, $boards))
+						{
+							$replace_array[$short][$row['search']] = $row['replace'];
+						}
+					}
 				}
 			} else {
-				$replace_array[$row['search']] = $row['replace'];
+				if ($overboard==0)
+				{
+					$replace_array[$board][$row['search']] = $row['replace'];
+				} else {
+					foreach ($overboard_boards as $short) {
+						$replace_array[$short][$row['search']] = $row['replace'];
+					}
+				}
 			}
 		}
 		$max_pages = $boarddata['pages'];
@@ -423,7 +456,7 @@ class Caching
 		
 		require_once( "libs/jbbcode/Parser.php" );
 		$parser = new \JBBCode\Parser();
-		if ($boarddata['bbcode']==1)
+		if (($boarddata['bbcode']==1) || ($overboard == 1))
 		{
 			$bbcode = $this->conn->query("SELECT * FROM bbcodes;");
 			
@@ -497,7 +530,7 @@ class Caching
 			}
 			
 			
-			if ($locked == 0)
+			if (($locked == 0) && ($overboard == 0))
 			{
 				if ($threadno != 0)
 				{
@@ -645,6 +678,8 @@ class Caching
 					});
 					</script>';
 			}
+			} elseif ($overboard == 1) {
+				//TODO: Overboard stuff
 			} else {
 				$file .= "<div class='closed'><h1>".$lang['img/locked']."</h1></div>";
 			}
@@ -667,23 +702,40 @@ class Caching
 			$file .= '<hr />';
 			if ($return == 1)
 			{
-				$file .= '<form id="delform" action="?/board/action" method="post"><div class="board">';
+				$file .= '<form id="delform" action="./imgboard.php" method="post"><div class="board">';
 			} elseif ($threadno != 0)
 			{
 				$file .= '<form id="delform" action="../../imgboard.php" method="post"><div class="board">';
 			} else {
 				$file .= '<form id="delform" action="../imgboard.php" method="post"><div class="board">';
 			}
-			if ($threadno != 0)
+			if ($overboard == 1)
 			{
+				$sql_boardlist = "(";
+				$first = 1;
+				foreach ($overboard_boards as $short) {
+					if ($first == 1)
+					{
+						$sql_boardlist .= "'".$short."'"
+						$first = 0;
+					} else {
+						$sql_boardlist .= " OR '".$short."'"
+					}
+					$sql_boardlist = ")";
+				}
+				$result = $this->conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$sql_boardlist."' AND deleted=0 ORDER BY lastbumped DESC LIMIT ".($pg*10).",10");
+			} elseif ($threadno != 0) {
 				$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."' AND deleted=0;");
 			} else {
-				
 				$result = $this->conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' AND deleted=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
 			}
 			while ($row = $result->fetch_assoc())
 			{
-				$file .= $this->getThread($board, $threadno, $return, $adm_type, $parser, $boarddata, $replace_array, $embed_table, $row, $extensions);
+				if ($overboard == 1)
+				{
+					$file .= "<h2><a href='../".$row['short']."/'>/".$row['short']."/</a></h2>"
+				}
+				$file .= $this->getThread($row['short'], $threadno, $return, $adm_type, $parser, $boarddata, $replace_array[$row['short']], $embed_table, $row, $extensions);
 			}
 			$file .= "</div>";
 			if ($threadno != 0)
@@ -698,7 +750,6 @@ class Caching
 				}
 			}
 			$file .= '<div class="deleteform">
-				<input type="hidden" name="board" value="'.$board.'" />
 				<input type="hidden" name="mode" value="usrform" />'.$lang['img/delete_post'].' [<input type="checkbox" name="onlyimgdel" value="on" />'.$lang['img/file_only'].'] ';
 			if ($adm_type <= 1)
 			{
@@ -719,9 +770,7 @@ class Caching
 				$file .= '<div class="prev">';
 				if ($page != 0)
 				{
-					
 					$file .= '<form action="?/board&b='.$board.'&p='.($page-1).'" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/previous'].'" /></form>';
-					
 				} else {
 					$file .= '<span>'.$lang['img/previous'].'</span>';
 				}
@@ -967,16 +1016,16 @@ class Caching
 	function getThread($board, $threadno, $return, $adm_type, $parser, $boarddata, $replace_array, $embed_table, $row, $extensions, $force = 0)
 	{
 		global $lang;
-		if (($this->config['caching_mode']==1) && ($threadno == 0) && ($return == 0) && ($force == 0) && (file_exists("./".$board."/res/".$row['id']."_index.html")))
+		if (($this->config['caching_mode']==1) && ($threadno == 0) && ($return == 0) && ($force == 0) && (file_exists("./".$row['board']."/res/".$row['id']."_index.html")))
 		{
-			return file_get_contents("./".$board."/res/".$row['id']."_index.html");
+			return file_get_contents("./".$row['board']."/res/".$row['id']."_index.html");
 		}
 		$file = "";
 		$file .= '<div class="thread" id="t'.$row['id'].'">';
 		$file .= '<div class="postContainer opContainer" id="pc'.$row['id'].'">';
 		$file .= '<div id="p'.$row['id'].'" class="post op">';
 		$file .= '<div class="postInfo" id="pi'.$row['id'].'">';
-		$file .= '<input type="checkbox" name="'.$row['id'].'" value="delete" />';
+		$file .= '<input type="checkbox" name="del_'.$row['board'].'/'.$row['id'].'" value="delete" />';
 		$file .= '<span class="subject">'.$row['subject'].'</span> ';
 		$trip = "";
 		if (!empty($row['trip']))
@@ -1053,7 +1102,7 @@ class Caching
 
 		if ($return == 1)
 		{
-			$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row['id'].'#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a></span>';
+			$file .= '<span class="postNum"><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#p'.$row['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#p'.$row['id'].'#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a></span>';
 			if ($row['locked']==1)
 			{
 				$file .= '<img src="./img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
@@ -1068,32 +1117,32 @@ class Caching
 			}
 			if ($adm_type >= 2)
 			{
-				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'">D</a>';
+				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$row['board'].'&p='.$row['id'].'">B</a> / <a href="?/bans/add&b='.$row['board'].'&p='.$row['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$row['board'].'&p='.$row['id'].'">D</a>';
 				if (!empty($row['filename']))
 				{
-					$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row['id'].'&f=1">F</a>]';
+					$file .= ' / <a href="?/delete_post&b='.$row['board'].'&p='.$row['id'].'&f=1">F</a>]';
 				} else {
 					$file .= ']';
 				}
 				if ($adm_type >= 3)
 				{
-					$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row['id'].'" class="edit">E</a>]';
+					$file .= ' [<a href="?/edit_post&b='.$row['board'].'&p='.$row['id'].'" class="edit">E</a>]';
 				}
 			} else {
-				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row['id'].'">B</a>]';
+				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$row['board'].'&p='.$row['id'].'">B</a>]';
 			}
 			if ($adm_type >= 2)
 			{
-				$file .= ' [<a href="?/sticky/toggle&b='.$board.'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$board.'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$board.'&t='.$row['id'].'">A</a>]';
+				$file .= ' [<a href="?/sticky/toggle&b='.$row['board'].'&t='.$row['id'].'">S</a> / <a href="?/locked/toggle&b='.$row['board'].'&t='.$row['id'].'">L</a> / <a href="?/antibump/toggle&b='.$row['board'].'&t='.$row['id'].'">A</a>]';
 			}
 			if ($threadno == 0)
 			{
-				$file .= '&nbsp; <span>[<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">'.$lang['img/reply'].'</a>]</span>';
+				$file .= '&nbsp; <span>[<a href="?/board&b='.$row['board'].'&t='.$row['id'].'" class="replylink">'.$lang['img/reply'].'</a>]</span>';
 			}
 			$file .= '</span>';
 		} elseif ($threadno != 0)
 		{
-			$file .= '<span class="postNum"><a href="../res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="../res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a>';
+			$file .= '<span class="postNum"><a href="../../'.$row['board'].'/res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="../../'.$row['board'].'/res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a>';
 			if ($row['locked']==1)
 			{
 				$file .= '<img src="../../img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
@@ -1104,7 +1153,7 @@ class Caching
 			}
 			$file .= '</span>';
 		} else {
-			$file .= '<span class="postNum"><a href="./res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a> ';
+			$file .= '<span class="postNum"><a href="../'.$row['board'].'/res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="../'.$row['board'].'/res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a> ';
 			if ($row['locked']==1)
 			{
 				$file .= '<img src="../img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
@@ -1113,10 +1162,10 @@ class Caching
 			{
 				$file .= '<img src="../img/sticky.gif" alt="Sticky" title="Sticky" class="stickyIcon" />';
 			}
-			$file .= '&nbsp; <span>[<a href="./res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</span></span>';
+			$file .= '&nbsp; <span>[<a href="../'.$row['board'].'/res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</span></span>';
 		}
 		$file .= '</div>';
-		$file .= $this->getFiles($row, $board, $return, $threadno, $embed_table, $extensions);
+		$file .= $this->getFiles($row, $row['board'], $return, $threadno, $embed_table, $extensions);
 		$file .= '<blockquote class="postMessage" id="m'.$row['id'].'">';
 		$wf = 1;
 		
@@ -1130,16 +1179,16 @@ class Caching
 			{
 				if ($return == 1)
 				{
-					$file .= $this->processComment($board, $row['comment'], $parser, 2, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
+					$file .= $this->processComment($row['board'], $row['comment'], $parser, 2, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
 				} else {
-					$file .= $this->processComment($board, $row['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
+					$file .= $this->processComment($row['board'], $row['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
 				}
 			} else {
 				if ($return == 1)
 				{
-					$file .= $this->processComment($board, $row['comment'], $parser, 2, 1, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
+					$file .= $this->processComment($row['board'], $row['comment'], $parser, 2, 1, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
 				} else {
-					$file .= $this->processComment($board, $row['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
+					$file .= $this->processComment($row['board'], $row['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
 				}
 			}
 		} else {
@@ -1156,7 +1205,7 @@ class Caching
 		
 		if ($threadno != 0)
 		{
-			$posts = $this->conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' AND deleted=0 ORDER BY id ASC");
+			$posts = $this->conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$row['board']."' AND deleted=0 ORDER BY id ASC");
 		} else {
 		$postnos = $this->conn->query("SELECT COUNT(*) FROM posts WHERE resto=".$row['id']." AND board='".$row['board']."' AND deleted=0");
 		$row1 = $postnos->fetch_row();
@@ -1165,7 +1214,7 @@ class Caching
 			$file .= '</div><hr />';
 			if (($this->config['caching_mode'] == 1) && ($threadno == 0) && ($return == 0))
 			{
-				$handle = fopen("./".$board."/res/".$row['id']."_index.html", "w");
+				$handle = fopen("./".$row['board']."/res/".$row['id']."_index.html", "w");
 				fwrite($handle, $file);
 				fclose($handle);
 			}
@@ -1175,7 +1224,7 @@ class Caching
 		{
 			if ($return == 1)
 			{
-				$file .= '<span class="summary">'.sprintf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="?/board&b='.$board.'&t='.$row['id'].'" class="replylink">', '</a>').'</span>';
+				$file .= '<span class="summary">'.sprintf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="?/board&b='.$row['board'].'&t='.$row['id'].'" class="replylink">', '</a>').'</span>';
 			} else {
 				$file .= '<span class="summary">'.sprintf($lang['img/posts_omitted'], ($row1[0]-3), '<a href="./res/'.$row['id'].'.html" class="replylink">', '</a>').'</span>';
 			}
@@ -1186,7 +1235,7 @@ class Caching
 			$offset = $row1[0] - 3;
 			
 		}
-		$posts = $this->conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$board."' AND deleted=0 ORDER BY id ASC LIMIT ".$offset.",3");
+		$posts = $this->conn->query("SELECT * FROM posts WHERE resto=".$row['id']." AND board='".$row['board']."' AND deleted=0 ORDER BY id ASC LIMIT ".$offset.",3");
 			
 		}
 		while ($row2 = $posts->fetch_assoc())
@@ -1271,19 +1320,19 @@ class Caching
 			$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row2['date']).'</span> ' ;
 			if ($return == 1)
 			{
-				$file .= '<span class="postNum"><a href="?/board&b='.$board.'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$board.'&t='.$row['id'].'#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span>';
-				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$board.'&p='.$row2['id'].'">B</a> / <a href="?/bans/add&b='.$board.'&p='.$row2['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'">D</a>';
+				$file .= '<span class="postNum"><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span>';
+				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$row['board'].'&p='.$row2['id'].'">B</a> / <a href="?/bans/add&b='.$row['board'].'&p='.$row2['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$row['board'].'&p='.$row2['id'].'">D</a>';
 				
 				
 				if (!empty($row2['filename']))
 				{
-					$file .= ' / <a href="?/delete_post&b='.$board.'&p='.$row2['id'].'&f=1">F</a>] ';
+					$file .= ' / <a href="?/delete_post&b='.$row['board'].'&p='.$row2['id'].'&f=1">F</a>] ';
 				} else {
 					$file .= ']';
 				}
 				if ($adm_type >= 3)
 				{
-					$file .= ' [<a href="?/edit_post&b='.$board.'&p='.$row2['id'].'" class="edit">E</a>]';
+					$file .= ' [<a href="?/edit_post&b='.$row['board'].'&p='.$row2['id'].'" class="edit">E</a>]';
 				}
 				$file .= "</span>";
 			} elseif ($threadno != 0)
@@ -1293,7 +1342,7 @@ class Caching
 				$file .= '<span class="postNum"><a href="./res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
 			}
 			$file .= '</div>';
-			$file .= $this->getFiles($row2, $board, $return, $threadno, $embed_table, $extensions);
+			$file .= $this->getFiles($row2, $row['board'], $return, $threadno, $embed_table, $extensions);
 			$file .= '<blockquote class="postMessage" id="m'.$row2['id'].'">';
 			$wf = 1;
 			if ($row2['capcode'] >= 2)
@@ -1306,16 +1355,16 @@ class Caching
 				{
 					if ($return == 1)
 					{
-						$file .= $this->processComment($board, $row2['comment'], $parser, 2, 0, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
+						$file .= $this->processComment($row['board'], $row2['comment'], $parser, 2, 0, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
 					} else {
-						$file .= $this->processComment($board, $row2['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
+						$file .= $this->processComment($row['board'], $row2['comment'], $parser, $threadno != 0, 0, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
 					}
 				} else {
 					if ($return == 1)
 					{
-						$file .= $this->processComment($board, $row2['comment'], $parser, 2, 1, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
+						$file .= $this->processComment($row['board'], $row2['comment'], $parser, 2, 1, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
 					} else {
-						$file .= $this->processComment($board, $row2['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
+						$file .= $this->processComment($row['board'], $row2['comment'], $parser, $threadno != 0, 1, $boarddata['bbcode'], $row2['id'], $row2['resto'], $wf, $replace_array);
 					}
 				}
 			} else {
@@ -1335,7 +1384,7 @@ class Caching
 		$file .= '<hr />';
 		if (($this->config['caching_mode']==1) && ($threadno == 0) && ($return == 0))
 		{
-				$handle = fopen("./".$board."/res/".$row['id']."_index.html", "w");
+				$handle = fopen("./".$row['board']."/res/".$row['id']."_index.html", "w");
 				fwrite($handle, $file);
 				fclose($handle);
 		}
@@ -1786,9 +1835,9 @@ class Caching
 					
 					} elseif ($threadno != 0)
 					{
-						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="../src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler</b></a></span>';
+						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="../../'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler</b></a></span>';
 					} else {
-						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="./src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler</b></a></span>';
+						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="../'.$board.'/src/'.substr($fileinfo['filename'],8).'" target="_blank"><b>Spoiler</b></a></span>';
 					}
 					$file .= '</div>';
 					$filepath = "";
@@ -1799,11 +1848,11 @@ class Caching
 						$thumbpath = './'.$board.'/src/thumb/'.substr($fileinfo['filename'],8);
 					} elseif ($threadno != 0)
 					{
-						$filepath = '../src/'.substr($fileinfo['filename'],8);
-						$thumbpath = '../src/thumb/'.substr($fileinfo['filename'],8);
+						$filepath = '../../'.$board.'/src/'.substr($fileinfo['filename'],8);
+						$thumbpath = '../../'.$board.'/src/thumb/'.substr($fileinfo['filename'],8);
 					} else {
-						$filepath = './src/'.substr($fileinfo['filename'],8);
-						$thumbpath = './src/thumb/'.substr($fileinfo['filename'],8);
+						$filepath = './../'.$board.'/src/'.substr($fileinfo['filename'],8);
+						$thumbpath = './../'.$board.'/src/thumb/'.substr($fileinfo['filename'],8);
 					}
 
 					$file .= '<a class="fileThumb" href="'.$filepath.'" target="_blank"><img src="'.$this->mitsuba->getPath("./img/spoiler.png", $location, 1).'" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
@@ -1831,9 +1880,9 @@ class Caching
 						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="./'.$board.'/src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].$imgsize.', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 					} elseif ($threadno != 0)
 					{
-						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="../src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].$imgsize.', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="../../'.$board.'/src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].$imgsize.', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 					} else {
-						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="./src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].$imgsize.', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
+						$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="../'.$board.'/src/'.$fileinfo['filename'].'" target="_blank">File</a>: ('.$fileinfo['filesize'].$imgsize.', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>';
 					}
 					$file .= '</div>';
 					$filepath = "";
@@ -1844,11 +1893,11 @@ class Caching
 						$thumbpath = './'.$board.'/src/thumb/'.$fileinfo['filename'];
 					} elseif ($threadno != 0)
 					{
-						$filepath = '../src/'.$fileinfo['filename'];
-						$thumbpath = '../src/thumb/'.$fileinfo['filename'];
+						$filepath = '../../'.$board.'/src/'.$fileinfo['filename'];
+						$thumbpath = '../../'.$board.'/src/thumb/'.$fileinfo['filename'];
 					} else {
-						$filepath = './src/'.$fileinfo['filename'];
-						$thumbpath = './src/thumb/'.$fileinfo['filename'];
+						$filepath = '../'.$board.'/src/'.$fileinfo['filename'];
+						$thumbpath = '../'.$board.'/src/thumb/'.$fileinfo['filename'];
 					}
 
 					if (isset($extensions[$fileinfo['mimetype']]['image']))
