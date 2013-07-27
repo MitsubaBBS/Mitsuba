@@ -474,9 +474,9 @@ div#absbot {
 }
 
 table {
-    border-spacing: 1px;
-    margin-left: auto;
-    margin-right: auto;
+	border-spacing: 1px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 table.postForm>tbody>tr>td:first-child {
@@ -495,9 +495,9 @@ tr.rules td {
 }
 
 ul.rules {
-    margin: 0px;
-    padding: 0px;
-    margin-top: 1px;
+	margin: 0px;
+	padding: 0px;
+	margin-top: 4px;
 }
 
 ul.rules>li {
@@ -527,11 +527,11 @@ input[type=text],input[type=password] {
 }
 
 input[type=text]:focus,input[type=password]:focus,input:not([type]):focus,textarea:focus {
-    border: 1px solid #ea8!important;
+	border: 1px solid #ea8!important;
 }
 
 table.postForm>tbody>tr>td>input[type=text] {
-    width: 232px;
+	width: auto;
 }
 
 table.postForm>tbody>tr>td>input[name="subject"] {
@@ -722,9 +722,10 @@ img.expandedImg {
 }
 
 input[type="text"],input[type="password"],textarea {
-    -webkit-appearance: none;
-    -webkit-border-radius: 0;
-	margin-top: 1px;
+	-webkit-appearance: none;
+	-webkit-border-radius: 0;
+	margin-top: 2px;
+	margin-left: 2px;
 }
 
 iframe[src="about:blank"] {
@@ -874,8 +875,8 @@ table:not(#postForm)>thead>tr>td {
 }
 
 table:not(#postForm) td {
-    padding: 2px;
-    font-size: 9pt;
+	padding: 2px;
+	font-size: 9pt;
 }
 
 table:not(#postForm) tbody tr:nth-of-type(odd) {
