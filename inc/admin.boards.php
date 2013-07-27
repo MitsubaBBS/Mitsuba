@@ -105,7 +105,7 @@ class Boards {
 		{
 			$pages = 15;
 		}
-		$result = $this->conn->query("INSERT INTO boards (short, board_type, name, des, message, bumplimit, spoilers, noname, ids, embeds, bbcode, time_between_posts, time_between_threads, time_to_delete, filesize, pages, hidden, unlisted, nodup, maxchars, anonymous, extensions, catalog, captcha, overboard_boards) VALUES ('".$short."', 'imageboard', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.", ".$bbcode.", ".$time_between_posts.", ".$time_between_threads.", ".$time_to_delete.", ".$filesize.", ".$pages.", ".$hidden.", ".$unlisted.", ".$nodup.", ".$maxchars.", '".$anonymous."', '".$extensions."', ".$catalog.", ".$captcha.", "")");
+		$result = $this->conn->query("INSERT INTO boards (short, board_type, name, des, message, bumplimit, spoilers, noname, ids, embeds, bbcode, time_between_posts, time_between_threads, time_to_delete, filesize, pages, hidden, unlisted, nodup, maxchars, anonymous, extensions, catalog, captcha, overboard_boards) VALUES ('".$short."', 'imageboard', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.", ".$bbcode.", ".$time_between_posts.", ".$time_between_threads.", ".$time_to_delete.", ".$filesize.", ".$pages.", ".$hidden.", ".$unlisted.", ".$nodup.", ".$maxchars.", '".$anonymous."', '".$extensions."', ".$catalog.", ".$captcha.", '')");
 		if ($result)
 		{
 			$this->createDirectories($short);

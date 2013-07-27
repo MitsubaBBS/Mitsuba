@@ -553,9 +553,20 @@ class Common {
 				<html>
 	<head>
 	<title>Banned</title>
-	<link rel="stylesheet" href="./styles/index.css" />
-	<link rel="stylesheet" href="./styles/global.css" />
-	<link rel="stylesheet" href="./styles/postform.css" />
+<?php
+$first_default = 1;
+$styles = $this->conn->query("SELECT * FROM styles ORDER BY `default` DESC");
+while ($row = $styles->fetch_assoc())
+{
+	if ($first_default == 1)
+	{
+		echo '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'">';
+		$first_default = 0;
+	}
+	echo '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
+}
+?>
+	<script type='text/javascript' src='./js/style.js'></script>
 	</head>
 	<body>
 	<div id="doc">
@@ -623,9 +634,20 @@ class Common {
 				<html>
 	<head>
 	<title>Banned</title>
-	<link rel="stylesheet" href="./styles/index.css" />
-	<link rel="stylesheet" href="./styles/global.css" />
-	<link rel="stylesheet" href="./styles/postform.css" />
+<?php
+$first_default = 1;
+$styles = $this->conn->query("SELECT * FROM styles ORDER BY `default` DESC");
+while ($row = $styles->fetch_assoc())
+{
+	if ($first_default == 1)
+	{
+		echo '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'">';
+		$first_default = 0;
+	}
+	echo '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
+}
+?>
+	<script type='text/javascript' src='./js/style.js'></script>
 	</head>
 	<body>
 	<div id="doc">

@@ -108,6 +108,8 @@ if ( ( (!isset($_SESSION['logged'])) || ($_SESSION['logged']==0) ) && (!( ($path
 {
 	die($lang['mod/not_logged_in']);
 }
+$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
+$mitsuba = new Mitsuba($conn);
 if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))) && (substr($path, 0, 5) != "/api/"))
 {
 ?>
@@ -115,10 +117,22 @@ if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && ((
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Mitsuba</title>
-<link rel="stylesheet" href="./styles/index.css" />
-<link rel="stylesheet" href="./styles/global.css" />
-<link rel="stylesheet" href="./styles/table.css" />
+<?php
+$first_default = 1;
+$styles = $conn->query("SELECT * FROM styles ORDER BY `default` DESC");
+while ($row = $styles->fetch_assoc())
+{
+	if ($first_default == 1)
+	{
+		echo '<link rel="stylesheet" id="switch" href="'.$mitsuba->getPath($row['path'], "index", $row['relative']).'">';
+		$first_default = 0;
+	}
+	echo '<link rel="alternate stylesheet" style="text/css" href="'.$mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
+}
+?>
 <script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/jquery.cookie.js"></script>
+<script type='text/javascript' src='./js/style.js'></script>
 <script type="text/javascript" src="./js/admin.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
@@ -127,8 +141,6 @@ if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && ((
 <br /><br />
 <?php
 }
-$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
-$mitsuba = new Mitsuba($conn);
 if ((!empty($_SESSION['logged'])) && ($_SESSION['logged']==1) && ($_SESSION['ip']!=$_SERVER['REMOTE_ADDR']))
 {
 	$mitsuba->admin->logAction(sprintf($lang['log/ip_changed'], $_SESSION['ip'], $_SERVER['REMOTE_ADDR']));

@@ -295,16 +295,8 @@ class Caching
 	{
 		$file = $this->getHtmlDefinition();
 		$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
-		$style = $this->conn->query("SELECT * FROM styles WHERE `default`=1");
-		$first_default = 0;
-		if ($style->num_rows > 0)
-		{
-			$sdata = $style->fetch_assoc();
-			$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($sdata['path'], $location, $sdata['relative']).'">';
-		} else {
-			$first_default = 1;
-		}
-		$styles = $this->conn->query("SELECT * FROM styles");
+		$first_default = 1;
+		$styles = $this->conn->query("SELECT * FROM styles ORDER BY `default` DESC");
 		while ($row = $styles->fetch_assoc())
 		{
 			if ($first_default == 1)
@@ -324,6 +316,7 @@ class Caching
 		{
 			$file .= "<script type='text/javascript' src='".$this->mitsuba->getPath("./js/catalog.js", $location, 1)."'></script>";
 		} else {
+			$file .= "<script type='text/javascript' src='".$this->mitsuba->getPath("./js/style.js", $location, 1)."'></script>";
 			$file .= "<script type='text/javascript' src='".$this->mitsuba->getPath("./js/common.js", $location, 1)."'></script>";
 			if ($location == "index")
 			{
@@ -384,7 +377,7 @@ class Caching
 		}
 		if ($boarddata['board_type']=="overboard")
 		{
-			$overboard = 1
+			$overboard = 1;
 			$overboard_boards = explode(",", $boarddata['overboard_boards']);
 		}
 
@@ -716,10 +709,10 @@ class Caching
 				foreach ($overboard_boards as $short) {
 					if ($first == 1)
 					{
-						$sql_boardlist .= "'".$short."'"
+						$sql_boardlist .= "'".$short."'";
 						$first = 0;
 					} else {
-						$sql_boardlist .= " OR '".$short."'"
+						$sql_boardlist .= " OR '".$short."'";
 					}
 					$sql_boardlist = ")";
 				}
@@ -733,7 +726,7 @@ class Caching
 			{
 				if ($overboard == 1)
 				{
-					$file .= "<h2><a href='../".$row['short']."/'>/".$row['short']."/</a></h2>"
+					$file .= "<h2><a href='../".$row['short']."/'>/".$row['short']."/</a></h2>";
 				}
 				$file .= $this->getThread($row['short'], $threadno, $return, $adm_type, $parser, $boarddata, $replace_array[$row['short']], $embed_table, $row, $extensions);
 			}
@@ -927,12 +920,22 @@ class Caching
 				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 			$file .= '<html>
 				<head>
-				<title>'.$title.'</title>
-				<link rel="stylesheet" href="./styles/index.css" />
-				<link rel="stylesheet" href="./styles/global.css" />
-				<link rel="stylesheet" href="./styles/table.css" />
-				</head>
-				<body>';
+				<title>'.$title.'</title>';
+			$first_default = 1;
+			$styles = $this->conn->query("SELECT * FROM styles ORDER BY `default` DESC");
+			while ($row = $styles->fetch_assoc())
+			{
+				if ($first_default == 1)
+				{
+					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'">';
+					$first_default = 0;
+				}
+				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
+			}
+			$file .= "
+	<script type='text/javascript' src='./js/style.js'></script>
+	</head>
+				<body>";
 			$file .= '<div id="doc">
 				<br /><br />';
 			$file .= '<div class="box-outer top-box">

@@ -8,9 +8,7 @@ die("Y U R TRYIN TO HACK THIS WONDERFUL SCRIPT?");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Mitsuba</title>
-<link rel="stylesheet" href="./styles/index.css" />
-<link rel="stylesheet" href="./styles/global.css" />
-<link rel="stylesheet" href="./styles/table.css" />
+<link rel="stylesheet" href="./styles/mitsuba.css" />
 <script type="text/javascript" src="./js/jquery.js"></script>
 </head>
 <body>

@@ -21,9 +21,19 @@ class Frontpage
 		$file .= '<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-	<title>'.$this->config['sitename'].'</title>
-	<link href="./styles/global.css" rel="stylesheet" type="text/css" />
-	<link href="./styles/index.css" rel="stylesheet" type="text/css" />
+	<title>'.$this->config['sitename'].'</title>';
+$first_default = 1;
+$styles = $this->conn->query("SELECT * FROM styles ORDER BY `default` DESC");
+while ($row = $styles->fetch_assoc())
+{
+	if ($first_default == 1)
+	{
+		$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'">';
+		$first_default = 0;
+	}
+	$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
+}
+$file .= '
 </head>';
 
 		$file .= '<body>
@@ -158,10 +168,20 @@ class Frontpage
 			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 		$file .= '<html>
 			<head>
-			<title>'.$this->config['sitename'].'</title>
-			<link rel="stylesheet" href="./styles/index.css" />
-			<link rel="stylesheet" href="./styles/global.css" />
-			<link rel="stylesheet" href="./styles/table.css" />
+			<title>'.$this->config['sitename'].'</title>';
+			$first_default = 1;
+			$styles = $this->conn->query("SELECT * FROM styles ORDER BY `default` DESC");
+			while ($row = $styles->fetch_assoc())
+			{
+				if ($first_default == 1)
+				{
+					$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'">';
+					$first_default = 0;
+				}
+				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
+			}
+			$file .= '
+			<script type='text/javascript' src='./js/style.js'></script>
 			</head>
 			<body>';
 		$file .= '<div id="doc">

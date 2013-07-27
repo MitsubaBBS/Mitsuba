@@ -13,10 +13,6 @@ if (localStorage.getItem("firsttime") != 1)
 	localStorage.setItem("o_imgexpand", 0);
 	localStorage.setItem("o_fastreply", 0);
 }
-if (typeof $.cookie("mitsuba_style") !== "undefined")
-{
-	$("#switch").attr("href", $.cookie("mitsuba_style"));
-}
 
 String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
 

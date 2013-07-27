@@ -18,7 +18,19 @@ $reports = $conn->query("SELECT * FROM reports;");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Mitsuba Navigation</title>
 <meta http-equiv="refresh" content="180" />
-<link rel="stylesheet" href="./styles/menu.css" />
+<?php
+$first_default = 1;
+$styles = $conn->query("SELECT * FROM styles ORDER BY `default` DESC");
+while ($row = $styles->fetch_assoc())
+{
+	if ($first_default == 1)
+	{
+		echo '<link rel="stylesheet" id="switch" href="'.$mitsuba->getPath($row['path'], "index", $row['relative']).'">';
+		$first_default = 0;
+	}
+	echo '<link rel="alternate stylesheet" style="text/css" href="'.$mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
+}
+?>
 <script type="text/javascript">
 function toggle(button,area) {
 	var tog=document.getElementById(area);
@@ -31,8 +43,9 @@ function toggle(button,area) {
 	createCookie('nav_show_'+area, tog.style.display?'0':'1', 365);
 }
 </script>
+<script type='text/javascript' src='./js/style.js'></script>
 </head>
-<body>
+<body id="menu">
 <ul>
 <li><?php echo $lang['mod/logged_in_as']; ?><b><?php echo $_SESSION['username']; ?></b></li>
 <li><?php echo $lang['mod/privileges']; ?><b><?php if ($_SESSION['type']==3) { echo $lang['mod/administrator']; } elseif ($_SESSION['type']==2) { echo $lang['mod/moderator']; } elseif ($_SESSION['type']==1) { echo $lang['mod/janitor']; } else { echo $lang['mod/faggot']; } ?></b></li>
