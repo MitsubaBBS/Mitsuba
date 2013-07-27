@@ -12,7 +12,7 @@ class Frontpage
 		$this->config = $this->mitsuba->config;
 	}
 
-	function generateFrontpage()
+	function generateFrontpage($action = "none")
 	{
 		
 		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"

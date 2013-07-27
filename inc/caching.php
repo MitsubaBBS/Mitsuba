@@ -1692,13 +1692,13 @@ class Caching
 		return $menu;
 	}
 
-	function generateFrontpage()
+	function generateFrontpage($action = "none")
 	{
 		if (file_exists("./inc/frontpage/".$this->config['frontpage_style']))
 		{
 			require_once("./inc/frontpage/".$this->config['frontpage_style']);
 			$fpage = new Frontpage($this->conn, $this->mitsuba);
-			$fpage->generateFrontpage();
+			$fpage->generateFrontpage($action);
 		}
 	}
 
