@@ -599,7 +599,7 @@ class Caching
 				}
 				$file .= '<tr>
 					<td>'.$lang['img/file'].'</td>
-					<td><input id="postFile" name="upfile" type="file" />';
+					<td nowrap><input id="postFile" name="upfile" type="file" />';
 				if ($boarddata['spoilers'] == 1)
 				{
 					$file .= '<label><input type="checkbox" name="spoiler" value="1">'.$lang['img/spoiler'].'</label>';

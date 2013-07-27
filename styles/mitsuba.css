@@ -25,7 +25,7 @@ body {
 }
 
 a,a:visited {
-    color: #00E;
+	color: blue;
 }
 
 a.replylink {
@@ -37,7 +37,7 @@ a.replylink:not(:hover) {
 }
 
 a:hover {
-    color: red!important;
+	color: #F00!important;
 }
 
 img {
@@ -480,12 +480,12 @@ table {
 }
 
 table.postForm>tbody>tr>td:first-child {
-    background-color: #EA8;
-    color: #800;
-    font-weight: bold;
-    border: 1px solid #800;
-    padding: 0 5px;
-    font-size: 10pt;
+	background-color: #EA8;
+	color: #800;
+	font-weight: bold;
+	border: 1px solid #800;
+	padding: 0 5px;
+	font-size: 10pt;
 }
 
 tr.rules td {
@@ -501,8 +501,9 @@ ul.rules {
 }
 
 ul.rules>li {
-    list-style: none;
-    font-size: 10px;
+	list-style: none;
+	font-size: 10px;
+	margin-top: 2px;
 }
 
 .rules>li:before {
@@ -723,6 +724,7 @@ img.expandedImg {
 input[type="text"],input[type="password"],textarea {
     -webkit-appearance: none;
     -webkit-border-radius: 0;
+	margin-top: 1px;
 }
 
 iframe[src="about:blank"] {
@@ -831,8 +833,14 @@ a.expander {
 }
 
 #menu li a {
-    display: block;
-    width: 100%;
+	display: block;
+	width: 100%;
+	color: #333!important;
+	text-decoration: none;
+}
+
+#menu li a:hover {
+	color: red!important;
 }
 
 #menu #img li,#dis li {
@@ -1058,6 +1066,8 @@ h1 {
 h2 {
     font-size: 131%;
     font-weight: bold;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 h3 {
@@ -1130,7 +1140,7 @@ h1 a {
 }
 
 a:visited {
-    color: blue;
+	color: #00F;
 }
 
 strong {
@@ -1284,10 +1294,10 @@ visibility: hidden;
 }
 
 fieldset input, label {
-    display: block;
-    float: left;
-    margin-bottom: 10px;
-    width: auto;
+	display: block;
+	float: right;
+	margin-bottom: 10px;
+	width: auto;
 }
 
 fieldset label {
