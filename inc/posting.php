@@ -85,6 +85,7 @@ class Posting {
 						{
 							$this->mitsuba->caching->generateCatalog($board);
 						}
+						$this->mitsuba->caching->generateFrontpage("onPostDeleted");
 						return 1; //done-image
 					} else {
 						return -3;
@@ -146,7 +147,7 @@ class Posting {
 							$this->mitsuba->caching->generateCatalog($board);
 						}
 						$this->mitsuba->caching->generateView($board);
-
+						$this->mitsuba->caching->generateFrontpage("onPostDeleted");
 						return 2; //done post
 					} else {
 						if ((!empty($postdata['filename'])) && ($postdata['filename'] != "deleted"))
@@ -175,6 +176,7 @@ class Posting {
 							$this->mitsuba->caching->generateCatalog($board);
 						}
 						$this->mitsuba->caching->generateView($board);
+						$this->mitsuba->caching->generateFrontpage("onPostDeleted");
 						return 2;
 					}
 				}
@@ -488,10 +490,7 @@ class Posting {
 		}
 		$this->mitsuba->caching->generateView($board);
 		
-		if ($config['frontpage_style'] == 1)
-		{
-			$this->mitsuba->caching->generateFrontpage();
-		}
+		$this->mitsuba->caching->generateFrontpage("onPostCreated");
 
 		if ($config['enable_api']==1)
 		{
