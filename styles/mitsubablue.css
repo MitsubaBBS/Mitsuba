@@ -526,13 +526,13 @@ tr.rules td {
 
 td {
 	margin: 0px;
-	padding: 2px;
+	padding: 0px;
 	font-size: 10pt;
 	white-space: nowrap;
 }
 
 #postForm input[type=text],input[type=password],table.postForm>tbody textarea,#recaptcha_response_field {
-	margin-top: 1px;
+	margin: 0px;
 	margin-right: 2px;
 	padding: 2px 4px 3px 4px;
 	border: 1px solid #AAA;
@@ -546,11 +546,15 @@ td {
 }
 
 table.postForm>tbody>tr>td>input[type=text] {
-	width: 200px;
+	width: 232px;
 }
 
 table.postForm>tbody>tr>td>input[name="subject"] {
 	width: 300px;
+}
+
+table.postForm>tbody>tr>td>input[name="embed"] {
+	width: 200px;
 }
 
 .postblock {
