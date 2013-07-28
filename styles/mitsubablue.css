@@ -25,7 +25,7 @@ body {
 }
 
 a,a:visited {
-    color: #34345C;
+    color: blue;
 }
 
 a.replylink {
@@ -33,7 +33,7 @@ a.replylink {
 }
 
 a.replylink:not(:hover) {
-    color: #34345C!important;
+    color: blue!important;
 }
 
 a:hover {
@@ -90,6 +90,7 @@ input,textarea,select {
     font-size: inherit;
     font-weight: inherit;
     margin-right: 3px;
+	margin-top: 2px;
 }
 
 legend {
@@ -1064,7 +1065,7 @@ table:not(#postForm) td {
 }
 
 table:not(#postForm) tbody tr:nth-of-type(odd) {
-    background-color: #ede2d4;
+    background-color: #D6DAF0;
 }
 
 table:not(#postForm) {

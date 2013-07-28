@@ -90,6 +90,7 @@ input,textarea,select {
     font-size: inherit;
     font-weight: inherit;
     margin-right: 3px;
+	margin-top: 2px;
 }
 
 legend {
