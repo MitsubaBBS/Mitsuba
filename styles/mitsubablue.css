@@ -532,7 +532,7 @@ td {
 	white-space: nowrap;
 }
 
-#postForm input[type=text],input[type=password],table.postForm>tbody textarea,#recaptcha_response_field {
+#postForm input[type=text],input[type=password],table.postForm>tbody textarea {
 	margin: 0px;
 	margin-right: 2px;
 	padding: 2px 4px 3px 4px;
@@ -858,24 +858,8 @@ img.expandedImg {
 	max-height: none!important;
 }
 
-#captchaContainer {
-	overflow: hidden;
-}
-
-#captchaContainer>img {
-	float: left;
-	border: 1px solid #aaa;
-	margin-bottom: 1px;
-}
-
-#captchaInfo {
-	float: left;
-	margin-left: 5px;
-	visibility: hidden;
-}
-
-#captchaResponse {
-	width: 292px;
+#reloadCaptcha {
+	margin-top: 2px;
 }
 
 .prettyprint {

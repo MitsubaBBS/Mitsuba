@@ -726,6 +726,10 @@ img.expandedImg {
 	max-height: none!important;
 }
 
+#reloadCaptcha {
+	margin-top: 2px;
+}
+
 #postForm input[type="text"],input[type="password"],textarea {
 	-webkit-appearance: none;
 	-webkit-border-radius: 0;
