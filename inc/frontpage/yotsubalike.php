@@ -33,8 +33,8 @@ while ($row = $styles->fetch_assoc())
 	}
 	$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
 }
-$file .= '
-</head>';
+$file .= "<script type='text/javascript' src='./js/style.js'></script>
+</head>";
 
 		$file .= '<body>
 	<div id="doc">
@@ -180,10 +180,10 @@ $file .= '
 				}
 				$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
 			}
-			$file .= '
+			$file .= "
 			<script type='text/javascript' src='./js/style.js'></script>
 			</head>
-			<body>';
+			<body>";
 		$file .= '<div id="doc">
 			<br /><br />';
 		$file .= '<div class="box-outer top-box">

@@ -442,7 +442,7 @@ div.deleteform {
     margin-top: 2px;
 }
 
-input[type=password] {
+#postForm input[type=password] {
     width: 50px;
     text-align: center;
 }
@@ -516,7 +516,7 @@ td {
     font-size: 10pt;
 }
 
-input[type=text],input[type=password] {
+#postForm input[type=text],input[type=password] {
     margin: 0px;
     margin-right: 2px;
     padding: 2px 4px 3px 4px;
@@ -526,7 +526,7 @@ input[type=text],input[type=password] {
     font-size: 10pt;
 }
 
-input[type=text]:focus,input[type=password]:focus,input:not([type]):focus,textarea:focus {
+#postForm input[type=text]:focus,input[type=password]:focus,input:not([type]):focus,textarea:focus {
 	border: 1px solid #ea8!important;
 }
 
@@ -721,7 +721,7 @@ img.expandedImg {
     max-height: none!important;
 }
 
-input[type="text"],input[type="password"],textarea {
+#postForm input[type="text"],input[type="password"],textarea {
 	-webkit-appearance: none;
 	-webkit-border-radius: 0;
 	margin-top: 2px;

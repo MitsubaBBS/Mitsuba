@@ -50,10 +50,10 @@ class Frontpage
 			}
 			$menu .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
 		}
-		$menu .= '
+		$menu .= "
 	<script type='text/javascript' src='./js/style.js'></script>
-	</head>
-			<body id="menu">';
+	</head>";
+		$menu .= '<body id="menu">';
 		$menu .= $this->mitsuba->caching->getMenu("index", "main");
 		$handle = fopen("./".$this->config['frontpage_menu_url'], "w");
 		fwrite($handle, $menu);
@@ -80,8 +80,9 @@ class Frontpage
 			}
 			$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
 		}
-		$file .= '</head>
-			<body>';
+		$file .= "<script type='text/javascript' src='./js/style.js'></script>
+		</head>
+			<body>";
 		$file .= '<div id="doc">
 			<br /><br />';
 		$file .= '<div class="box-outer top-box">
