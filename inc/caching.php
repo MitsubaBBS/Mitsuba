@@ -49,12 +49,12 @@ class Caching
 				if ($no > 0) { $links .= ' / '; }
 				if ($row['relative'] == 1)
 				{
-					$links .= '<a href="'.$this->mitsuba->getPath($row['url'], $location, 1).'" title="'.$row['title'].'">'.$row['short'].'</a>';
+					$links .= '<a href="'.$this->mitsuba->getPath($row['url'], $location, 1).'" title="'.$row['title'].'">'.$row['board'].'</a>';
 				} elseif ($row['relative'] == 2)
 				{
-					$links .= '<a href="'.$this->mitsuba->getPath("./".$row['url']."/", $location, 1).'" title="'.$row['title'].'">'.$row['short'].'</a>';
+					$links .= '<a href="'.$this->mitsuba->getPath("./".$row['url']."/", $location, 1).'" title="'.$row['title'].'">'.$row['board'].'</a>';
 				} else {
-					$links .= '<a href="'.$row['url'].'" title="'.$row['title'].'">'.$row['short'].'</a>';
+					$links .= '<a href="'.$row['url'].'" title="'.$row['title'].'">'.$row['board'].'</a>';
 				}
 				
 			}
@@ -726,9 +726,9 @@ class Caching
 			{
 				if ($overboard == 1)
 				{
-					$file .= "<h2><a href='../".$row['short']."/'>/".$row['short']."/</a></h2>";
+					$file .= "<h2><a href='../".$row['board']."/'>/".$row['board']."/</a></h2>";
 				}
-				$file .= $this->getThread($row['short'], $threadno, $return, $adm_type, $parser, $boarddata, $replace_array[$row['short']], $embed_table, $row, $extensions);
+				$file .= $this->getThread($row['board'], $threadno, $return, $adm_type, $parser, $boarddata, $replace_array[$row['board']], $embed_table, $row, $extensions);
 			}
 			$file .= "</div>";
 			if ($threadno != 0)

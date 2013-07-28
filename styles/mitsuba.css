@@ -54,12 +54,6 @@ span.x-small {
     font-size: x-small;
 }
 
-
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
 fieldset,img {
     border: 0;
 }
@@ -516,7 +510,7 @@ td {
     font-size: 10pt;
 }
 
-#postForm input[type=text],input[type=password] {
+#postForm input[type=text],input[type=password],textarea {
     margin: 0px;
     margin-right: 2px;
     padding: 2px 4px 3px 4px;
@@ -531,12 +525,17 @@ td {
 }
 
 table.postForm>tbody>tr>td>input[type=text] {
-	width: auto;
+	width: 232px;
 }
 
 table.postForm>tbody>tr>td>input[name="subject"] {
     width: 300px;
 }
+
+tbody textarea {
+    margin-bottom: -3px!important;
+    width: 292px;
+};
 
 .postblock {
     background-color: #EA8;
@@ -1149,7 +1148,8 @@ strong {
 }
 
 ul,ol,dl {
-    margin: 1em;
+    margin: 0;
+    padding: 0;
 }
 
 ol li {
@@ -1162,11 +1162,6 @@ em {
 
 strong {
     font-weight: bold;
-}
-
-blockquote {
-    margin: 0 2%;
-    font-style: italic;
 }
 
 .content {
@@ -1223,15 +1218,6 @@ a img {
 
 div p {
     margin: 1.5em 0;
-}
-
-hr {
-    border: 0;
-    color: #800;
-    background: #800;
-    height: 1px;
-    margin-top: 0;
-    margin-bottom: 1.5em;
 }
 
 textarea {

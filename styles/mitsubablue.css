@@ -53,10 +53,6 @@ hr {
 span.x-small {
     font-size: x-small;
 }
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
 
 fieldset,img {
     border: 0;
@@ -207,7 +203,7 @@ div.backlink {
 ul.rules {
     margin: 0px;
     padding: 0px;
-    margin-top: 1px;
+    margin-top: 4px;
 }
 
 ul.rules>li {
@@ -217,6 +213,7 @@ ul.rules>li {
 
 .rules>li:before {
     content: "\2022 \20";
+    margin-top: 1px;
 }
 
 div.boardBanner {
@@ -572,12 +569,10 @@ div.closed {
     padding-bottom: 100px;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    tbody textarea {
-        margin-bottom: -3px!important;
-        width: 292px;
-    };
-}
+tbody textarea {
+    margin-bottom: -3px!important;
+    width: 292px;
+};
 
 .commentpostername {
     font-weight: bold;
@@ -1002,13 +997,11 @@ div.post-hidden:not(#quote-preview) blockquote.postMessage {
     float: right;
     font-size: 10px;
     padding: 0 4px;
-    background: #eb9;
-    border: 1px solid #d8a787;
+    background: #C3C8E3;
 }
 
 #menu .coll:hover {
-    background: #da8;
-    border: 1px solid #c97;
+    background: #CCD0E6;
 }
 
 #menu ul {
@@ -1025,18 +1018,21 @@ div.post-hidden:not(#quote-preview) blockquote.postMessage {
 #menu li a {
     display: block;
     width: 100%;
+    color: #333!important;
+    text-decoration: none;
 }
 
 #menu #img li,#dis li {
     line-height: 110%;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 #menu h2 {
-    background-color: #FCA;
+    background-color: #D6DAF0;
+    color: #333;
     padding: 2px 4px;
     padding-right: 2px;
-    border-bottom: 1px solid #d8a787;
-    border-top: 1px solid #d8a787;
     font-weight: bold;
     margin-bottom: 4px;
     margin-left: -8px;
@@ -1250,6 +1246,8 @@ h1 {
 h2 {
     font-size: 131%;
     font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 h3 {
@@ -1267,8 +1265,8 @@ h1 a {
 }
 
 .boxbar {
-    background: #fca;
-    color: #800;
+    background: #D6DAF0;
+    color: #333;
 }
 
 .top-box {
@@ -1330,7 +1328,8 @@ strong {
 }
 
 ul,ol,dl {
-    margin: 1em;
+    margin: 0;
+    padding: 0;
 }
 
 ol li {
@@ -1343,11 +1342,6 @@ em {
 
 strong {
     font-weight: bold;
-}
-
-blockquote {
-    margin: 0 2%;
-    font-style: italic;
 }
 
 .content {
@@ -1404,15 +1398,6 @@ a img {
 
 div p {
     margin: 1.5em 0;
-}
-
-hr {
-    border: 0;
-    color: #800;
-    background: #800;
-    height: 1px;
-    margin-top: 0;
-    margin-bottom: 1.5em;
 }
 
 textarea {
