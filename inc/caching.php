@@ -49,12 +49,12 @@ class Caching
 				if ($no > 0) { $links .= ' / '; }
 				if ($row['relative'] == 1)
 				{
-					$links .= '<a href="'.$this->mitsuba->getPath($row['url'], $location, 1).'" title="'.$row['title'].'">'.$row['board'].'</a>';
+					$links .= '<a href="'.$this->mitsuba->getPath($row['url'], $location, 1).'" title="'.$row['title'].'">'.$row['short'].'</a>';
 				} elseif ($row['relative'] == 2)
 				{
-					$links .= '<a href="'.$this->mitsuba->getPath("./".$row['url']."/", $location, 1).'" title="'.$row['title'].'">'.$row['board'].'</a>';
+					$links .= '<a href="'.$this->mitsuba->getPath("./".$row['url']."/", $location, 1).'" title="'.$row['title'].'">'.$row['short'].'</a>';
 				} else {
-					$links .= '<a href="'.$row['url'].'" title="'.$row['title'].'">'.$row['board'].'</a>';
+					$links .= '<a href="'.$row['url'].'" title="'.$row['title'].'">'.$row['short'].'</a>';
 				}
 				
 			}
