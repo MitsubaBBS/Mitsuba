@@ -147,8 +147,8 @@ var settingsShown = 0;
 function addSettings()
 {
 	$("#boardLinks").before("<span style='float:right;'>[<a id='settingsbutton' href='#'>Settings</a>]</span>");
-	$("body").prepend("<div id='settingsDivWrap' style='z-index:9000; display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.247);'><div id='settingsDiv' style='width: 400px; height: 100%; margin: auto; background: rgb(241, 225, 215); overflow: auto; z-index: 9001;'> \
-		<span id='settingstitle' style='font-size:20px; display: block; text-align: center; background: #ffccaa;'>Settings</span> \
+	$("body").prepend("<div id='settingsDivWrap'><div id='settingsDiv'> \
+		<span id='settingsTitle'>Settings</span> \
 		<hr /> \
 		<input type='checkbox' name='o_hider' /> Enable thread hider<br />\
 		<input type='checkbox' name='o_expander' /> Enable thread expander<br />\
@@ -186,7 +186,7 @@ function addSettings()
 		e.preventDefault();
 	});
 	$("#settingsbutton").click(function (e) {
-		$("#settingsDivWrap").css("display","");
+		$("#settingsDivWrap").css("display","block");
 		for (var key in localStorage)
 		{
 			if (key.substring(0, 2) == "o_")
@@ -910,9 +910,8 @@ function handleWatched(parent)
 	function addFrame()
 	{
 		$('body').append('<div class="movable" id="watcher_box" \
-			style="border: solid 1px; position: absolute; top: '+localStorage.getItem("w_box_y")+'px; left: '+localStorage.getItem("w_box_x")+'px; \
-			width: 250px; height: 50px; background: rgba(241, 225, 215, 0.5);"> \
-			<span style="font-size:20px; display: block; text-align: center; background: #ffccaa;" id="watcher_title">Watched Threads</span> \
+			style="top: '+localStorage.getItem("w_box_y")+'px; left: '+localStorage.getItem("w_box_x")+'px;"> \
+			<span id="watcher_title">Watched Threads</span> \
 			<ul id="watched_list"></ul>');
 	}
 
