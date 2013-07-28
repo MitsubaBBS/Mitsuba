@@ -90,7 +90,6 @@ input,textarea,select {
     font-size: inherit;
     font-weight: inherit;
     margin-right: 3px;
-    margin-top: 1px;
 }
 
 legend {
@@ -505,13 +504,14 @@ ul.rules>li {
 }
 
 td {
-    margin: 0px;
-    padding: 0px;
-    font-size: 10pt;
+	margin: 0px;
+	padding: 2px;
+	font-size: 10pt;
+	white-space: nowrap;
 }
 
 #postForm input[type=text],input[type=password],textarea {
-    margin: 0px;
+    margin-top: 1px;
     margin-right: 2px;
     padding: 2px 4px 3px 4px;
     border: 1px solid #AAA;
@@ -525,7 +525,7 @@ td {
 }
 
 table.postForm>tbody>tr>td>input[type=text] {
-	width: 232px;
+	width: 200px;
 }
 
 table.postForm>tbody>tr>td>input[name="subject"] {
@@ -723,8 +723,6 @@ img.expandedImg {
 #postForm input[type="text"],input[type="password"],textarea {
 	-webkit-appearance: none;
 	-webkit-border-radius: 0;
-	margin-top: 2px;
-	margin-left: 2px;
 }
 
 iframe[src="about:blank"] {
@@ -1209,11 +1207,11 @@ strong {
 }
 
 img {
-    border: 1px solid #000;
+
 }
 
 a img {
-    border: 2px solid;
+
 }
 
 div p {

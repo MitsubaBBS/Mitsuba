@@ -90,7 +90,6 @@ input,textarea,select {
     font-size: inherit;
     font-weight: inherit;
     margin-right: 3px;
-    margin-top: 1px;
 }
 
 legend {
@@ -209,6 +208,7 @@ ul.rules {
 ul.rules>li {
     list-style: none;
     font-size: 10px;
+	margin-top: 2px;
 }
 
 .rules>li:before {
@@ -525,12 +525,13 @@ tr.rules td {
 
 td {
     margin: 0px;
-    padding: 0px;
+    padding: 2px;
     font-size: 10pt;
+	white-space: nowrap;
 }
 
 #postForm input[type=text],input[type=password],table.postForm>tbody textarea,#recaptcha_response_field {
-    margin: 0px;
+    margin-top: 1px;
     margin-right: 2px;
     padding: 2px 4px 3px 4px;
     border: 1px solid #AAA;
@@ -544,7 +545,7 @@ td {
 }
 
 table.postForm>tbody>tr>td>input[type=text] {
-    width: 232px;
+    width: 200px;
 }
 
 table.postForm>tbody>tr>td>input[name="subject"] {
@@ -1022,6 +1023,10 @@ div.post-hidden:not(#quote-preview) blockquote.postMessage {
     text-decoration: none;
 }
 
++#menu li a:hover {
+	color: red!important;
+}
+
 #menu #img li,#dis li {
     line-height: 110%;
     margin-top: 0px;
@@ -1389,11 +1394,11 @@ strong {
 }
 
 img {
-    border: 1px solid #000;
+    
 }
 
 a img {
-    border: 2px solid;
+   
 }
 
 div p {
@@ -1462,7 +1467,7 @@ visibility: hidden;
 
 fieldset input, label {
     display: block;
-    float: left;
+    float: right;
     margin-bottom: 10px;
     width: auto;
 }
