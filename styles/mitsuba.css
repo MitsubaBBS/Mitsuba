@@ -509,7 +509,6 @@ td {
 	margin: 0px;
 	padding: 0px;
 	font-size: 10pt;
-	white-space: nowrap;
 }
 
 #postForm input[type=text],input[type=password],textarea {
