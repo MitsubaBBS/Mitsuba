@@ -1494,18 +1494,19 @@ fieldset label {
 
 #settingsDiv {
     width: 400px;
-    height: 100%;
-    margin: auto;
-    background: rgb(241, 225, 215);
+    height: auto;
+    margin: 80px auto auto auto;
+    background: rgb(214, 218, 240);
     overflow: auto;
     z-index: 9001;
+	border: 1px solid #000;
 }
 
 #settingsTitle {
     font-size:20px;
     display: block;
     text-align: center;
-    background: #ffccaa;
+    background: #9988EE;
 }
 
 #watcher_box {
@@ -1513,12 +1514,12 @@ fieldset label {
     position: absolute;
     width: 250px;
     height: 50px;
-    background: rgba(241, 225, 215, 0.5);
+    background: rgba(214, 218, 240, 0.5)
 }
 
 #watcher_title {
     font-size:20px;
     display: block;
     text-align: center;
-    background: #ffccaa;
+    background: #9988EE!important;
 }

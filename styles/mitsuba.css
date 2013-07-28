@@ -1307,11 +1307,12 @@ fieldset label {
 
 #settingsDiv {
     width: 400px;
-    height: 100%;
-    margin: auto;
+    height: auto;
+    margin: 80px auto auto auto;
     background: rgb(241, 225, 215);
     overflow: auto;
     z-index: 9001;
+	border: 1px solid #000;
 }
 
 #settingsTitle {
