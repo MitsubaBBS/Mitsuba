@@ -9,7 +9,7 @@ class Bans {
 		$this->mitsuba = $mitsuba;
 	}
 
-	function addBan($ip, $reason, $note, $expires, $boards)
+	function addBan($ip, $reason, $note, $expires, $boards, $appeal = 0)
 	{
 		if (!empty($ip))
 		{
@@ -19,6 +19,7 @@ class Bans {
 			$boards = $this->conn->real_escape_string($boards);
 			$created = time();
 			$perma = 1;
+			$noappeal = 1;
 			if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
 			{
 				$expires = 0;
@@ -31,7 +32,19 @@ class Bans {
 			{
 				return -2;
 			}
-			$this->conn->query("INSERT INTO bans (ip, mod_id, reason, note, created, expires, boards) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", ".$expires.", '".$boards."');");
+			if (($appeal == "0") || ($appeal == "never") || ($appeal == ""))
+			{
+				$appeal = 0;
+				$noappeal = 1;
+			} else {
+				$appeal = $this->mitsuba->common->parse_time($appeal);
+				$noappeal = 0;
+			}
+			if (($appeal == false) && ($noappeal == 0))
+			{
+				return -2;
+			}
+			$this->conn->query("INSERT INTO bans (ip, mod_id, reason, note, created, expires, appeal, boards) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", ".$expires.", ".$appeal.", '".$boards."');");
 			return 1;
 		}
 	}

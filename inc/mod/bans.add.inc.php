@@ -43,6 +43,7 @@ if (empty($_GET['r']))
 if ($_SESSION['type']>=1) {
 ?>
 <?php echo $lang['mod/expires_eg']; ?>: <input type="text" name="expires" /><br />
+<?php echo $lang['mod/appeal_in']; ?>: <input type="text" name="appeal" /><br />
 <?php $mitsuba->admin->ui->getBoardList(); ?><br />
 <br />
 <?php
@@ -132,7 +133,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 			$result = $mitsuba->admin->bans->addBanRequest($_POST['ip'], $_POST['reason'], $_POST['note'], $board, $post, $append);
 			$what = 2;
 		} else {
-			$result = $mitsuba->admin->bans->addBan($_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
+			$result = $mitsuba->admin->bans->addBan($_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards, $_POST['expires']);
 			if ($result != -2)
 			{
 				if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))

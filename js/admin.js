@@ -28,6 +28,12 @@ $(document).ready(function () {
 	$("<a href='#' class='lnkSmall'>3d</a> ").insertAfter(expires).before(" ").click(function (event) { event.preventDefault(); expires.val("3d"); });
 	$("<a href='#' class='lnkSmall'>1d</a> ").insertAfter(expires).before(" ").click(function (event) { event.preventDefault(); expires.val("1d"); });
 	$("<a href='#' class='lnkSmall'>1h</a> ").insertAfter(expires).before(" ").click(function (event) { event.preventDefault(); expires.val("1h"); });
+
+	var appeal = $("input[name=appeal]");
+	$("<a href='#' class='lnkSmall'>never</a> ").insertAfter(appeal).before(" ").click(function (event) { event.preventDefault(); appeal.val("0"); });
+	$("<a href='#' class='lnkSmall'>3d</a> ").insertAfter(appeal).before(" ").click(function (event) { event.preventDefault(); appeal.val("3d"); });
+	$("<a href='#' class='lnkSmall'>5d</a> ").insertAfter(appeal).before(" ").click(function (event) { event.preventDefault(); appeal.val("5d"); });
+	$("<a href='#' class='lnkSmall'>9d</a> ").insertAfter(appeal).before(" ").click(function (event) { event.preventDefault(); appeal.val("9d"); });
 	
 	if (window.location.href.indexOf("bans/add") != -1)
 	{

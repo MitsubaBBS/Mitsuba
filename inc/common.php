@@ -254,183 +254,6 @@ class Common {
 		return (substr($haystack, -$length) === $needle);
 	}
 
-	function isBanned($ip, $board)
-	{
-		
-		$ipbans = $this->conn->query("SELECT * FROM bans WHERE ip='".$ip."' AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
-		$rangebans = $this->conn->query("SELECT * FROM rangebans ORDER BY expires DESC;");
-		$ipbandata = null;
-		$rangebandata = null;
-		$bandata = null;
-		$otherbans = array();
-		while ($row = $rangebans->fetch_assoc())
-		{
-			$range = str_replace('*','(.*)', $row['ip']);
-			if ($this->startsWith($range, "."))
-			{
-				if ((strpos($ip, $range) !== FALSE))
-				{
-					if ($row['boards'] == "*")
-					{
-						$rangebandata = $row;
-						$rangebandata['range'] = 1;
-					} else {
-						if ($board == "*")
-						{
-							$rangebandata = $row;
-							$rangebandata['range'] = 1;
-						} else {
-							$boards = explode(",", $row['boards']);
-							if (in_array($board, $boards))
-							{
-								$rangebandata = $row;
-								$rangebandata['range'] = 1;
-							}
-						}
-					}
-					$otherbans[] = $row;
-					$otherbans[count($otherbans)-1]['range'] = 1;
-				}
-			} elseif ($this->startsWith($ip, $range))
-			{
-				if ($row['boards'] == "*")
-				{
-					$rangebandata = $row;
-					$rangebandata['range'] = 1;
-				} else {
-					if ($board == "*")
-					{
-						$rangebandata = $row;
-						$rangebandata['range'] = 1;
-					} else {
-						$boards = explode(",", $row['boards']);
-						if (in_array($board, $boards))
-						{
-							$rangebandata = $row;
-							$rangebandata['range'] = 1;
-						}
-					}
-				}
-				$otherbans[] = $row;
-				$otherbans[count($otherbans)-1]['range'] = 1;
-			} elseif (preg_match('/'.$range.'/', $ip))
-			{
-				if ($row['boards'] == "*")
-				{
-					$rangebandata = $row;
-					$rangebandata['range'] = 1;
-				} else {
-					if ($board == "*")
-					{
-						$rangebandata = $row;
-						$rangebandata['range'] = 1;
-					} else {
-						$boards = explode(",", $row['boards']);
-						if (in_array($board, $boards))
-						{
-							$rangebandata = $row;
-							$rangebandata['range'] = 1;
-						}
-					}
-				}
-				$otherbans[] = $row;
-				$otherbans[count($otherbans)-1]['range'] = 1;
-			}
-		}
-		
-		while ($row = $ipbans->fetch_assoc())
-		{
-			if ((empty($ipbandata)) || ($ipbandata['expires'] < $row['expires']))
-			{
-				if ($row['boards'] == "*")
-				{
-					$ipbandata = $row;
-				} else {
-					if ($board == "*")
-					{
-						$ipbandata = $row;
-					} else {
-						$boards = explode(",", $row['boards']);
-						if (in_array($board, $boards))
-						{
-							$ipbandata = $row;
-						}
-					}
-				}
-			}
-			$otherbans[] = $row;
-			$otherbans[count($otherbans)-1]['range'] = 0;
-		}
-		
-		if (($ipbandata != null) && ($rangebandata != null))
-		{
-			if (($ipbandata['expires'] == 0) || ($ipbandata['expires'] > $rangebandata['expires'])) {
-				$bandata = $ipbandata;
-			} elseif (($rangebandata['expires'] == 0) || ($rangebandata['expires'] > $ipbandata['expires'])) {
-				$bandata = $rangebandata;
-			} else {
-				$bandata = $ipbandata;
-			}
-		} elseif (($ipbandata != null) || ($rangebandata != null))
-		{
-			if ($ipbandata != null) {
-				$bandata = $ipbandata;
-			} elseif ($rangebandata != null) {
-				$bandata = $rangebandata;
-			} else {
-				return 0;
-			}
-		} else {
-			return 0; //not banned
-		}
-
-		if ($bandata['boards'] == "*")
-		{
-			if (count($otherbans) >= 1)
-			{
-				$bandata['more'] = $otherbans;
-			}
-			return $bandata;
-		} else {
-			if ($board == "*")
-			{
-				if (count($otherbans) >= 1)
-				{
-					$bandata['more'] = $otherbans;
-				}
-				return $bandata;
-			} else {
-				$boards = explode(",", $bandata['boards']);
-				if (in_array($board, $boards))
-				{
-					if (count($otherbans) >= 1)
-					{
-						$bandata['more'] = $otherbans;
-					}
-					return $bandata;
-				} else {
-					return 0;
-				}
-			}
-		}
-		return 0;
-	}
-
-	function isWarned($ip)
-	{
-		
-		$warns = $this->conn->query("SELECT * FROM warnings WHERE ip='".$ip."' AND shown=0 ORDER BY created ASC LIMIT 0, 1;");
-		
-		if ($warns->num_rows == 1)
-		{
-			$warndata = $warns->fetch_assoc();
-			return $warndata;
-		} else {
-			return 0;
-		}
-		return 0;
-	}
-
 	function randomPassword() {
 		$alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
 		$pass = array();
@@ -615,6 +438,163 @@ class Common {
 		return $trip;
 	}
 
+
+	function isBanned($ip, $board)
+	{
+		
+		$ipbans = $this->conn->query("SELECT * FROM bans WHERE ip='".$ip."' AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
+		$rangebans = $this->conn->query("SELECT * FROM rangebans ORDER BY expires DESC;");
+		$ipbandata = null;
+		$rangebandata = null;
+		$bandata = null;
+		$otherbans = array();
+		while ($row = $rangebans->fetch_assoc())
+		{
+			$range = str_replace('*','(.*)', $row['ip']);
+			if ($this->startsWith($range, "."))
+			{
+				if ((strpos($ip, $range) !== FALSE))
+				{
+					if ($row['boards'] == "*")
+					{
+						$rangebandata = $row;
+						$rangebandata['range'] = 1;
+					} else {
+						if ($board == "*")
+						{
+							$rangebandata = $row;
+							$rangebandata['range'] = 1;
+						} else {
+							$boards = explode(",", $row['boards']);
+							if (in_array($board, $boards))
+							{
+								$rangebandata = $row;
+								$rangebandata['range'] = 1;
+							}
+						}
+					}
+					$otherbans[] = $row;
+					$otherbans[count($otherbans)-1]['range'] = 1;
+				}
+			} elseif ($this->startsWith($ip, $range))
+			{
+				if ($row['boards'] == "*")
+				{
+					$rangebandata = $row;
+					$rangebandata['range'] = 1;
+				} else {
+					if ($board == "*")
+					{
+						$rangebandata = $row;
+						$rangebandata['range'] = 1;
+					} else {
+						$boards = explode(",", $row['boards']);
+						if (in_array($board, $boards))
+						{
+							$rangebandata = $row;
+							$rangebandata['range'] = 1;
+						}
+					}
+				}
+				$otherbans[] = $row;
+				$otherbans[count($otherbans)-1]['range'] = 1;
+			} elseif (preg_match('/'.$range.'/', $ip))
+			{
+				if ($row['boards'] == "*")
+				{
+					$rangebandata = $row;
+					$rangebandata['range'] = 1;
+				} else {
+					if ($board == "*")
+					{
+						$rangebandata = $row;
+						$rangebandata['range'] = 1;
+					} else {
+						$boards = explode(",", $row['boards']);
+						if (in_array($board, $boards))
+						{
+							$rangebandata = $row;
+							$rangebandata['range'] = 1;
+						}
+					}
+				}
+				$otherbans[] = $row;
+				$otherbans[count($otherbans)-1]['range'] = 1;
+			}
+		}
+		
+		while ($row = $ipbans->fetch_assoc())
+		{
+			if ((empty($ipbandata)) || ($ipbandata['expires'] < $row['expires']))
+			{
+				if ($row['boards'] == "*")
+				{
+					$ipbandata = $row;
+				} else {
+					if ($board == "*")
+					{
+						$ipbandata = $row;
+					} else {
+						$boards = explode(",", $row['boards']);
+						if (in_array($board, $boards))
+						{
+							$ipbandata = $row;
+						}
+					}
+				}
+			}
+			$otherbans[] = $row;
+			$otherbans[count($otherbans)-1]['range'] = 0;
+		}
+		
+		if (($ipbandata != null) && ($rangebandata != null))
+		{
+			if (($ipbandata['expires'] == 0) || ($ipbandata['expires'] > $rangebandata['expires'])) {
+				$bandata = $ipbandata;
+			} elseif (($rangebandata['expires'] == 0) || ($rangebandata['expires'] > $ipbandata['expires'])) {
+				$bandata = $rangebandata;
+			} else {
+				$bandata = $ipbandata;
+			}
+		} elseif (($ipbandata != null) || ($rangebandata != null))
+		{
+			if ($ipbandata != null) {
+				$bandata = $ipbandata;
+			} elseif ($rangebandata != null) {
+				$bandata = $rangebandata;
+			} else {
+				return 0;
+			}
+		} else {
+			return 0; //not banned
+		}
+
+		if (!empty($bandata))
+		{
+			if (count($otherbans) >= 1)
+			{
+				$bandata['more'] = $otherbans;
+			}
+			return $bandata;
+		}
+		return 0;
+	}
+
+	function isWarned($ip)
+	{
+		
+		$warns = $this->conn->query("SELECT * FROM warnings WHERE ip='".$ip."' AND shown=0 ORDER BY created ASC LIMIT 0, 1;");
+		
+		if ($warns->num_rows == 1)
+		{
+			$warndata = $warns->fetch_assoc();
+			return $warndata;
+		} else {
+			return 0;
+		}
+		return 0;
+	}
+
 	function banMessage($board = "*")
 	{
 		$bandata = $this->isBanned($_SERVER['REMOTE_ADDR'], $board);
@@ -628,9 +608,11 @@ class Common {
 				}
 				if ($bandata['expires'] != 0)
 				{
-				$left = floor($bandata['expires'] - time()/(60*60*24));
+				$left = floor(($bandata['expires'] - time())/(60*60*24));
+				$days = floor(($bandata['expires'] - $bandata['created'])/(60*60*24));
 				} else {
 				$left = -1;
+				$days = -1;
 				}
 				?>
 				<html>
@@ -674,32 +656,45 @@ while ($row = $styles->fetch_assoc())
 	<p><?php echo $bandata['reason']; ?></p>
 	<p>You were banned on <b><?php echo date("d/m/Y (D) H:i:s", $bandata['created']); ?></b> and your ban expires  
 	<b><?php if ($left != -1) { echo " on ".date("d/m/Y (D) H:i:s", $bandata['expires']).", which is <b>".$left."</b> days from now."; } else { echo " never"; }; ?></b>.</p>
+	<p>According to our server your IP is: <b><?php echo $_SERVER['REMOTE_ADDR']; ?></b></p>
 	<?php
 	$range = 0;
 	if (!empty($bandata['range_ip'])) { $range = 1; }
 	$appeals = $this->conn->query("SELECT * FROM appeals WHERE ban_id=".$bandata['id']." AND rangeban=".$range);
-	if ((($left > 3) || ($left == -1)) && ($appeals->num_rows == 0))
-	{
-		//You'll be able to appeal this ban in x days.
 		//Your appeal has been sent and is waiting until review, you can change it here.
 	?>
-	<p>According to our server your IP is: <b><?php echo $_SERVER['REMOTE_ADDR']; ?></b></p>
-	<p>Because your ban is longer than 3 days in length, you may appeal it in the form below. Please explain why you deserve to be unbanned. Poorly writen, rude or offensive appeals may be declined. E-mail address is optional.</p>
-	<p><form action="./imgboard.php" method="POST">
-	<input type="hidden" name="mode" value="usrapp" />
-	<input type="hidden" name="board" value="<?php echo $board; ?>" />
-	<table class="postform">
-	<tbody>
-	<tr><td class="postBlock">E-mail</td><td><input type="text" name="email" /><input type="submit" value="Submit"></td></tr>
-	<tr><td class="postBlock">Message</td><td><textarea style="width: 100%;" rows=6 name="msg"></textarea></td></tr>
-	</tbody>
-	</table>
-	</form></p>
 	<?php
+	$appeal = ($bandata['appeal'] - time())/(60*60*24);
+	if (($bandata['appeal'] != 0) && ($appeal < 0))
+	{
+		?>
+		<p>You may appeal your ban in the form below. Please explain why you deserve to be unbanned. Poorly writen, rude or offensive appeals may be declined. E-mail address is optional.</p>
+		<p><form action="./imgboard.php" method="POST">
+		<input type="hidden" name="mode" value="usrapp" />
+		<input type="hidden" name="board" value="<?php echo $board; ?>" />
+		<table class="postform">
+		<tbody>
+		<tr><td class="postBlock">E-mail</td><td><input type="text" name="email" /><input type="submit" value="Submit"></td></tr>
+		<tr><td class="postBlock">Message</td><td><textarea style="width: 100%;" rows=6 name="msg"></textarea></td></tr>
+		</tbody>
+		</table>
+		</form></p>
+		<?php
+	} elseif ($bandata['appeal'] != 0)
+	{
+		?>
+		<p>You'll be allowed to appeal your ban in <b><?php echo ceil(($bandata['appeal'] - time())/(60*60*24)); ?></b> days.</p>
+		<?php
+	} else {
+		?>
+		<p>You may not appeal your ban.</p>
+		<?php
+	}
+	
 	if ((!empty($bandata['more'])) && (count($bandata['more']) > 1))
 	{
 		?>
-		<p>There are more than one bans placed on your IP, for more information check out the table below:</p>
+		<p>There are more than one bans placed on your IP. For more information, see the table below:</p>
 		<table>
 		<thead>
 		<tr>
@@ -731,9 +726,6 @@ while ($row = $styles->fetch_assoc())
 		</tbody>
 		</table>
 		<?php
-	}
-	?>
-	<?php
 	}
 	?>
 	</div>
