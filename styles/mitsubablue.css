@@ -944,6 +944,10 @@ a.expander {
 	margin-left: 5px;
 	}
 	
+#embed {
+	white-space: nowrap;
+}
+	
 	#quote-preview iframe,#quote-preview .filter-preview {
 	display: none;
 }
