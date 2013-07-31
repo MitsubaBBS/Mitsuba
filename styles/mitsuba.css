@@ -809,6 +809,10 @@ div.backlink {
 a.expander {
 	margin-left: 5px;
 	}
+	
+#embed {
+	white-space: nowrap;
+}
 
 /* MENU */
 
@@ -889,7 +893,7 @@ table:not(#postForm) tbody tr:nth-of-type(odd) {
 }
 
 table:not(#postForm) {
-	border-collapse:separate;
+	border-collapse: separate;
 	border-spacing: 1px;
 	min-width: 100%;
 	width: 100% !important;
