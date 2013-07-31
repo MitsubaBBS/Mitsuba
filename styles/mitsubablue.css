@@ -90,7 +90,7 @@ input,textarea,select {
 	font-size: inherit;
 	font-weight: inherit;
 	margin-right: 3px;
-	margin-top: 2px;
+	margin-top: 1px;
 }
 
 legend {
@@ -532,8 +532,7 @@ td {
 }
 
 #postForm input[type=text],input[type=password],table.postForm>tbody textarea {
-	margin: 0px;
-	margin-right: 2px;
+	margin: 1px 2px 0px 0px;
 	padding: 2px 4px 3px 4px;
 	border: 1px solid #AAA;
 	outline: none;
@@ -576,7 +575,7 @@ div.closed {
 }
 
 tbody textarea {
-	margin-bottom: -3px!important;
+	margin-bottom: 0px!important;
 	width: 292px;
 };
 
