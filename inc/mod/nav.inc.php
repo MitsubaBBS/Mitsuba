@@ -72,6 +72,8 @@ if ($_SESSION['type'] >= 2)
 <li><a href="?/warnings/add" target="main"><?php echo $lang['mod/add_warning']; ?></a></li>
 <li><a href="?/ban_requests" target="main"><?php echo $lang['mod/ban_requests']; ?> (<?php echo $breqs; ?>)</a></li>
 <li><a href="?/appeals" target="main"><?php echo $lang['mod/appeals']; ?> (<?php echo $appeals; ?>)</a></li>
+<li><a href="?/rangebans" target="main"><?php echo $lang['mod/manage_range_bans']; ?></a></li>
+<li><a href="?/rangebans/add" target="main"><?php echo $lang['mod/add_range_ban']; ?></a></li>
 <li><a href="?/announcements/add" target="main"><?php echo $lang['mod/new_announcement']; ?></a></li>
 <li><a href="?/news/add" target="main"><?php echo $lang['mod/add_news']; ?></a></li>
 <li><a href="?/locked" target="main"><?php echo $lang['mod/locked']; ?></a></li>
@@ -108,7 +110,6 @@ if ($_SESSION['type'] >= 3)
 <li><a href="?/styles" target="main"><?php echo $lang['mod/manage_styles']; ?></a></li>
 <li><a href="?/wordfilter" target="main"><?php echo $lang['mod/manage_wordfilter']; ?></a></li>
 <li><a href="?/spamfilter" target="main"><?php echo $lang['mod/manage_spamfilter']; ?></a></li>
-<li><a href="?/range" target="main"><?php echo $lang['mod/manage_range_bans']; ?></a></li>
 <li><a href="?/message" target="main"><?php echo $lang['mod/global_message']; ?></a></li>
 <li><a href="?/rebuild" target="main"><?php echo $lang['mod/rebuild_cache']; ?></a></li>
 <li><a href="?/cleaner" target="main"><?php echo $lang['mod/cleaner']; ?></a></li>

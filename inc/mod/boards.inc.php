@@ -45,6 +45,7 @@ $mitsuba->admin->reqPermission(3);
 <td><?php echo $lang['mod/directory']; ?></td>
 <td><?php echo $lang['mod/name']; ?></td>
 <td><?php echo $lang['mod/description']; ?></td>
+<td><?php echo $lang['mod/board_type']; ?></td>
 <td><?php echo $lang['mod/bump_limit']; ?></td>
 <td><?php echo $lang['mod/message']; ?></td>
 <td><?php echo $lang['mod/special']; ?></td>
@@ -62,6 +63,27 @@ echo '<tr>';
 echo "<td><center><a href='./".$row['short']."/'>/".$row['short']."/</a></center></td>";
 echo "<td><center>".$row['name']."</center></td>";
 echo "<td>".$row['des']."</td>";
+switch ($row['type'])
+{
+	case "imageboard":
+		echo "<td>".$lang['mod/imageboard']."</td>";
+		break;
+	case "textboard":
+		echo "<td>".$lang['mod/textboard']."</td>";
+		break;
+	case "overboard":
+		echo "<td>".$lang['mod/overboard']."</td>";
+		break;
+	case "fileboard":
+		echo "<td>".$lang['mod/fileboard']."</td>";
+		break;
+	case "archive":
+		echo "<td>".$lang['mod/archive']."</td>";
+		break;
+	default:
+		echo "<td>".$lang['mod/fool']."</td>";
+		break;
+}
 echo "<td><center>".$row['bumplimit']."</center></td>";
 if (!empty($row['message']))
 {

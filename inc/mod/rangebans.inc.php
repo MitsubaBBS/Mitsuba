@@ -1,12 +1,20 @@
 <?php
+$mitsuba->admin->reqPermission(2);
 if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
+if ((isset($_GET['del'])) && ($_GET['del']==1))
 	{
-	$mitsuba->admin->ui->startSection(sprintf($lang['mod/recent_bans'], $_GET['c']));
+		$mitsuba->admin->reqPermission(3);
+		if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
+		{
+			$conn->query("DELETE FROM rangebans WHERE id=".$_GET['b']);
+		}
+	}
 	?>
+	<?php $mitsuba->admin->ui->startSection($lang['mod/range_bans']); ?>
+
 	<table>
 	<thead>
 	<tr>
@@ -17,17 +25,17 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	<td><?php echo $lang['mod/expires']; ?></td>
 	<td><?php echo $lang['mod/boards']; ?></td>
 	<td><?php echo $lang['mod/delete']; ?></td>
-	<?php
-		if ($_SESSION['type'] >= 3) { echo "<td>".$lang['mod/staff_member']."</td>"; }
-	?>
+		<?php
+			if ($_SESSION['type'] >= 3) { echo "<td>".$lang['mod/staff_member']."</td>"; }
+		?>
 	</tr>
 	</thead>
 	<tbody>
 	<?php
 	if ($_SESSION['type'] >= 3) {
-		$result = $conn->query("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.mod_id=users.id ORDER BY created LIMIT 0, ".$_GET['c'].";");
+		$result = $conn->query("SELECT rangebans.*, users.username FROM rangebans LEFT JOIN users ON rangebans.mod_id=users.id ORDER BY created LIMIT 0, 15;");
 	} else {
-		$result = $conn->query("SELECT * FROM bans ORDER BY created LIMIT 0, ".$_GET['c'].";");
+		$result = $conn->query("SELECT * FROM rangebans ORDER BY created LIMIT 0, 15;");
 	}
 	while ($row = $result->fetch_assoc())
 	{
@@ -45,7 +53,7 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	echo "<td><center>".$row['boards']."</center></td>";
 	if ($_SESSION['type']>=2)
 	{
-	echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
+	echo "<td><center><a href='?/rangebans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 	} else {
 	echo "<td></td>";
 	}
@@ -58,7 +66,5 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	?>
 	</tbody>
 	</table>
+	<?php printf($lang['mod/showing_bans'], 15); ?> <a href="?/bans/all"><?php echo $lang['mod/show_all']; ?></a> <a href="?/rangebans/recent&c=100"><?php printf($lang['mod/show_recent'], 100); ?></a>
 	<?php $mitsuba->admin->ui->endSection(); ?>
-	<?php
-	}
-?>

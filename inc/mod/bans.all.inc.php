@@ -16,11 +16,18 @@ if (!defined("IN_MOD"))
 	<td><?php echo $lang['mod/expires']; ?></td>
 	<td><?php echo $lang['mod/boards']; ?></td>
 	<td><?php echo $lang['mod/delete']; ?></td>
+	<?php
+		if ($_SESSION['type'] >= 3) { echo "<td>".$lang['mod/staff_member']."</td>"; }
+	?>
 	</tr>
 	</thead>
 	<tbody>
 	<?php
-	$result = $conn->query("SELECT * FROM bans ORDER BY created;");
+	if ($_SESSION['type'] >= 3) {
+		$result = $conn->query("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.mod_id=users.id ORDER BY created;");
+	} else {
+		$result = $conn->query("SELECT * FROM bans ORDER BY created;");
+	}
 	while ($row = $result->fetch_assoc())
 	{
 	echo "<tr>";
@@ -40,6 +47,10 @@ if (!defined("IN_MOD"))
 	echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 	} else {
 	echo "<td></td>";
+	}
+	if ($_SESSION['type'] >= 3)
+	{
+		echo "<td>".$row['username']."</td>";
 	}
 	echo "</tr>";
 	}

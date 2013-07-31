@@ -1,11 +1,12 @@
 <?php
+$mitsuba->admin->reqPermission(2);
 if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
 if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	{
-	$mitsuba->admin->ui->startSection(sprintf($lang['mod/recent_bans'], $_GET['c']));
+	$mitsuba->admin->ui->startSection(sprintf($lang['mod/recent_range_bans'], $_GET['c']));
 	?>
 	<table>
 	<thead>
@@ -25,9 +26,9 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	<tbody>
 	<?php
 	if ($_SESSION['type'] >= 3) {
-		$result = $conn->query("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.mod_id=users.id ORDER BY created LIMIT 0, ".$_GET['c'].";");
+		$result = $conn->query("SELECT rangebans.*, users.username FROM rangebans LEFT JOIN users ON rangebans.mod_id=users.id ORDER BY created LIMIT 0, ".$_GET['c'].";");
 	} else {
-		$result = $conn->query("SELECT * FROM bans ORDER BY created LIMIT 0, ".$_GET['c'].";");
+		$result = $conn->query("SELECT * FROM rangebans ORDER BY created LIMIT 0, ".$_GET['c'].";");
 	}
 	while ($row = $result->fetch_assoc())
 	{
@@ -45,7 +46,7 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	echo "<td><center>".$row['boards']."</center></td>";
 	if ($_SESSION['type']>=2)
 	{
-	echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
+	echo "<td><center><a href='?/rangebans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 	} else {
 	echo "<td></td>";
 	}

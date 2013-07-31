@@ -92,7 +92,7 @@ $mitsuba->admin->reqPermission(3);
 				$anonymous = $_POST['anonymous'];
 			}
 			$extensions = "png,jpg,gif";
-			if ($mitsuba->admin->boards->addBoard($_POST['short'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $unlisted, $nodup, $maxchars, $anonymous, $extensions, $catalog, $captcha) > 0)
+			if ($mitsuba->admin->boards->addBoard($_POST['short'], "imageboard", $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $unlisted, $nodup, $maxchars, $anonymous, $extensions, $catalog, $captcha) > 0)
 			{
 				$mitsuba->admin->logAction(sprintf($lang['log/added_board'], $conn->real_escape_string($_POST['short'])));
 				?>

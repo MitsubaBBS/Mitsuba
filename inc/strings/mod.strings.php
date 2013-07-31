@@ -98,6 +98,14 @@ $lang['mod/board_ids'] = "Poster IDs";
 $lang['mod/board_embeds'] = "Allow embeds";
 $lang['mod/board_catalog'] = "Enable catalog";
 $lang['mod/board_captcha'] = "Enable captcha";
+$lang['mod/board_type'] = "Board type";
+
+$lang['mod/overboard'] = "Overboard";
+$lang['mod/imageboard'] = "Imageboard";
+$lang['mod/fileboard'] = "File listing board";
+$lang['mod/textboard'] = "Textboard";
+$lang['mod/archive'] = "Archive";
+
 $lang['mod/all_boards'] = "All boards";
 $lang['mod/directory'] = "Directory";
 $lang['mod/name'] = "Name";
@@ -157,6 +165,7 @@ $lang['mod/bans'] = "Bans";
 $lang['mod/ip'] = "IP";
 $lang['mod/reason'] = "Reason";
 $lang['mod/staff_note'] = "Staff note";
+$lang['mod/staff_member'] = "Staff member";
 $lang['mod/created'] = "Created";
 $lang['mod/expires'] = "Expires";
 $lang['mod/showing_bans'] = "Showing recent %s bans.";
@@ -172,6 +181,10 @@ $lang['mod/ip_syntax_wrong'] = "IP syntax wrong!";
 $lang['mod/user_banned'] = "User banned!";
 $lang['mod/request_sent'] = "Request sent!";
 $lang['mod/filled_wrong'] = "Form filled wrong";
+$lang['mod/range_bans'] = "Range bans";
+$lang['mod/all_range_bans'] = "All range bans";
+$lang['mod/add_range_ban'] = "Add range ban";
+$lang['mod/recent_range_bans'] = "Recent %s range bans";
 
 
 $lang['mod/user_deleted'] = "User deleted!";

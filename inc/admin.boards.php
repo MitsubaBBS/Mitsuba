@@ -29,9 +29,10 @@ class Boards {
 		}
 	}
 
-	function addBoard($short, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0, $unlisted = 0, $nodup = 0, $maxchars = 2000, $anonymous = "Anonymous", $extensions = "png,jpg,gif", $catalog = 0, $captcha = 0)
+	function addBoard($short, $type, $name, $des = "", $message = "", $bumplimit = 0, $spoilers = 0, $noname = 0, $ids = 0, $embeds = 0, $bbcode = 1, $time_between_posts = 20, $time_between_threads = 60, $time_to_delete = 120, $filesize = 2097152, $pages = 15, $hidden = 0, $unlisted = 0, $nodup = 0, $maxchars = 2000, $anonymous = "Anonymous", $extensions = "png,jpg,gif", $catalog = 0, $captcha = 0)
 	{
 		$short = $this->conn->real_escape_string(trim($short, "/ "));
+		$type = $this->conn->real_escape_string($type);
 		$name = $this->conn->real_escape_string($name);
 		$des = $this->conn->real_escape_string($des);
 		$message = $this->conn->real_escape_string($message);
@@ -105,7 +106,7 @@ class Boards {
 		{
 			$pages = 15;
 		}
-		$result = $this->conn->query("INSERT INTO boards (short, board_type, name, des, message, bumplimit, spoilers, noname, ids, embeds, bbcode, time_between_posts, time_between_threads, time_to_delete, filesize, pages, hidden, unlisted, nodup, maxchars, anonymous, extensions, catalog, captcha, overboard_boards) VALUES ('".$short."', 'imageboard', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.", ".$bbcode.", ".$time_between_posts.", ".$time_between_threads.", ".$time_to_delete.", ".$filesize.", ".$pages.", ".$hidden.", ".$unlisted.", ".$nodup.", ".$maxchars.", '".$anonymous."', '".$extensions."', ".$catalog.", ".$captcha.", '')");
+		$result = $this->conn->query("INSERT INTO boards (short, type, name, des, message, bumplimit, spoilers, noname, ids, embeds, bbcode, time_between_posts, time_between_threads, time_to_delete, filesize, pages, hidden, unlisted, nodup, maxchars, anonymous, extensions, catalog, captcha, overboard_boards) VALUES ('".$short."', '".$type."', '".$name."', '".$des."', '".$message."', ".$bumplimit.", ".$spoilers.", ".$noname.", ".$ids.", ".$embeds.", ".$bbcode.", ".$time_between_posts.", ".$time_between_threads.", ".$time_to_delete.", ".$filesize.", ".$pages.", ".$hidden.", ".$unlisted.", ".$nodup.", ".$maxchars.", '".$anonymous."', '".$extensions."', ".$catalog.", ".$captcha.", '')");
 		if ($result)
 		{
 			$this->createDirectories($short);

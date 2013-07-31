@@ -36,6 +36,32 @@ class Bans {
 		}
 	}
 
+	function addRangeBan($ip, $reason, $note, $expires, $boards)
+	{
+		if (!empty($ip))
+		{
+			$ip = $this->conn->real_escape_string($ip);
+			$reason = $this->conn->real_escape_string($reason);
+			$note = $this->conn->real_escape_string($note);
+			$boards = $this->conn->real_escape_string($boards);
+			$created = time();
+			$perma = 1;
+			if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
+			{
+				$expires = 0;
+				$perma = 1;
+			} else {
+				$expires = $this->mitsuba->common->parse_time($expires);
+				$perma = 0;
+			}
+			if (($expires == false) && ($perma == 0))
+			{
+				return -2;
+			}
+			$this->conn->query("INSERT INTO rangebans (ip, mod_id, reason, note, created, expires, boards) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", ".$expires.", '".$boards."');");
+			return 1;
+		}
+	}
 	function addWarning($ip, $reason, $note)
 	{
 		if (!empty($ip))

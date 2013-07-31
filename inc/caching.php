@@ -375,7 +375,7 @@ class Caching
 		{
 			return -666;
 		}
-		if ($boarddata['board_type']=="overboard")
+		if ($boarddata['type']=="overboard")
 		{
 			$overboard = 1;
 			$overboard_boards = explode(",", $boarddata['overboard_boards']);
