@@ -262,6 +262,7 @@ class Common {
 		$ipbandata = null;
 		$rangebandata = null;
 		$bandata = null;
+		$otherbans = array();
 		while ($row = $rangebans->fetch_assoc())
 		{
 			$range = str_replace('*','(.*)', $row['ip']);
@@ -269,26 +270,96 @@ class Common {
 			{
 				if ((strpos($ip, $range) !== FALSE))
 				{
-					$rangebandata = $row;
-					$rangebandata['range'] = 1;
-					break;
+					if ($row['boards'] == "*")
+					{
+						$rangebandata = $row;
+						$rangebandata['range'] = 1;
+					} else {
+						if ($board == "*")
+						{
+							$rangebandata = $row;
+							$rangebandata['range'] = 1;
+						} else {
+							$boards = explode(",", $row['boards']);
+							if (in_array($board, $boards))
+							{
+								$rangebandata = $row;
+								$rangebandata['range'] = 1;
+							}
+						}
+					}
+					$otherbans[] = $row;
+					$otherbans[count($otherbans)-1]['range'] = 1;
 				}
 			} elseif ($this->startsWith($ip, $range))
 			{
-				$rangebandata = $row;
-				$rangebandata['range'] = 1;
-				break;
+				if ($row['boards'] == "*")
+				{
+					$rangebandata = $row;
+					$rangebandata['range'] = 1;
+				} else {
+					if ($board == "*")
+					{
+						$rangebandata = $row;
+						$rangebandata['range'] = 1;
+					} else {
+						$boards = explode(",", $row['boards']);
+						if (in_array($board, $boards))
+						{
+							$rangebandata = $row;
+							$rangebandata['range'] = 1;
+						}
+					}
+				}
+				$otherbans[] = $row;
+				$otherbans[count($otherbans)-1]['range'] = 1;
 			} elseif (preg_match('/'.$range.'/', $ip))
 			{
-				$rangebandata = $row;
-				$rangebandata['range'] = 1;
-				break;
+				if ($row['boards'] == "*")
+				{
+					$rangebandata = $row;
+					$rangebandata['range'] = 1;
+				} else {
+					if ($board == "*")
+					{
+						$rangebandata = $row;
+						$rangebandata['range'] = 1;
+					} else {
+						$boards = explode(",", $row['boards']);
+						if (in_array($board, $boards))
+						{
+							$rangebandata = $row;
+							$rangebandata['range'] = 1;
+						}
+					}
+				}
+				$otherbans[] = $row;
+				$otherbans[count($otherbans)-1]['range'] = 1;
 			}
 		}
 		
-		if ($ipbans->num_rows == 1)
+		while ($row = $ipbans->fetch_assoc())
 		{
-			$ipbandata = $ipbans->fetch_assoc();
+			if ((empty($ipbandata)) || ($ipbandata['expires'] < $row['expires']))
+			{
+				if ($row['boards'] == "*")
+				{
+					$ipbandata = $row;
+				} else {
+					if ($board == "*")
+					{
+						$ipbandata = $row;
+					} else {
+						$boards = explode(",", $row['boards']);
+						if (in_array($board, $boards))
+						{
+							$ipbandata = $row;
+						}
+					}
+				}
+			}
+			$otherbans[] = $row;
+			$otherbans[count($otherbans)-1]['range'] = 0;
 		}
 		
 		if (($ipbandata != null) && ($rangebandata != null))
@@ -315,15 +386,27 @@ class Common {
 
 		if ($bandata['boards'] == "*")
 		{
+			if (count($otherbans) >= 1)
+			{
+				$bandata['more'] = $otherbans;
+			}
 			return $bandata;
 		} else {
 			if ($board == "*")
 			{
+				if (count($otherbans) >= 1)
+				{
+					$bandata['more'] = $otherbans;
+				}
 				return $bandata;
 			} else {
 				$boards = explode(",", $bandata['boards']);
 				if (in_array($board, $boards))
 				{
+					if (count($otherbans) >= 1)
+					{
+						$bandata['more'] = $otherbans;
+					}
 					return $bandata;
 				} else {
 					return 0;
@@ -534,7 +617,7 @@ class Common {
 
 	function banMessage($board = "*")
 	{
-	$bandata = $this->isBanned($_SERVER['REMOTE_ADDR'], $board);
+		$bandata = $this->isBanned($_SERVER['REMOTE_ADDR'], $board);
 				if ($bandata != 0)
 				{
 				if ($bandata['boards']=="*")
@@ -612,6 +695,44 @@ while ($row = $styles->fetch_assoc())
 	</tbody>
 	</table>
 	</form></p>
+	<?php
+	if ((!empty($bandata['more'])) && (count($bandata['more']) > 1))
+	{
+		?>
+		<p>There are more than one bans placed on your IP, for more information check out the table below:</p>
+		<table>
+		<thead>
+		<tr>
+		<td>Reason</td>
+		<td>Placed on</td>
+		<td>Expires on</td>
+		<td>Boards</td>
+		</tr>
+		</thead>
+		<tbody>
+		<?php
+		foreach ($bandata['more'] as $ban) {
+			echo "<td>".$ban['reason']."</td>";
+			echo "<td><center>".date("d/m/Y @ H:i", $ban['created'])."</center></td>";
+			if ($ban['expires'] != 0)
+			{
+			echo "<td><center>".date("d/m/Y @ H:i", $ban['expires'])."</center></td>";
+			} else {
+			echo "<td><b>never</b></td>";
+			}
+			if ($ban['boards'] == "*")
+			{
+			echo "<td><b>all boards</b></td>";
+			} else {
+			echo "<td><b>few boards</b></td>";
+			}
+		}
+		?>
+		</tbody>
+		</table>
+		<?php
+	}
+	?>
 	<?php
 	}
 	?>

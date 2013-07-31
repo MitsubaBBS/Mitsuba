@@ -32,17 +32,6 @@ if ($_SESSION['type']>=1) {
 <?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		} else {
-		if (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))
-		{
-		?>
-<?php $mitsuba->admin->ui->startSection($lang['mod/ip_syntax_wrong']); ?>
-<a href="?/rangebans/add"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
-</div>
-</body>
-</html>
-		<?php
-		exit;
-		}
 		$boards = "";
 		if ((!empty($_POST['all'])) && ($_POST['all']==1))
 		{
