@@ -174,6 +174,7 @@ $lang['mod/show_recent'] = "Show recent %s";
 $lang['mod/all_bans'] = "All bans";
 $lang['mod/recent_bans'] = "Recent %s bans";
 $lang['mod/expires_eg'] = "Expires (e.g. 1d, 20s)";
+$lang['mod/appeal_in'] = "Appeal";
 $lang['mod/add_ban_request'] = "Add new ban request";
 $lang['mod/append_text'] = "Append text to post";
 $lang['mod/will_delete'] = "POST WILL BE DELETED";

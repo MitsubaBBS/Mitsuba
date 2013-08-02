@@ -43,7 +43,7 @@ $mitsuba->admin->reqPermission(3);
 			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$result = $conn->query("SELECT * FROM styles WHERE id=".$n);
 			$row = $result->fetch_assoc();
-			unlink($row['path_index']);
+			unlink($row['path']);
 			$conn->query("DELETE FROM styles WHERE id=".$n);
 		}
 		?>
