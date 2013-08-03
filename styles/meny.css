@@ -84,3 +84,7 @@ body {
 	margin-left: 60px;
 	padding-top: 5px;
 }
+
+.contents > span:nth-child(1) {
+	padding-top: 5px;
+}
