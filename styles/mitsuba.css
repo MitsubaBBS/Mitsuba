@@ -816,6 +816,10 @@ a.expander {
 	white-space: nowrap;
 }
 
+.contents > span:nth-child(1) {
+	padding-top: 5px;
+}
+
 /* MENU */
 
 #menu .coll {

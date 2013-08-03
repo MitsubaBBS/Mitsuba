@@ -984,6 +984,10 @@ div.post-hidden:not(#quote-preview) blockquote.postMessage {
   display: none;
 }
 
+.contents > span:nth-child(1) {
+	padding-top: 5px;
+}
+
 /* MENU */
 
 #menu .coll {
