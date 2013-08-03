@@ -13,7 +13,6 @@ body {
 	font-size: 10pt;
 	margin-left: 0;
 	margin-right: 0;
-	margin-top: 5px;
 	padding-left: 5px;
 	padding-right: 5px;
 	word-wrap: break-all;
@@ -247,6 +246,7 @@ div#boardLinks {
 	font-size: 9pt;
 	color: #89A;
 	display: block;
+	padding-top: 5px;
 }
 
 div#boardLinks a {

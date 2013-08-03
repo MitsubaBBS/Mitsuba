@@ -2,7 +2,7 @@
 html,
 body {
 	padding: 0;
-	margin-top: -5px;
+	margin-top: 0;
 	height: 100%;
 }
 
@@ -82,9 +82,4 @@ body {
 
 #boardLinks {
 	margin-left: 60px;
-	padding-top: 5px;
-}
-
-.contents > span:nth-child(1) {
-	padding-top: 5px;
 }
