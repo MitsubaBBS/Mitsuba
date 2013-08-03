@@ -415,6 +415,8 @@ div.postingMode {
 
 div.navLinks {
 	margin-bottom: 10px;
+	margin-top: 10px;
+	text-align: center;
 }
 
 div.navLinksBot {
