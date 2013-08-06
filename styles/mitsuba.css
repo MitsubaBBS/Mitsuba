@@ -1351,7 +1351,7 @@ visibility: hidden;
 
 fieldset input, label {
 	display: block;
-	float: right;
+	float: left;
 	margin-bottom: 10px;
 	width: auto;
 }
@@ -1359,7 +1359,7 @@ fieldset input, label {
 fieldset label {
 	font-size: 12px;
 	text-align: right;
-	width: 175px;
+	width: 270px;
 	padding-right: 20px;
 }
 
