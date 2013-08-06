@@ -557,29 +557,29 @@ class Caching
 				{
 					$file .= '<tr>
 						<td>'.$lang['img/name'].'</td>
-						<td><input name="name" type="text" /></td>
+						<td><input class="board-input" name="name" type="text" /></td>
 						</tr>';
 				}
 				if (($boarddata['ids'] == 1) && ($adm_type >= 2))
 				{
 					$file .= '<tr>
 						<td>'.$lang['img/fake_id'].'</td>
-						<td><input name="fake_id" type="text" /></td>
+						<td><input class="board-input" name="fake_id" type="text" /></td>
 						</tr>';
 				}
 				$file .= '<tr>
 					<td>'.$lang['img/email'].'</td>
-					<td><input name="email" type="text" /></td>
+					<td><input class="board-input" name="email" type="text" /></td>
 					</tr>
 					<tr>
 					<td>'.$lang['img/subject'].'</td>
-					<td><input name="sub" type="text" />';
+					<td><input class="board-input" name="sub" type="text" />';
 				$file .= '<input type="hidden" name="board" value="'.$board.'" />';
 				if ($threadno != 0)
 				{
 					$file .= '<input type="hidden" name="resto" value="'.$threadno.'" />';
 				}
-				$file .= '<input type="submit" value="'.$lang['img/submit'].'" /></td>
+				$file .= '<input id="submit" type="submit" value="'.$lang['img/submit'].'" /></td>
 					</tr>
 					<tr>
 					<td>'.$lang['img/comment'].'</td>
@@ -599,10 +599,10 @@ class Caching
 				}
 				$file .= '<tr>
 					<td>'.$lang['img/file'].'</td>
-					<td id="embed"><input id="postFile" name="upfile" type="file" />';
+					<td id="embed"><input id="embed-input" id="postFile" name="upfile" type="file" />';
 				if ($boarddata['spoilers'] == 1)
 				{
-					$file .= '<label><input type="checkbox" name="spoiler" value="1">'.$lang['img/spoiler'].'</label>';
+					$file .= '<label><input id="spoiler" type="checkbox" name="spoiler" value="1">'.$lang['img/spoiler'].'</label>';
 				}
 				if ($boarddata['embeds'] == 1)
 				{

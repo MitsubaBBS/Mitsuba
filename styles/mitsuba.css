@@ -89,9 +89,63 @@ input,textarea,select {
 	font-size: inherit;
 	font-weight: inherit;
 	margin-right: 3px;
+	margin-top: 0px;
+	margin-bottom: 1px;
+}
+
+.board-input {
+	margin-bottom: 0px;
+	}
+	
+#delPassword {
+	margin-bottom: 1px;
+}
+	
+#submit {
+	font-size: 13px!important;
+	margin-bottom: 0px!important;
+}
+
+#embed {
+	white-space: nowrap;
+}
+
+#embed-input {
+	margin-bottom: 1px;
+}
+
+#captchaField {
+	margin-top: 1px!important;
+}
+
+#reloadCaptcha {
+	margin-top: 0px!important;
+}
+
+#spoiler {
+	margin-top: 2px;
+}
+
+#postPassword {
+	margin-bottom: 0px!important;
+}
+
+#postForm > tbody:nth-child(1) > tr:nth-child(9) > td:nth-child(2) > input:nth-child(1) {
+	margin-top: 1px!important;
+}
+
+#postForm > tbody:nth-child(1) > tr:nth-child(9) > td:nth-child(2) > input:nth-child(5) {
 	margin-top: 1px;
 }
 
+#postForm > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > input:nth-child(1) {
+	margin-bottom: 0px!important;
+}
+
+.contents > span:nth-child(1) {
+	padding-top: 5px;
+}
+	
 legend {
 	color: #000;
 }
@@ -208,6 +262,7 @@ div.boardBanner>div.boardTitle {
 div.boardBanner>div.boardSubtitle {
 	font-size: x-small;
 }
+
 
 div#boardLinks {
 	font-size: 9pt;
@@ -514,8 +569,14 @@ td {
 }
 
 #postForm input[type=text],input[type=password],textarea {
-	margin: 1px 2px 0px 0px;
-	padding: 2px 4px 3px 4px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 2px;
+	padding-top: 2px;
+	padding-bottom: 3px;
+	padding-left: 4px;
+	padding-right: 2px;
 	border: 1px solid #AAA;
 	outline: none;
 	font-family: arial,helvetica,sans-serif;
@@ -811,14 +872,6 @@ div.backlink {
 a.expander {
 	margin-left: 5px;
 	}
-	
-#embed {
-	white-space: nowrap;
-}
-
-.contents > span:nth-child(1) {
-	padding-top: 5px;
-}
 
 /* MENU */
 
