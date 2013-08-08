@@ -689,6 +689,19 @@ function adminStuff(parent)
 				}
 			});
 		});
+		$("a").each( function () {
+			if ($(this).attr("href") != null)
+			{
+				if ($(this).attr("href").indexOf("delete_post&") != -1)
+				{
+					$(this).attr("href", $(this).attr("href").replace("delete_post", "delete_post/yes"));
+					$(this).click(function (event) {
+						return confirm('Are you sure you want to delete this post?');
+					});
+				}
+			}
+			
+		});
 		$(".edit").click(adminInlineEdit);
 	}
 }
