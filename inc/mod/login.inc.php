@@ -24,9 +24,45 @@ if ((!empty($_POST['username'])) && (!empty($_POST['password'])))
 					$mitsuba->admin->logAction(sprintf($lang['log/logged_in'], $_SERVER['REMOTE_ADDR']));
 					header("Location: ./mod.php");
 				} else {
+					$ip = $_SERVER['REMOTE_ADDR'];
+					$result = $conn->query("SELECT * FROM bruteforce_tries WHERE ip='".$ip."';");
+					if ($result->num_rows >= 1)
+					{
+						$row = $result->fetch_assoc();
+						if ($row['lasttry'] > (time() - 3600))
+						{
+							$conn->query("UPDATE bruteforce_tries SET tries=tries+1, lasttry=".time()." WHERE ip='".$ip."';");
+							$conn->query("DELETE FROM bruteforce_tries WHERE lasttry<".(time() - 3600));
+							if ($row['tries'] > 3)
+							{
+								die($lang['mod/bad_password']);
+							}
+						} else {
+							$conn->query("UPDATE bruteforce_tries SET tries=1, lasttry=".time()." WHERE ip='".$ip."';");
+							$conn->query("DELETE FROM bruteforce_tries WHERE lasttry<".(time() - 3600));
+						}
+					}
 					die($lang['mod/bad_password']);
 				}
 			} else {
+				$ip = $_SERVER['REMOTE_ADDR'];
+				$result = $conn->query("SELECT * FROM bruteforce_tries WHERE ip='".$ip."';");
+				if ($result->num_rows >= 1)
+				{
+					$row = $result->fetch_assoc();
+					if ($row['lasttry'] > (time() - 3600))
+					{
+						$conn->query("UPDATE bruteforce_tries SET tries=tries+1, lasttry=".time()." WHERE ip='".$ip."';");
+						$conn->query("DELETE FROM bruteforce_tries WHERE lasttry<".(time() - 3600));
+						if ($row['tries'] > 3)
+						{
+							die($lang['mod/bad_password']);
+						}
+					} else {
+						$conn->query("UPDATE bruteforce_tries SET tries=1, lasttry=".time()." WHERE ip='".$ip."';");
+						$conn->query("DELETE FROM bruteforce_tries WHERE lasttry<".(time() - 3600));
+					}
+				}
 				die($lang['mod/bad_password']);
 			}
 		} else {

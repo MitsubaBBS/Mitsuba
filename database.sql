@@ -90,6 +90,14 @@ CREATE TABLE IF NOT EXISTS `boards` (
   PRIMARY KEY (`short`)
 );
 
+CREATE TABLE IF NOT EXISTS `bruteforce_tries` (
+  `ip` varchar(50) NOT NULL,
+  `mod_id` int(10) NOT NULL,
+  `tries` int(30) NOT NULL,
+  `lasttry` int(30) NOT NULL,
+  PRIMARY KEY (`ip`)
+);
+
 CREATE TABLE IF NOT EXISTS `config` (
   `name` varchar(100) NOT NULL,
   `value` text NOT NULL,
