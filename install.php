@@ -20,6 +20,16 @@ if (!empty($_GET['mode']))
 {
 	$mode = $_GET['mode'];
 }
+function randomSalt() {
+	$alphabet = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789+_-)(*&^%$#@!~|';
+	$pass = array();
+	$alphaLength = strlen($alphabet) - 1;
+	for ($i = 0; $i < 24; $i++) {
+		$n = mt_rand(0, $alphaLength);
+		$pass[] = $alphabet[$n];
+	}
+	return implode($pass);
+}
 switch ($mode)
 {
 	case "install":
@@ -37,6 +47,9 @@ switch ($mode)
 		<hr />
 		Admin username: <input type="text" name="username" value="root" /><br />
 		Admin password: <input type="text" name="password" value="" /><br />
+		<hr />
+		Secure tripcode salt: <input type="text" name="secure_salt" value="<?php echo randomSalt(); ?>" /><br />
+		ID salt: <input type="text" name="id_salt" value="<?php echo randomSalt(); ?>" /><br />
 		<input type="submit" value="Install!" />
 		</form>
 		</div>
@@ -53,6 +66,8 @@ switch ($mode)
 			$db_name = $_POST['db_name'];
 			$username = $_POST['username'];
 			$password = $_POST['password'];
+			$idsalt = addslashes($_POST['id_salt']);
+			$stsalt = addslashes($_POST['secure_salt']);
 			$conn = new mysqli($db_host, $db_username, $db_password);
 			if(!$conn->select_db($db_name)) {
 				if(!$conn->query("CREATE DATABASE ".$db_name)) {
@@ -122,6 +137,8 @@ switch ($mode)
 						$file .= '$db_password = "'.$db_password.'"'.";\n";
 						$file .= '$db_database = "'.$db_name.'"'.";\n";
 						$file .= '$db_host = "'.$db_host.'"'.";\n";
+						$file .= '$securetrip_salt = "'.$stsalt.'"'.";\n";
+						$file .= '$id_salt = "'.$idsalt.'"'.";\n";
 						$file .= '?>'."\n";
 						fwrite($handle, $file);
 						fclose($handle);

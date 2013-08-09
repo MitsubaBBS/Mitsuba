@@ -71,7 +71,8 @@ class Common {
 
 	function mkid($ip, $topic, $board, $junk = "")
 	{
-	    return substr(crypt(md5($ip.'t'.$board.$topic.$junk),'h!'),-8);
+		global $id_salt;
+	    return substr(crypt(md5($ip.'t'.$board.$topic.$junk.$id_salt),'h!'),-8);
 	}
 
 	function getGraphicsExtension()
@@ -415,6 +416,7 @@ class Common {
 
 	function mksecuretripcode($pw, $junk = "r3volution")
 	{
+		global $securetrip_salt;
 		$pw=mb_convert_encoding($pw,'SJIS','UTF-8');
 		$pw=str_replace('&','&amp;',$pw);
 		$pw=str_replace('"','&quot;',$pw);
@@ -434,7 +436,7 @@ class Common {
 		$salt=preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
 		$salt=strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
 
-		$trip=crypt($pw.$randomstring,$salt);
+		$trip=crypt($pw.$randomstring.$securetrip_salt,$salt);
 		return $trip;
 	}
 
