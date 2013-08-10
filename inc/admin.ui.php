@@ -21,7 +21,7 @@ class UI {
 	{
 		if ($_SESSION['token'] != $token)
 		{
-			die("Invalid form.")
+			die("Invalid form.");
 		}
 	}
 
