@@ -4,6 +4,7 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 $mitsuba->admin->reqPermission(3);
+$mitsuba->admin->ui->checkToken($_POST['token']);
 		if ($mitsuba->common->isBoard($_GET['board']))
 		{
 			if (!empty($_POST['name']))

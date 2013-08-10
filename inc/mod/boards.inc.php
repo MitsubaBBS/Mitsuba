@@ -8,6 +8,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->startSection($lang['mod/create_new_board']); ?>
 
 <form action="?/boards/add" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/board_directory']; ?>: <input type="text" name="short" maxlength=10 /><br />
 <?php echo $lang['mod/board_name']; ?>: <input type="text" name="name" maxlength=40 /><br />
 <?php echo $lang['mod/board_short']; ?>: <input type="text" name="des" maxlength=100 /><br />

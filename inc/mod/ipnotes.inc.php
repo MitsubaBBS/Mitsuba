@@ -31,6 +31,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_ip_note']); ?>
 
 <form action="?/ipnotes/add" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" /><br />
 <textarea name="note" cols=70 rows=12></textarea><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />

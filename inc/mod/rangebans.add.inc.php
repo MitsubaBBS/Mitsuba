@@ -4,8 +4,6 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-if (empty($_GET['r']))
-	{
 	if (empty($_POST['ip']))
 	{
 		$ip = "";
@@ -14,6 +12,7 @@ if (empty($_GET['r']))
 		$mitsuba->admin->ui->startSection($title);
 		?>
 <form action="?/rangebans/add" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" /><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />
@@ -32,6 +31,7 @@ if ($_SESSION['type']>=1) {
 <?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		} else {
+		$mitsuba->admin->ui->checkToken($_POST['token']);
 		$boards = "";
 		if ((!empty($_POST['all'])) && ($_POST['all']==1))
 		{
@@ -60,7 +60,6 @@ if ($_SESSION['type']>=1) {
 <?php $mitsuba->admin->ui->startSection($lang['mod/filled_wrong']); ?>
 <a href="javascript:history.back(-1);"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 				<?php
-		}
 		}
 		}
 ?>

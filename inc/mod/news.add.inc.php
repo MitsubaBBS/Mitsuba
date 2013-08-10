@@ -10,6 +10,7 @@ $mitsuba->admin->reqPermission(2);
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_news']); ?>
 
 <form action="?/news/add" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/by']; ?>: <input type="text" name="who" value="<?php echo $_SESSION['username']; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title"/><br />
 <?php echo $lang['mod/text']; ?>: <br />
@@ -47,6 +48,7 @@ $mitsuba->caching->generateNews();
 <?php $mitsuba->admin->ui->endSection(); ?>
 	<?php
 	} else {
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 		$text = processEntry($conn, $_POST['text']);
 		$who = $_SESSION['username'];
 		if (!empty($_POST['who'])) { $who = $_POST['who']; }

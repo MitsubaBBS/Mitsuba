@@ -17,6 +17,7 @@ $mitsuba->admin->ui->startSection($lang['mod/edit_link']);
 		?>
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links/edit&i=<?php echo $id; ?>" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/short']; ?>: <input type="text" name="short" value="<?php echo $data['short']; ?>" /><br />
 <?php echo $lang['mod/url']; ?>: <input type="text" name="url" value="<?php echo $data['url']; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $data['title']; ?>" /><br />
@@ -35,6 +36,7 @@ $mitsuba->admin->ui->startSection($lang['mod/edit_link']);
 						$mitsuba->admin->ui->endSection();
 
 					} else {
+						$mitsuba->admin->ui->checkToken($_POST['token']);
 						$mitsuba->admin->links->updateBoardLink($id, $_POST['url'], $_POST['relative'], $_POST['title'], $_POST['short']);
 						?>
 						<meta http-equiv="refresh" content="0;URL='?/links'" />

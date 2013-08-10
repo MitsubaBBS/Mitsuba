@@ -6,6 +6,7 @@ if (!defined("IN_MOD"))
 $mitsuba->admin->reqPermission(3);
 		if ((!empty($_POST['b'])) && (!empty($_POST['p'])) && ($mitsuba->common->isBoard($_POST['b'])) && (is_numeric($_POST['p'])) && (!empty($_POST['text'])))
 		{
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$result = $conn->query("SELECT * FROM posts WHERE id=".$_POST['p']." AND board='".$_POST['b']."'");
 			if ($result->num_rows == 1)
 			{

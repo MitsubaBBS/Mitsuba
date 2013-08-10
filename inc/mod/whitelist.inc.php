@@ -13,6 +13,7 @@ if ((isset($_GET['del'])) && ($_GET['del']==1))
 	}
 if ((!empty($_GET['m'])) && ($_GET['m']=="add"))
 {
+		$mitsuba->admin->ui->checkToken($_POST['token']);
 		if (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))
 		{
 		?>
@@ -68,6 +69,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_whitelist']); ?>
 
 <form action="?/whitelist&m=add" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" /><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />
 <input type="checkbox" name="nolimits" value="1"/><?php echo $lang['mod/nolimits']; ?><br />

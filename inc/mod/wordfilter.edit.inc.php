@@ -14,6 +14,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->startSection($lang['mod/wf_edit']); ?>
 
 <form action="?/wordfilter" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="id" value="<?php echo $_GET['n']; ?>">
 <?php echo $lang['mod/wf_search']; ?>: <input type="text" name="search" value="<?php echo htmlspecialchars($info['search']); ?>"/><br />

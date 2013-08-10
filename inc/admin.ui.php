@@ -9,6 +9,22 @@ class UI {
 		$this->mitsuba = $mitsuba;
 	}
 
+	function getToken()
+	{
+		global $id_salt;
+		$token = md5($this->mitsuba->common->randomSalt().$id_salt);
+		$_SESSION['token'] = $token;
+		echo '<input type="hidden" name="token" value="'.$token.'" />';
+	}
+
+	function checkToken($token)
+	{
+		if ($_SESSION['token'] != $token)
+		{
+			die("Invalid form.")
+		}
+	}
+
 	function getBoardList($boards = "")
 	{
 		global $lang;

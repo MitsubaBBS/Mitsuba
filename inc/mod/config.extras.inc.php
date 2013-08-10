@@ -1,6 +1,7 @@
 <?php
 if (isset($_GET['m']))
 {
+	$mitsuba->admin->ui->checkToken($_POST['token']);
 	switch ($_GET['m'])
 	{
 		case "ecatalog":

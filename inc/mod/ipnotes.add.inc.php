@@ -24,6 +24,7 @@ $ip = "";
 		} else {
 			if ((!empty($ip)) && (!empty($_POST['note'])))
 			{
+				$mitsuba->admin->ui->checkToken($_POST['token']);
 				$note = processEntry($conn, $_POST['note']);
 				$conn->query("INSERT INTO ip_notes (ip, text, created, mod_id) VALUES ('".$ip."', '".$note."', ".time().", ".$_SESSION['id'].")");
 				?>

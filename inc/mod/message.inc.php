@@ -6,6 +6,7 @@ if (!defined("IN_MOD"))
 $mitsuba->admin->reqPermission(3);
 		if (isset($_POST['message']))
 		{
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$mitsuba->updateConfigValue("global_message", $_POST['message']);
 		?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/global_message_updated']); ?>
@@ -23,6 +24,7 @@ $mitsuba->admin->reqPermission(3);
 
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 		<form action="?/message" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 		<textarea cols=70 rows=14 name="message"><?php echo $msg; ?></textarea><br />
 		<input type="submit" value="<?php echo $lang['mod/submit']; ?>">
 		</form>

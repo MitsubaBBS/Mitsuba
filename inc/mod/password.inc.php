@@ -5,6 +5,7 @@ if (!defined("IN_MOD"))
 }
 if ((!empty($_POST['old'])) && (!empty($_POST['new'])) && (!empty($_POST['new2'])))
 		{
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			if ($_POST['new']==$_POST['new2'])
 			{
 		
@@ -34,6 +35,7 @@ if ((!empty($_POST['old'])) && (!empty($_POST['new'])) && (!empty($_POST['new2']
 <?php $mitsuba->admin->ui->startSection($lang['mod/pwd_change']); ?>
 
 <form action="?/password" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/pwd_current']; ?>: <input type="password" name="old"><br />
 <?php echo $lang['mod/pwd_new']; ?>: <input type="password" name="new"><br />
 <?php echo $lang['mod/pwd_confirm']; ?>: <input type="password" name="new2"><br />

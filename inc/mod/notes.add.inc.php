@@ -5,6 +5,7 @@ if (!defined("IN_MOD"))
 }
 if (!empty($_POST['note']))
 		{
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$note = $conn->real_escape_string($_POST['note']);
 			$conn->query("INSERT INTO notes (mod_id, note, created) VALUES (".$_SESSION['id'].", '".$note."', ".time().")");
 		?>

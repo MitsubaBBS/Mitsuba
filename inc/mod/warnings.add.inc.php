@@ -29,6 +29,7 @@ if (!defined("IN_MOD"))
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_warning']); ?>
 
 <form action="?/warnings/add" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" /><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />
@@ -57,6 +58,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 <?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 		} else {
+		$mitsuba->admin->ui->checkToken($_POST['token']);
 		if (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))
 		{
 		?>

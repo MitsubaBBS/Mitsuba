@@ -16,6 +16,7 @@ $mitsuba->admin->reqPermission(3);
 		}
 		if ($_GET['m'] == "addc")
 		{
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			if (!empty($_POST['title']))
 			{
 				$mitsuba->admin->links->addLinkCategory($_POST['title']);
@@ -52,6 +53,7 @@ echo $mitsuba->admin->links->getLinkTable(-1);
 
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links&m=addc" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/name']; ?>: <input type="text" name="title" value="<?php echo $lang['mod/category']; ?>" /><input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 <?php $mitsuba->admin->ui->endSection(); ?>

@@ -9,6 +9,7 @@ $mitsuba->admin->reqPermission(3);
 		$regex = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; $continue = 1; }
 			if (empty($_POST['code'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $code = $_POST['code']; $continue = 1; }
@@ -28,6 +29,7 @@ $mitsuba->admin->reqPermission(3);
 				}
 			}
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['name2']))) {
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; $continue = 1; }
 			if (empty($_POST['regex'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $regex = $_POST['regex']; $continue = 1; }
@@ -85,6 +87,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_embed']); ?>
 
 <form action="?/embeds" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/name']; ?>: <input type="text" name="name" value="<?php echo $name; ?>"/><br />
 <?php echo $lang['mod/regex']; ?>: <input type="text" name="regex" value="<?php echo $regex; ?>"/><br />

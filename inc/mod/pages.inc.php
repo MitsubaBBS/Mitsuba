@@ -9,6 +9,7 @@ if (!empty($_GET['m']))
 	switch ($_GET['m'])
 	{
 		case "add":
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			if (!empty($_POST['name']))
 			{
 				if (($_POST['name']=="news") || ($_POST['name']=="frontpage") || ($_POST['name']=="index"))
@@ -63,6 +64,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_page']); ?>
 
 <form action="?/pages&m=add" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/name']; ?>: <input type="text" name="name" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" /><br />
 <?php echo $lang['mod/text']; ?>: <br />

@@ -5,6 +5,7 @@ if (!defined("IN_MOD"))
 }
 if ((!empty($_POST['to'])) && (!empty($_POST['title'])) && (!empty($_POST['text'])))
 		{
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$result = $conn->query("SELECT * FROM users WHERE username='".$conn->real_escape_string($_POST['to'])."'");
 			if ($result->num_rows == 1)
 			{
@@ -41,6 +42,7 @@ if ((!empty($_POST['to'])) && (!empty($_POST['title'])) && (!empty($_POST['text'
 <?php $mitsuba->admin->ui->startSection($lang['mod/send_message']); ?>
 
 <form action="?/inbox/new" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/to']; ?>: <input type="text" name="to" value="<?php echo $username; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $title; ?>" /><br />
 <?php echo $lang['mod/text']; ?>:<br />

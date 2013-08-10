@@ -8,6 +8,7 @@ $mitsuba->admin->reqPermission(3);
 		$replace = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "upload"))
 		{
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$shouldnt = 0;
 			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; $shouldnt = 1; }
 			if (empty($_FILES['upfile']['tmp_name'])) { echo "<b style='color: red;'>".$lang['mod/no_file']."</b>"; $shouldnt = 1; }
@@ -84,6 +85,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/upload_style']); ?>
 
 <form action="?/styles" method="POST" enctype="multipart/form-data">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
 <input type="hidden" name="mode" value="upload">
 <?php echo $lang['mod/file']; ?>: <input id="postFile" name="upfile" type="file"><br />

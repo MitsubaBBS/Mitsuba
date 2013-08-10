@@ -16,6 +16,7 @@ $mitsuba->admin->reqPermission(2);
 <?php $mitsuba->admin->ui->startSection($lang['mod/edit_news_entry']); ?>
 
 <form action="?/news/edit&b=<?php echo $_GET['b']; ?>" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <?php echo $lang['mod/by']; ?>: <input type="text" name="who" value="<?php echo $data['who']; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $data['title']; ?>"/><br />
 <?php echo $lang['mod/text']; ?>: <br />
@@ -25,6 +26,7 @@ $mitsuba->admin->reqPermission(2);
 <?php $mitsuba->admin->ui->endSection(); ?><br />
 	<?php
 	} else {
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 		if ($_SESSION['type']==3)
 		{
 		updateEntry($conn, 1, $_GET['b'], $_POST['who'], $_POST['title'], $_POST['text']);

@@ -9,6 +9,7 @@ if (isset($_POST['mode']))
 	switch($_POST['mode'])
 	{
 		case "add":
+$mitsuba->admin->ui->checkToken($_POST['token']);
 			$shown = 1;
 			if ((!empty($_POST['shown'])) && (is_numeric($_POST['shown'])) && ($_POST['shown']==0)) { $shown = 0; }
 			$text = "";
@@ -21,6 +22,7 @@ if (isset($_POST['mode']))
 			echo $conn->error;
 			break;
 		case "edit":
+$mitsuba->admin->ui->checkToken($_POST['token']);
 			if (is_numeric($_POST['id']))
 			{
 				$shown = 1;
@@ -106,6 +108,7 @@ while ($row = $result->fetch_assoc())
 <?php $mitsuba->admin->ui->endSection(); ?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_ad']); ?>
 <form action="?/ads" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/board']; ?>: 
 <select name="board">

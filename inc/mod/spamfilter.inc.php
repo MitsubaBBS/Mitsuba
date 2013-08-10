@@ -9,6 +9,7 @@ $mitsuba->admin->reqPermission(3);
 		$expires = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; $continue = 1; }
 			if (empty($_POST['reason'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $reason = $_POST['reason']; $continue = 1; }
@@ -50,6 +51,7 @@ $mitsuba->admin->reqPermission(3);
 			$reason = "";
 			$expires = "";
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['id']))) {
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; $continue = 1; }
 			if (empty($_POST['reason'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $reason = $_POST['reason']; $continue = 1; }
@@ -135,6 +137,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/wf_add']); ?>
 
 <form action="?/spamfilter" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/wf_search']; ?>: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($reason); ?>"/><br />

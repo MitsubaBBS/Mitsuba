@@ -14,6 +14,7 @@ if ((!empty($_GET['i'])) && (is_numeric($_GET['i'])))
 ?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/edit_ad']); ?>
 <form action="?/ads" method="POST">
+<?php $mitsuba->admin->ui->getToken(); ?>
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="id" value="<?php echo $addata['id']; ?>">
 <?php echo $lang['mod/board']; ?>: 
