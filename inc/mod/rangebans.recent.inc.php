@@ -26,7 +26,7 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	<tbody>
 	<?php
 	if ($_SESSION['type'] >= 3) {
-		$result = $conn->query("SELECT rangebans.*, users.username FROM rangebans LEFT JOIN users ON rangebans.mod_id=users.id ORDER BY created LIMIT 0, ".$_GET['c'].";");
+		$result = $conn->query("SELECT rangebans.*, users.username FROM rangebans LEFT JOIN users ON rangebans.mod_id=users.id ORDER BY created DESC LIMIT 0, ".$_GET['c'].";");
 	} else {
 		$result = $conn->query("SELECT * FROM rangebans ORDER BY created LIMIT 0, ".$_GET['c'].";");
 	}

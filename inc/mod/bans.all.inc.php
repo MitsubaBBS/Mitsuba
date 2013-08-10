@@ -24,7 +24,7 @@ if (!defined("IN_MOD"))
 	<tbody>
 	<?php
 	if ($_SESSION['type'] >= 3) {
-		$result = $conn->query("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.mod_id=users.id ORDER BY created;");
+		$result = $conn->query("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.mod_id=users.id ORDER BY created DESC;");
 	} else {
 		$result = $conn->query("SELECT * FROM bans ORDER BY created;");
 	}

@@ -32,7 +32,7 @@ if ((isset($_GET['del'])) && ($_GET['del']==1))
 	<tbody>
 	<?php
 	if ($_SESSION['type'] >= 3) {
-		$result = $conn->query("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.mod_id=users.id ORDER BY created LIMIT 0, 15;");
+		$result = $conn->query("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.mod_id=users.id ORDER BY created DESC LIMIT 0, 15;");
 	} else {
 		$result = $conn->query("SELECT * FROM bans ORDER BY created LIMIT 0, 15;");
 	}
