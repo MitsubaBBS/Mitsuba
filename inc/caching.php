@@ -771,7 +771,7 @@ class Caching
 				$file .= '<div class="pages">';
 				for ($i = 0; $i <= $max_pages; $i++)
 				{
-					if (($i+1) > $all_pages)
+					if ($i > $all_pages)
 					{
 						$file .= "[".$i."] ";
 					} else {
@@ -785,7 +785,7 @@ class Caching
 				}
 				$file .= '</div>';
 				$file .= ' <div class="next">';
-				if ($page != ($all_pages-1))
+				if ($page != $all_pages)
 				{
 					$file .= '<form action="?/board&b='.$board.'&p='.($page+1).'" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/next'].'" /></form>';
 				} else {
@@ -816,7 +816,7 @@ class Caching
 					{
 						$file .= "[<a href='./".$i.".html'><strong>".$i."</strong></a>] ";
 					} else {
-						if ($i >= $all_pages)
+						if ($i > $all_pages)
 						{
 							$file .= "[".$i."] ";
 						} else {
@@ -831,7 +831,7 @@ class Caching
 				}
 				$file .= '</div>';
 				$file .= ' <div class="next">';
-				if ($pg != ($all_pages-1))
+				if ($pg != $all_pages)
 				{
 					$file .= '<form action="./'.($pg+1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/next'].'" /></form>';
 				} else {
