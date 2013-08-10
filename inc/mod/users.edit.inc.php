@@ -6,12 +6,12 @@ if (!defined("IN_MOD"))
 $mitsuba->admin->reqPermission(3);
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
-			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$id = $_GET['id'];
 			if ($username = $mitsuba->admin->users->isUser($id))
 			{
 				if ((!empty($_POST['username'])) && (is_numeric($_POST['type'])))
 				{
+					$mitsuba->admin->ui->checkToken($_POST['token']);
 					$type = $_POST['type'];
 					if (empty($type)) { $type = 0; }
 					$boards = "";
