@@ -623,7 +623,7 @@ function adminStuff(parent)
 					{
 						more = more+' [<a href="'+api_url+'/edit_post&b='+board+'&p='+id+'" class="edit">E</a>]'
 					}
-					$(this).children(".postNum").after(' <span class="adminControls">[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a> / <a href="'+api_url+'/bans/add&b='+board+'&p='+id+'&d=1">&</a> / <a href="'+api_url+'/delete_post&b='+board+'&p='+id+'">D</a>'+more+'</span>');
+					$(this).children(".postNum").after(' <span class="adminControls">[<a href="'+api_url+'/sticky/toggle&b='+board+'&t='+id+'">S</a> / <a href="'+api_url+'/locked/toggle&b='+board+'&t='+id+'">L</a> / <a href="'+api_url+'/antibump/toggle&b='+board+'&t='+id+'">A</a>] [<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a> / <a href="'+api_url+'/bans/add&b='+board+'&p='+id+'&d=1">&</a> / <a href="'+api_url+'/delete_post&b='+board+'&p='+id+'">D</a>'+more+'</span>');
 					var el = this;
 					$.ajax({
 						type: 'get',
@@ -642,7 +642,7 @@ function adminStuff(parent)
 						}
 					});
 				} else {
-					$(this).children(".postNum").after(' <span class="adminControls">[<a href="'+api_url+'/sticky/toggle&b='+board+'&t='+id+'">S</a> / <a href="'+api_url+'/locked/toggle&b='+board+'&t='+id+'">L</a> / <a href="'+api_url+'/antibump/toggle&b='+board+'&t='+id+'">A</a>] [<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>]</span>');
+					$(this).children(".postNum").after(' <span class="adminControls">[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>]</span>');
 				}
 			});
 
