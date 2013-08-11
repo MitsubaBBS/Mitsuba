@@ -80,6 +80,13 @@ $(document).ready(function () {
 	{
 		adminStuff("body");
 	}
+	var hash = location.href.split(/#/);
+	if (hash[1] && hash[1].match(/q[0-9]+$/)) {
+		var id = $(this).attr("id").substr(1);
+		var textarea = $("#postForm textarea[name='com']")[0];
+		$(textarea).val($(textarea).val()+'>>'+hash[1].match(/q([0-9]+)$/)[1]+'\n'); 
+		$(textarea).focus();
+	}
 });
 
 var currentPage = 0;
@@ -234,6 +241,7 @@ function addQuotelinks()
 			var id = $(this).attr("id").substr(1);
 			var textarea = $("#postForm textarea[name='com']")[0];
 			$(textarea).val($(textarea).val()+'>>'+id+'\n'); 
+			$(textarea).focus();
 		} catch (ex) {
 			
 		}
