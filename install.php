@@ -137,8 +137,8 @@ switch ($mode)
 						$file .= '$db_password = "'.$db_password.'"'.";\n";
 						$file .= '$db_database = "'.$db_name.'"'.";\n";
 						$file .= '$db_host = "'.$db_host.'"'.";\n";
-						$file .= '$securetrip_salt = "'.$stsalt.'"'.";\n";
-						$file .= '$id_salt = "'.$idsalt.'"'.";\n";
+						$file .= '$securetrip_salt = \''.$stsalt.'\''.";\n";
+						$file .= '$id_salt = \''.$idsalt.'\''.";\n";
 						$file .= '?>'."\n";
 						fwrite($handle, $file);
 						fclose($handle);
