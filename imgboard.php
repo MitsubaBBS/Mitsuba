@@ -392,7 +392,7 @@ if (!empty($_POST['mode']))
 			}
 			break;
 	}
-	mysqli_close($conn);
+	$conn->close();
 } else {
 
 }
