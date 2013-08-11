@@ -13,13 +13,16 @@ class UI {
 	{
 		global $id_salt;
 		$token = md5($this->mitsuba->common->randomSalt().$id_salt);
+		if (!empty($_SESSION['token2'])) { $_SESSION['token3'] = $_SESSION['token2']; }
+		if (!empty($_SESSION['token1'])) { $_SESSION['token2'] = $_SESSION['token1']; }
+		if (!empty($_SESSION['token'])) { $_SESSION['token1'] = $_SESSION['token']; }
 		$_SESSION['token'] = $token;
 		echo '<input type="hidden" name="token" value="'.$token.'" />';
 	}
 
 	function checkToken($token)
 	{
-		if ($_SESSION['token'] != $token)
+		if (($_SESSION['token'] != $token) && ((empty($_SESSION['token1'])) || ($_SESSION['token1'] != $token)) && ((empty($_SESSION['token2'])) || ($_SESSION['token2'] != $token)) && ((empty($_SESSION['token3'])) || ($_SESSION['token3'] != $token)))
 		{
 			die("Invalid form.");
 		}
