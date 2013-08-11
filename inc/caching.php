@@ -1105,7 +1105,7 @@ class Caching
 
 		if ($return == 1)
 		{
-			$file .= '<span class="postNum"><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#p'.$row['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#p'.$row['id'].'#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a></span>';
+			$file .= '<span class="postNum"><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#p'.$row['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#p'.$row['id'].'#q'.$row['id'].'" class="quotePost" id="z'.$row['id'].'" title="Quote this post">'.$row['id'].'</a></span>';
 			if ($row['locked']==1)
 			{
 				$file .= '<img src="./img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
@@ -1145,7 +1145,7 @@ class Caching
 			$file .= '</span>';
 		} elseif ($threadno != 0)
 		{
-			$file .= '<span class="postNum"><a href="../../'.$row['board'].'/res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="../../'.$row['board'].'/res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a>';
+			$file .= '<span class="postNum"><a href="../../'.$row['board'].'/res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="../../'.$row['board'].'/res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="z'.$row['id'].'" title="Quote this post">'.$row['id'].'</a>';
 			if ($row['locked']==1)
 			{
 				$file .= '<img src="../../img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
@@ -1156,7 +1156,7 @@ class Caching
 			}
 			$file .= '</span>';
 		} else {
-			$file .= '<span class="postNum"><a href="../'.$row['board'].'/res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="../'.$row['board'].'/res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="q'.$row['id'].'" title="Quote this post">'.$row['id'].'</a> ';
+			$file .= '<span class="postNum"><a href="../'.$row['board'].'/res/'.$row['id'].'.html#p'.$row['id'].'" title="Highlight this post">No.</a><a href="../'.$row['board'].'/res/'.$row['id'].'.html#q'.$row['id'].'" class="quotePost" id="z'.$row['id'].'" title="Quote this post">'.$row['id'].'</a> ';
 			if ($row['locked']==1)
 			{
 				$file .= '<img src="../img/closed.gif" alt="Closed" title="Closed" class="stickyIcon" />';
@@ -1323,7 +1323,7 @@ class Caching
 			$file .= ' <span class="dateTime">'.date("d/m/Y(D)H:i:s", $row2['date']).'</span> ' ;
 			if ($return == 1)
 			{
-				$file .= '<span class="postNum"><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span>';
+				$file .= '<span class="postNum"><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="?/board&b='.$row['board'].'&t='.$row['id'].'#q'.$row2['id'].'" class="quotePost" id="z'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a></span>';
 				$file .= ' <span class="adminControls">[<a href="?/bans/add&b='.$row['board'].'&p='.$row2['id'].'">B</a> / <a href="?/bans/add&b='.$row['board'].'&p='.$row2['id'].'&d=1">&</a> / <a href="?/delete_post&b='.$row['board'].'&p='.$row2['id'].'">D</a>';
 				
 				
@@ -1340,9 +1340,9 @@ class Caching
 				$file .= "</span>";
 			} elseif ($threadno != 0)
 			{
-				$file .= '<span class="postNum"><a href="../res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="../res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
+				$file .= '<span class="postNum"><a href="../res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="../res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="z'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
 			} else {
-				$file .= '<span class="postNum"><a href="./res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="q'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
+				$file .= '<span class="postNum"><a href="./res/'.$row2['resto'].'.html#p'.$row2['id'].'" title="Highlight this post">No.</a><a href="./res/'.$row2['resto'].'.html#q'.$row2['id'].'" class="quotePost" id="z'.$row2['id'].'" title="Quote this post">'.$row2['id'].'</a> &nbsp;</span>';
 			}
 			$file .= '</div>';
 			$file .= $this->getFiles($row2, $row['board'], $return, $threadno, $embed_table, $extensions);
