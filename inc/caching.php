@@ -1436,7 +1436,7 @@ class Caching
 		$file = $this->getBoardHeader($board, $boarddata, "board", 1);
 		$file .= $this->getAds($boarddata['short'], "underform");
 		$location = "board";
-		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.deleted=0) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != \"\" AND replies.deleted=0) AS 'img_replies' FROM posts WHERE resto=0 AND board='b' AND deleted=0 ORDER BY sticky DESC, lastbumped DESC");
+		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.deleted=0) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != \"\" AND replies.deleted=0) AS 'img_replies' FROM posts WHERE resto=0 AND board='".$this->conn->real_escape_string($board)."' AND deleted=0 ORDER BY sticky DESC, lastbumped DESC");
 		$file .= '<div class="navLinks">[<a href="./" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
 		$file .= '<div id="content">';
 		$file .= '<div id="threads" class="extended-small">';
