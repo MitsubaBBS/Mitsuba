@@ -500,210 +500,197 @@ class Caching
 			$location = "board";
 		}
 		$header = $this->getBoardHeader($board, $boarddata, $location);
-		for ($pg = $page; $pg <= $pages; $pg++)
+		$underform_ads = $this->getAds($boarddata['short'], "underform");
+		$footer_ads = $this->getAds($boarddata['short'], "footer");
+		$bottom_ads = $this->getAds($boarddata['short'], "bottom");
+		$meny_config = "";
+		$locked = 0;
+		$postform = "";
+		$global = "";
+		$sql_boardlist = "";
+		if ($this->config['enable_meny']==1)
 		{
-			$file = $header;
-				
-			$locked = 0;
+			$meny_config = $this->getMenyConfig($location);
+		}
 			
 			
-			if (($return == 1) && ($adm_type >= 1))
+		if (($return == 1) && ($adm_type >= 1))
+		{
+			
+		} elseif ($threadno != 0)
+		{
+			$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."' AND deleted=0;");
+			if ($result->num_rows == 1)
 			{
-				
-			} elseif ($threadno != 0)
+				$tdata = $result->fetch_assoc();
+				$locked = $tdata['locked'];
+			} else {
+				return;
+			}
+		}
+
+		if (($locked == 0) && ($overboard == 0))
+		{
+			if ($threadno != 0)
 			{
-				$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."' AND deleted=0;");
-				if ($result->num_rows == 1)
+				$postform .= '<div class="postingMode">'.$lang['img/posting_mode'].'</div>';
+				if ($return == 1)
 				{
-					$tdata = $result->fetch_assoc();
-					$locked = $tdata['locked'];
+					$postform .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
+					$postform .= '<form id="postform" action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
 				} else {
-					return;
+					$postform .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]';
+					if ($boarddata['catalog']==1) { $postform .= ' [<a href="../catalog.html">Catalog</a>]'; }
+					$postform .= '</div>';
+					$postform .= '<form id="postform" action="../../imgboard.php" method="post" enctype="multipart/form-data">';
+				}
+			} else {
+				if ($return == 1)
+				{
+					$postform .= '<form id="postform" action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
+				} else {
+					$postform .= '<form id="postform" action="../imgboard.php" method="post" enctype="multipart/form-data">';
 				}
 			}
-			
-			
-			if (($locked == 0) && ($overboard == 0))
+			if ($adm_type <= 0)
 			{
-				if ($threadno != 0)
-				{
-					$file .= '<div class="postingMode">'.$lang['img/posting_mode'].'</div>';
-					if ($return == 1)
-					{
-						$file .= '<div class="navLinks">[<a href="?/board&b='.$board.'" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
-						$file .= '<form id="postform" action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
-					} else {
-						$file .= '<div class="navLinks">[<a href=".././" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]';
-						if ($boarddata['catalog']==1) { $file .= ' [<a href="../catalog.html">Catalog</a>]'; }
-						$file .= '</div>';
-						$file .= '<form id="postform" action="../../imgboard.php" method="post" enctype="multipart/form-data">';
-					}
-				} else {
-					if ($return == 1)
-					{
-						$file .= '<form id="postform" action="./imgboard.php?mod=1" method="post" enctype="multipart/form-data">';
-					} else {
-						$file .= '<form id="postform" action="../imgboard.php" method="post" enctype="multipart/form-data">';
-					}
-				}
-				if ($adm_type <= 0)
-				{
-					$file .= '<input type="hidden" name="MAX_FILE_SIZE" value="'.$boarddata['filesize'].'" />';
-				}
-				$file .= '<input type="hidden" name="mode" value="regist" />
-					<table class="postForm" id="postForm">
-					<tbody>';
-				if (($boarddata['noname'] == 0) || ($adm_type >= 2))
-				{
-					$file .= '<tr>
-						<td>'.$lang['img/name'].'</td>
-						<td><input class="board-input" name="name" type="text" /></td>
-						</tr>';
-				}
-				if (($boarddata['ids'] == 1) && ($adm_type >= 2))
-				{
-					$file .= '<tr>
-						<td>'.$lang['img/fake_id'].'</td>
-						<td><input class="board-input" name="fake_id" type="text" /></td>
-						</tr>';
-				}
-				$file .= '<tr>
-					<td>'.$lang['img/email'].'</td>
-					<td><input class="board-input" name="email" type="text" /></td>
-					</tr>
-					<tr>
-					<td>'.$lang['img/subject'].'</td>
-					<td><input class="board-input" name="sub" type="text" />';
-				$file .= '<input type="hidden" name="board" value="'.$board.'" />';
-				if ($threadno != 0)
-				{
-					$file .= '<input type="hidden" name="resto" value="'.$threadno.'" />';
-				}
-				$file .= '<input id="submit" type="submit" value="'.$lang['img/submit'].'" /></td>
-					</tr>
-					<tr>
-					<td>'.$lang['img/comment'].'</td>
-					<td><textarea name="com" cols="35" rows="4"></textarea></td>
+				$postform .= '<input type="hidden" name="MAX_FILE_SIZE" value="'.$boarddata['filesize'].'" />';
+			}
+			$postform .= '<input type="hidden" name="mode" value="regist" />
+				<table class="postForm" id="postForm">
+				<tbody>';
+			if (($boarddata['noname'] == 0) || ($adm_type >= 2))
+			{
+				$postform .= '<tr>
+					<td>'.$lang['img/name'].'</td>
+					<td><input class="board-input" name="name" type="text" /></td>
 					</tr>';
-				$captchaUrl = "";
-				if ($boarddata['captcha']==1)
-				{
-					$captchaUrl = $this->mitsuba->getPath("./captcha.php", $location, 1);
-					$file .= '<tr id="captcha">
-						<td>'.$lang['img/captcha'].'</td>
-						<td>
-						<noscript><iframe src="'.$captchaUrl.'" style="overflow: hidden; width: 300px; height: 70px; border: 1px solid #000000; display: block;"></iframe></noscript>
-						<input id="captchaField" name="captcha" style="width: 300px;" type="text" placeholder="Type the word from the image"/>
-						</td>
-						</tr>';
-				}
-				$file .= '<tr>
-					<td>'.$lang['img/file'].'</td>
-					<td id="embed"><input id="postFile" name="upfile" type="file" />';
-				if ($boarddata['spoilers'] == 1)
-				{
-					$file .= '<label><input id="spoiler" type="checkbox" name="spoiler" value="1">'.$lang['img/spoiler'].'</label>';
-				}
-				if ($boarddata['embeds'] == 1)
-				{
-					$file .= '<br />'.$lang['img/embed'].': <input type="text" name="embed"/>';
-				}
-				$file .= '</td>
-					</tr>
-					<tr>
-					<td>'.$lang['img/password'].'</td>
-					<td><input id="postPassword" name="pwd" type="password" maxlength="8" /> <span class="password">'.$lang['img/password_used'].'</span></td>
+			}
+			if (($boarddata['ids'] == 1) && ($adm_type >= 2))
+			{
+				$postform .= '<tr>
+					<td>'.$lang['img/fake_id'].'</td>
+					<td><input class="board-input" name="fake_id" type="text" /></td>
 					</tr>';
-				if ($adm_type >= 2)
-				{
-					$file .='<tr>
-						<td>'.$lang['img/mod'].'</td>
-						<td><input type="checkbox" name="raw" value=1 />'.$lang['img/mod_raw'].'<input type="checkbox" name="sticky" value=1 />'.$lang['img/mod_sticky'].'<input type="checkbox" name="lock" value=1 />'.$lang['img/mod_lock'].'<br />';
-					$file .= '<input type="checkbox" name="nolimit" value=1 selected/>'.$lang['img/mod_nolimit'].'<input type="checkbox" name="ignoresizelimit" value=1 />'.$lang['img/mod_nosizelimit'].'<input type="checkbox" name="nofile" value=1 />'.$lang['img/mod_nofile'].'</td>';
-					$file .='<tr>
-						<td>'.$lang['img/mod_capcode'].'</td>
-						<td id="capcode_td"><input type="radio" name="capcode" value=0 checked />'.$lang['img/mod_nocapcode'].'<input type="radio" name="capcode" value=1 />'.$lang['img/mod_capcode'];
-					if ($adm_type == 3)
-					{	
-						$file .= '<input type="radio" name="capcode" value=2 id="custom_cc" />'.$lang['img/mod_customcapcode'];
-						$file .= '<div style="display: none;" id="cc_fields" value="#FF0000">'.$lang['img/text'].': <input type="text" name="cc_text" /><br />
-						'.$lang['img/color'].': <input type="text" name="cc_color" /></div>';
-						$file .= "<script type=\"text/javascript\">
-	$(\"input[name='capcode']\").change(function() {
-	if ($(\"#custom_cc\").prop(\"checked\"))
-	{
-		$(\"#cc_fields\").css(\"display\", \"\");
-	} else {
-		$(\"#cc_fields\").css(\"display\", \"none\");
-		$(\"#cc_fields input\").val(\"\");
-	}
-	});
-	</script>";
-					}
-					$file .= "</td></tr>";
-				}
-				$file .= '<tr class="rules">
-					<td colspan="2">
-					<ul class="rules">
-					<li>'.$lang['img/supported_types'].'</li>
-					<li>'.sprintf($lang['img/max_filesize'], $boarddata['filesize']).'</li>
-					<li>'.$lang['img/thumbnail'].'</li>
-					</ul>
-					</td>
-					</tr>
-					</tbody>
-					</table>
-					</form>';
+			}
+			$postform .= '<tr>
+				<td>'.$lang['img/email'].'</td>
+				<td><input class="board-input" name="email" type="text" /></td>
+				</tr>
+				<tr>
+				<td>'.$lang['img/subject'].'</td>
+				<td><input class="board-input" name="sub" type="text" />';
+			$postform .= '<input type="hidden" name="board" value="'.$board.'" />';
+			if ($threadno != 0)
+			{
+				$postform .= '<input type="hidden" name="resto" value="'.$threadno.'" />';
+			}
+			$postform .= '<input id="submit" type="submit" value="'.$lang['img/submit'].'" /></td>
+				</tr>
+				<tr>
+				<td>'.$lang['img/comment'].'</td>
+				<td><textarea name="com" cols="35" rows="4"></textarea></td>
+				</tr>';
+			$captchaUrl = "";
 			if ($boarddata['captcha']==1)
 			{
-				$file .= '<script type="text/javascript">
-					$("#captchaField").before("<div style=\'width: 300px; height: 70px; background-color: white;\'><a href=\'#\' id=\'captchaClickHere\' style=\'vertical-align: middle; align: center;\'>'.$lang['img/click_here'].'</a></div>");
-					$("#captchaClickHere").click(function (event) {
-						event.preventDefault();
+				$captchaUrl = $this->mitsuba->getPath("./captcha.php", $location, 1);
+				$postform .= '<tr id="captcha">
+					<td>'.$lang['img/captcha'].'</td>
+					<td>
+					<noscript><iframe src="'.$captchaUrl.'" style="overflow: hidden; width: 300px; height: 70px; border: 1px solid #000000; display: block;"></iframe></noscript>
+					<input id="captchaField" name="captcha" style="width: 300px;" type="text" placeholder="Type the word from the image"/>
+					</td>
+					</tr>';
+			}
+			$postform .= '<tr>
+				<td>'.$lang['img/file'].'</td>
+				<td id="embed"><input id="postFile" name="upfile" type="file" />';
+			if ($boarddata['spoilers'] == 1)
+			{
+				$postform .= '<label><input id="spoiler" type="checkbox" name="spoiler" value="1">'.$lang['img/spoiler'].'</label>';
+			}
+			if ($boarddata['embeds'] == 1)
+			{
+				$postform .= '<br />'.$lang['img/embed'].': <input type="text" name="embed"/>';
+			}
+			$postform .= '</td>
+				</tr>
+				<tr>
+				<td>'.$lang['img/password'].'</td>
+				<td><input id="postPassword" name="pwd" type="password" maxlength="8" /> <span class="password">'.$lang['img/password_used'].'</span></td>
+				</tr>';
+			if ($adm_type >= 2)
+			{
+				$postform .='<tr>
+					<td>'.$lang['img/mod'].'</td>
+					<td><input type="checkbox" name="raw" value=1 />'.$lang['img/mod_raw'].'<input type="checkbox" name="sticky" value=1 />'.$lang['img/mod_sticky'].'<input type="checkbox" name="lock" value=1 />'.$lang['img/mod_lock'].'<br />';
+				$postform .= '<input type="checkbox" name="nolimit" value=1 selected/>'.$lang['img/mod_nolimit'].'<input type="checkbox" name="ignoresizelimit" value=1 />'.$lang['img/mod_nosizelimit'].'<input type="checkbox" name="nofile" value=1 />'.$lang['img/mod_nofile'].'</td>';
+				$postform .='<tr>
+					<td>'.$lang['img/mod_capcode'].'</td>
+					<td id="capcode_td"><input type="radio" name="capcode" value=0 checked />'.$lang['img/mod_nocapcode'].'<input type="radio" name="capcode" value=1 />'.$lang['img/mod_capcode'];
+				if ($adm_type == 3)
+				{	
+					$postform .= '<input type="radio" name="capcode" value=2 id="custom_cc" />'.$lang['img/mod_customcapcode'];
+					$postform .= '<div style="display: none;" id="cc_fields" value="#FF0000">'.$lang['img/text'].': <input type="text" name="cc_text" /><br />
+					'.$lang['img/color'].': <input type="text" name="cc_color" /></div>';
+					$postform .= "<script type=\"text/javascript\">
+$(\"input[name='capcode']\").change(function() {
+if ($(\"#custom_cc\").prop(\"checked\"))
+{
+	$(\"#cc_fields\").css(\"display\", \"\");
+} else {
+	$(\"#cc_fields\").css(\"display\", \"none\");
+	$(\"#cc_fields input\").val(\"\");
+}
+});
+</script>";
+				}
+				$postform .= "</td></tr>";
+			}
+			$postform .= '<tr class="rules">
+				<td colspan="2">
+				<ul class="rules">
+				<li>'.$lang['img/supported_types'].'</li>
+				<li>'.sprintf($lang['img/max_filesize'], $boarddata['filesize']).'</li>
+				<li>'.$lang['img/thumbnail'].'</li>
+				</ul>
+				</td>
+				</tr>
+				</tbody>
+				</table>
+				</form>';
+		if ($boarddata['captcha']==1)
+		{
+			$postform .= '<script type="text/javascript">
+				$("#captchaField").before("<div style=\'width: 300px; height: 70px; background-color: white;\'><a href=\'#\' id=\'captchaClickHere\' style=\'vertical-align: middle; align: center;\'>'.$lang['img/click_here'].'</a></div>");
+				$("#captchaClickHere").click(function (event) {
+					event.preventDefault();
+					d = new Date();
+					$(this).parent().after("<a style=\'display: block; width: 300px; height: 70px; border: 1px solid #000000;\' href=\'#\' id=\'reloadCaptcha\'><img id=\'captchaImage\' src=\''.$captchaUrl.'?t="+d.getTime()+"\' /></a>");
+					$("#reloadCaptcha").click(function (ev) {
+						ev.preventDefault();
 						d = new Date();
-						$(this).parent().after("<a style=\'display: block; width: 300px; height: 70px; border: 1px solid #000000;\' href=\'#\' id=\'reloadCaptcha\'><img id=\'captchaImage\' src=\''.$captchaUrl.'?t="+d.getTime()+"\' /></a>");
-						$("#reloadCaptcha").click(function (ev) {
-							ev.preventDefault();
-							d = new Date();
-							$("#captchaImage").attr("src", "'.$captchaUrl.'?t="+d.getTime());
-						});
-						$(this).parent().hide();
+						$("#captchaImage").attr("src", "'.$captchaUrl.'?t="+d.getTime());
 					});
-					</script>';
-			}
-			} elseif ($overboard == 1) {
-				//TODO: Overboard stuff
-			} else {
-				$file .= "<div class='closed'><h1>".$lang['img/locked']."</h1></div>";
-			}
-			$file .= $this->getAds($boarddata['short'], "underform");
-			$file .= "<hr />";
-			if (!empty($this->config['global_message']))
-			{
-				$file .= '<div class="globalMessage" id="globalMessage">';
-				$file .= $this->config['global_message'];
-				$file .= '</div>';
-			}
-			
-			if (!empty($boarddata['message']))
-			{
-				$file .= '<hr />';
-				$file .= '<div class="globalMessage" id="boardMessage">';
-				$file .= $boarddata['message'];
-				$file .= '</div>';
-			}
-			$file .= '<hr />';
-			if ($return == 1)
-			{
-				$file .= '<form id="delform" action="./imgboard.php" method="post"><div class="board">';
-			} elseif ($threadno != 0)
-			{
-				$file .= '<form id="delform" action="../../imgboard.php" method="post"><div class="board">';
-			} else {
-				$file .= '<form id="delform" action="../imgboard.php" method="post"><div class="board">';
-			}
-			if ($overboard == 1)
-			{
+					$(this).parent().hide();
+				});
+				</script>';
+		}
+		} elseif ($overboard == 1) {
+			//TODO: Overboard stuff
+		} else {
+			$postform .= "<div class='closed'><h1>".$lang['img/locked']."</h1></div>";
+		}
+		$postform .= $underform_ads."<hr />";
+		if (!empty($this->config['global_message']))
+		{
+			$global = '<div class="globalMessage" id="globalMessage">';
+			$global .= $this->config['global_message'];
+			$global .= '</div>';
+		}
+		if ($overboard == 1)
+		{
 				$sql_boardlist = "(";
 				$first = 1;
 				foreach ($overboard_boards as $short) {
@@ -716,6 +703,24 @@ class Caching
 					}
 					$sql_boardlist = ")";
 				}
+		}
+		for ($pg = $page; $pg <= $pages; $pg++)
+		{
+			$file = $header;
+			$file .= $postform;
+			$file .= $global;
+			$file .= '<hr />';
+			if ($return == 1)
+			{
+				$file .= '<form id="delform" action="./imgboard.php" method="post"><div class="board">';
+			} elseif ($threadno != 0)
+			{
+				$file .= '<form id="delform" action="../../imgboard.php" method="post"><div class="board">';
+			} else {
+				$file .= '<form id="delform" action="../imgboard.php" method="post"><div class="board">';
+			}
+			if ($overboard == 1)
+			{
 				$result = $this->conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$sql_boardlist."' AND deleted=0 ORDER BY lastbumped DESC LIMIT ".($pg*10).",10");
 			} elseif ($threadno != 0) {
 				$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."' AND deleted=0;");
@@ -756,7 +761,7 @@ class Caching
 			$file .= '<div class="stylechanger" id="stylechangerDiv" style="display:none;">'.$lang['img/style'].' <select id="stylechanger"></select></div>
 				</div>';
 			$file .= "</form>";
-			$file .= $this->getAds($boarddata['short'], "footer");
+			$file .= $footer_ads;
 			if (($return == 1) && ($threadno == 0))
 			{
 				$file .= '<div class="pagelist">';
@@ -848,9 +853,9 @@ class Caching
 			$file .= '<div id="bottom"></div>';
 			if ($this->config['enable_meny']==1)
 			{
-				$file .= $this->getMenyConfig($location);
+				$file .= $meny_config;
 			}
-			$file .= $this->getAds($boarddata['short'], "bottom");
+			$file .= $bottom_ads;
 			$file .= "</body></html>";
 			if ($return != 1)
 			{
