@@ -5,7 +5,7 @@ if (empty($_POST['mode']))
 	die("Sorry.");
 }
 
-if ((empty($_POST['comment'])) && (empty($_POST['delete'])) && (empty($_POST['msg'])))
+if ((empty($_POST['board'])) && (empty($_POST['delete'])) && (empty($_POST['msg'])))
 {
 	die("Sorry.");
 }
