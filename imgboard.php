@@ -1,5 +1,14 @@
 <?php
 session_start();
+if (empty($_POST['mode']))
+{
+	die("Sorry.");
+}
+
+if ((empty($_POST['comment'])) && (empty($_POST['delete'])) && (empty($_POST['msg'])))
+{
+	die("Sorry.");
+}
 if (!file_exists("./config.php"))
 {
 header("Location: ./install.php");
