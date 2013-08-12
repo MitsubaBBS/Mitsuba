@@ -1517,14 +1517,14 @@ visibility: hidden;
 
 fieldset input, label {
 	display: block;
-	float: left;
+	float: right;
 	margin-bottom: 10px;
 	width: auto;
 }
 
 fieldset label {
 	font-size: 12px;
-	text-align: right;
+	text-align: left;
 	width: 270px;
 	padding-right: 20px;
 }
