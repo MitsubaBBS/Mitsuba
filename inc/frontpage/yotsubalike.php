@@ -52,13 +52,13 @@ $file .= "<script type='text/javascript' src='./js/style.js'></script>
 					</div>
 
 					<div class="boxcontent">';
-		$cats = $this->conn->query("SELECT * FROM links WHERE parent=-1;");
+		$cats = $this->conn->query("SELECT * FROM links WHERE parent=-1 ORDER BY short ASC;");
 		while ($row = $cats->fetch_assoc())
 		{
 			$file .= '<div class="column">';
 			$file .= '<h3 style="text-decoration: underline; display: inline;">'.$row['title'].'</h3>';
 			$file .= '<ul>';
-			$children = $this->conn->query("SELECT * FROM links WHERE parent=".$row['id']);
+			$children = $this->conn->query("SELECT * FROM links WHERE parent=".$row['id']." ORDER BY short ASC");
 			while ($child = $children->fetch_assoc())
 			{
 				if (!empty($child['url_index']))

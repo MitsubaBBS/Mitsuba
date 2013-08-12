@@ -45,7 +45,7 @@ class UI {
 		<fieldset id="boardSelect">
 		<?php
 		if (($boards != "*") && ($boards != "")) { $boards = substr($boards, 0, strlen($boards) - 1); }
-		$result = $this->conn->query("SELECT * FROM boards;");
+		$result = $this->conn->query("SELECT * FROM boards ORDER BY short ASC;");
 		while ($row = $result->fetch_assoc())
 		{
 		$checked = "";
