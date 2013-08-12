@@ -309,14 +309,6 @@ if (!empty($_POST['mode']))
 			{
 				$onlyimgdel = 0;
 				$password = "";
-				if (empty($_POST['board']))
-				{
-					echo "<h1>".$lang['img/no_board']."</h1></body></html>";
-					exit;
-				}
-				$board = $_POST['board'];
-				$mitsuba->common->banMessage($board);
-				$password = "";
 				if ($mod == 0)
 				{
 					if (isset($_COOKIE['password'])) { $password = $_COOKIE['password']; }
@@ -327,6 +319,7 @@ if (!empty($_POST['mode']))
 				{
 					if ($value == "delete")
 					{
+						echo $key;
 						$keys = explode("/", substr($key, 4));
 						$done = $mitsuba->posting->deletePost($keys[0], $keys[1], $password, $onlyimgdel, $mod_type);
 						if ($done == -1) {

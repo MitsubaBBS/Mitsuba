@@ -1033,7 +1033,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 		$file .= '<div class="postContainer opContainer" id="pc'.$row['id'].'">';
 		$file .= '<div id="p'.$row['id'].'" class="post op">';
 		$file .= '<div class="postInfo" id="pi'.$row['id'].'">';
-		$file .= '<input type="checkbox" name="del_'.$row['board'].'/'.$row['id'].'" value="delete" />';
+		$file .= '<input type="checkbox" name="del_'.$row['board'].'_'.$row['id'].'" value="delete" />';
 		$file .= '<span class="subject">'.$row['subject'].'</span> ';
 		$trip = "";
 		if (!empty($row['trip']))
