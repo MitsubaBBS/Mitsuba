@@ -93,6 +93,7 @@ class Caching
 		{
 			if ($line == "")
 			{
+				$new .= "<br />";
 				continue;
 			}
 			if (substr($line, 0, 2) == ">>")
@@ -819,7 +820,12 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				{
 					if ($i == $pg)
 					{
-						$file .= "[<a href='./".$i.".html'><strong>".$i."</strong></a>] ";
+						if ($i == 0)
+						{
+							$file .= "[<a href='./index.html'><strong>".$i."</strong></a>] ";	
+						} else {
+							$file .= "[<a href='./".$i.".html'><strong>".$i."</strong></a>] ";	
+						}
 					} else {
 						if ($i > $all_pages)
 						{
