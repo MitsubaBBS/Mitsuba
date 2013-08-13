@@ -9,9 +9,9 @@ if (isset($_POST['mode']))
 	switch($_POST['mode'])
 	{
 		case "add":
-$mitsuba->admin->ui->checkToken($_POST['token']);
-			$shown = 1;
-			if ((!empty($_POST['shown'])) && (is_numeric($_POST['shown'])) && ($_POST['shown']==0)) { $shown = 0; }
+			$mitsuba->admin->ui->checkToken($_POST['token']);
+			$shown = 0;
+			if ((!empty($_POST['shown'])) && (is_numeric($_POST['shown'])) && ($_POST['shown']==1)) { $shown = 1; }
 			$text = "";
 			$board = "%";
 			$position = "head";
@@ -22,11 +22,11 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 			echo $conn->error;
 			break;
 		case "edit":
-$mitsuba->admin->ui->checkToken($_POST['token']);
+			$mitsuba->admin->ui->checkToken($_POST['token']);
 			if (is_numeric($_POST['id']))
 			{
-				$shown = 1;
-				if ((!empty($_POST['shown'])) && (is_numeric($_POST['shown'])) && ($_POST['shown']==0)) { $shown = 0; }
+				$shown = 0;
+				if ((!empty($_POST['shown'])) && (is_numeric($_POST['shown'])) && ($_POST['shown']==1)) { $shown = 1; }
 				$text = "";
 				$board = "%";
 				$position = "head";

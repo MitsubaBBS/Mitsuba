@@ -31,7 +31,7 @@ if (!empty($_POST['mode']))
 	$mod_type = 0;
 	if ((!empty($_GET['mod'])) && ($_GET['mod']>=1))
 	{
-		if ((!empty($_POST['board'])) || ($mitsuba->common->isBoard($_POST['board'])))
+		if ((!empty($_POST['board'])) && ($mitsuba->common->isBoard($_POST['board'])))
 		{
 			$mitsuba->admin->canBoard($_POST['board']);
 			$mod = 1;
@@ -39,6 +39,15 @@ if (!empty($_POST['mode']))
 			if ($_GET['mod']==1)
 			{
 				$return_url = "mod.php?/board&b=".$_POST['board'];
+			} else {
+				$mod = 2;
+			}
+		} else {
+			$mod = 1;
+			if (!empty($_SESSION['type'])) { $mod_type = $_SESSION['type']; }
+			if ($_GET['mod']==1)
+			{
+				$return_url = "mod.php";
 			} else {
 				$mod = 2;
 			}
