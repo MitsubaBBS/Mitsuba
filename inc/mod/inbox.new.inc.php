@@ -42,7 +42,7 @@ if ((!empty($_POST['to'])) && (!empty($_POST['title'])) && (!empty($_POST['text'
 <?php $mitsuba->admin->ui->startSection($lang['mod/send_message']); ?>
 
 <form action="?/inbox/new" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/to']; ?>: <input type="text" name="to" value="<?php echo $username; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $title; ?>" /><br />
 <?php echo $lang['mod/text']; ?>:<br />

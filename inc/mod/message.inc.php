@@ -24,7 +24,7 @@ $mitsuba->admin->reqPermission(3);
 
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 		<form action="?/message" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 		<textarea cols=70 rows=14 name="message"><?php echo $msg; ?></textarea><br />
 		<input type="submit" value="<?php echo $lang['mod/submit']; ?>">
 		</form>

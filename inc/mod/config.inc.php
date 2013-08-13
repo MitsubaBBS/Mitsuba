@@ -9,11 +9,11 @@ $config = $mitsuba->config;
 <?php $mitsuba->admin->ui->startSection($lang['mod/configuration']); ?>
 
 <form action="?/config/reset" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="submit" value="Reset config" />
 </form>
 <form action="?/config/update" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/frontpage_style']; ?>: <select name="frontpage_style">
 <?php
 $styles = glob('./inc/frontpage/*.php', GLOB_BRACE);
@@ -35,20 +35,20 @@ foreach ($styles as $style)
 
 <?php $mitsuba->admin->ui->startSection($lang['mod/extras']); ?>
 <form action="?/config/extras&m=ecaptcha" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="submit" value="<?php echo $lang['mod/captcha_enable_all']; ?>" />
 </form>
 <form action="?/config/extras&m=dcaptcha" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="submit" value="<?php echo $lang['mod/captcha_disable_all']; ?>" />
 </form>
 <br />
 <form action="?/config/extras&m=ecatalog" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="submit" value="<?php echo $lang['mod/catalog_enable_all']; ?>" />
 </form>
 <form action="?/config/extras&m=dcatalog" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="submit" value="<?php echo $lang['mod/catalog_disable_all']; ?>" />
 </form>
 <?php $mitsuba->admin->ui->endSection(); ?>

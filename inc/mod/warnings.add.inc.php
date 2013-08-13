@@ -29,7 +29,7 @@ if (!defined("IN_MOD"))
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_warning']); ?>
 
 <form action="?/warnings/add" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" /><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />

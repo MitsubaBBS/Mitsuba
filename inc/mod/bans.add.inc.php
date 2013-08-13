@@ -36,7 +36,7 @@ if (empty($_GET['r']))
 		$mitsuba->admin->ui->startSection($title);
 		?>
 <form action="?/bans/add" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" /><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />
@@ -197,7 +197,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 				$mitsuba->admin->ui->startSection($title);
 			?>
 <form action="?/bans/add" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo $request['reason']; ?>"/><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" value="<?php echo $request['note']; ?>"/><br />

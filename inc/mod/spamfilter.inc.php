@@ -142,7 +142,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/wf_add']); ?>
 
 <form action="?/spamfilter" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/wf_search']; ?>: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($reason); ?>"/><br />

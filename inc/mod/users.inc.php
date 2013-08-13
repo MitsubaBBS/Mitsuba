@@ -8,7 +8,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->startSection($lang['mod/new_user']); ?>
 
 <form action="?/users/add" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/username']; ?>: <input type="text" name="username" /><br />
 <?php echo $lang['mod/password']; ?>: <input type="password" name="password"/><br />
 <?php echo $lang['mod/type']; ?>: <select name="type"><option value="1"><?php echo $lang['mod/janitor']; ?></option><option value="2"><?php echo $lang['mod/moderator']; ?></option><option value="3"><?php echo $lang['mod/administrator']; ?></option></select>

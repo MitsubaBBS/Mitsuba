@@ -17,7 +17,7 @@ $mitsuba->admin->ui->startSection($lang['mod/edit_link']);
 		?>
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links/edit&i=<?php echo $id; ?>" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/short']; ?>: <input type="text" name="short" value="<?php echo $data['short']; ?>" /><br />
 <?php echo $lang['mod/url']; ?>: <input type="text" name="url" value="<?php echo $data['url']; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $data['title']; ?>" /><br />

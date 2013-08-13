@@ -9,7 +9,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->startSection($lang['mod/rebuild_cache']); ?>
 
 <form action="?/cache" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="checkbox" name="links" value=1 /><?php echo $lang['mod/board_links']; ?><br />
 <input type="checkbox" name="boards" value=1 /><?php echo $lang['mod/all_boards']; ?><br />
 <input type="checkbox" name="thumbs" value=1 /><?php echo $lang['mod/thumbnails']; ?><br />
@@ -20,7 +20,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->startSection($lang['mod/rebuild_static']); ?>
 
 <form action="?/static" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="checkbox" name="frontpage" value=1 /><?php echo $lang['mod/frontpage']; ?> (./<?php echo $config['frontpage_url']; ?>)</input><br />
 <input type="checkbox" name="news" value=1 /><?php echo $lang['mod/news_page']; ?> (./<?php echo $config['news_url']; ?>)</input><br />
 <?php

@@ -16,7 +16,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->startSection($lang['mod/edit_page']); ?>
 
 <form action="?/pages/edit&b=<?php echo $_GET['b']; ?>" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/name']; ?>: <input type="text" name="name" value="<?php echo $data['name']; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="<?php echo $data['title']; ?>"/><br />
 <?php echo $lang['mod/text']; ?>: <br />

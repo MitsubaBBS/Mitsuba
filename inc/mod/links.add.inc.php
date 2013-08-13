@@ -17,7 +17,7 @@ $mitsuba->admin->reqPermission(3);
 
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links/add&p=<?php echo $id; ?>" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/short']; ?>: <input type="text" name="short" value="" /><br />
 <?php echo $lang['mod/url']; ?>: <input type="text" name="url" value="./" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" value="" /><br />

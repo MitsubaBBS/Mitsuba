@@ -51,7 +51,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->startSection($lang['mod/edit_user']); ?>
 
 <form action="?/users/edit&id=<?php echo $id; ?>" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/username']; ?>: <input type="text" name="username" value="<?php echo $data['username']; ?>"/><br />
 <?php echo $lang['mod/password_leave_blank']; ?>: <input type="password" name="password"/><br />
 <?php

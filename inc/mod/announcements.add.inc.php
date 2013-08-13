@@ -10,7 +10,7 @@ $mitsuba->admin->reqPermission(2);
 <?php $mitsuba->admin->ui->startSection($lang['mod/new_announcement']); ?>
 
 <form action="?/announcements/add" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/by']; ?>: <input type="text" name="who" value="<?php echo $_SESSION['username']; ?>" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title"/><br />
 <?php echo $lang['mod/text']; ?>: <br />

@@ -114,7 +114,7 @@ while ($row = $result->fetch_assoc())
 <?php $mitsuba->admin->ui->endSection(); ?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_ad']); ?>
 <form action="?/ads" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/board']; ?>: 
 <select name="board">

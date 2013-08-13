@@ -53,7 +53,7 @@ echo $mitsuba->admin->links->getLinkTable(-1);
 
 <b><?php echo $lang['mod/rebuild_notice']; ?></b><br />
 <form action="?/links&m=addc" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/name']; ?>: <input type="text" name="title" value="<?php echo $lang['mod/category']; ?>" /><input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
 <?php $mitsuba->admin->ui->endSection(); ?>

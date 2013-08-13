@@ -14,7 +14,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->startSection($lang['mod/edit_post']); ?>
 
 			<form action="?/save_post" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 			<input type="hidden" name="b" value="<?php echo $_GET['b']; ?>" />
 			<input type="hidden" name="p" value="<?php echo $_GET['p']; ?>" />
 			<?php echo $lang['mod/text']; ?>: <textarea cols="50" rows="7" name="text"><?php echo $row['comment']; ?></textarea><br />

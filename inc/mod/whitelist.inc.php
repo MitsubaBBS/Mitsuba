@@ -69,7 +69,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_whitelist']); ?>
 
 <form action="?/whitelist&m=add" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" /><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />
 <input type="checkbox" name="nolimits" value="1"/><?php echo $lang['mod/nolimits']; ?><br />

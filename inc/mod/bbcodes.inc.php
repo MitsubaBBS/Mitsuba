@@ -80,7 +80,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_bbcode']); ?>
 
 <form action="?/bbcodes" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/bbcode']; ?>: <input type="text" name="name" value="<?php echo $name; ?>"/><br />
 <?php echo $lang['mod/html_code']; ?>: <textarea cols=40 rows=9 name="code"><?php echo $code; ?></textarea><br />

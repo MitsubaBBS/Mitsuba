@@ -87,7 +87,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_embed']); ?>
 
 <form action="?/embeds" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/name']; ?>: <input type="text" name="name" value="<?php echo $name; ?>"/><br />
 <?php echo $lang['mod/regex']; ?>: <input type="text" name="regex" value="<?php echo $regex; ?>"/><br />

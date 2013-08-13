@@ -88,7 +88,7 @@ echo "</td>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_note']); ?>
 
 <form action="?/ipnotes/add&ip=<?php echo $_GET['ip']; ?>" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <textarea name="note" cols=70 rows=12></textarea><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>

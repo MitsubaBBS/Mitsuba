@@ -11,7 +11,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->startSection(sprintf($lang['mod/edit_board'], $_GET['board'])); ?>
 
 <form action="?/boards/update&board=<?php echo $_GET['board']; ?>" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/board_directory']; ?>: <input disabled type="text" name="short" maxlength=10 value="<?php echo $data['short']; ?>" /><br />
 <?php echo $lang['mod/board_name']; ?>: <input type="text" name="name" maxlength=40 value="<?php echo $data['name']; ?>" /><br />
 <?php echo $lang['mod/board_short']; ?>: <input type="text" name="des" maxlength=100 value="<?php echo $data['des']; ?>" /><br />
@@ -40,7 +40,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->endSection(); ?><br />
 <?php $mitsuba->admin->ui->startSection(sprintf($lang['mod/move_board'], $_GET['board'])); ?>
 <form action="?/boards/move&board=<?php echo $_GET['board']; ?>" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/board_new_dir']; ?>: <input type="text" name="new" maxlength=10 /><br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>

@@ -64,7 +64,7 @@ echo "</tr>";
 <?php $mitsuba->admin->ui->startSection($lang['mod/add_page']); ?>
 
 <form action="?/pages&m=add" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/name']; ?>: <input type="text" name="name" /><br />
 <?php echo $lang['mod/title']; ?>: <input type="text" name="title" /><br />
 <?php echo $lang['mod/text']; ?>: <br />

@@ -14,7 +14,7 @@ $mitsuba->admin->reqPermission(3);
 <?php $mitsuba->admin->ui->startSection($lang['mod/edit_bbcode']); ?>
 
 <form action="?/bbcodes" method="POST">
-<?php $mitsuba->admin->ui->getToken(); ?>
+<?php $mitsuba->admin->ui->getToken($path); ?>
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="name2" value="<?php echo $conn->real_escape_string($_GET['n']); ?>">
 <?php echo $lang['mod/bbcode']; ?>: <input type="text" name="name" value="<?php echo $binfo['name']; ?>"/><br />
