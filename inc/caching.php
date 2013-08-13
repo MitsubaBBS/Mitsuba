@@ -394,7 +394,7 @@ class Caching
 		}
 		while ($row = $wfresult->fetch_assoc())
 		{
-			if ($row['boards'] != "*")
+			if ($row['boards'] != "%")
 			{
 				$boards = explode(",", $row['boards']);
 				if ($overboard==0)
@@ -985,7 +985,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				$replace_array = array();
 				while ($row = $wfresult->fetch_assoc())
 				{
-					if ($row['boards'] != "*")
+					if ($row['boards'] != "%")
 					{
 						$boards = explode(",", $row['boards']);
 						if (in_array($board, $boards))
@@ -1039,7 +1039,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 		$file .= '<div class="postContainer opContainer" id="pc'.$row['id'].'">';
 		$file .= '<div id="p'.$row['id'].'" class="post op">';
 		$file .= '<div class="postInfo" id="pi'.$row['id'].'">';
-		$file .= '<input type="checkbox" name="del_'.$row['board'].'_'.$row['id'].'" value="delete" />';
+		$file .= '<input type="checkbox" name="del%'.$row['board'].'%'.$row['id'].'" value="delete" />';
 		$file .= '<span class="subject">'.$row['subject'].'</span> ';
 		$trip = "";
 		if (!empty($row['trip']))
@@ -1258,7 +1258,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			$file .= '<div class="sideArrows" id="sa'.$row2['id'].'">&gt;&gt;</div>';
 			$file .= '<div id="p'.$row2['id'].'" class="post reply">';
 			$file .= '<div class="postInfo" id="pi'.$row2['id'].'">';
-			$file .= '<input type="checkbox" name="'.$row2['id'].'" value="delete" />';
+			$file .= '<input type="checkbox" name="del%'.$row2['board'].'%'.$row2['id'].'" value="delete" />';
 			$file .= '<span class="subject">'.$row2['subject'].'</span> ';
 			$trip = "";
 			if (!empty($row2['trip']))
@@ -1433,7 +1433,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 		$replace_array = array();
 		while ($row = $wfresult->fetch_assoc())
 		{
-			if ($row['boards'] != "*")
+			if ($row['boards'] != "%")
 			{
 				$boards = explode(",", $row['boards']);
 				if (in_array($board, $boards))

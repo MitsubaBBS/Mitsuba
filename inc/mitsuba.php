@@ -73,7 +73,7 @@ class Admin
 		{
 			die("NOT LOGGED IN");
 		}
-		if (($_SESSION['boards'] != "*") && ($_SESSION['type'] != 2))
+		if (($_SESSION['boards'] != "%") && ($_SESSION['type'] != 2))
 		{
 			$boards = explode(",", $_SESSION['boards']);
 			if (in_array($board, $boards))

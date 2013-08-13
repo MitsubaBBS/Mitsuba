@@ -105,7 +105,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 		$boards = "";
 		if ((!empty($_POST['all'])) && ($_POST['all']==1))
 		{
-			$boards = "*";
+			$boards = "%";
 		} else {
 			if (!empty($_POST['boards']))
 			{
@@ -114,10 +114,10 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 					$boards .= $board.",";
 				}
 			} else {
-				$boards = "*";
+				$boards = "%";
 			}
 		}
-		if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+		if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
 		$result = 0;
 		$what = 1;
 		if ($_SESSION['type'] <= 1)

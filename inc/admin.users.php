@@ -11,14 +11,14 @@ class Users {
 
 	function canDoBoard($short)
 	{
-		if (($_SESSION['boards'] != "*") && ($_SESSION['type'] != 2))
+		if (($_SESSION['boards'] != "%") && ($_SESSION['type'] != 2))
 		{
 			$boards = explode(",", $_SESSION['boards']);
 		} else {
-			$boards = "*";
+			$boards = "%";
 		}
 
-		if (($boards == "*") || (in_array($short, $boards)))
+		if (($boards == "%") || (in_array($short, $boards)))
 		{
 			return 1;
 		} else {

@@ -355,10 +355,10 @@ class Common {
 		return $new;
 	}
 
-	function isFile($path, $board_files = "*")
+	function isFile($path, $board_files = "%")
 	{
 		$mime = "";
-		if (empty($board_files)) { $board_files = "*"; }
+		if (empty($board_files)) { $board_files = "%"; }
 		if (function_exists("finfo_file"))
 		{
 			$finfo = finfo_open();
@@ -390,7 +390,7 @@ class Common {
 		if ($extensions->num_rows == 1)
 		{
 			$ext = $extensions->fetch_assoc();
-			if (($board_files == "*") || (in_array($ext['ext'], explode(",", $board_files))))
+			if (($board_files == "%") || (in_array($ext['ext'], explode(",", $board_files))))
 			{
 				$nfo['extension'] = $ext['ext'];
 				$nfo['image'] = $ext['image'];
@@ -457,12 +457,12 @@ class Common {
 			{
 				if ((strpos($ip, $range) !== FALSE))
 				{
-					if ($row['boards'] == "*")
+					if ($row['boards'] == "%")
 					{
 						$rangebandata = $row;
 						$rangebandata['range'] = 1;
 					} else {
-						if ($board == "*")
+						if ($board == "%")
 						{
 							$rangebandata = $row;
 							$rangebandata['range'] = 1;
@@ -480,12 +480,12 @@ class Common {
 				}
 			} elseif ($this->startsWith($ip, $range))
 			{
-				if ($row['boards'] == "*")
+				if ($row['boards'] == "%")
 				{
 					$rangebandata = $row;
 					$rangebandata['range'] = 1;
 				} else {
-					if ($board == "*")
+					if ($board == "%")
 					{
 						$rangebandata = $row;
 						$rangebandata['range'] = 1;
@@ -502,12 +502,12 @@ class Common {
 				$otherbans[count($otherbans)-1]['range'] = 1;
 			} elseif (preg_match('/'.$range.'/', $ip))
 			{
-				if ($row['boards'] == "*")
+				if ($row['boards'] == "%")
 				{
 					$rangebandata = $row;
 					$rangebandata['range'] = 1;
 				} else {
-					if ($board == "*")
+					if ($board == "%")
 					{
 						$rangebandata = $row;
 						$rangebandata['range'] = 1;
@@ -529,11 +529,11 @@ class Common {
 		{
 			if ((empty($ipbandata)) || ($ipbandata['expires'] < $row['expires']))
 			{
-				if ($row['boards'] == "*")
+				if ($row['boards'] == "%")
 				{
 					$ipbandata = $row;
 				} else {
-					if ($board == "*")
+					if ($board == "%")
 					{
 						$ipbandata = $row;
 					} else {
@@ -597,12 +597,12 @@ class Common {
 		return 0;
 	}
 
-	function banMessage($board = "*")
+	function banMessage($board = "%")
 	{
 		$bandata = $this->isBanned($_SERVER['REMOTE_ADDR'], $board);
 				if ($bandata != 0)
 				{
-				if ($bandata['boards']=="*")
+				if ($bandata['boards']=="%")
 				{
 				$boards = 1;
 				} else {
@@ -717,7 +717,7 @@ while ($row = $styles->fetch_assoc())
 			} else {
 			echo "<td><b>never</b></td>";
 			}
-			if ($ban['boards'] == "*")
+			if ($ban['boards'] == "%")
 			{
 			echo "<td><b>all boards</b></td>";
 			} else {

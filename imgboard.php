@@ -319,21 +319,20 @@ if (!empty($_POST['mode']))
 				{
 					if ($value == "delete")
 					{
-						echo $key;
-						$keys = explode("/", substr($key, 4));
-						$done = $mitsuba->posting->deletePost($keys[0], $keys[1], $password, $onlyimgdel, $mod_type);
+						$keys = explode("%", $key);
+						$done = $mitsuba->posting->deletePost($keys[1], $keys[2], $password, $onlyimgdel, $mod_type);
 						if ($done == -1) {
-							echo sprintf($lang["img/post_bad_password"],$key).".<br />";
+							echo sprintf($lang["img/post_bad_password"],$keys[1]."/".$keys[2]).".<br />";
 						} elseif ($done == -2) {
-							echo sprintf($lang["img/post_not_found"],$key)."<br />";
+							echo sprintf($lang["img/post_not_found"],$keys[1]."/".$keys[2])."<br />";
 						} elseif ($done == -3) {
-							echo sprintf($lang["img/post_no_image"],$key)."<br />";
+							echo sprintf($lang["img/post_no_image"],$keys[1]."/".$keys[2])."<br />";
 						} elseif ($done == -4) {
-							echo sprintf($lang["img/post_wait_more"],$key).".<br />";
+							echo sprintf($lang["img/post_wait_more"],$keys[1]."/".$keys[2]).".<br />";
 						} elseif ($done == 1) {
-							echo sprintf($lang["img/post_deleted_image"],$key).".<br />";
+							echo sprintf($lang["img/post_deleted_image"],$keys[1]."/".$keys[2]).".<br />";
 						} elseif ($done == 2) {
-							echo sprintf($lang["img/post_deleted"],$key).".<br />";
+							echo sprintf($lang["img/post_deleted"],$keys[1]."/".$keys[2]).".<br />";
 						}
 						if ($done == -16)
 						{
@@ -343,21 +342,16 @@ if (!empty($_POST['mode']))
 				}
 				echo '<meta http-equiv="refresh" content="2;URL='."'".$return_url."index.html'".'">';
 			} elseif (!empty($_POST['report'])) {
-				if (empty($_POST['board']))
-				{
-					echo "<h1>".$lang['img/no_board']."</h1></body></html>";
-					exit;
-				}
-				$board = $_POST['board'];
 				$mitsuba->common->banMessage($board);
 				foreach ($_POST as $key => $value)
 				{
 					if ($value == "delete")
 					{
-						$done = $mitsuba->posting->reportPost($_POST['board'], $key, $_POST['reason']);
+						$keys = explode("%", $key);
+						$done = $mitsuba->posting->reportPost($keys[1], $keys[2], $_POST['reason']);
 						if ($done == 1)
 						{
-							echo sprintf($lang['img/post_reported'], $key)."<br />";
+							echo sprintf($lang['img/post_reported'], $keys[1]."/".$keys[2])."<br />";
 						}
 					}
 				}

@@ -31,7 +31,7 @@ class UI {
 	function getBoardList($boards = "")
 	{
 		global $lang;
-		if ($boards == "*")
+		if ($boards == "%")
 		{
 		?>
 		<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1 checked/> <?php echo $lang['mod/all']; ?><br/>
@@ -44,12 +44,12 @@ class UI {
 		?>
 		<fieldset id="boardSelect">
 		<?php
-		if (($boards != "*") && ($boards != "")) { $boards = substr($boards, 0, strlen($boards) - 1); }
+		if (($boards != "%") && ($boards != "")) { $boards = substr($boards, 0, strlen($boards) - 1); }
 		$result = $this->conn->query("SELECT * FROM boards ORDER BY short ASC;");
 		while ($row = $result->fetch_assoc())
 		{
 		$checked = "";
-		if (($boards !== "*") && ($boards !== ""))
+		if (($boards !== "%") && ($boards !== ""))
 		{
 			if (in_array($boards, $row['short']))
 			{

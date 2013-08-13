@@ -43,7 +43,12 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	} else {
 	echo "<td><b>never</b></td>";
 	}
-	echo "<td><center>".$row['boards']."</center></td>";
+	if ($row['boards']=="%")
+	{
+		echo "<td><center>All boards</center></td>";
+	} else {
+		echo "<td><center>".$row['boards']."</center></td>";
+	}
 	if ($_SESSION['type']>=2)
 	{
 	echo "<td><center><a href='?/rangebans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";

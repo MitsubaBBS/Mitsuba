@@ -41,7 +41,12 @@ if (!defined("IN_MOD"))
 	} else {
 	echo "<td><b>never</b></td>";
 	}
-	echo "<td><center>".$row['boards']."</center></td>";
+	if ($row['boards']=="%")
+	{
+		echo "<td><center>All boards</center></td>";
+	} else {
+		echo "<td><center>".$row['boards']."</center></td>";
+	}
 	if ($_SESSION['type']>=1)
 	{
 	echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";

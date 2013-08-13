@@ -61,7 +61,12 @@ switch ($row['type'])
 		break;
 }
 echo "<center></td>";
-echo "<td><center>".$row['boards']."</center></td>";
+if ($row['boards']=="%")
+{
+	echo "<td><center>All boards</center></td>";
+} else {
+	echo "<td><center>".$row['boards']."</center></td>";
+}
 echo "<td><center><a href='?/users/edit&id=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
 if ($usern != 1)
 {

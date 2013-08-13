@@ -35,7 +35,7 @@ if ($_SESSION['type']>=1) {
 		$boards = "";
 		if ((!empty($_POST['all'])) && ($_POST['all']==1))
 		{
-			$boards = "*";
+			$boards = "%";
 		} else {
 			if (!empty($_POST['boards']))
 			{
@@ -44,10 +44,10 @@ if ($_SESSION['type']>=1) {
 					$boards .= $board.",";
 				}
 			} else {
-				$boards = "*";
+				$boards = "%";
 			}
 		}
-		if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+		if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
 		$result = 0;
 		if ($result == 1)
 		{

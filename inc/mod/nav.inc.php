@@ -123,15 +123,15 @@ if ($_SESSION['type'] >= 3)
 <ul>
 <?php
 $result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
-if (($_SESSION['boards'] != "*") && ($_SESSION['type'] != 3))
+if (($_SESSION['boards'] != "%") && ($_SESSION['type'] != 3))
 {
 $boards = explode(",", $_SESSION['boards']);
 } else {
-$boards = "*";
+$boards = "%";
 }
 while ($row = $result->fetch_assoc())
 {
-if (($boards == "*") || (in_array($row['short'], $boards)))
+if (($boards == "%") || (in_array($row['short'], $boards)))
 {
 if ($row['hidden']==1)
 {

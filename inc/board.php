@@ -17,7 +17,7 @@ class Board
 		$spam = $this->conn->query("SELECT * FROM spamfilter WHERE active=1");
 		while ($row = $spam->fetch_assoc())
 		{
-			if ($row['boards'] != "*")
+			if ($row['boards'] != "%")
 			{
 				$boards = explode(",", $row['boards']);
 				if (in_array($board, $boards))
@@ -26,7 +26,7 @@ class Board
 					{
 						try {
 							if (preg_match($row['search'], $comment) !== false) {
-								$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+								$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "%");
 								echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 								die();
 							}
@@ -36,7 +36,7 @@ class Board
 						}
 					} else {
 						if (stripos($comment, $row['search']) !== false) {
-							$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+							$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "%");
 							echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 							die();
 						}
@@ -47,7 +47,7 @@ class Board
 				{
 					try {
 						if (preg_match($row['search'], $comment) !== false) {
-							$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+							$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "%");
 							echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 							die();
 						}
@@ -57,7 +57,7 @@ class Board
 					}
 				} else {
 					if (stripos($comment, $row['search']) !== false) {
-							$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "*");
+							$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "%");
 							echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 							die();
 					}

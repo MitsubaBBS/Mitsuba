@@ -17,7 +17,7 @@ $mitsuba->admin->reqPermission(3);
 					$boards = "";
 					if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
 					{
-						$boards = "*";
+						$boards = "%";
 					} else {
 						if (!empty($_POST['boards']))
 						{
@@ -26,7 +26,7 @@ $mitsuba->admin->reqPermission(3);
 								$boards .= $board.",";
 							}
 						} else {
-							$board = "*";
+							$board = "%";
 						}
 					}
 					if ($username != $_POST['username'])
@@ -34,7 +34,7 @@ $mitsuba->admin->reqPermission(3);
 						$mitsuba->admin->logAction(sprintf($lang['log/changed_username'], $username, $_POST['username']));
 					}
 					$mitsuba->admin->logAction(sprintf($lang['log/edited_user'], $username));
-					if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+					if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
 					$mitsuba->admin->users->updateUser($id, $_POST['username'], $_POST['password'], $_POST['type'], $boards);
 					?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/user_updated']); ?>
@@ -46,7 +46,7 @@ $mitsuba->admin->reqPermission(3);
 					$result = $conn->query("SELECT * FROM users WHERE id=".$_GET['id']);
 					$data = $result->fetch_assoc();
 					$boards = $data['boards'];
-					if ($data['boards'] != "*") { $board = explode(",", $data['boards']); }
+					if ($data['boards'] != "%") { $board = explode(",", $data['boards']); }
 		?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/edit_user']); ?>
 

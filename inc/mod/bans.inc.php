@@ -49,7 +49,12 @@ if ((isset($_GET['del'])) && ($_GET['del']==1))
 	} else {
 	echo "<td><b>never</b></td>";
 	}
-	echo "<td><center>".$row['boards']."</center></td>";
+	if ($row['boards']=="%")
+	{
+		echo "<td><center>All boards</center></td>";
+	} else {
+		echo "<td><center>".$row['boards']."</center></td>";
+	}
 	if ($_SESSION['type']>=2)
 	{
 	echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";

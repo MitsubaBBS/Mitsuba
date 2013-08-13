@@ -13,7 +13,7 @@ $mitsuba->admin->reqPermission(3);
 			$boards = "";
 			if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
 			{
-				$boards = "*";
+				$boards = "%";
 			} else {
 				if (!empty($_POST['boards']))
 				{
@@ -22,10 +22,10 @@ $mitsuba->admin->reqPermission(3);
 						$boards .= $board.",";
 					}
 				} else {
-					$board = "*";
+					$board = "%";
 				}
 			}
-			if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+			if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
 			$result = $mitsuba->admin->users->addUser($_POST['username'], $_POST['password'], $type, $boards);
 			if ($result == 1)
 			{

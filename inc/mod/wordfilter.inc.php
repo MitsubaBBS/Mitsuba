@@ -19,7 +19,7 @@ $mitsuba->admin->reqPermission(3);
 				$boards = "";
 				if ((!empty($_POST['all'])) && ($_POST['all']==1))
 				{
-					$boards = "*";
+					$boards = "%";
 				} else {
 					if (!empty($_POST['boards']))
 					{
@@ -28,10 +28,10 @@ $mitsuba->admin->reqPermission(3);
 							$boards .= $board.",";
 						}
 					} else {
-						$board = "*";
+						$board = "%";
 					}
 				}
-				if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+				if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
 				$conn->query("INSERT INTO wordfilter (`search`, `replace`, `boards`, `active`, `regex`) VALUES ('".$search."', '".$replace."', '".$boards."', 1, 0);");
 			}
 			$search = "";
@@ -50,7 +50,7 @@ $mitsuba->admin->reqPermission(3);
 				$boards = "";
 				if ((!empty($_POST['all'])) && ($_POST['all']==1))
 				{
-					$boards = "*";
+					$boards = "%";
 				} else {
 					if (!empty($_POST['boards']))
 					{
@@ -59,10 +59,10 @@ $mitsuba->admin->reqPermission(3);
 							$boards .= $board.",";
 						}
 					} else {
-						$board = "*";
+						$board = "%";
 					}
 				}
-				if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+				if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
 				$conn->query("UPDATE wordfilter SET `search`='".$search."', `replace`='".$replace."', `boards`='".$boards."' WHERE id=".$id);
 			}
 			$search = "";
@@ -96,7 +96,12 @@ while ($row = $result->fetch_assoc())
 echo "<tr>";
 echo "<td><center>".htmlspecialchars($row['search'])."</center></td>";
 echo "<td><center>".htmlspecialchars($row['replace'])."</center></td>";
-echo "<td><center>".$row['boards']."</center></td>";
+if ($row['boards']=="%")
+{
+	echo "<td><center>All boards</center></td>";
+} else {
+	echo "<td><center>".$row['boards']."</center></td>";
+}
 echo "<td><center><a href='?/wordfilter&d=1&n=".$row['id']."'>".$lang['mod/delete']."</a> <a href='?/wordfilter/edit&n=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
 echo "</tr>";
 }

@@ -13,7 +13,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 			$shown = 1;
 			if ((!empty($_POST['shown'])) && (is_numeric($_POST['shown'])) && ($_POST['shown']==0)) { $shown = 0; }
 			$text = "";
-			$board = "*";
+			$board = "%";
 			$position = "head";
 			if (!empty($_POST['text'])) { $text = $conn->real_escape_string($_POST['text']); }
 			if (!empty($_POST['board'])) { $board = $conn->real_escape_string($_POST['board']); }
@@ -28,7 +28,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 				$shown = 1;
 				if ((!empty($_POST['shown'])) && (is_numeric($_POST['shown'])) && ($_POST['shown']==0)) { $shown = 0; }
 				$text = "";
-				$board = "*";
+				$board = "%";
 				$position = "head";
 				if (!empty($_POST['text'])) { $text = $conn->real_escape_string($_POST['text']); }
 				if (!empty($_POST['board'])) { $board = $conn->real_escape_string($_POST['board']); }
@@ -68,7 +68,13 @@ $result = $conn->query("SELECT * FROM ads");
 while ($row = $result->fetch_assoc())
 {
 	echo "<tr>";
-	echo "<td><center>/".$row['board']."/</center></td>";
+	if ($row['board']=="%")
+	{
+		echo "<td><center>All boards</center></td>";
+	} else {
+		echo "<td><center>/".$row['board']."/</center></td>";
+	}
+
 	echo "<td>";
 	switch ($row['position'])
 	{
@@ -112,7 +118,7 @@ while ($row = $result->fetch_assoc())
 <input type="hidden" name="mode" value="add">
 <?php echo $lang['mod/board']; ?>: 
 <select name="board">
-<option value='*'>All boards</option>
+<option value='%'>All boards</option>
 <?php
 $result = $conn->query("SELECT * FROM boards;");
 while ($row = $result->fetch_assoc())

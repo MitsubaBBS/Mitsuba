@@ -19,7 +19,7 @@ if ((!empty($_GET['i'])) && (is_numeric($_GET['i'])))
 <input type="hidden" name="id" value="<?php echo $addata['id']; ?>">
 <?php echo $lang['mod/board']; ?>: 
 <select name="board">
-<option value='*'>All boards</option>
+<option value='%'>All boards</option>
 <?php
 $result = $conn->query("SELECT * FROM boards;");
 while ($row = $result->fetch_assoc())

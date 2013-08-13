@@ -44,7 +44,12 @@ echo "<td><center>".date("d/m/Y @ H:i", $row['expires'])."</center></td>";
 } else {
 echo "<td><center><b>never</b></center></td>";
 }
-echo "<td><center>".$row['boards']."</center></td>";
+if ($row['boards']=="%")
+{
+	echo "<td><center>All boards</center></td>";
+} else {
+	echo "<td><center>".$row['boards']."</center></td>";
+}
 if ($_SESSION['type']>=2)
 {
 echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";

@@ -20,7 +20,7 @@ $mitsuba->admin->reqPermission(3);
 				$boards = "";
 				if ((!empty($_POST['all'])) && ($_POST['all']==1))
 				{
-					$boards = "*";
+					$boards = "%";
 				} else {
 					if (!empty($_POST['boards']))
 					{
@@ -29,10 +29,10 @@ $mitsuba->admin->reqPermission(3);
 							$boards .= $board.",";
 						}
 					} else {
-						$board = "*";
+						$board = "%";
 					}
 				}
-				if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+				if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
 				$expires = $_POST['expires'];
 				$perma = 1;
 				if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
@@ -64,7 +64,7 @@ $mitsuba->admin->reqPermission(3);
 				$boards = "";
 				if ((!empty($_POST['all'])) && ($_POST['all']==1))
 				{
-					$boards = "*";
+					$boards = "%";
 				} else {
 					if (!empty($_POST['boards']))
 					{
@@ -73,10 +73,10 @@ $mitsuba->admin->reqPermission(3);
 							$boards .= $board.",";
 						}
 					} else {
-						$board = "*";
+						$board = "%";
 					}
 				}
-				if ($boards != "*") { $boards = substr($boards, 0, strlen($boards) - 1); }
+				if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
 				$expires = $_POST['expires'];
 				$perma = 1;
 				if (($expires == "0") || ($expires == "never") || ($expires == "") || ($expires == "perm") || ($expires == "permaban"))
@@ -124,7 +124,12 @@ while ($row = $result->fetch_assoc())
 echo "<tr>";
 echo "<td><center>".htmlspecialchars($row['search'])."</center></td>";
 echo "<td><center>".htmlspecialchars($row['reason'])."</center></td>";
-echo "<td><center>".$row['boards']."</center></td>";
+if ($row['boards']=="%")
+{
+	echo "<td><center>All boards</center></td>";
+} else {
+	echo "<td><center>".$row['boards']."</center></td>";
+}
 echo "<td><center>".$row['expires']."</center></td>";
 echo "<td><center><a href='?/spamfilter&d=1&n=".$row['id']."'>".$lang['mod/delete']."</a> <a href='?/spamfilter/edit&n=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
 echo "</tr>";
