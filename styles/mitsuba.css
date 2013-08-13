@@ -1366,6 +1366,7 @@ fieldset input, label {
 	float: right;
 	margin-bottom: 6px;
 	width: auto;
+	white-space: nowrap;
 }
 
 fieldset label {
