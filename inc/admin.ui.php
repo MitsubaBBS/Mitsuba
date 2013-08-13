@@ -13,7 +13,7 @@ class UI {
 	{
 		global $id_salt;
 		$token = "";
-		if (($_SESSION['tokenpath'] != $path) || (empty($_SESSION['token'])))
+		if ((empty($_SESSION['tokenpath'])) || ($_SESSION['tokenpath'] != $path) || (empty($_SESSION['token'])))
 		{
 			$token = md5($this->mitsuba->common->randomSalt().$id_salt);
 			$_SESSION['tokenpath'] = $path;

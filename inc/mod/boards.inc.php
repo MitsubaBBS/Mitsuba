@@ -57,7 +57,7 @@ $mitsuba->admin->reqPermission(3);
 </thead>
 <tbody>
 <?php
-$result = $conn->query("SELECT * FROM boards;");
+$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
 while ($row = $result->fetch_assoc())
 {
 echo '<tr>';

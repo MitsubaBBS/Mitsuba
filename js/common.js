@@ -225,6 +225,11 @@ function fillFields(parent)
 	{
 		$(parent).find("input[name='fake_id']").val($.cookie("mitsuba_fakeid"));
 	}
+
+	if (typeof $.cookie("password") !== "undefined")
+	{
+		$(parent).find("input[name='pwd']").val($.cookie("password"));
+	}
 }
 
 function addThreadUpdater()
@@ -560,6 +565,8 @@ function adminStuff(parent)
 	{
 		var old_action = $("#postform").attr("action");
 		$("#postform").attr("action", old_action+"?mod=2");
+		var old_actiondel = $("#delform").attr("action");
+		$("#delform").attr("action", old_actiondel+"?mod=2");
 		if (adm_type >= 2)
 		{
 			if ($("#postform input[name='name']").length == 0)
