@@ -283,7 +283,7 @@ function updateThread(isAuto)
 				newposts++;
 				totalUnread++;
 				$(tid).append('<div class="postContainer replyContainer" id="pc'+pid+'">'+$(this).html()+'</div>');
-				$("#p"+pid).addClass("newpost");
+				$("#p"+pid).addClass("postnew");
 			}
 		});
 		if (localStorage.getItem("o_backlinks") == 1)
@@ -329,7 +329,7 @@ function updateThread(isAuto)
 				{
 					totalUnread = 0;
 					document.title = normaltitle;
-					$(".newpost").removeClass("newpost");
+					$(".postnew").removeClass("postnew");
 					$(window).unbind('scroll');
 				}
 			});
