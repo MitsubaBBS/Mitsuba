@@ -63,7 +63,7 @@ if ((isset($_GET['del'])) && ($_GET['del']==1))
 	}
 	if ($_SESSION['type'] >= 3)
 	{
-		echo "<td>".$row['username']."</td>";
+		echo "<td><center>".$row['username']."</center></td>";
 	}
 	echo "</tr>";
 	}

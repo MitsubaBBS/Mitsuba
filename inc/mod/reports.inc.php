@@ -46,7 +46,7 @@ if ($_SESSION['type'] >= 2)
 <td><?php echo $lang['mod/file']; ?></td>
 <td class="comments"><?php echo $lang['mod/comment']; ?></td>
 <td class="reason"><?php echo $lang['mod/reason']; ?></td>
-<td><?php echo $lang['mod/reporter_ip']; ?></td>
+<td class="reporterIP"><?php echo $lang['mod/reporter_ip']; ?></td>
 <td><?php echo $lang['mod/actions']; ?></td>
 </tr>
 </thead>
