@@ -232,9 +232,134 @@ function fillFields(parent)
 	}
 }
 
+var updateRequest = false;
+var updateInterval = false;
+var currentDelay = 10;
+var lastDelay = 10;
+var lastRead = 0;
+var totalUnread = 0;
+var normaltitle = "";
+
+function autoUpdate()
+{
+	currentDelay--;
+	$(".autocount").html(currentDelay);
+	if (currentDelay <= 0)
+	{
+		$(".autocount").html("");
+		updateThread(true);
+	} else {
+		updateInterval = setTimeout(autoUpdate, 1000);
+	}
+}
+
+function updateThread(isAuto)
+{
+	$(".uinfo").html("Updating...");
+	if (updateRequest !== false)
+	{
+		updateRequest.abort();
+	}
+	var tid = "#"+$(".thread:first").attr("id");
+	var url = window.location.href.split(/#/)[0];
+	updateRequest = $.ajax({
+	type: 'get',
+	url: window.location.href,
+	success: function(data, textStatus, xhr){
+		var html = xhr.responseText;
+		var nodes = $.parseHTML( html );
+		var newposts = 0;
+		var lastpost = 0;
+		$(".post").addClass("postdeleted");
+		$(".postContainer", nodes).each(function () {
+			var pid = $(this).attr("id").substr(2);
+			$("#p"+pid).removeClass("postdeleted");
+			if (pid > lastRead)
+			{
+				if (pid > lastpost)
+				{
+					lastpost = pid;
+				}
+				lastRead = pid;
+				newposts++;
+				totalUnread++;
+				$(tid).append('<div class="postContainer replyContainer" id="pc'+pid+'">'+$(this).html()+'</div>');
+				$("#p"+pid).addClass("newpost");
+			}
+		});
+		if (localStorage.getItem("o_backlinks") == 1)
+		{
+			addBacklinks(tid);
+		}
+		if (localStorage.getItem("o_preview") == 1)
+		{
+			addPostpreview(tid);
+		}
+		if (localStorage.getItem("o_imgexpand") == 1)
+		{
+			addImgExpand(tid);
+		}
+		if (newposts != 0)
+		{
+			currentDelay = 10;
+			lastDelay = 10;
+			$(".uinfo").html(newposts+" new posts");
+		} else {
+			if (lastDelay = 10)
+			{
+				currentDelay = 30;
+				lastDelay = 30;
+			} else if (lastDelay = 30)
+			{
+				currentDelay = 60;
+				lastDelay = 60;
+			} else {
+				currentDelay = 60;
+			}
+			$(".uinfo").html("No new posts");
+		}
+		if (isAuto == true)
+		{
+			if (newposts != 0)
+			{
+				document.title = "("+totalUnread+") "+normaltitle;
+			}
+			$(window).unbind('scroll');
+			$(window).scroll(function() {    
+				if(canUserSee($('#pc'+lastpost)))
+				{
+					totalUnread = 0;
+					document.title = normaltitle;
+					$(".newpost").removeClass("newpost");
+					$(window).unbind('scroll');
+				}
+			});
+			updateInterval = setTimeout(autoUpdate, 1000);
+		}
+		}
+	});
+}
+
 function addThreadUpdater()
 {
-	
+	normaltitle = document.title;
+	$(".navLinks").append(" [<a href='#update' class='updateLink'>Update</a>] [<label><input type='checkbox' class='updateCheck'>Auto</label>] <span class='uinfo'></span> <span class='autocount'></span>");
+	lastRead = $(".post:last").attr("id").substr(1);
+	$(".updateLink").click(function () {
+		updateThread(false);
+	});
+	$(".updateCheck").change(function () {
+		if ($(this).prop("checked"))
+		{
+			updateInterval = setTimeout(autoUpdate, 1000);
+			$(".autocount").html(currentDelay);
+		} else {
+			if (updateInterval !== false)
+			{
+				clearTimeout(updateInterval);
+			}
+		}
+	});
 }
 
 function addQuotelinks()
@@ -1045,6 +1170,15 @@ function removeFromWatched(board, id)
 	localStorage.removeItem("wt_"+board+"_"+id);
 	$("#watcher_box").animate({height: '-=25px'}, '500', 'linear');
 	$('#wl_'+board+'_'+id).fadeOut(function(){$('#wl_'+board+'_'+id).remove();});
+}
+
+function canUserSee(elem)
+{
+    var docViewTop = $(window).scrollTop();
+    var docViewBottom = docViewTop + $(window).height();
+    var elemTop = $(elem).offset().top;
+    var elemBottom = elemTop + $(elem).height();
+    return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom) && (elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 }
 
 /* 
