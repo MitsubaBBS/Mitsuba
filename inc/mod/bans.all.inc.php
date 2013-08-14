@@ -55,7 +55,7 @@ if (!defined("IN_MOD"))
 	}
 	if ($_SESSION['type'] >= 3)
 	{
-		echo "<td>".$row['username']."</td>";
+		echo "<td><center>".$row['username']."</center></td>";
 	}
 	echo "</tr>";
 	}
