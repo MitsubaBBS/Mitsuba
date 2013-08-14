@@ -1149,7 +1149,7 @@ table:not(#postForm) tbody tr:nth-of-type(odd) {
 	background-color: #D6DAF0;
 }
 
-table:not(#postForm, .postForm) {
+table:not(#postForm) {
 	border-collapse:separate;
 	border-spacing: 1px;
 	min-width: 100%;
