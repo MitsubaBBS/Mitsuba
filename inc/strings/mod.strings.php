@@ -99,6 +99,7 @@ $lang['mod/board_embeds'] = "Allow embeds";
 $lang['mod/board_catalog'] = "Enable catalog";
 $lang['mod/board_captcha'] = "Enable captcha";
 $lang['mod/board_type'] = "Board type";
+$lang['mod/board_nofile'] = "Allow 'No file' for OPs";
 
 $lang['mod/overboard'] = "Overboard";
 $lang['mod/imageboard'] = "Imageboard";

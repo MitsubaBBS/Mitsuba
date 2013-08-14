@@ -127,6 +127,55 @@ if (!empty($_POST['mode']))
 				echo "<center><h1>".$lang['img/choose_one']."</h1></center></body></html>";
 				exit;
 			}
+			$capcode = 0;
+			$raw = 0;
+			$sticky = 0;
+			$lock = 0;
+			$nolimit = 0;
+			$nofile = 0;
+			$fake_id = "";
+			$cc_text = "";
+			$cc_color = "";
+			if ((!empty($_POST['nofile'])) && ($_POST['nofile']==1) && ($bdata['nofile']==1))
+			{
+				$nofile = 1;
+			}
+			if (($mod >= 1) && ($mod_type>=2))
+			{
+				if ((!empty($_POST['nolimit'])) && ($_POST['nolimit']==1))
+				{
+					$nolimit = 1;
+				}
+				if ((!empty($_POST['capcode'])) && ($_POST['capcode']==1))
+				{
+					$capcode = $mod_type;
+				} elseif ((!empty($_POST['capcode'])) && ($_POST['capcode']==2) && (!empty($_POST['cc_text'])) && (!empty($_POST['cc_color'])))
+				{
+					$capcode = 5;
+					$cc_text = $_POST['cc_text'];
+					$cc_color = $_POST['cc_color'];
+				}
+				if ((!empty($_POST['raw'])) && ($_POST['raw']==1))
+				{
+					$raw = 1;
+				}
+				if ((!empty($_POST['nofile'])) && ($_POST['nofile']==1))
+				{
+					$nofile = 1;
+				}
+				if ((!empty($_POST['sticky'])) && ($_POST['sticky']==1))
+				{
+					$sticky = 1;
+				}
+				if ((!empty($_POST['lock'])) && ($_POST['lock']==1))
+				{
+					$lock = 1;
+				}
+				if (!empty($_POST['fake_id']))
+				{
+					$fake_id = $_POST['fake_id'];
+				}
+			}
 			if (($mitsuba->common->isWhitelisted($_SERVER['REMOTE_ADDR']) != 2) && (($mod == 0) || ($mod_type==0)))
 			{
 				if ((empty($_POST['resto'])) || ($_POST['resto']==0))
@@ -136,10 +185,10 @@ if (!empty($_POST['mode']))
 				$mitsuba->board->checkPostDate($bdata, $return_url);
 			}
 			$mime = "";
-			if (!empty($_POST['embed']))
+			if ((!empty($_POST['embed'])) && ($nofile == 0))
 			{
 				$filename = $mitsuba->checkEmbed($bdata, $_POST['embed'], $return_url);
-			} else {
+			} elseif ($nofile == 0) {
 				if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 				{
 					echo "<h1>".$lang['img/file_too_big']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
@@ -232,55 +281,10 @@ if (!empty($_POST['mode']))
 					}
 				}
 			}
-			$capcode = 0;
-			$raw = 0;
-			$sticky = 0;
-			$lock = 0;
-			$nolimit = 0;
-			$nofile = 0;
-			$fake_id = "";
-			$cc_text = "";
-			$cc_color = "";
 			if (!empty($_POST['name'])) { setcookie("mitsuba_name", $_POST['name'], time() + 86400*256); } else { setcookie("mitsuba_name","", time() + 86400*256); }
 			if ((!empty($_POST['email'])) && ($_POST['email'] != "sage")) { setcookie("mitsuba_email", $_POST['email'], time() + 86400*256); } else { setcookie("mitsuba_email","", time() + 86400*256); }
 			if (!empty($_POST['fake_id'])) { setcookie("mitsuba_fakeid", $_POST['fake_id'], time() + 86400*256); } else { setcookie("mitsuba_fakeid","", time() + 86400*256); }
 			
-			if (($mod >= 1) && ($mod_type>=2))
-			{
-				if ((!empty($_POST['nolimit'])) && ($_POST['nolimit']==1))
-				{
-					$nolimit = 1;
-				}
-				if ((!empty($_POST['capcode'])) && ($_POST['capcode']==1))
-				{
-					$capcode = $mod_type;
-				} elseif ((!empty($_POST['capcode'])) && ($_POST['capcode']==2) && (!empty($_POST['cc_text'])) && (!empty($_POST['cc_color'])))
-				{
-					$capcode = 5;
-					$cc_text = $_POST['cc_text'];
-					$cc_color = $_POST['cc_color'];
-				}
-				if ((!empty($_POST['raw'])) && ($_POST['raw']==1))
-				{
-					$raw = 1;
-				}
-				if ((!empty($_POST['nofile'])) && ($_POST['nofile']==1))
-				{
-					$nofile = 1;
-				}
-				if ((!empty($_POST['sticky'])) && ($_POST['sticky']==1))
-				{
-					$sticky = 1;
-				}
-				if ((!empty($_POST['lock'])) && ($_POST['lock']==1))
-				{
-					$lock = 1;
-				}
-				if (!empty($_POST['fake_id']))
-				{
-					$fake_id = $_POST['fake_id'];
-				}
-			}
 			$spoiler = 0;
 			if ((!empty($_POST['spoiler'])) && ($_POST['spoiler'] == 1) && ($bdata['spoilers'] == 1) && (substr($filename, 0, 6) != "embed:"))
 			{

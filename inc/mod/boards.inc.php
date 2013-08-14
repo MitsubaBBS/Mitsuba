@@ -30,6 +30,7 @@ $mitsuba->admin->reqPermission(3);
 <br /><input type="checkbox" name="hidden" value="1"/><?php echo $lang['mod/board_hidden']; ?>
 <br /><input type="checkbox" name="unlisted" value="1"/><?php echo $lang['mod/board_unlisted']; ?>
 <br /><input type="checkbox" name="nodup" value="1"/><?php echo $lang['mod/board_nodup']; ?>
+<br /><input type="checkbox" name="nofile" value="1"/><?php echo $lang['mod/board_nofile']; ?>
 <br /><input type="checkbox" name="catalog" value="1"/><?php echo $lang['mod/board_catalog']; ?>
 <br /><input type="checkbox" name="captcha" value="1"/><?php echo $lang['mod/board_captcha']; ?>
 <br />
@@ -102,6 +103,7 @@ if ($row['hidden']==1) { echo "<b>".$lang['mod/board_hidden']."</b><br />"; }
 if ($row['nodup']==1) { echo "<b>".$lang['mod/board_nodup']."</b><br />"; }
 if ($row['catalog']==1) { echo "<b>".$lang['mod/board_catalog']."</b><br />"; }
 if ($row['captcha']==1) { echo "<b>".$lang['mod/board_captcha']."</b><br />"; }
+if ($row['nofile']==1) { echo "<b>".$lang['mod/board_nofile']."</b><br />"; }
 echo "</td>";
 echo "<td><center><a href='?/boards/edit&board=".$row['short']."'>".$lang['mod/edit']."</a></center></td>";
 echo "<td><center><a href='?/boards/delete&board=".$row['short']."'>".$lang['mod/delete']."</a></center></td>";

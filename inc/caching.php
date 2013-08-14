@@ -607,17 +607,32 @@ class Caching
 			$postform .= '<tr>
 				<td>'.$lang['img/file'].'</td>
 				<td id="embed"><input id="postFile" name="upfile" type="file" />';
+			$postform .= '</td>
+				</tr>';
+			$fspecials = "";
 			if ($boarddata['spoilers'] == 1)
 			{
-				$postform .= '<label><input id="spoiler" type="checkbox" name="spoiler" value="1">'.$lang['img/spoiler'].'</label>';
+				$fspecials .= '<label><input id="spoiler" type="checkbox" name="spoiler" value="1">'.$lang['img/spoiler'].'</label>';
+			}
+			if ($boarddata['nofile'] == 1)
+			{
+				$fspecials .= '<label><input id="nofile" type="checkbox" name="nofile" value="1">'.$lang['img/mod_nofile'].'</label>';
+			}
+			if (!empty($fspecials))
+			{
+				$postform .= '<tr>
+					<td></td>
+					<td>'.$fspecials.'</td>
+					</tr>';
 			}
 			if ($boarddata['embeds'] == 1)
 			{
-				$postform .= '<br />'.$lang['img/embed'].': <input type="text" name="embed"/>';
+				$postform .= '<tr>
+					<td>'.$lang['img/embed'].'</td>
+					<td><input type="text" name="embed"/></td>
+					</tr>';
 			}
-			$postform .= '</td>
-				</tr>
-				<tr>
+			$postform .= '<tr>
 				<td>'.$lang['img/password'].'</td>
 				<td><input id="postPassword" name="pwd" type="password" maxlength="8" /> <span class="password">'.$lang['img/password_used'].'</span></td>
 				</tr>';

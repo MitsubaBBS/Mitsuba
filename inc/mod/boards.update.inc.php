@@ -63,6 +63,11 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 				{
 					$nodup = 1;
 				}
+				$nofile = 0;
+				if ((!empty($_POST['nofile'])) && ($_POST['nofile'] == 1))
+				{
+					$nofile = 1;
+				}
 				$catalog = 0;
 				if ((!empty($_POST['catalog'])) && ($_POST['catalog'] == 1))
 				{
@@ -109,7 +114,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 					$anonymous = $_POST['anonymous'];
 				}
 				$extensions = "png,jpg,gif";
-				if ($mitsuba->admin->boards->updateBoard($_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $unlisted, $nodup, $maxchars, $anonymous, $extensions, $catalog, $captcha))
+				if ($mitsuba->admin->boards->updateBoard($_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $unlisted, $nodup, $nofile, $maxchars, $anonymous, $extensions, $catalog, $captcha))
 				{
 				$mitsuba->admin->logAction(sprintf($lang['log/updated_board'], $conn->real_escape_string($_GET['board'])));
 				?>
