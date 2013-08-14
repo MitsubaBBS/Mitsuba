@@ -272,7 +272,6 @@ function updateThread(isAuto)
 		$(".post").addClass("postdeleted");
 		$(".postContainer", nodes).each(function () {
 			var pid = $(this).attr("id").substr(2);
-			$("#p"+pid).removeClass("postdeleted");
 			if (pid > lastRead)
 			{
 				if (pid > lastpost)
@@ -285,6 +284,7 @@ function updateThread(isAuto)
 				$(tid).append('<div class="postContainer replyContainer" id="pc'+pid+'">'+$(this).html()+'</div>');
 				$("#p"+pid).addClass("postnew");
 			}
+			$("#p"+pid).removeClass("postdeleted");
 		});
 		if (localStorage.getItem("o_backlinks") == 1)
 		{
