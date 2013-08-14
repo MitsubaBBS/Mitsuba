@@ -152,7 +152,6 @@ var settingsShown = 0;
 
 function addSettings()
 {
-	$("#boardLinks").before("<span style='float:right;'>[<a id='settingsbutton' href='#'>Settings</a>]</span>");
 	$("body").prepend("<div id='settingsDivWrap'><div id='settingsDiv'> \
 		<span id='settingsTitle'>Settings</span> \
 		<hr /> \
@@ -167,7 +166,7 @@ function addSettings()
 		<input type='checkbox' name='o_fastreply' /> Enable fast reply<br />\
 		<hr /> \
 		<input type='button' value='Save' id='settingsSave'/> <input type='button' value='Reset' id='settingsReset'/>\
-		</div></div>");
+		</div></div><span style='float:right;'>[<a id='settingsbutton' href='#'>Settings</a>]</span>");
 	
 	$("#settingsSave").click(function (e) {
 		$("input[name^='o_']").each(function ()
