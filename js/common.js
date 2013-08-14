@@ -268,16 +268,11 @@ function updateThread(isAuto)
 		var html = xhr.responseText;
 		var nodes = $.parseHTML( html );
 		var newposts = 0;
-		var lastpost = 0;
 		$(".post").addClass("postdeleted");
 		$(".postContainer", nodes).each(function () {
 			var pid = $(this).attr("id").substr(2);
 			if (pid > lastRead)
 			{
-				if (pid > lastpost)
-				{
-					lastpost = pid;
-				}
 				lastRead = pid;
 				newposts++;
 				totalUnread++;
@@ -325,7 +320,7 @@ function updateThread(isAuto)
 			}
 			$(window).unbind('scroll');
 			$(window).scroll(function() {    
-				if(canUserSee($('#pc'+lastpost)))
+				if(canUserSee($('#pc'+lastRead)))
 				{
 					totalUnread = 0;
 					document.title = normaltitle;

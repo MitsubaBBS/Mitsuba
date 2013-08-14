@@ -1755,7 +1755,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			$children = $this->conn->query("SELECT * FROM links WHERE parent=".$row['id']);
 			while ($child = $children->fetch_assoc())
 			{
-				if ($row['relative'] == 1)
+				if ($child['relative'] == 1)
 				{
 					$menu .= '<li><a href="'.$this->mitsuba->getPath($child['url'], $location, 1).'"'.$target.'>/'.$child['short'].'/ - '.$child['title'].'</a></li>';
 				} elseif ($row['relative'] == 2)
