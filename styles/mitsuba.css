@@ -97,10 +97,6 @@ input,textarea,select {
 	margin-bottom: 1px!important;
 }
 
-.boxcontent > form:nth-child(1) > input:nth-child(5) {
-	margin-top: 1px!important;
-}
-
 .board-input {
 	margin-bottom: 0px;
 	}
