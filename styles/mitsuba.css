@@ -285,6 +285,8 @@ div#boardLinks {
 	color: #B86;
 	display: block;
 	padding-top: 5px;
+	top: 0px;
+	margin-left: 5px;
 }
 
 div#boardLinks a {
@@ -331,7 +333,6 @@ div.reply {
 	border: 1px solid #D9BFB7;
 	display: table;
 	padding: 2px;
-	margin-left: 40px;
 }
 
 div.reply input {
@@ -587,11 +588,9 @@ td {
 #postForm input[type=text],input[type=password],textarea {
 	margin-top: 0px;
 	margin-bottom: 0px;
-	margin-left: 0px;
 	margin-right: 2px;
 	padding-top: 2px;
 	padding-bottom: 3px;
-	padding-left: 4px;
 	padding-right: 2px;
 	border: 1px solid #AAA;
 	outline: none;
