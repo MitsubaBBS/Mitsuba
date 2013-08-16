@@ -1605,6 +1605,11 @@ div.navLinks:nth-child(8) > label:nth-child(5) {
 	display: inline;
 }
 
+div.navLinks:nth-child(6) > label:nth-child(4) {
+	float: inherit;
+	display: inline;
+}
+
 /* JAVASCRIPTS */
 
 .postnew {
