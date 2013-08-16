@@ -101,9 +101,9 @@ while ($row = $result->fetch_assoc())
 	echo "<td>".htmlspecialchars($row['text'])."</td>";
 	if ($row['show']==1)
 	{
-		echo "<td>YES</td>";
+		echo "<td><center>YES</center></td>";
 	} else {
-		echo "<td>NO</td>";
+		echo "<td><center>NO</center></td>";
 	}
 	echo "<td><a href='?/ads/edit&i=".$row['id']."'>Edit</a> / <a href='?/ads&mode=delete&i=".$row['id']."'>Delete</a></td>";
 	echo "</tr>";

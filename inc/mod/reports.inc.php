@@ -102,7 +102,7 @@ if ($_SESSION['type'] >= 2)
 				echo "<td>".$pdata['comment']."</td>";
 			}
 			echo "<td>".$row['reason']."</td>";
-			echo "<td><center>".$row['reporter_ip']."</center></td>";
+			echo "<td class="nowrapIP"><center>".$row['reporter_ip']."</center></td>";
 			echo "<td><center>[ <a href='?/reports&cl=1&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> "; 
 			if ($_SESSION['type']>=2)
 			{

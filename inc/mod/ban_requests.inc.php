@@ -30,7 +30,7 @@ $result = $conn->query("SELECT * FROM ban_requests ORDER BY created DESC LIMIT 0
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td><center>".$row['ip']."</center></td>";
+echo "<td class="nowrapIP"><center>".$row['ip']."</center></td>";
 echo "<td>".$row['reason']."</td>";
 echo "<td>".$row['note']."</td>";
 echo "<td><center>".date("d/m/Y @ H:i", $row['created'])."</center></td>";

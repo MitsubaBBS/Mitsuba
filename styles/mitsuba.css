@@ -1012,15 +1012,15 @@ table:not(#postForm) {
 
 table:not(#postForm) td.comments {
 	min-width: 250px!important;
-	}
+}
 	
 table:not(#postForm) td.reason {
 	min-width: 150px!important;
-	}
+}
 	
-table:not(#postForm) td.reporterIP {
-	white-space: nowrap!important;
-	}
+table:not(#postForm) td.nowrapIP {
+	white-space: nowrap;
+}
 
 /* GLOBAL */
 
