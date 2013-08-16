@@ -611,6 +611,15 @@ table.postForm>tbody>tr>td:first-child {
 	max-width: none!important;
 }
 
+table.logForm>tbody>tr>td:first-child {
+	background-color: #98E;
+	color: #000;
+	font-weight: bold;
+	border: 1px solid #000;
+	padding: 0 5px;
+	font-size: 10pt;
+}
+
 tr.rules td {
 	border: 0px!important;
 	background-color: transparent!important;
