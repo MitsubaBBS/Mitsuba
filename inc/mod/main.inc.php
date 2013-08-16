@@ -24,7 +24,7 @@ if ((isset($_SESSION['logged'])) && ($_SESSION['logged']==1))
 <?php $mitsuba->admin->ui->startSection($lang['mod/log_in']); ?>
 
 <form action="?/login" method="POST">
-<table class="postForm">
+<table class="logForm">
 	<tbody>
 		<tr>
 			<td style="text-align: center; width: 65px;"><?php echo $lang['mod/username']; ?></td>

@@ -150,11 +150,11 @@ input,textarea,select {
 	margin-bottom: 0px!important;
 }
 
-.postForm > tbody:nth-child(1) > tr:nth-child(3) {
+.logForm > tbody:nth-child(1) > tr:nth-child(3) {
 	background-color: inherit!important;
 }
 
-.postForm > tbody:nth-child(1) > tr:nth-child(1) {
+.logForm > tbody:nth-child(1) > tr:nth-child(1) {
 	background-color: inherit!important;
 }
 
@@ -565,6 +565,12 @@ table.postForm>tbody>tr>td:first-child {
 	border: 1px solid #800;
 	padding: 0 5px;
 	font-size: 10pt;
+}
+
+.logForm {
+	min-width: 0!important;
+	width: auto!important;
+	max-width: none!important;
 }
 
 tr.rules td {
@@ -991,7 +997,7 @@ table:not(#postForm) {
 	border-collapse: separate;
 	border-spacing: 1px;
 	min-width: 100%;
-	width: 100% !important;
+	width: 100%;
 	max-width: 100%;
 }
 
