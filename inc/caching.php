@@ -424,7 +424,7 @@ class Caching
 		}
 		$max_pages = $boarddata['pages'];
 		$all_pages = $max_pages;
-		$pages = $max_pages;
+		$pages = $max_pages+1;
 		$page = 0;
 		if (!is_numeric($threadno))
 		{
@@ -842,7 +842,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 							$file .= "[<a href='./".$i.".html'><strong>".$i."</strong></a>] ";	
 						}
 					} else {
-						if ($i > $all_pages)
+						if ($i > $pages)
 						{
 							$file .= "[".$i."] ";
 						} else {
