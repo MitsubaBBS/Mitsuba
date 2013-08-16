@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `catalog` int(1) NOT NULL,
   `captcha` int(1) NOT NULL,
   `overboard_boards` text NOT NULL,
+  `alllinks` int(1) NOT NULL,
   PRIMARY KEY (`short`)
 );
 

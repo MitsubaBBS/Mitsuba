@@ -32,7 +32,7 @@ class Posting {
 				return -16;
 			}
 			$bdata = $this->mitsuba->common->getBoardData($board);
-			$result = $this->conn->query("SELECT * FROM posts WHERE id=".$postno." AND board='".$board."'");
+			$result = $this->conn->query("SELECT * FROM posts WHERE id=".$postno." AND board='".$board."' AND deleted=0");
 			if ($result->num_rows == 1)
 			{
 				$config = $this->mitsuba->config;

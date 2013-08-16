@@ -116,7 +116,7 @@ switch ($mode)
 		</div>
 			<?php
 					} else {
-						$result = $conn->query("INSERT INTO users (username, password, type, boards) VALUES ('".$conn->real_escape_string($username)."', '".hash("sha512", $password)."', 3, '*')");
+						$result = $conn->query("INSERT INTO users (username, password, type, boards) VALUES ('".$conn->real_escape_string($username)."', '".hash("sha512", $password)."', 3, '%')");
 						if (!$result)
 						{
 						?>

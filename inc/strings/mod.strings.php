@@ -98,12 +98,14 @@ $lang['mod/board_ids'] = "Poster IDs";
 $lang['mod/board_embeds'] = "Allow embeds";
 $lang['mod/board_catalog'] = "Enable catalog";
 $lang['mod/board_captcha'] = "Enable captcha";
+$lang['mod/board_all_links'] = "Allow to post any link";
 $lang['mod/board_type'] = "Board type";
 $lang['mod/board_nofile'] = "Allow 'No file' for OPs";
 
 $lang['mod/overboard'] = "Overboard";
 $lang['mod/imageboard'] = "Imageboard";
 $lang['mod/fileboard'] = "File listing board";
+$lang['mod/fileboard'] = "Link listing board";
 $lang['mod/textboard'] = "Textboard";
 $lang['mod/archive'] = "Archive";
 

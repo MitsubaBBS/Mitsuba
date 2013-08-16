@@ -13,6 +13,17 @@ $mitsuba->admin->reqPermission(3);
 <?php echo $lang['mod/board_name']; ?>: <input type="text" name="name" maxlength=40 /><br />
 <?php echo $lang['mod/board_short']; ?>: <input type="text" name="des" maxlength=100 /><br />
 <?php echo $lang['mod/board_msg']; ?>: <br /><textarea cols=70 rows=7 name="msg"></textarea><br />
+<?php echo $lang['mod/board_type']; ?>: <select name="type">
+<option value=""><?php ?></option>
+switch ($row['type'])
+{
+<option value="imageboard"><?php echo $lang['mod/imageboard']; ?></option>
+<option value="textboard"><?php echo $lang['mod/textboard']; ?></option>
+<option value="overboard"><?php echo $lang['mod/overboard']; ?></option>
+<option value="fileboard"><?php echo $lang['mod/fileboard']; ?></option>
+<option value="linkboard"><?php echo $lang['mod/linkboard']; ?></option>
+<option value="archive"><?php echo $lang['mod/archive']; ?></option>
+</select>
 <?php echo $lang['mod/board_limit']; ?>: <input type="text" name="limit" maxlength=9 value="0" /><br />
 <?php echo $lang['mod/board_pages']; ?>: <input type="text" name="pages" maxlength=4 value="15" /><br />
 <?php echo $lang['mod/board_time_between_posts']; ?>: <input type="text" name="time_between_posts" maxlength=20 value="20" /><br />
@@ -78,6 +89,9 @@ switch ($row['type'])
 		break;
 	case "fileboard":
 		echo "<td>".$lang['mod/fileboard']."</td>";
+		break;
+	case "linkboard":
+		echo "<td>".$lang['mod/linkboard']."</td>";
 		break;
 	case "archive":
 		echo "<td>".$lang['mod/archive']."</td>";
