@@ -52,7 +52,7 @@ while ($row = $appeals->fetch_assoc())
 		echo "<tr>";
 		if ($row['rangeban'] == 0)
 		{
-			echo "<td><center>".$ban['ip']."</center></td>";
+			echo "<td class="nowrapIP"><center>".$ban['ip']."</center></td>";
 		} else {
 			echo "<td>".$ban['start_ip']." - ".$ban['end_ip']." ( ".$row['ip']." )</td>";
 		}
