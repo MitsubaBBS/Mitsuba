@@ -423,7 +423,7 @@ class Caching
 			}
 		}
 		$max_pages = $boarddata['pages'];
-		$all_pages = $max_pages;
+		$all_pages = $max_pages+1;
 		$pages = $max_pages+1;
 		$page = 0;
 		if (!is_numeric($threadno))
@@ -487,7 +487,7 @@ class Caching
 			}
 			if ($return == 0)
 			{
-				$pages = $all_pages - 1;
+				$pages = $all_pages;
 			}
 		}
 		$location = "";
