@@ -97,10 +97,6 @@ input,textarea,select {
 	margin-bottom: 1px!important;
 }
 
-.boxcontent > form:nth-child(1) > input:nth-child(5) {
-	margin-top: 1px!important;
-}
-
 .board-input {
 	margin-bottom: 0px;
 	}
@@ -164,6 +160,16 @@ input,textarea,select {
 
 .contents > span:nth-child(1) {
 	padding-top: 5px;
+}
+
+div.navLinks:nth-child(8) > label:nth-child(4) {
+	display: inline!important;
+	float: inherit!important;
+}
+
+div.navLinks:nth-child(2) > label:nth-child(4) {
+	display: inline!important;
+	float: inherit!important;
 }
 	
 legend {
@@ -289,6 +295,8 @@ div#boardLinks {
 	color: #B86;
 	display: block;
 	padding-top: 5px;
+	top: 0px;
+	margin-left: 5px;
 }
 
 div#boardLinks a {
@@ -335,7 +343,6 @@ div.reply {
 	border: 1px solid #D9BFB7;
 	display: table;
 	padding: 2px;
-	margin-left: 40px;
 }
 
 div.reply input {
@@ -591,11 +598,9 @@ td {
 #postForm input[type=text],input[type=password],textarea {
 	margin-top: 0px;
 	margin-bottom: 0px;
-	margin-left: 0px;
 	margin-right: 2px;
 	padding-top: 2px;
 	padding-bottom: 3px;
-	padding-left: 4px;
 	padding-right: 2px;
 	border: 1px solid #AAA;
 	outline: none;
@@ -982,7 +987,7 @@ table:not(#postForm) tbody tr:nth-of-type(odd) {
 	background-color: #ede2d4;
 }
 
-table:not(#postForm, .postForm) {
+table:not(#postForm) {
 	border-collapse: separate;
 	border-spacing: 1px;
 	min-width: 100%;
