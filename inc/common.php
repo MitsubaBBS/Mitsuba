@@ -120,28 +120,15 @@ class Common {
 			$width = $s; //output width
 			$height = $s; //output height
 			$img = new \Imagick($fname);
-			$most_width = 0;
-			$most_height = 0;
-			$oig = $img->getImageGeometry();
-			if (($oig['width'] > $s) || ($oig['height'] > $s))
+			$img = $img->coalesceImages();
+			foreach($img as $frame)
 			{
-				foreach($img as $frame)
-				{
-					$frame->thumbnailImage($width, $height, true);
-					$geo2 = $frame->getImageGeometry();
-					if ($geo2['width']>$most_width) { $most_width = $geo2['width']; }
-					if ($geo2['height']>$most_height) { $most_height = $geo2['height']; }
-					$frame->setImagePage($geo2['width'], $geo2['height'], 0, 0);
-				}
-			} else {
-				$most_width = $oig['width'];
-				$most_height = $oig['height'];
+				$frame->thumbnailImage($width, $height, true);
+				$frame->setImagePage($width, $height, 0, 0);
 			}
-			//$img->setImageCompressionQuality(60); 
 			$img->writeImages($thumb_dir.$filename, true);
+			$ig = $img->getImageGeometry();
 			$img->destroy();
-			$ig['width'] = $most_width;
-			$ig['height'] = $most_height;
 			return $ig;
 		} elseif ($extension == "gd")
 		{
