@@ -33,7 +33,7 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	while ($row = $result->fetch_assoc())
 	{
 	echo "<tr>";
-	echo "<td class="nowrapIP"><center>".$row['ip']."</center></td>";
+	echo "<td class='nowrapIP'><center>".$row['ip']."</center></td>";
 	echo "<td>".$row['reason']."</td>";
 	echo "<td>".$row['note']."</td>";
 	echo "<td><center>".date("d/m/Y @ H:i", $row['created'])."</center></td>";
