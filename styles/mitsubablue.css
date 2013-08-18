@@ -1190,6 +1190,34 @@ table:not(#postForm) td.nowrapIP {
 	white-space: nowrap;
 }
 
+.boxcontent > table:nth-child(5) > tbody:nth-child(2) > tr:nth-child(n+1) > td:nth-child(5) {
+	word-break: break-word;
+}
+
+.boxcontent > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(n+1) > td:nth-child(3) {
+	word-break: break-word;
+}
+
+.boxcontent > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(n+1) > td:nth-child(2) {
+	word-break: break-word;
+}
+
+.boxcontent > table:nth-child(5) > tbody:nth-child(2) > tr:nth-child(n+1) > td:nth-child(1) > center:nth-child(1) > a:nth-child(1) {
+	white-space: nowrap;
+}
+
+.boxcontent > table:nth-child(5) > tbody:nth-child(2) > tr:nth-child(n+1) > td:nth-child(2) > center:nth-child(1) > span:nth-child(1) > span:nth-child(1) {
+	white-space: nowrap;
+}
+
+.boxcontent > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(n+1) > td:nth-child(8) > center:nth-child(1) {
+	white-space: nowrap;
+}
+
+.boxcontent > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(n+1) > td:nth-child(1) > center:nth-child(1) > a:nth-child(1) {
+	white-space: nowrap;
+}
+
 /* GLOBAL */
 
 #logo {

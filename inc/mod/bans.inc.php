@@ -47,7 +47,7 @@ if ((isset($_GET['del'])) && ($_GET['del']==1))
 	{
 	echo "<td><center>".date("d/m/Y @ H:i", $row['expires'])."</center></td>";
 	} else {
-	echo "<td><b>never</b></td>";
+	echo "<td><center><b>never</b></center></td>";
 	}
 	if ($row['boards']=="%")
 	{
