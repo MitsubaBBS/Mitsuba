@@ -127,7 +127,19 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 					$allow_replies = 1;
 					$file_replies = 1;
 					$links = "";
-					$extensions = $mitsuba->admin->ui->parseList($_POST['ext'], $_POST['ext_all']);
+					if (empty($_POST['ext']))
+					{
+						$ext = "";
+					} else {
+						$ext = $_POST['ext'];
+					}
+					if (empty($_POST['ext_all']))
+					{
+						$ext_all = "";
+					} else {
+						$ext_all = $_POST['ext_all'];
+					}
+					$extensions = $mitsuba->admin->ui->parseList($ext, $ext_all);
 					break;
 				case "textboard":
 					$spoilers = 0;
@@ -148,6 +160,18 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 					$nofile = 0;
 					$catalog = 0;
 					$links = "";
+					if (empty($_POST['ext']))
+					{
+						$ext = "";
+					} else {
+						$ext = $_POST['ext'];
+					}
+					if (empty($_POST['ext_all']))
+					{
+						$ext_all = "";
+					} else {
+						$ext_all = $_POST['ext_all'];
+					}
 					$extensions = $mitsuba->admin->ui->parseList($_POST['ext'], $_POST['ext_all']);
 					break;
 				case "linkboard":
@@ -159,7 +183,19 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 					$catalog = 0;
 					$file_replies = 1;
 					$extensions = "";
-					$links = $mitsuba->admin->ui->parseList($_POST['links'], $_POST['l_all']);
+					if (empty($_POST['links']))
+					{
+						$link = "";
+					} else {
+						$link = $_POST['links'];
+					}
+					if (empty($_POST['l_all']))
+					{
+						$l_all = "";
+					} else {
+						$l_all = $_POST['l_all'];
+					}
+					$links = $mitsuba->admin->ui->parseList($link, $l_all);
 					break;
 				case "overboard":
 					$noname = 0;
@@ -184,7 +220,19 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 					$file_replies = 0;
 					$extensions = "";
 					$links = "";
-					$boards = $mitsuba->admin->ui->parseList($_POST['boards'], $_POST['all']);
+					if (empty($_POST['boards']))
+					{
+						$boards_l = "";
+					} else {
+						$boards_l = $_POST['boards'];
+					}
+					if (empty($_POST['all']))
+					{
+						$b_all = "";
+					} else {
+						$b_all = $_POST['all'];
+					}
+					$boards = $mitsuba->admin->ui->parseList($boards_l, $b_all);
 					break;
 				case "archive":
 					die("Archive not supported yet");

@@ -143,7 +143,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 						$file_replies = 1;
 						$extensions = "";
 						$links = "";
-						break
+						break;
 					case "fileboard":
 						$pages = 0;
 						$embeds = 0;

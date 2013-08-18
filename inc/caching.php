@@ -677,7 +677,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			$postform .= '<tr class="rules">
 				<td colspan="2">
 				<ul class="rules">
-				<li>'.$lang['img/supported_types'].'</li>
+				<li>'.$lang['img/supported_types'].$boarddata['extensions'].'</li>
 				<li>'.sprintf($lang['img/max_filesize'], $boarddata['filesize']).'</li>
 				<li>'.$lang['img/thumbnail'].'</li>
 				</ul>
