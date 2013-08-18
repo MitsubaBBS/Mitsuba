@@ -90,13 +90,7 @@ class Common {
 
 	function getBoardData($short)
 	{
-		$result = $this->conn->query("SELECT * FROM boards WHERE short='".$this->conn->real_escape_string($short)."'");
-		if ($result->num_rows == 1)
-		{
-			return $result->fetch_assoc();
-		} else {
-			return 0; //board not found
-		}
+		return $this->isBoard($short); //yeah, yeah, I know...
 	}
 
 	function isBoard($short)
@@ -104,9 +98,9 @@ class Common {
 		$result = $this->conn->query("SELECT * FROM boards WHERE short='".$this->conn->real_escape_string($short)."'");
 		if ($result->num_rows == 1)
 		{
-			return 1;
+			return $result->fetch_assoc();
 		} else {
-			return 0;
+			return false;
 		}
 	}
 
@@ -793,7 +787,17 @@ while ($row = $styles->fetch_assoc())
 			return -16;
 		}
 		$bdata = $this->getBoardData($board);
-		$threads = $this->conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' AND deleted=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".(($bdata['pages']+2)*10).", 2000");
+		$toremove = 9001;
+		if ($bdata['type'] == "fileboard")
+		{
+			$toremove = $bdata['files']+1;
+		} elseif (($bdata['type'] == "imageboard") || ($bdata['type'] == "textboard"))
+		{
+			$toremove = ($bdata['pages']+2)*10;
+		} else {
+			return 0;
+		}
+		$threads = $this->conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' AND deleted=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".$toremove.", 2000");
 		while ($row = $threads->fetch_assoc())
 		{
 			$files = $this->conn->query("SELECT * FROM posts WHERE filename != '' AND resto=".$row['id']." AND board='".$board."'");

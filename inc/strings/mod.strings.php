@@ -100,12 +100,16 @@ $lang['mod/board_catalog'] = "Enable catalog";
 $lang['mod/board_captcha'] = "Enable captcha";
 $lang['mod/board_all_links'] = "Allow to post any link";
 $lang['mod/board_type'] = "Board type";
+$lang['mod/board_files'] = "Maximum files";
 $lang['mod/board_nofile'] = "Allow 'No file' for OPs";
+$lang['mod/board_allow_replies'] = "Allow replies";
+$lang['mod/board_allow_file_replies'] = "Allow file replies";
+$lang['mod/extensions'] = "Extensions";
 
 $lang['mod/overboard'] = "Overboard";
 $lang['mod/imageboard'] = "Imageboard";
 $lang['mod/fileboard'] = "File listing board";
-$lang['mod/fileboard'] = "Link listing board";
+$lang['mod/linkboard'] = "Link listing board";
 $lang['mod/textboard'] = "Textboard";
 $lang['mod/archive'] = "Archive";
 

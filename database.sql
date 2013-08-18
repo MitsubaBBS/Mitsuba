@@ -88,7 +88,10 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `catalog` int(1) NOT NULL,
   `captcha` int(1) NOT NULL,
   `overboard_boards` text NOT NULL,
-  `alllinks` int(1) NOT NULL,
+  `allow_replies` int(1) NOT NULL,
+  `file_replies` int(1) NOT NULL,
+  `links` text NOT NULL,
+  `files` int(4) NOT NULL,
   PRIMARY KEY (`short`)
 );
 
@@ -139,6 +142,13 @@ CREATE TABLE IF NOT EXISTS `links` (
   `title` varchar(40) NOT NULL,
   `short` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `link` (
+  `name` varchar(50) NOT NULL,
+  `regex` varchar(200) NOT NULL,
+  `parser` varchar(200) NOT NULL,
+  UNIQUE KEY `name` (`name`)
 );
 
 CREATE TABLE IF NOT EXISTS `log` (

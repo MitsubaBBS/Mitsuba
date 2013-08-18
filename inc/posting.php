@@ -54,6 +54,10 @@ class Posting {
 					{
 							
 						$filename = $postdata['filename'];
+						if (substr($filename, 0, 4) == "url:")
+						{
+							return 1;
+						}
 						if (substr($filename, 0, 8) == "spoiler:")
 						{
 							$filename = substr($filename, 8);
@@ -97,6 +101,10 @@ class Posting {
 						while ($file = $files->fetch_assoc())
 						{
 							$filename = $file['filename'];
+							if (substr($filename, 0, 4) == "url:")
+							{
+								$filename = "deleted";
+							}
 							if (substr($filename, 0, 8) == "spoiler:")
 							{
 								$filename = substr($filename, 8);
@@ -154,6 +162,10 @@ class Posting {
 						{
 							
 							$filename = $postdata['filename'];
+							if (substr($filename, 0, 4) == "url:")
+							{
+								$filename = "deleted";
+							}
 							if (substr($filename, 0, 8) == "spoiler:")
 							{
 								$filename = substr($filename, 8);
@@ -267,6 +279,10 @@ class Posting {
 			$fname2 = "embed";
 			$embed_img = 1;
 		}
+		if (substr($filename, 0, 4) == "url:")
+		{
+			$fname2 = "url";
+		}
 		$thread = "";
 		$tinfo = "";
 		$replies = 0;
@@ -374,7 +390,7 @@ class Posting {
 		$isize = "";
 		$osize = 0;
 		$fsize = "";
-		if ((!empty($fname2)) && ($fname2 != "embed"))
+		if ((!empty($fname2)) && ($fname2 != "embed") && ($fname2 != "url"))
 		{
 			if (substr($filename, 0, 8) == "spoiler:")
 			{
@@ -426,7 +442,10 @@ class Posting {
 			}
 		}
 		$email = $old_email;
-		
+		if (($bdata['type']=="linkboard") || ($bdata['type']=="fileboard"))
+		{
+			$email = "nonoko";
+		}
 		if ($redirect == 1)
 		{
 			if (($email == "nonoko") || ($email == "nonokosage"))

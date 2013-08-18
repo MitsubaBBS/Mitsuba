@@ -48,7 +48,7 @@ class UI {
 		?>
 		<fieldset id="boardSelect">
 		<?php
-		if (($boards != "%") && ($boards != "")) { $boards = substr($boards, 0, strlen($boards) - 1); }
+		if (($boards != "%") && ($boards != "")) { $boards = explode(",", $boards); }
 		$result = $this->conn->query("SELECT * FROM boards ORDER BY short ASC;");
 		while ($row = $result->fetch_assoc())
 		{
@@ -66,6 +66,107 @@ class UI {
 		?>
 		</fieldset>
 		<?php
+	}
+
+	function getLinkList($links = "")
+	{
+		global $lang;
+		if ($links == "%")
+		{
+		?>
+		<?php echo $lang['mod/board_links']; ?>: <input type="checkbox" name="l_all" id="l_all" onClick="$('#linkSelect').toggle()" value=1 checked/> <?php echo $lang['mod/all']; ?>
+		<?php
+		} else {
+		?>
+		<?php echo $lang['mod/board_links']; ?>: <input type="checkbox" name="l_all" id="l_all" onClick="$('#linkSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?>
+		<?php
+		}
+		?>
+		<br/>
+		<fieldset id="linkSelect">
+		<?php
+		if (($links != "%") && ($links != "")) { $links = explode(",", $links); }
+		$result = $this->conn->query("SELECT * FROM link ORDER BY name ASC;");
+		while ($row = $result->fetch_assoc())
+		{
+		$checked = "";
+		if (($links !== "%") && ($links !== ""))
+		{
+			if (in_array($links, $row['name']))
+			{
+				$checked = " checked ";
+			}
+		}
+		echo "<label for='links'>".$row['name']."</label>";
+		echo "<input type='checkbox' onClick='document.getElementById(\"all\").checked=false;' name='links[]' value='".$row['name']."'".$checked."/>";
+		}
+		?>
+		</fieldset>
+		<?php
+	}
+
+	function getExtensionList($extensions = "")
+	{
+		global $lang;
+		if ($extensions == "%")
+		{
+		?>
+		<?php echo $lang['mod/extensions']; ?>: <input type="checkbox" name="ext_all" id="ext_all" onClick="$('#extSelect').toggle()" value=1 checked/> <?php echo $lang['mod/all']; ?><br/>
+		<?php
+		} else {
+		?>
+		<?php echo $lang['mod/extensions']; ?>: <input type="checkbox" name="ext_all" id="ext_all" onClick="$('#extSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
+		<?php
+		}
+		?>
+		<fieldset id="extSelect">
+		<?php
+		if (($extensions != "%") && ($extensions != "")) { $extensions = explode(",", $extensions); }
+		$result = $this->conn->query("SELECT DISTINCT ext FROM extensions ORDER BY ext ASC;");
+		while ($row = $result->fetch_assoc())
+		{
+		$checked = "";
+		if (($extensions !== "%") && ($extensions !== ""))
+		{
+			if (in_array($extensions, $row['ext']))
+			{
+				$checked = " checked ";
+			}
+		}
+		if (empty($extensions))
+		{
+			if (($row['ext']=="jpg") || ($row['ext']=="gif") || ($row['ext']=="png"))
+			{
+				$checked = " checked ";
+			}
+		}
+		echo "<label for='ext'>".$row['ext']."</label>";
+		echo "<input type='checkbox' onClick='document.getElementById(\"ext_all\").checked=false;' name='ext[]' value='".$row['ext']."'".$checked."/>";
+		}
+		?>
+		</fieldset>
+		<?php
+	}
+
+	function parseList($input, $all = 0)
+	{
+		$out = "";
+		if ((!empty($all)) && ($all==1))
+		{
+			$out = "%";
+		} else {
+			if (!empty($input))
+			{
+				foreach ($input as $s)
+				{
+					$s .= $s.",";
+				}
+			} else {
+				$out = "%";
+			}
+		}
+		if ($out != "%") { $out = substr($out, 0, strlen($out) - 1); }
+		return $out;
 	}
 
 	function startSection($title)

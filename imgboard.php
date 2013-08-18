@@ -102,6 +102,14 @@ if (!empty($_POST['mode']))
 			
 			$md5 = "";
 			$bdata = $mitsuba->common->getBoardData($_POST['board']);
+			if ($bdata['type']=="overboard")
+			{
+				echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
+			}
+			if (($bdata['allow_replies']==0) && ($_POST['resto']!=0))
+			{
+				echo "<h1>".$lang['img/replies_not_allowed']."</h1></body></html>"; exit;
+			}
 			if (($bdata['hidden'] == 1) && ($mod_type < 1))
 			{
 				echo "<h1>".$lang['img/board_no_exists']."</h1></body></html>"; exit;
@@ -185,10 +193,29 @@ if (!empty($_POST['mode']))
 				$mitsuba->board->checkPostDate($bdata, $return_url);
 			}
 			$mime = "";
-			if ((!empty($_POST['embed'])) && ($nofile == 0))
+			$url = "";
+			$url_title = "";
+			if (($bdata['type']=="linkboard"))
 			{
-				$filename = $mitsuba->checkEmbed($bdata, $_POST['embed'], $return_url);
-			} elseif ($nofile == 0) {
+				if (!empty($_POST['url']))
+				{
+					//TODO: Links
+				} else {
+					echo "<h1>".$lang['img/no_link']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
+					exit;
+				}
+			} elseif ((!empty($_POST['embed'])) && ($nofile == 0) && ($bdata['embed']==1))
+			{
+				if (($bdata['file_replies']==0) && ($_POST['resto']!=0))
+				{
+					echo "<h1>".$lang['img/file_replies_not_allowed']."</h1></body></html>"; exit;
+				}
+				$filename = $mitsuba->checkEmbed($bdata, $_POST['embeds'], $return_url);
+			} elseif (($nofile == 0) && ($bdata['type']!="textboard")) {
+				if (($bdata['file_replies']==0) && ($_POST['resto']!=0))
+				{
+					echo "<h1>".$lang['img/file_replies_not_allowed']."</h1></body></html>"; exit;
+				}
 				if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 				{
 					echo "<h1>".$lang['img/file_too_big']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></body></html>";
@@ -310,6 +337,11 @@ if (!empty($_POST['mode']))
 			if ($mod == 1)
 			{
 				$redirect = 1;
+			}
+			if (!empty($url))
+			{
+				$filename = "url:".$conn->real_escape_string($url);
+				$fname = $conn->real_escape_string($url_title);
 			}
 			$is = $mitsuba->posting->addPost($_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $mod_type, $capcode, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_color, $redirect);
 			if ($is == -16)

@@ -73,4 +73,8 @@ $lang['img/wrong_captcha'] = "Wrong CAPTCHA entered";
 $lang['img/captcha'] = "CAPTCHA";
 $lang['img/click_here'] = "Click here";
 $lang['img/new_captcha'] = "New CAPTCHA";
+$lang['img/nolink'] = "You have to provide an URL";
+$lang['img/replies_not_allowed'] = "Replies are not allowed in this board";
+$lang['img/file_replies_not_allowed'] = "File replies are not allowed in this board";
+$lang['img/url'] = "URL";
 ?>

@@ -14,9 +14,6 @@ $mitsuba->admin->reqPermission(3);
 <?php echo $lang['mod/board_short']; ?>: <input type="text" name="des" maxlength=100 /><br />
 <?php echo $lang['mod/board_msg']; ?>: <br /><textarea cols=70 rows=7 name="msg"></textarea><br />
 <?php echo $lang['mod/board_type']; ?>: <select name="type">
-<option value=""><?php ?></option>
-switch ($row['type'])
-{
 <option value="imageboard"><?php echo $lang['mod/imageboard']; ?></option>
 <option value="textboard"><?php echo $lang['mod/textboard']; ?></option>
 <option value="overboard"><?php echo $lang['mod/overboard']; ?></option>
@@ -24,29 +21,70 @@ switch ($row['type'])
 <option value="linkboard"><?php echo $lang['mod/linkboard']; ?></option>
 <option value="archive"><?php echo $lang['mod/archive']; ?></option>
 </select>
-<?php echo $lang['mod/board_limit']; ?>: <input type="text" name="limit" maxlength=9 value="0" /><br />
-<?php echo $lang['mod/board_pages']; ?>: <input type="text" name="pages" maxlength=4 value="15" /><br />
-<?php echo $lang['mod/board_time_between_posts']; ?>: <input type="text" name="time_between_posts" maxlength=20 value="20" /><br />
-<?php echo $lang['mod/board_time_between_threads']; ?>: <input type="text" name="time_between_threads" maxlength=20 value="60" /><br />
-<?php echo $lang['mod/board_time_to_delete']; ?>: <input type="text" name="time_to_delete" maxlength=20 value="120" /><br />
-<?php echo $lang['mod/board_filesize']; ?>: <input type="text" name="filesize" maxlength=20 value="2097152" /><br />
-<?php echo $lang['mod/board_maxchars']; ?>: <input type="text" name="maxchars" maxlength=8 value="2000" /><br />
-<?php echo $lang['mod/board_default_name']; ?>: <input type="text" name="anonymous" maxlength=60 value="<?php echo $lang['img/anonymous']; ?>" /><br />
+<span class="opt t-ib t-tb t-fb t-lb"><?php echo $lang['mod/board_limit']; ?>: <input type="text" name="limit" maxlength=9 value="0" /><br /></span>
+<span class="opt t-ib t-tb t-fb t-lb"><?php echo $lang['mod/board_time_between_posts']; ?>: <input type="text" name="time_between_posts" maxlength=20 value="20" /><br /></span>
+<span class="opt t-ib t-tb t-fb t-lb"><?php echo $lang['mod/board_time_between_threads']; ?>: <input type="text" name="time_between_threads" maxlength=20 value="60" /><br /></span>
+<span class="opt t-ib t-tb t-fb t-lb"><?php echo $lang['mod/board_time_to_delete']; ?>: <input type="text" name="time_to_delete" maxlength=20 value="120" /><br /></span>
+<span class="opt t-ib t-tb t-fb t-lb"><?php echo $lang['mod/board_maxchars']; ?>: <input type="text" name="maxchars" maxlength=8 value="2000" /><br /></span>
+<span class="opt t-ib t-tb t-fb t-lb"><?php echo $lang['mod/board_default_name']; ?>: <input type="text" name="anonymous" maxlength=60 value="<?php echo $lang['img/anonymous']; ?>" /><br /></span>
+<span class="opt t-ib t-fb"><?php echo $lang['mod/board_filesize']; ?>: <input type="text" name="filesize" maxlength=20 value="2097152" /><br /></span>
+<span class="opt t-ib t-tb t-ob"><?php echo $lang['mod/board_pages']; ?>: <input type="text" name="pages" maxlength=4 value="15" /><br /></span>
+<span class="opt t-fb"><?php echo $lang['mod/board_files']; ?>: <input type="text" name="files" maxlength=4 value="15" /><br /></span>
 <?php echo $lang['mod/board_options']; ?>: 
-<br /><input type="checkbox" name="spoilers" value="1" /><?php echo $lang['mod/board_spoilers']; ?>
-<br /><input type="checkbox" name="noname" value="1" /><?php echo $lang['mod/board_no_name']; ?>
-<br /><input type="checkbox" name="ids" value="1" /><?php echo $lang['mod/board_ids']; ?>
-<br /><input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?>
-<br /><input type="checkbox" name="bbcode" value="1" checked/><?php echo $lang['mod/board_bbcode']; ?>
-<br /><input type="checkbox" name="hidden" value="1"/><?php echo $lang['mod/board_hidden']; ?>
-<br /><input type="checkbox" name="unlisted" value="1"/><?php echo $lang['mod/board_unlisted']; ?>
-<br /><input type="checkbox" name="nodup" value="1"/><?php echo $lang['mod/board_nodup']; ?>
-<br /><input type="checkbox" name="nofile" value="1"/><?php echo $lang['mod/board_nofile']; ?>
-<br /><input type="checkbox" name="catalog" value="1"/><?php echo $lang['mod/board_catalog']; ?>
-<br /><input type="checkbox" name="captcha" value="1"/><?php echo $lang['mod/board_captcha']; ?>
+<span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="noname" value="1" /><?php echo $lang['mod/board_no_name']; ?></span>
+<span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="ids" value="1" /><?php echo $lang['mod/board_ids']; ?></span>
+<span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="bbcode" value="1" checked/><?php echo $lang['mod/board_bbcode']; ?></span>
+<span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="hidden" value="1"/><?php echo $lang['mod/board_hidden']; ?></span>
+<span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="unlisted" value="1"/><?php echo $lang['mod/board_unlisted']; ?></span>
+<span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="captcha" value="1"/><?php echo $lang['mod/board_captcha']; ?></span>
+<span class="opt t-ib t-fb t-lb"><br /><input type="checkbox" name="spoilers" value="1" /><?php echo $lang['mod/board_spoilers']; ?></span>
+<span class="opt t-ib t-fb t-lb"><br /><input type="checkbox" name="nodup" value="1"/><?php echo $lang['mod/board_nodup']; ?></span>
+<span class="opt t-ib"><br /><input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?></span>
+<span class="opt t-ib"><br /><input type="checkbox" name="nofile" value="1"/><?php echo $lang['mod/board_nofile']; ?></span>
+<span class="opt t-ib"><br /><input type="checkbox" name="catalog" value="1"/><?php echo $lang['mod/board_catalog']; ?></span>
+<span class="opt t-fb t-lb"><br /><input type="checkbox" name="replies" value="1" checked/><?php echo $lang['mod/board_allow_replies']; ?></span>
+<span class="opt t-fb"><br /><input type="checkbox" name="file_replies" value="1"/><?php echo $lang['mod/board_allow_file_replies']; ?></span>
+<br />
+<span class="opt t-ib t-fb"><?php $mitsuba->admin->ui->getExtensionList(); ?></span>
+<span class="opt t-lb"><?php $mitsuba->admin->ui->getLinkList(); ?></span>
+<span class="opt t-ob"><?php $mitsuba->admin->ui->getBoardList(); ?></span>
 <br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>
+<script type="text/javascript">
+$(".opt").hide();
+$(".t-ib").show();
+$("select[name='type']").change(function () {
+	var value = $(this).val();
+	switch (value)
+	{
+		case "imageboard":
+			$(".opt").hide();
+			$(".t-ib").show();
+			break;
+		case "textboard":
+			$(".opt").hide();
+			$(".t-tb").show();
+			break;
+		case "overboard":
+			$(".opt").hide();
+			$(".t-ob").show();
+			break;
+		case "fileboard":
+			$(".opt").hide();
+			$(".t-fb").show();
+			break;
+		case "linkboard":
+			$(".opt").hide();
+			$(".t-lb").show();
+			break;
+		case "archive":
+			$(".opt").hide();
+			$(".t-ar").show();
+			break;
+	}
+});
+</script>
 <?php $mitsuba->admin->ui->endSection(); ?>
 <br />
 <?php $mitsuba->admin->ui->startSection($lang['mod/manage_boards']); ?>

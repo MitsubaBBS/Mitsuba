@@ -530,7 +530,7 @@ class Caching
 			}
 		}
 
-		if (($locked == 0) && ($overboard == 0))
+		if (($locked == 0) && ($overboard == 0) && ($boarddata['allow_replies']==1))
 		{
 			if ($threadno != 0)
 			{
@@ -604,32 +604,42 @@ class Caching
 					</td>
 					</tr>';
 			}
-			$postform .= '<tr>
-				<td>'.$lang['img/file'].'</td>
-				<td id="embed"><input id="postFile" name="upfile" type="file" />';
-			$postform .= '</td>
-				</tr>';
-			$fspecials = "";
-			if ($boarddata['spoilers'] == 1)
-			{
-				$fspecials .= '<label><input id="spoiler" type="checkbox" name="spoiler" value="1">'.$lang['img/spoiler'].'</label>';
-			}
-			if ($boarddata['nofile'] == 1)
-			{
-				$fspecials .= '<label><input id="nofile" type="checkbox" name="nofile" value="1">'.$lang['img/mod_nofile'].'</label>';
-			}
-			if (!empty($fspecials))
+			if ((($boarddata['type']=="imageboard") || ($boarddata['type']=="fileboard")) && ($boarddata['file_replies']==1))
 			{
 				$postform .= '<tr>
-					<td></td>
-					<td>'.$fspecials.'</td>
+					<td>'.$lang['img/file'].'</td>
+					<td id="embed"><input id="postFile" name="upfile" type="file" />';
+				$postform .= '</td>
 					</tr>';
+				$fspecials = "";
+				if ($boarddata['spoilers'] == 1)
+				{
+					$fspecials .= '<label><input id="spoiler" type="checkbox" name="spoiler" value="1">'.$lang['img/spoiler'].'</label>';
+				}
+				if ($boarddata['nofile'] == 1)
+				{
+					$fspecials .= '<label><input id="nofile" type="checkbox" name="nofile" value="1">'.$lang['img/mod_nofile'].'</label>';
+				}
+				if (!empty($fspecials))
+				{
+					$postform .= '<tr>
+						<td></td>
+						<td>'.$fspecials.'</td>
+						</tr>';
+				}
+				if ($boarddata['embeds'] == 1)
+				{
+					$postform .= '<tr>
+						<td>'.$lang['img/embed'].'</td>
+						<td><input type="text" name="embed"/></td>
+						</tr>';
+				}
 			}
-			if ($boarddata['embeds'] == 1)
+			if ($boarddata['type']=="linkboard")
 			{
 				$postform .= '<tr>
-					<td>'.$lang['img/embed'].'</td>
-					<td><input type="text" name="embed"/></td>
+					<td>'.$lang['img/url'].'</td>
+					<td><input type="text" name="url"/></td>
 					</tr>';
 			}
 			$postform .= '<tr>
@@ -743,13 +753,189 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			} else {
 				$result = $this->conn->query("SELECT * FROM posts WHERE resto=0 AND board='".$board."' AND deleted=0 ORDER BY sticky DESC, lastbumped DESC LIMIT ".($pg*10).",10");
 			}
+			if ($threadno == 0)
+			{
+				if ($boarddata['type']=="fileboard")
+				{
+					$file .= '<table class="fileListing">
+							<thead>
+							<tr>
+								<td class="postblock">
+									No.
+								</td>
+								<td class="postblock">
+									Name
+								</td>
+								<td class="postblock">
+									File
+								</td>
+								<td class="postblock">
+									Size
+								</td>
+								<td class="postblock">
+									Subject
+								</td>
+								<td class="postblock">
+									Date
+								</td>
+								<td class="postblock">
+								</td>
+							</tr>
+							</thead>
+							<tbody>';
+				} elseif ($boarddata['type']=="linkboard")
+				{
+					$file .= '<table class="linkListing">
+							<thead>
+							<tr>
+								<td class="postblock">
+									No.
+								</td>
+								<td class="postblock">
+									Name
+								</td>
+								<td class="postblock">
+									Link
+								</td>
+								<td class="postblock">
+									Subject
+								</td>
+								<td class="postblock">
+									Date
+								</td>
+								<td class="postblock">
+								</td>
+							</tr>
+							</thead>
+							<tbody>';
+
+				}
+			}
+
 			while ($row = $result->fetch_assoc())
 			{
-				if ($overboard == 1)
+				if (($threadno == 0) && (($boarddata['type']=="linkboard") || ($boarddata['type']=="fileboard")))
 				{
-					$file .= "<h2><a href='../".$row['board']."/'>/".$row['board']."/</a></h2>";
+					$file .= '<tr>';
+					$file .= "<td>".$row['id']."</td>";
+					$trip = "";
+					if (!empty($row['trip']))
+					{
+						$trip = " !".$row['trip']."";
+					}
+					if (!empty($row['strip']))
+					{
+						$trip .= " !!".$row['strip']."";
+					}
+					if ((!empty($row['trip'])) || (!empty($row['strip'])))
+					{
+						$trip = "<span class='postertrip'>".$trip."</span>";
+					}
+					$poster_id = "";
+					if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && ($row['capcode']<2))
+					{
+						$poster_id = '<span class="posteruid">(ID: '.$row['poster_id'].')</span>';
+					}
+					$c_image = "";
+					if ($row['capcode'] == 2)
+					{
+						if ($return == 1)
+						{
+							$c_image = ' <img src="./img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+						} elseif ($threadno != 0)
+						{
+							$c_image = ' <img src="../../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+						} else {
+							$c_image = ' <img src="../img/mod.png" alt="Moderator" style="margin-bottom: -3px;" />';
+						}
+					} elseif ($row['capcode'] == 3)
+					{
+						
+						if ($return == 1)
+						{
+							$c_image = ' <img src="./img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+						} elseif ($threadno != 0)
+						{
+							$c_image = ' <img src="../../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+						} else {
+							$c_image = ' <img src="../img/admin.png" alt="Administrator" style="margin-bottom: -3px;" />';
+						}
+					}
+					$email_a = "";
+					$email_b = "";
+					if (!empty($row['email'])) {
+						$email_a = '<a href="mailto:'.$row['email'].'" class="useremail">';
+						$email_b = '</a>';
+					}
+					$file .= "<td>";
+					if ($row['capcode'] == 2)
+					{
+						$file .= $email_a.'<span class="name"><span style="color:#800080">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#800080">## Mod</span>'.$c_image.'</span> '.$poster_id;
+					} elseif ($row['capcode'] == 3)
+					{
+						$file .= $email_a.'<span class="name"><span style="color:#FF0000">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF0000">## Admin</span>'.$c_image.'</span> '.$poster_id;
+					} elseif ($row['capcode'] == 4)
+					{
+						$file .= $email_a.'<span class="name"><span style="color:#FF00FF">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:#FF00FF">## Faggot</span>'.$c_image.'</span> '.$poster_id;
+					} elseif ($row['capcode'] == 5)
+					{
+						$file .= $email_a.'<span class="name"><span style="color:'.$row['cc_color'].'">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="color:'.$row['cc_color'].'">## '.$row['cc_text'].'</span>'.$c_image.'</span> '.$poster_id;
+					} else {
+						$file .= $email_a.'<span class="name">'.$row['name'].'</span>'.$email_b.$trip.' '.$poster_id;
+					}
+					$file .= "</td>";
+					if (empty($row['filename']))
+					{
+						if ($boarddata['type']=="linkboard")
+						{
+							$file .= '<td></td>';
+						} else {
+							$file .= '<td></td><td></td>';
+						}
+					} elseif ($row['filename']=="deleted")
+					{
+						if ($boarddata['type']=="linkboard")
+						{
+							$file .= '<td>Link deleted</td>';
+						} else {
+							$file .= '<td>File deleted</td><td></td>';
+						}
+					} else {
+						if ($boarddata['type']=="linkboard")
+						{
+							$file .= '<td>[<a href="'.substr($row['filename'], 0, 4).'">'.htmlspecialchars($row['orig_filename']).'</a>]</td>';
+						} else {
+							$file .= '<td>';
+							if ($return == 1)
+							{
+								$file .= '[<a href="./'.$board.'/src/'.$row['filename'].'" target="_blank">'.htmlspecialchars($row['orig_filename']).'</a>]';
+							} elseif ($threadno != 0)
+							{
+								$file .= '[<a href="../../'.$board.'/src/'.$row['filename'].'" target="_blank">'.htmlspecialchars($row['orig_filename']).'</a>]';
+							} else {
+								$file .= '[<a href="../'.$board.'/src/'.$row['filename'].'" target="_blank">'.htmlspecialchars($row['orig_filename']).'</a>]';
+							}
+							$file .= '</td>';
+							$file .= '<td>'.$row['filesize'].'</td>';
+						}
+					}
+					$file .= '<td><span class="subject">'.htmlspecialchars($row['subject']).'</span></td>';
+					$file .= '<td>'.date("d/m/Y(D)H:i:s", $row['date']).'</td>';
+					$file .= '<td>[<a href="../'.$row['board'].'/res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</td>';
+					$file .= '</tr>';
+					
+				} else {
+					if ($overboard == 1)
+					{
+						$file .= "<h2><a href='../".$row['board']."/'>/".$row['board']."/</a></h2>";
+					}
+					$file .= $this->getThread($row['board'], $threadno, $return, $adm_type, $parser, $boarddata, $replace_array[$row['board']], $embed_table, $row, $extensions);
 				}
-				$file .= $this->getThread($row['board'], $threadno, $return, $adm_type, $parser, $boarddata, $replace_array[$row['board']], $embed_table, $row, $extensions);
+			
+			}
+			if (($boarddata['type']=="linkboard") || ($boarddata['type']=="fileboard"))
+			{
+				$file .= '</tbody></table>';
 			}
 			$file .= "</div>";
 			if ($threadno != 0)
@@ -778,97 +964,100 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				</div>';
 			$file .= "</form>";
 			$file .= $footer_ads;
-			if (($return == 1) && ($threadno == 0))
+			if (($boarddata['type']=="imageboard") || ($boarddata['type']=="textboard") || ($boarddata['type']=="overboard"))
 			{
-				$file .= '<div class="pagelist">';
-				$file .= '<div class="prev">';
-				if ($page != 0)
+				if (($return == 1) && ($threadno == 0))
 				{
-					$file .= '<form action="?/board&b='.$board.'&p='.($page-1).'" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/previous'].'" /></form>';
-				} else {
-					$file .= '<span>'.$lang['img/previous'].'</span>';
-				}
-				$file .= ' </div>';
-				$file .= '<div class="pages">';
-				for ($i = 0; $i <= $max_pages; $i++)
-				{
-					if ($i > $all_pages)
+					$file .= '<div class="pagelist">';
+					$file .= '<div class="prev">';
+					if ($page != 0)
 					{
-						$file .= "[".$i."] ";
+						$file .= '<form action="?/board&b='.$board.'&p='.($page-1).'" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/previous'].'" /></form>';
 					} else {
-						if ($i == $page)
-						{
-							$file .= "[<strong>".$i."</strong>] ";
-						} else {
-							$file .= "[<a href='?/board&b=".$board."&p=".$i."'>".$i."</a>] ";
-						}
+						$file .= '<span>'.$lang['img/previous'].'</span>';
 					}
-				}
-				$file .= '</div>';
-				$file .= ' <div class="next">';
-				if ($page != $all_pages)
-				{
-					$file .= '<form action="?/board&b='.$board.'&p='.($page+1).'" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/next'].'" /></form>';
-				} else {
-					$file .= '<span>'.$lang['img/next'].'</span>';
-				}
-				$file .= '</div>';
-				$file .= '</div>';
-			} elseif ($threadno == 0)
-			{
-				$file .= '<div class="pagelist">';
-				$file .= '<div class="prev">';
-				if ($pg != 0)
-				{
-					if ($pg != 1)
+					$file .= ' </div>';
+					$file .= '<div class="pages">';
+					for ($i = 0; $i <= $max_pages; $i++)
 					{
-						$file .= '<form action="./'.($pg-1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/previous'].'" /></form>';
-					} else {
-						$file .= '<form action="./index.html" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/previous'].'" /></form>';
-					}
-				} else {
-					$file .= '<span>'.$lang['img/previous'].'</span>';
-				}
-				$file .= ' </div>';
-				$file .= '<div class="pages">';
-				for ($i = 0; $i <= $max_pages; $i++)
-				{
-					if ($i == $pg)
-					{
-						if ($i == 0)
-						{
-							$file .= "[<a href='./index.html'><strong>".$i."</strong></a>] ";	
-						} else {
-							$file .= "[<a href='./".$i.".html'><strong>".$i."</strong></a>] ";	
-						}
-					} else {
-						if ($i > $pages)
+						if ($i > $all_pages)
 						{
 							$file .= "[".$i."] ";
 						} else {
-							if ($i != 0)
+							if ($i == $page)
 							{
-								$file .= "[<a href='./".$i.".html'>".$i."</a>] ";
+								$file .= "[<strong>".$i."</strong>] ";
 							} else {
-								$file .= "[<a href='./index.html'>".$i."</a>] ";
+								$file .= "[<a href='?/board&b=".$board."&p=".$i."'>".$i."</a>] ";
 							}
 						}
 					}
-				}
-				$file .= '</div>';
-				$file .= ' <div class="next">';
-				if ($pg != $all_pages)
+					$file .= '</div>';
+					$file .= ' <div class="next">';
+					if ($page != $all_pages)
+					{
+						$file .= '<form action="?/board&b='.$board.'&p='.($page+1).'" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/next'].'" /></form>';
+					} else {
+						$file .= '<span>'.$lang['img/next'].'</span>';
+					}
+					$file .= '</div>';
+					$file .= '</div>';
+				} elseif ($threadno == 0)
 				{
-					$file .= '<form action="./'.($pg+1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/next'].'" /></form>';
-				} else {
-					$file .= '<span>'.$lang['img/next'].'</span>';
+					$file .= '<div class="pagelist">';
+					$file .= '<div class="prev">';
+					if ($pg != 0)
+					{
+						if ($pg != 1)
+						{
+							$file .= '<form action="./'.($pg-1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/previous'].'" /></form>';
+						} else {
+							$file .= '<form action="./index.html" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/previous'].'" /></form>';
+						}
+					} else {
+						$file .= '<span>'.$lang['img/previous'].'</span>';
+					}
+					$file .= ' </div>';
+					$file .= '<div class="pages">';
+					for ($i = 0; $i <= $max_pages; $i++)
+					{
+						if ($i == $pg)
+						{
+							if ($i == 0)
+							{
+								$file .= "[<a href='./index.html'><strong>".$i."</strong></a>] ";	
+							} else {
+								$file .= "[<a href='./".$i.".html'><strong>".$i."</strong></a>] ";	
+							}
+						} else {
+							if ($i > $pages)
+							{
+								$file .= "[".$i."] ";
+							} else {
+								if ($i != 0)
+								{
+									$file .= "[<a href='./".$i.".html'>".$i."</a>] ";
+								} else {
+									$file .= "[<a href='./index.html'>".$i."</a>] ";
+								}
+							}
+						}
+					}
+					$file .= '</div>';
+					$file .= ' <div class="next">';
+					if ($pg != $all_pages)
+					{
+						$file .= '<form action="./'.($pg+1).'.html" onsubmit="location=this.action; return false;"><input type="submit" value="'.$lang['img/next'].'" /></form>';
+					} else {
+						$file .= '<span>'.$lang['img/next'].'</span>';
+					}
+					$file .= '</div>';
+					if ($boarddata['catalog']==1)
+					{
+						$file .= '<div class="pages cataloglink"><a href="./catalog.html">Catalog</a></div>';
+					}
+					$file .= '</div>';
 				}
-				$file .= '</div>';
-				if ($boarddata['catalog']==1)
-				{
-					$file .= '<div class="pages cataloglink"><a href="./catalog.html">Catalog</a></div>';
-				}
-				$file .= '</div>';
 			}
 			$file .= '<div style="text-align: center; font-size: x-small!important; padding-bottom: 4px; padding-top: 10px; color: #333;"><span class="absBotDisclaimer">- <a href="http://github.com/MitsubaBBS/Mitsuba" target="_top" rel="nofollow">mitsuba</a> -</span></div>';
 			$file .= '<div id="bottom"></div>';
@@ -989,13 +1178,12 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 	function forceGetThread($board, $threadno)
 	{
 		global $lang;
-		if ($this->mitsuba->common->isBoard($board))
+		if ($boarddata = $this->mitsuba->common->isBoard($board))
 		{
 			$result = $this->conn->query("SELECT * FROM posts WHERE id=".$threadno." AND board='".$board."' AND deleted=0");
 			if ($result->num_rows == 1)
 			{
 				$trow = $result->fetch_assoc();
-				$boarddata = $this->mitsuba->common->getBoardData($board);
 				$wfresult = $this->conn->query("SELECT * FROM wordfilter WHERE active=1");
 				$replace_array = array();
 				while ($row = $wfresult->fetch_assoc())
@@ -1838,7 +2026,13 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			$filenum = 0;
 			foreach($files as $fileinfo)
 			{
-				if ($fileinfo['filename'] == "deleted")
+				if (substr($fileinfo['filename'], 0, 4) == "url:")
+				{
+					$file .= '<div class="file" id="f'.$row['id']."_".$filenum.'">';
+					$file .= '<div class="fileInfo">';
+					$file .= '<span class="fileText" id="fT'.$row['id']."_".$filenum.'">File: <a href="'.substr($fileinfo['filename'],4).'">'.htmlspecialchars($fileinfo['orig_filename']).'</a></span>';
+					$file .= '</div>';
+				} elseif ($fileinfo['filename'] == "deleted")
 				{
 					$file .= '<div class="file" id="f'.$row['id']."_".$filenum.'">';
 					$file .= '<div class="fileInfo">';
