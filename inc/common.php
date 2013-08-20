@@ -118,7 +118,6 @@ class Common {
 			foreach($img as $frame)
 			{
 				$frame->thumbnailImage($width, $height, true);
-				$frame->setImagePage($width, $height, 0, 0);
 			}
 			$img->writeImages($thumb_dir.$filename, true);
 			$ig = $img->getImageGeometry();

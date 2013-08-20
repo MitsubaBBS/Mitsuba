@@ -20,7 +20,7 @@ function strStartsWith(str, prefix) {
 	return str.indexOf(prefix) === 0;
 }
 
-
+addStylechanger();
 $(document).ready(function () {
 	fillFields("body");
 	if ($(".postingMode").length == 0) //outside thread
@@ -59,7 +59,6 @@ $(document).ready(function () {
 
 	}
 	
-	addStylechanger();
 	if (localStorage.getItem("o_backlinks") == 1)
 	{
 		addBacklinks("body");
@@ -268,7 +267,7 @@ function updateThread(isAuto)
 		var html = xhr.responseText;
 		var nodes = $.parseHTML( html );
 		var newposts = 0;
-		$(".post").addClass("postdeleted");
+		$(".post:not(#quote-preview)").addClass("postdeleted");
 		$(".postContainer", nodes).each(function () {
 			var pid = $(this).attr("id").substr(2);
 			if (pid > lastRead)
@@ -281,6 +280,7 @@ function updateThread(isAuto)
 			}
 			$("#p"+pid).removeClass("postdeleted");
 		});
+		addQuotelinks();
 		if (localStorage.getItem("o_backlinks") == 1)
 		{
 			addBacklinks(tid);
@@ -358,6 +358,7 @@ function addThreadUpdater()
 
 function addQuotelinks()
 {
+	$(".quotePost").unbind("click");
 	$(".quotePost").click(function () {
 		try {
 			event.preventDefault();
@@ -449,8 +450,10 @@ function addPostpreview(parent)
 function addBacklinks(parent)
 {
 	$(parent).find(".postMessage").each(function () {
-		
-		$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(1)+'"></div>');
+		if ($("#bl"+$(this).attr("id").substr(1)).length == 0)
+		{
+			$(this).append('<div class="backlink" id="bl'+$(this).attr("id").substr(1)+'"></div>');
+		}
 		
 	});
 	$(parent).find(".quotelink:not(cross)").each(function () {
