@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && ($mitsuba->common->isBoard($_GET['b'])) && (is_numeric($_GET['t'])))
+if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && ($bdata = $mitsuba->common->isBoard($_GET['b'])) && (is_numeric($_GET['t'])))
 		{
 			$mitsuba->admin->canBoard($_GET['b']);
 			$result = $conn->query("SELECT * FROM posts WHERE id=".$_GET['t']." AND resto=0 AND board='".$_GET['b']."'");
@@ -17,7 +17,7 @@ if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && ($mitsuba->common->isBoard($
 				?>
 	
 <?php $mitsuba->admin->ui->startSection($lang['mod/unstickied']); ?>
-<meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
+<meta http-equiv="refresh" content="1;URL='./<?php echo $_GET['b']."/".$_GET['t']; ?>.html'" />
 <?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 				} else {
@@ -26,7 +26,7 @@ if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && ($mitsuba->common->isBoard($
 				?>
 	
 <?php $mitsuba->admin->ui->startSection($lang['mod/stickied']); ?>
-<meta http-equiv="refresh" content="1;URL='?/board&b=<?php echo $_GET['b']."&t=".$_GET['t']; ?>'" />
+<meta http-equiv="refresh" content="1;URL='./<?php echo $_GET['b']."/".$_GET['t']; ?>.html'" />
 <?php $mitsuba->admin->ui->endSection(); ?>
 		<?php
 				}

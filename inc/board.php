@@ -77,7 +77,7 @@ class Board
 			
 			if (($pdate + $bdata['time_between_threads']) > time())
 			{
-				echo "<center><h1>".$lang['img/wait_more_thread']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></center></body></html>";
+				$this->mitsuba->showMsg($lang['img/error'], $lang['img/wait_more_thread']);
 				exit;
 			}
 		}
@@ -94,7 +94,7 @@ class Board
 			
 			if (($pdate + $bdata['time_between_posts']) > time())
 			{
-				echo "<center><h1>".$lang['img/wait_more_post']." [<a href='".$return_url."'>".$lang['img/return']."</a>]</h1></center></body></html>";
+				$this->mitsuba->showMsg($lang['img/error'], $lang['img/wait_more_post']);
 				exit;
 			}
 		}

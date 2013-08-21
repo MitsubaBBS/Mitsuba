@@ -104,6 +104,32 @@ class Common {
 		}
 	}
 
+	function showMsg($title, $text)
+	{
+		?>
+		<html>
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title><?php echo $title; ?></title>
+		<script type="text/javascript" src="./js/style.js"></script>
+		</head>
+		<body>
+		<table style="text-align: center; width: 100%; height: 300px;">
+		<tbody>
+		<tr valign="middle">
+		<td align="center" style="font-size: x-large; font-weight: bold;">
+		<span id="errmsg" style="color: red;"><?php echo $text; ?></span>
+		<br><br>
+		[<a href="javascript:history.go(-1);"><?php echo $lang['img/return']; ?></a>]
+		</td>
+		</tr>
+		</tbody>
+		</table>
+		</body>
+		</html>
+		<?php
+	}
+
 	function thumb($board,$filename,$s=250){
 		$extension = $this->getGraphicsExtension();
 		
