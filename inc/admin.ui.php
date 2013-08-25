@@ -151,13 +151,13 @@ class UI {
 	function parseList($input, $all = 0)
 	{
 		$out = "";
-		if ((!empty($all)) && ($all==1))
+		if ((!empty($_POST[$all])) && ($_POST[$all]==1))
 		{
 			$out = "%";
 		} else {
-			if (!empty($input))
+			if (!empty($_POST[$input]))
 			{
-				foreach ($input as $s)
+				foreach ($_POST[$input] as $s)
 				{
 					$s .= $s.",";
 				}

@@ -129,7 +129,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 						$allow_replies = 1;
 						$file_replies = 1;
 						$links = "";
-						$extensions = $mitsuba->admin->ui->parseList($_POST['ext'], $_POST['ext_all']);
+						$extensions = $mitsuba->admin->ui->parseList('ext', 'ext_all');
 						break;
 					case "textboard":
 						$spoilers = 0;
@@ -150,7 +150,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 						$nofile = 0;
 						$catalog = 0;
 						$links = "";
-						$extensions = $mitsuba->admin->ui->parseList($_POST['ext'], $_POST['ext_all']);
+						$extensions = $mitsuba->admin->ui->parseList('ext', 'ext_all');
 						break;
 					case "linkboard":
 						$filesize = 0;
@@ -161,7 +161,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 						$catalog = 0;
 						$file_replies = 1;
 						$extensions = "";
-						$links = $mitsuba->admin->ui->parseList($_POST['links'], $_POST['l_all']);
+						$links = $mitsuba->admin->ui->parseList('links', 'l_all');
 						break;
 					case "overboard":
 						$noname = 0;
@@ -186,7 +186,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 						$file_replies = 0;
 						$extensions = "";
 						$links = "";
-						$boards = $mitsuba->admin->ui->parseList($_POST['boards'], $_POST['all']);
+						$boards = $mitsuba->admin->ui->parseList('boards', 'all');
 						break;
 					case "archive":
 						die("Archive not supported yet");

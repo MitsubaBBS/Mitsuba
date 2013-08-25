@@ -184,6 +184,7 @@ if (!empty($_POST['mode']))
 			$mime = "";
 			$url = "";
 			$url_title = "";
+			$gen_thumb = 0;
 			if (($bdata['type']=="linkboard"))
 			{
 				if (!empty($_POST['url']))
@@ -212,7 +213,6 @@ if (!empty($_POST['mode']))
 					$this->mitsuba->showMsg($lang['img/error'], $lang['img/file_too_big']);
 					exit;
 				}
-				$gen_thumb = 0;
 				if (!empty($_FILES['upfile']['tmp_name']))
 				{
 					$target_path = "./".$board."/src/";
