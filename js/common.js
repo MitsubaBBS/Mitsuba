@@ -52,7 +52,7 @@ $(document).ready(function () {
 		{
 			addThreadUpdater();
 		}
-
+		addExpandAllImg();
 		/* Resetting ommited posts and images counters */
 		updateOmmited();
 		addQuotelinks();
@@ -919,6 +919,34 @@ function imgThumbnail(element)
 {
 	$(element).siblings(".fileThumb").css("display", "");
 	$(element).remove();
+}
+
+function addExpandAllImg() {
+	if($(".file").length >= 2) {
+		var powiekszone,nigger;
+		$(".post.op").append('<a id="expandAllImages" href="#">[Expand all images]</a>');
+		$("#expandAllImages").click(function()  {
+			if(powiekszone) {
+				$(".file > img").each(function(){
+					imgThumbnail($(this));
+				});
+				powiekszone = 0;
+				$("#expandAllImages").text("[Expand all images]");
+			} else {
+				nigger = 1;
+				$(".file").each(function(){
+					if(nigger) {
+						nigger--;
+						return 1;
+					}
+					imgExpand($(this));
+				});
+				powiekszone = 1;
+				$("#expandAllImages").text("[Collapse all images]");
+			}
+			return false;
+		});
+	}
 }
 
 var targetImageWidth = 0;
