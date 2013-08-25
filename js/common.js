@@ -20,9 +20,23 @@ function strStartsWith(str, prefix) {
 	return str.indexOf(prefix) === 0;
 }
 
-addStylechanger();
 $(document).ready(function () {
 	fillFields("body");
+	addStylechanger();
+	
+	if (localStorage.getItem("o_backlinks") == 1)
+	{
+		addBacklinks("body");
+	}
+	if (localStorage.getItem("o_preview") == 1)
+	{
+		$("body").append('<div id="quote-preview" class="post preview" style="display: none; position: absolute; z-index:999;"></div>');
+		addPostpreview("body");
+	}
+	if (localStorage.getItem("o_imgexpand") == 1)
+	{
+		addImgExpand("body");
+	}
 	if ($(".postingMode").length == 0) //outside thread
 	{
 		if (localStorage.getItem("o_fastreply") == 1)
@@ -52,25 +66,14 @@ $(document).ready(function () {
 		{
 			addThreadUpdater();
 		}
-		addExpandAllImg();
+		if (localStorage.getItem("o_imgexpand") == 1)
+		{
+			addExpandAllImg();
+		}
 		/* Resetting ommited posts and images counters */
 		updateOmmited();
 		addQuotelinks();
 
-	}
-	
-	if (localStorage.getItem("o_backlinks") == 1)
-	{
-		addBacklinks("body");
-	}
-	if (localStorage.getItem("o_preview") == 1)
-	{
-		$("body").append('<div id="quote-preview" class="post preview" style="display: none; position: absolute; z-index:999;"></div>');
-		addPostpreview("body");
-	}
-	if (localStorage.getItem("o_imgexpand") == 1)
-	{
-		addImgExpand("body");
 	}
 
 	addSettings();
