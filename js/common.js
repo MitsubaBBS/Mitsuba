@@ -39,6 +39,7 @@ $(document).ready(function () {
 	}
 	if ($(".postingMode").length == 0) //outside thread
 	{
+		collapseLongPosts(10);
 		if (localStorage.getItem("o_fastreply") == 1)
 		{
 			addFastReply("body", 0);
@@ -477,6 +478,28 @@ function addBacklinks(parent)
 		} catch(ex) {
 			
 		}
+	});
+}
+
+function collapseLongPosts(lines) {
+	var $obj = $(".opContainer .postMessage");
+	$obj.first().after('<blockquote style="display:none">i</blockquote>');
+	var lineHeight = parseInt($obj.next().css("height"),10);
+	$obj.next().remove();
+	var fontSize = parseInt($obj.css("font-size"),10);
+	var maxHeight = lines * lineHeight;
+
+	$obj.each(function() {
+		if($(this).css("height").replace('px','') > maxHeight) {
+			$(this).attr("style","position:relative;height:" + maxHeight + "px");
+			$(this).after('<a style="position:relative;top:-'+fontSize+'px" class="showFullPost" href="#">Post too long. Click here to expand.</a>');
+		}
+	});
+
+	$(".showFullPost").click(function(){
+		$(this).prev().removeAttr("style");
+		$(this).hide();
+		return false;
 	});
 }
 
