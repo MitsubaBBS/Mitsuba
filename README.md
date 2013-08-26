@@ -13,6 +13,7 @@ Planned features
 ----------------
 * sranie do ryja xDD
 * reCaptcha support
+* sranie to kupa ;]
 
 API
 ---
