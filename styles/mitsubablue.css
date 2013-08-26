@@ -437,8 +437,7 @@ div.post div.postInfo span.subject {
 
 div.post blockquote.postMessage {
 	display: block;
-	max-height: 290px;
-	overflow-y: auto;
+	overflow-y: hidden;
 }
 
 blockquote>span.quote {
