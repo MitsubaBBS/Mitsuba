@@ -11,7 +11,7 @@ To install Mitsuba you'll have to:
 
 Planned features
 ----------------
-
+* sranie do ryja xDD
 * reCaptcha support
 
 API
