@@ -11,14 +11,14 @@ if ((!empty($_POST['old'])) && (!empty($_POST['new'])) && (!empty($_POST['new2']
 		
 			$result = $conn->query("SELECT password FROM users WHERE id=".$_SESSION['id']);
 			$row = $result->fetch_assoc();
-				if ($row['password'] != hash("sha512", $_POST['old']))
+				if ($row['password'] != hash("sha512", $_POST['old'].$row['salt']))
 				{
 							?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/pwd_no_match']); ?>
 <a href="?/password"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
 			<?php
 				} else {
-					$conn->query("UPDATE users SET password='".hash("sha512", $_POST['new'])."' WHERE id=".$_SESSION['id']);
+					$conn->query("UPDATE users SET password='".hash("sha512", $_POST['new'].$row['salt'])."' WHERE id=".$_SESSION['id']);
 				?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/pwd_updated']); ?>
 <a href="?/password"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
