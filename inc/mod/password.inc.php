@@ -9,7 +9,7 @@ if ((!empty($_POST['old'])) && (!empty($_POST['new'])) && (!empty($_POST['new2']
 			if ($_POST['new']==$_POST['new2'])
 			{
 		
-			$result = $conn->query("SELECT password,row FROM users WHERE id=".$_SESSION['id']);
+			$result = $conn->query("SELECT password,salt FROM users WHERE id=".$_SESSION['id']);
 			$row = $result->fetch_assoc();
 				if ($row['password'] != hash("sha512", $_POST['old'].$row['salt']))
 				{
