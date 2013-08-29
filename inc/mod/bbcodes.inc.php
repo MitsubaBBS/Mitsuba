@@ -3,11 +3,12 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("bbcodes.view");
 		$name = "";
 		$code = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
+$mitsuba->admin->reqPermission("bbcodes.add");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; $continue = 1; }
@@ -25,6 +26,7 @@ $mitsuba->admin->reqPermission(3);
 				}
 			}
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['name2']))) {
+$mitsuba->admin->reqPermission("bbcodes.edit");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; $continue = 1; }
@@ -46,6 +48,7 @@ $mitsuba->admin->reqPermission(3);
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
 		{
+$mitsuba->admin->reqPermission("bbcodes.delete");
 			$n = $conn->real_escape_string($_GET['n']);
 			$conn->query("DELETE FROM bbcodes WHERE name='".$n."'");
 		}
@@ -69,7 +72,7 @@ while ($row = $result->fetch_assoc())
 echo "<tr>";
 echo "<td><center>".$row['name']."</center></td>";
 echo "<td><center>".htmlspecialchars($row['code'])."</center></td>";
-echo "<td><center><a href='?/bbcodes&d=1&n=".$row['name']."'>".$lang['mod/edit']."</a> <a href='?/bbcodes/edit&n=".$row['name']."'>".$lang['mod/delete']."</a></center></td>";
+echo "<td><center><a href='?/bbcodes/edit&n=".$row['name']."'>".$lang['mod/edit']."</a> <a href='?/bbcodes&d=1&n=".$row['name']."'>".$lang['mod/delete']."</a></center></td>";
 echo "</tr>";
 }
 ?>
