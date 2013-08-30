@@ -151,23 +151,6 @@ $file .= "<script type='text/javascript' src='./js/style.js'></script>
 			</div>
 			';
 
-		$file .= '<div class="box-outer news-box">
-			<div class="box-inner">
-			<div class="boxbar"><h2>Announcements</h2></div>
-			<div class="boxcontent">';
-		$result = $this->conn->query("SELECT * FROM announcements ORDER BY date DESC;");
-		while ($row = $result->fetch_assoc())
-		{
-			$file .= '<div class="content">';
-			$file .= '<h3><span class="newssub">'.$row['title'].' by '.$row['who'].' - '.date("d/m/Y @ H:i", $row['date']).'</span></span></h3>';
-			$file .= $row['text'];
-			$file .= '</div>';
-		}
-		$file .= '</div>
-			</div>
-			</div>
-			</div>';
-
 		$file .= '<div class="box-outer stats-box">
 			<div class="box-inner">
 			<div class="boxbar"><h2>Stats</h2></div>
