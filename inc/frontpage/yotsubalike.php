@@ -128,22 +128,28 @@ $file .= "<script type='text/javascript' src='./js/style.js'></script>
 						</div>
 					</div>';
 
-		$file .= '<div class="box-outer right-box">
-						<div class="box-inner">
-							<div class="boxbar">
-								<h2>Stats</h2>
-							</div>
+				$file .= '<div class="box-outer right-box">
+			<div class="box-inner">
+			<div class="boxbar"><h2>Stats</h2></div>
+			<div class="boxcontent">';
+				$result = $this->conn->query("SELECT * FROM posts");
+					$num_rows = $result->num_rows;
 
-							<div class="boxcontent">
-								<ul>
-									<li>Total Posts: </li>
+				$result = $this->conn->query("SELECT DISTINCT ip FROM posts");
+					$num_users = $result->num_rows;
 
-									<li>Current Users: </li>
-
-									<li>Active Content: </li>
-								</ul>
-							</div>
-						</div>';
+				$result = $this->conn->query("SELECT sum(orig_filesize) FROM posts");
+					$num_bytes = $result->fetch_array()[0];
+		{
+			$file .= '<li>Total posts: '.$num_rows.'</li>
+					  <li>Unique posters: '.$num_users.'</li>
+					  <li>Active content: '.$this->mitsuba->common->human_filesize($num_bytes[0]).'</li>
+			';
+		}
+		$file .= '</div>
+			</div>
+			</div>
+			</div>';
 		$file .= '</div>
 				</div>
 			</div>
