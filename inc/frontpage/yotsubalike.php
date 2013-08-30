@@ -143,7 +143,7 @@ $file .= "<script type='text/javascript' src='./js/style.js'></script>
 		{
 			$file .= '<li>Total posts: '.$num_rows.'</li>
 					  <li>Unique posters: '.$num_users.'</li>
-					  <li>Active content: '.$this->mitsuba->common->human_filesize($num_bytes[0]).'</li>
+					  <li>Active content: '.$this->mitsuba->common->human_filesize($num_bytes).'</li>
 			';
 		}
 		$file .= '</div>
