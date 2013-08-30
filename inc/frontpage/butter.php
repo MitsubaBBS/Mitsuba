@@ -186,7 +186,7 @@ $num_bytes = $result->fetch_array()[0];
 
 			$file .= '<li>Total posts: '.$num_rows.'</li>
 					  <li>Unique posters: '.$num_users.'</li>
-					  <li>Active content: '.$this->mitsuba->common->human_filesize($num_bytes[0]).'</li>
+					  <li>Active content: '.$this->mitsuba->common->human_filesize($num_bytes).'</li>
 			';
 		}
 		$file .= '</div>
