@@ -116,8 +116,9 @@ switch ($mode)
 		</div>
 			<?php
 					} else {
-						$salt = $conn->real_escape_string(randomSalt());
-						$result = $conn->query("INSERT INTO users (`username`, `password`, `salt`, `group`, `boards`) VALUES ('".$conn->real_escape_string($username)."', '".hash("sha512", $password.$salt)."', '".$salt."', 3, '%')");
+						$salt = randomSalt();
+						$salt2 = $conn->real_escape_string($salt);
+						$result = $conn->query("INSERT INTO users (`username`, `password`, `salt`, `group`, `boards`) VALUES ('".$conn->real_escape_string($username)."', '".hash("sha512", $password.$salt)."', '".$salt2."', 3, '%')");
 						if (!$result)
 						{
 						?>

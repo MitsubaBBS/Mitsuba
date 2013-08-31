@@ -150,7 +150,7 @@ if (!empty($_POST['mode']))
 					$cc_text = $_SESSION['capcode_text'];
 					$cc_style = $_SESSION['capcode_style'];
 					$cc_icon = $_SESSION['capcode_icon'];
-				} elseif ((!empty($_POST['capcode'])) && ($_POST['capcode']==2) && (!empty($_POST['cc_text'])) && (!empty($_POST['cc_color'])) && ($mitsuba->admin->checkPermission("post.customcapcode"))
+				} elseif ((!empty($_POST['capcode'])) && ($_POST['capcode']==2) && (!empty($_POST['cc_text'])) && (!empty($_POST['cc_color'])) && ($mitsuba->admin->checkPermission("post.customcapcode")))
 				{
 					$cc_text = $_POST['cc_text'];
 					$cc_style = $_POST['cc_style'];

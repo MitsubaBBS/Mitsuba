@@ -436,7 +436,8 @@ INSERT INTO `permissions_categories` (`id`, `name`, `description`) VALUES
 (23, 'users', 'Users'),
 (24, 'warnings', 'Warnings'),
 (25, 'whitelist', 'Whitelist'),
-(26, 'wordfilter', 'Wordfilter');
+(26, 'wordfilter', 'Wordfilter'),
+(27, 'pages', 'Pages');
 
 INSERT INTO `permissions` (`id`, `name`, `description`, `category`) VALUES
 (0, 'ads.add', 'Create advertisements', 0),
@@ -552,7 +553,11 @@ INSERT INTO `permissions` (`id`, `name`, `description`, `category`) VALUES
 (110, 'post.fakeid', 'Fake ID', 14),
 (111, 'post.ignorespamlimits', 'Ignore spamlimits', 14),
 (112, 'post.ignorenoname', 'Ignore noname', 14),
-(113, 'post.ignorenodup', 'Ignore nodup', 14);
+(113, 'post.ignorenodup', 'Ignore nodup', 14),
+(114, 'pages.view', 'Ignore nodup', 27),
+(115, 'pages.update', 'Ignore nodup', 27),
+(116, 'pages.delete', 'Ignore nodup', 27),
+(117, 'pages.add', 'Ignore nodup', 27);
 
 INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (1, 10),
@@ -736,7 +741,11 @@ INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (3, 110),
 (3, 111),
 (3, 112),
-(3, 113);
+(3, 113),
+(3, 114),
+(3, 115),
+(3, 116),
+(3, 117);
 
 INSERT INTO `styles` (`name`, `path`, `relative`, `default`) VALUES 
 ('Mitsuba', './styles/mitsuba.css', 1, 1),

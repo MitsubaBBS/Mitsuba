@@ -72,8 +72,8 @@ $mitsuba->admin->reqPermission("wordfilter.update");
 		}
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
-$mitsuba->admin->reqPermission("wordfilter.delete");
 		{
+			$mitsuba->admin->reqPermission("wordfilter.delete");
 			$n = $conn->real_escape_string($_GET['n']);
 			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$conn->query("DELETE FROM wordfilter WHERE id=".$n);

@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission("rebuild");
+$mitsuba->admin->reqPermission("config.rebuild");
 	$config = $mitsuba->config;
 	?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/rebuild_cache']); ?>

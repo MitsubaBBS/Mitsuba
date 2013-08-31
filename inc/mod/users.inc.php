@@ -11,7 +11,16 @@ $mitsuba->admin->reqPermission("users.view");
 <?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/username']; ?>: <input type="text" name="username" /><br />
 <?php echo $lang['mod/password']; ?>: <input type="password" name="password"/><br />
-<?php echo $lang['mod/type']; ?>: <select name="type"><option value="1"><?php echo $lang['mod/janitor']; ?></option><option value="2"><?php echo $lang['mod/moderator']; ?></option><option value="3"><?php echo $lang['mod/administrator']; ?></option></select>
+<?php echo $lang['mod/type']; ?>: 
+<select name="type">
+<?php 
+$groups = $conn->query("SELECT * FROM groups");
+while ($row = $groups->fetch_assoc())
+{
+	echo "<option value=".$row['id'].">".$row['name']."</option>";
+}
+?>
+</select>
 
 <br /><br />
 <?php
@@ -35,31 +44,14 @@ $mitsuba->admin->ui->getBoardList();
 </thead>
 <tbody>
 <?php
-$result = $conn->query("SELECT * FROM users;");
+$result = $conn->query("SELECT users.*, groups.name AS gname FROM users LEFT JOIN groups ON users.group=groups.id;");
 $usern = $result->num_rows;
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td><center>".$row['username']."</center></td>";
 echo "<td><center>";
-switch ($row['type'])
-{
-	case 0:
-		echo $lang['mod/disabled'];
-		break;
-	case 1:
-		echo $lang['mod/janitor'];
-		break;
-	case 2:
-		echo $lang['mod/moderator'];
-		break;
-	case 3:
-		echo $lang['mod/administrator'];
-		break;
-	default:
-		echo $lang['mod/faggot'];
-		break;
-}
+echo $row['gname'];
 echo "<center></td>";
 if ($row['boards']=="%")
 {

@@ -54,29 +54,21 @@ $mitsuba->admin->reqPermission("users.update");
 <?php $mitsuba->admin->ui->getToken($path); ?>
 <?php echo $lang['mod/username']; ?>: <input type="text" name="username" value="<?php echo $data['username']; ?>"/><br />
 <?php echo $lang['mod/password_leave_blank']; ?>: <input type="password" name="password"/><br />
-<?php
-$disabled = "";
-$janitor = "";
-$moderator = "";
-$administrator = "";
-
-switch ($data['type'])
+<?php echo $lang['mod/type']; ?>: <select name="type">
+<select name="type">
+<?php 
+$groups = $conn->query("SELECT * FROM groups");
+while ($row = $groups->fetch_assoc())
 {
-	case 0:
-		$disabled = " selected ";
-		break;
-	case 1:
-		$janitor = " selected ";
-		break;
-	case 2:
-		$moderator = " selected ";
-		break;
-	case 3:
-		$administrator = " selected ";
-		break;
+	if ($data['group']==$row['id'])
+	{
+		echo "<option value=".$row['id']." selected>".$row['name']."</option>";
+	} else {
+		echo "<option value=".$row['id'].">".$row['name']."</option>";
+	}
 }
 ?>
-<?php echo $lang['mod/type']; ?>: <select name="type"><option value="0"<?php echo $disabled; ?>><?php echo $lang['mod/disabled']; ?></option><option value="1"<?php echo $janitor; ?>><?php echo $lang['mod/janitor']; ?></option><option value="2"<?php echo $moderator; ?>><?php echo $lang['mod/moderator']; ?></option><option value="3"<?php echo $administrator; ?>><?php echo $lang['mod/administrator']; ?></option></select>
+</select>
 
 <br /><br />
 <?php

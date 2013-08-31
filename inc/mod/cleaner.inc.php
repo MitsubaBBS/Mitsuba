@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission("cleaner");
+$mitsuba->admin->reqPermission("config.cleaner");
 ?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/cleaner']); ?>
 
