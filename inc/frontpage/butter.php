@@ -1,24 +1,26 @@
 <?php
+
 namespace Mitsuba;
+
 class Frontpage
+
 {
 	private $conn;
 	private $config;
 	private $mitsuba;
-
 	function __construct($connection, &$mitsuba) {
 		$this->conn = $connection;
 		$this->mitsuba = $mitsuba;
 		$this->config = $this->mitsuba->config;
 	}
-
 	function generateFrontpage($action = "none")
+
 	{
-		
+	
 		$file = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-
 		$file .= '<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 	<title>'.$this->config['sitename'].'</title>';
@@ -31,6 +33,7 @@ while ($row = $styles->fetch_assoc())
 		$file .= '<link rel="stylesheet" id="switch" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'">';
 		$first_default = 0;
 	}
+
 	$file .= '<link rel="alternate stylesheet" style="text/css" href="'.$this->mitsuba->getPath($row['path'], "index", $row['relative']).'" title="'.$row['name'].'">';
 }
 $file .= "<script type='text/javascript' src='./js/style.js'></script>
@@ -50,7 +53,6 @@ $file .= "<script type='text/javascript' src='./js/style.js'></script>
 					<div class="boxbar">
 						<h2>Boards</h2>
 					</div>
-
 					<div class="boxcontent">';
 		$cats = $this->conn->query("SELECT * FROM links WHERE parent=-1 ORDER BY short ASC;");
 		while ($row = $cats->fetch_assoc())
@@ -80,15 +82,17 @@ $file .= "<script type='text/javascript' src='./js/style.js'></script>
 				</div>
 			</div>';
 
+
+
 		$file .= '<div class="wrapper">
-				<div class="left-boxes">
+				<div class="left-boxesz">
 					<div class="box-outer left-box" id="recent-images">
 						<div class="box-inner">
 							<div class="boxbar">
 								<h2>Recent Images</h2>
 							</div>
-
 							<div class="boxcontent">';
+
 		$recent_images = $this->conn->query("SELECT posts.*, boards.hidden, boards.unlisted FROM posts LEFT JOIN boards ON posts.board=boards.short WHERE boards.hidden=0 AND boards.unlisted=0 AND filename<>'' AND filename<>'deleted' AND filename NOT LIKE 'embed%' AND filename NOT LIKE 'spoiler%' AND deleted=0 ORDER BY date DESC LIMIT 0, 3;");
 		while ($row = $recent_images->fetch_assoc())
 		{
@@ -105,12 +109,12 @@ $file .= "<script type='text/javascript' src='./js/style.js'></script>
 					</div>
 				</div>';
 
-		$file .= '<div class="right-boxes">
+
+		$file .= '<div class="right-boxess">
 					<div class="box-outer right-box" id="recent-threads">
 						<div class="box-inner">
 							<div class="boxbar">
 								<h2>Latest Posts</h2>
-
 								<div class="yui-skin-sam menubutton" id="options-container"></div>
 							</div>
 							<div class="boxcontent">';
@@ -124,23 +128,45 @@ $file .= "<script type='text/javascript' src='./js/style.js'></script>
 									</li>
 								</ul>';
 		}
+
 		$file .= '</div>
 						</div>
-					</div>';
+					</div>
+				</div>';
 
-				$file .= '<div class="box-outer right-box">
+		$file .= '<div class="box-outer news-box">
+			<div class="box-inner">
+			<div class="boxbar"><h2>News</h2></div>
+			<div class="boxcontent">';
+		$result = $this->conn->query("SELECT * FROM news ORDER BY date DESC;");
+		while ($row = $result->fetch_assoc())
+		{
+			$file .= '<div class="content">';
+			$file .= '<h3><span class="newssub">'.$row['title'].' by '.$row['who'].' - '.date("d/m/Y @ H:i", $row['date']).'</span></span></h3>';
+			$file .= $row['text'];
+			$file .= '</div>';
+		}
+		$file .= '</div>
+			</div>
+			</div>
+			';
+
+		$file .= '<div class="box-outer stats-box">
 			<div class="box-inner">
 			<div class="boxbar"><h2>Stats</h2></div>
 			<div class="boxcontent">';
-				$result = $this->conn->query("SELECT * FROM posts");
-					$num_rows = $result->num_rows;
 
-				$result = $this->conn->query("SELECT DISTINCT ip FROM posts");
-					$num_users = $result->num_rows;
+$result = $this->conn->query("SELECT * FROM posts");
+$num_rows = $result->num_rows;
 
-				$result = $this->conn->query("SELECT sum(orig_filesize) FROM posts");
-					$num_bytes = $result->fetch_array()[0];
+$result = $this->conn->query("SELECT DISTINCT ip FROM posts");
+$num_users = $result->num_rows;
+
+$result = $this->conn->query("SELECT sum(orig_filesize) FROM posts");
+$num_bytes = $result->fetch_array()[0];
+
 		{
+
 			$file .= '<li>Total posts: '.$num_rows.'</li>
 					  <li>Unique posters: '.$num_users.'</li>
 					  <li>Active content: '.$this->mitsuba->common->human_filesize($num_bytes).'</li>
@@ -150,18 +176,21 @@ $file .= "<script type='text/javascript' src='./js/style.js'></script>
 			</div>
 			</div>
 			</div>';
+
+
+
 		$file .= '</div>
 				</div>
 			</div>
 		</div>
 		<div id="ft" class=" ">
 			<br class="clear-bug">
-			<div id="copyright" class=" ">- <a href="http://github.com/MitsubaBBS/Mitsuba">mitsuba</a> -</div>
+			<div id="copyright" class=" ">- <a href="http://github.com/MitsubaBBS/Mitsuba">mitsuba</a> + <a href="https://github.com/infamousbutterly/Mitsuba/">homepage made with butter</a> -</div>
 		</div>
 	</div>
 </body>
 </html>';
-		
+	
 		$handle = fopen("./".$this->config['frontpage_url'], "w");
 		fwrite($handle, $file);
 		fclose($handle);
@@ -210,6 +239,7 @@ $file .= "<script type='text/javascript' src='./js/style.js'></script>
 			</div>
 			</body>
 			</html>';
+
 		$handle = fopen("./".$this->config['news_url'], "w");
 		fwrite($handle, $file);
 		fclose($handle);
