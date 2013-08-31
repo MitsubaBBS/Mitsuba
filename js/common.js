@@ -363,15 +363,14 @@ function addThreadUpdater()
 function addQuotelinks()
 {
 	$(".quotePost").unbind("click");
-	$(".quotePost").click(function () {
+	$(".quotePost").click(function(e) {
 		try {
-			event.preventDefault();
 			var id = $(this).attr("id").substr(1);
 			var textarea = $("#postForm textarea[name='com']")[0];
 			$(textarea).val($(textarea).val()+'>>'+id+'\n'); 
 			$(textarea).focus();
+			e.preventDefault();
 		} catch (ex) {
-			
 		}
 	});
 }
