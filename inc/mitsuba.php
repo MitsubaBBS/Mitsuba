@@ -65,7 +65,6 @@ class Admin
 		} elseif (count($p) > 1)
 		{
 			array_pop($p);
-			var_dump($p);
 			return $this->checkPermission(implode(".", $p), $groupid);
 		} else {
 			return false;

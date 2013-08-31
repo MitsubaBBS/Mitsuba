@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `group_permissions` (
 );
 
 CREATE TABLE IF NOT EXISTS `groups` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL,
   `name` varchar(60) NOT NULL,
   `capcode` varchar(60) NOT NULL,
   `capcode_style` varchar(60) NOT NULL,
@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
 );
 
 CREATE TABLE IF NOT EXISTS `permissions_categories` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL,
   `name` varchar(60) NOT NULL,
   `description` varchar(60) NOT NULL,
   PRIMARY KEY (`id`),
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `permissions_categories` (
 );
 
 CREATE TABLE IF NOT EXISTS `permissions` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL,
   `name` varchar(60) NOT NULL,
   `description` varchar(60) NOT NULL,
   `category` int(10) NOT NULL,
@@ -560,7 +560,6 @@ INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (1, 38),
 (1, 41),
 (1, 54),
-(1, 54),
 (1, 66),
 (1, 70),
 (1, 71),
@@ -585,7 +584,6 @@ INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (2, 50),
 (2, 51),
 (2, 53),
-(2, 54),
 (2, 54),
 (2, 55),
 (2, 56),
@@ -682,7 +680,6 @@ INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (3, 51),
 (3, 52),
 (3, 53),
-(3, 54),
 (3, 54),
 (3, 55),
 (3, 56),
