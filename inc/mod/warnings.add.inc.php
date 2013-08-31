@@ -93,7 +93,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 		{
 			if ((!empty($_POST['delete'])) && ($_POST['delete']=="1"))
 			{
-				$mitsuba->posting->deletePost($board, $post, "", 0, $_SESSION['type']);
+				$mitsuba->posting->deletePost($board, $post, "", 0, $mitsuba->admin->checkPermission("post.delete"));
 			} else {
 				if ((!empty($post)) && (!empty($_POST['append'])) && ($_POST['append'] == 1))
 				{

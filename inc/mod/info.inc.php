@@ -51,7 +51,7 @@ if ($row['boards']=="%")
 } else {
 	echo "<td><center>".$row['boards']."</center></td>";
 }
-if ($_SESSION['type']>=2)
+if ($mitsuba->admin->checkPermission("bans.delete"))
 {
 echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 } else {

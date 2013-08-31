@@ -11,7 +11,7 @@ class Users {
 
 	function canDoBoard($short)
 	{
-		if (($_SESSION['boards'] != "%") && ($_SESSION['type'] != 2))
+		if ($_SESSION['boards'] != "%")
 		{
 			$boards = explode(",", $_SESSION['boards']);
 		} else {

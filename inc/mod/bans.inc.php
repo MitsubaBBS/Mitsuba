@@ -4,6 +4,8 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 $mitsuba->admin->reqPermission("bans.view");
+$delete = $mitsuba->admin->checkPermission("bans.delete");
+$logs = $mitsuba->admin->checkPermission("logs.view");
 if ((isset($_GET['del'])) && ($_GET['del']==1))
 	{
 $mitsuba->admin->reqPermission("bans.delete");
@@ -26,13 +28,13 @@ $mitsuba->admin->reqPermission("bans.delete");
 	<td><?php echo $lang['mod/boards']; ?></td>
 	<td><?php echo $lang['mod/delete']; ?></td>
 	<?php
-		if ($_SESSION['type'] >= 3) { echo "<td>".$lang['mod/staff_member']."</td>"; }
+		if ($logs) { echo "<td>".$lang['mod/staff_member']."</td>"; }
 	?>
 	</tr>
 	</thead>
 	<tbody>
 	<?php
-	if ($_SESSION['type'] >= 3) {
+	if ($logs) {
 		$result = $conn->query("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.mod_id=users.id ORDER BY created DESC LIMIT 0, 15;");
 	} else {
 		$result = $conn->query("SELECT * FROM bans ORDER BY created LIMIT 0, 15;");
@@ -56,13 +58,13 @@ $mitsuba->admin->reqPermission("bans.delete");
 	} else {
 		echo "<td><center>".$row['boards']."</center></td>";
 	}
-	if ($_SESSION['type']>=2)
+	if ($delete)
 	{
 	echo "<td><center><a href='?/bans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 	} else {
 	echo "<td></td>";
 	}
-	if ($_SESSION['type'] >= 3)
+	if ($logs)
 	{
 		echo "<td><center>".$row['username']."</center></td>";
 	}

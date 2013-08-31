@@ -16,15 +16,9 @@ if (!defined("IN_MOD"))
 <?php echo $lang['mod/ip']; ?>: <input type="text" name="ip" value="<?php echo $ip; ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" /><br />
 <?php echo $lang['mod/staff_note']; ?>: <input type="text" name="note" /><br />
-<?php
-if ($_SESSION['type']>=1) {
-?>
 <?php echo $lang['mod/expires_eg']; ?>: <input type="text" name="expires" /><br />
 <?php $mitsuba->admin->ui->getBoardList(); ?><br />
 <br />
-<?php
-}
-?>
 <br />
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />
 </form>

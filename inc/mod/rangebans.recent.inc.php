@@ -1,9 +1,11 @@
 <?php
-$mitsuba->admin->reqPermission("range.view");
 if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
+$mitsuba->admin->reqPermission("range.view");
+$delete = $mitsuba->admin->checkPermission("bans.delete");
+$logs = $mitsuba->admin->checkPermission("logs.view");
 if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	{
 	$mitsuba->admin->ui->startSection(sprintf($lang['mod/recent_range_bans'], $_GET['c']));
@@ -19,13 +21,13 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	<td><?php echo $lang['mod/boards']; ?></td>
 	<td><?php echo $lang['mod/delete']; ?></td>
 	<?php
-		if ($_SESSION['type'] >= 3) { echo "<td>".$lang['mod/staff_member']."</td>"; }
+		if ($logs) { echo "<td>".$lang['mod/staff_member']."</td>"; }
 	?>
 	</tr>
 	</thead>
 	<tbody>
 	<?php
-	if ($_SESSION['type'] >= 3) {
+	if ($logs) {
 		$result = $conn->query("SELECT rangebans.*, users.username FROM rangebans LEFT JOIN users ON rangebans.mod_id=users.id ORDER BY created DESC LIMIT 0, ".$_GET['c'].";");
 	} else {
 		$result = $conn->query("SELECT * FROM rangebans ORDER BY created LIMIT 0, ".$_GET['c'].";");
@@ -49,13 +51,13 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	} else {
 		echo "<td><center>".$row['boards']."</center></td>";
 	}
-	if ($_SESSION['type']>=2)
+	if ($delete)
 	{
 	echo "<td><center><a href='?/rangebans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 	} else {
 	echo "<td></td>";
 	}
-	if ($_SESSION['type'] >= 3)
+	if ($logs)
 	{
 		echo "<td>".$row['username']."</td>";
 	}

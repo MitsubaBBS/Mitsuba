@@ -28,6 +28,7 @@ $mitsuba->admin->reqPermission("warnings.delete");
 </thead>
 <tbody>
 <?php
+$canDelete = $mitsuba->admin->checkPermission("warnings.delete");
 $result = $conn->query("SELECT * FROM warnings ORDER BY created LIMIT 0, ".$_GET['c'].";");
 while ($row = $result->fetch_assoc())
 {
@@ -42,7 +43,7 @@ if ($row['shown']==1)
 } else {
 	echo "<td><center><b>NO</b></center></td>";
 }
-if ($_SESSION['type']>=2)
+if ($canDelete)
 {
 echo "<td><center><a href='?/warnings&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
 } else {

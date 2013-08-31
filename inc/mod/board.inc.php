@@ -12,15 +12,15 @@ if ((!empty($_GET['b'])) && ($mitsuba->common->isBoard($_GET['b'])))
 			if ((!empty($_GET['p'])) && (is_numeric($_GET['p'])) && ($_GET['p'] >= 0) && ($_GET['p'] <= 15))
 			{
 				$page = $_GET['p'];
-				echo $mitsuba->caching->generateView($_GET['b'], $page, 1, 0, $_SESSION['type']);
+				echo $mitsuba->caching->generateView($_GET['b'], $page, 1, 0, $_SESSION['group']);
 			} elseif ((!empty($_GET['t'])) && (is_numeric($_GET['t'])))
 			{
 				$mode = "thread";
 				$page = $_GET['t'];
-				echo $mitsuba->caching->generateView($_GET['b'], $page, 1, 1, $_SESSION['type']);
+				echo $mitsuba->caching->generateView($_GET['b'], $page, 1, 1, $_SESSION['group']);
 			} else {
 			
-				echo $mitsuba->caching->generateView($_GET['b'], 0, 1, 0, $_SESSION['type']);
+				echo $mitsuba->caching->generateView($_GET['b'], 0, 1, 0, $_SESSION['group']);
 			}
 			
 			

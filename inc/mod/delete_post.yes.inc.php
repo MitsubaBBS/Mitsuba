@@ -12,7 +12,7 @@ $mitsuba->admin->reqPermission("post.delete.single");
 			{
 				$imageonly = 1;
 			}
-			$mitsuba->posting->deletePost($_GET['b'], $_GET['p'], "", $imageonly, $_SESSION['type']);
+			$mitsuba->posting->deletePost($_GET['b'], $_GET['p'], "", $imageonly, true);
 			if ($imageonly == 1)
 			{
 			?>
