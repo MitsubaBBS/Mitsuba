@@ -29,6 +29,8 @@ skandal - first betatester, helped with bughunting, made Polish translation and 
 
 hardkurahen - javascripts
 
+JanPavulon - javascripts
+
 License
 --------
 See [LICENSE](https://github.com/MitsubaBBS/Mitsuba/blob/master/LICENSE).
