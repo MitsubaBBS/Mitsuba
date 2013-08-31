@@ -49,7 +49,7 @@ class Admin
 		} else {
 			$groupid = $_SESSION['group'];
 		}
-		if (!$this->checkPermission($permission, $grouid))
+		if (!$this->checkPermission($permission, $groupid))
 		{
 			die("Insufficient permissions");
 		}
@@ -58,14 +58,15 @@ class Admin
 	function checkPermission($permission, $groupid)
 	{
 		$p = explode(".", $permission);
-		$permission = $this->conn->query("SELECT * FROM group_permissions LEFT JOIN permissions ON group_permissions.pid=permissions.id AND permissions.name='".$this->conn->real_escape_string($permission)."' WHERE gid=".$groupid);
+		$permission = $this->conn->query("SELECT * FROM group_permissions INNER JOIN permissions ON group_permissions.pid=permissions.id AND permissions.name='".$this->conn->real_escape_string($permission)."' WHERE gid=".$groupid);
 		if ($permission->num_rows == 1)
 		{
 			return true;
 		} elseif (count($p) > 1)
 		{
-			$p = array_pop($p);
-			checkPermission(implode(".", $p), $groupid);
+			array_pop($p);
+			var_dump($p);
+			return $this->checkPermission(implode(".", $p), $groupid);
 		} else {
 			return false;
 		}

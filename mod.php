@@ -20,7 +20,7 @@ include("inc/strings/mod.strings.php");
 include("inc/strings/imgboard.strings.php");
 include("inc/strings/log.strings.php");
 
-function deleteEntry($conn, $type, $id,)
+function deleteEntry($conn, $type, $id)
 {
 	if (!is_numeric($id))
 	{
@@ -64,6 +64,7 @@ function updateEntry($conn, $type, $id, $who, $title, $text)
 	{
 		$conn->query("UPDATE ".$table." SET who='".$who."', title='".$title."', text='".$text."' WHERE id=".$id);
 	} elseif ($mitsuba->admin->checkPermission($table.".update.own", $_SESSION['group']))
+	{
 		$result = $conn->query("SELECT * FROM ".$table." WHERE id=".$id);
 		$entry = $result->fetch_assoc();
 		if ($entry['mod_id'] == $_SESSION['id'])

@@ -731,7 +731,7 @@ INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (3, 96),
 (3, 97),
 (3, 98),
-(3, 99)
+(3, 99),
 (3, 106),
 (3, 107),
 (3, 108),
