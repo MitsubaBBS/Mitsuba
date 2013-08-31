@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("embeds.edit");
 		if (!empty($_GET['n']))
 		{
 		$result = $conn->query("SELECT * FROM embeds WHERE name='".$conn->real_escape_string($_GET['n'])."'");

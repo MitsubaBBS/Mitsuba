@@ -3,6 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
+$mitsuba->admin->reqPermission("post.closed");
 if ((!empty($_GET['b'])) && (!empty($_GET['t'])) && ($mitsuba->common->isBoard($_GET['b'])) && (is_numeric($_GET['t'])))
 		{
 			$mitsuba->admin->canBoard($_GET['b']);

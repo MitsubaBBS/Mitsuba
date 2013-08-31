@@ -3,12 +3,13 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("spamfilter.view");
 		$search = "";
 		$reason = "";
 		$expires = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
+$mitsuba->admin->reqPermission("spamfilter.add");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; $continue = 1; }
@@ -51,6 +52,7 @@ $mitsuba->admin->reqPermission(3);
 			$reason = "";
 			$expires = "";
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['id']))) {
+$mitsuba->admin->reqPermission("spamfilter.update");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; $continue = 1; }
@@ -98,6 +100,7 @@ $mitsuba->admin->reqPermission(3);
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
 		{
+$mitsuba->admin->reqPermission("spamfilter.delete");
 			$n = $conn->real_escape_string($_GET['n']);
 			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$conn->query("DELETE FROM spamfilter WHERE id=".$n);

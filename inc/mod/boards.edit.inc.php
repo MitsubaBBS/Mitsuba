@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("boards.update");
 		if ($mitsuba->common->isBoard($_GET['board']))
 		{
 			$data = $mitsuba->common->getBoardData($_GET['board']);

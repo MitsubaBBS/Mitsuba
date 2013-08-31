@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(2);
+$mitsuba->admin->reqPermission("requests.view");
 	?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/ban_requests']); ?>
 

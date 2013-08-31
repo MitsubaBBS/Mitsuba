@@ -3,11 +3,12 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(2);
+$mitsuba->admin->reqPermission("appeals.view");
 if (!empty($_GET['m']))
 {
 	if ($_GET['m'] == "clear")
 	{
+		$mitsuba->admin->reqPermission("appeals.clear.single");
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 			$conn->query("DELETE FROM appeals WHERE id=".$_GET['id']);
@@ -16,6 +17,7 @@ if (!empty($_GET['m']))
 	
 	if ($_GET['m'] == "clear_all_yes")
 	{
+		$mitsuba->admin->reqPermission("appeals.clear.all");
 		$conn->query("TRUNCATE TABLE appeals;");
 	}
 }

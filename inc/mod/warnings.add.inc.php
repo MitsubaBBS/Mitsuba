@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-
+$mitsuba->admin->reqPermission("warnings.add");
 	if (empty($_POST['ip']))
 	{
 		$ip = "";

@@ -4,7 +4,7 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 
-		$mitsuba->admin->reqPermission(2);
+$mitsuba->admin->reqPermission("ipnotes.delete");
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 			$conn->query("DELETE FROM ip_notes WHERE id=".$_GET['id']);

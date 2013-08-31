@@ -3,6 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
+$mitsuba->admin->reqPermission("notes.view");
 ?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/your_notes']); ?>
 

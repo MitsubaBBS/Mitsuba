@@ -3,11 +3,12 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("links.view");
 	if (!empty($_GET['m']))
 	{
 		if ($_GET['m'] == "del")
 		{
+$mitsuba->admin->reqPermission("links.delete");
 			if (!empty($_GET['i']))
 			{
 				$id = $conn->real_escape_string($_GET['i']);
@@ -16,6 +17,7 @@ $mitsuba->admin->reqPermission(3);
 		}
 		if ($_GET['m'] == "addc")
 		{
+$mitsuba->admin->reqPermission("links.add");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			if (!empty($_POST['title']))
 			{
@@ -25,6 +27,7 @@ $mitsuba->admin->reqPermission(3);
 		
 		if ($_GET['m'] == "up")
 		{
+$mitsuba->admin->reqPermission("links.move");
 			if (!empty($_GET['l']))
 			{
 				$id = $conn->real_escape_string($_GET['l']);
@@ -34,6 +37,7 @@ $mitsuba->admin->reqPermission(3);
 		
 		if ($_GET['m'] == "down")
 		{
+$mitsuba->admin->reqPermission("links.move");
 			if (!empty($_GET['l']))
 			{
 				$id = $conn->real_escape_string($_GET['l']);

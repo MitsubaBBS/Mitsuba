@@ -1,5 +1,5 @@
 <?php
-$mitsuba->admin->reqPermission(2);
+$mitsuba->admin->reqPermission("range.view");
 if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");

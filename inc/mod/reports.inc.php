@@ -3,8 +3,10 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
+$mitsuba->admin->reqPermission("reports.view");
 if ((!empty($_GET['cl'])) && ($_GET['cl']==1))
 	{
+$mitsuba->admin->reqPermission("reports.clear.single");
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 			$conn->query("DELETE FROM reports WHERE id=".$_GET['id']);
@@ -12,7 +14,7 @@ if ((!empty($_GET['cl'])) && ($_GET['cl']==1))
 	}
 	if ((!empty($_GET['m'])) && (!empty($_GET['i'])) && (is_numeric($_GET['i'])))
 	{
-		$mitsuba->admin->reqPermission(2);
+$mitsuba->admin->reqPermission("reports.clear.multiple");
 		switch($_GET['m'])
 		{
 			case "wtr":

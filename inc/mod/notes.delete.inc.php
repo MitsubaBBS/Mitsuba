@@ -3,6 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
+$mitsuba->admin->reqPermission("notes.delete");
 if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 			$note = $conn->query("SELECT * FROM notes WHERE id=".$_GET['id']);

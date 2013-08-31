@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(2);
+$mitsuba->admin->reqPermission("search.ip");
 		if ((!empty($_GET['ip'])) && (filter_var($_GET['ip'], FILTER_VALIDATE_IP)))
 		{
 			$mitsuba->admin->ui->startSection(sprintf($lang['mod/showing_posts'], $_GET['ip']));

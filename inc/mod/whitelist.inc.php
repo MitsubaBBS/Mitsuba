@@ -3,9 +3,10 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("whitelist.view");
 if ((isset($_GET['del'])) && ($_GET['del']==1))
 	{
+$mitsuba->admin->reqPermission("whitelist.delete");
 		if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
 		{
 			$conn->query("DELETE FROM whitelist WHERE id=".$_GET['b']);
@@ -13,6 +14,7 @@ if ((isset($_GET['del'])) && ($_GET['del']==1))
 	}
 if ((!empty($_GET['m'])) && ($_GET['m']=="add"))
 {
+$mitsuba->admin->reqPermission("whitelist.add");
 		$mitsuba->admin->ui->checkToken($_POST['token']);
 		if (!filter_var($_POST['ip'], FILTER_VALIDATE_IP))
 		{

@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("users.view");
 	?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/new_user']); ?>
 

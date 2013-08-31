@@ -1,5 +1,5 @@
 <?php
-$mitsuba->admin->reqPermission(2);
+$mitsuba->admin->reqPermission("range.add");
 if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
@@ -48,7 +48,7 @@ if ($_SESSION['type']>=1) {
 			}
 		}
 		if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
-		$result = 0;
+		$result = addRangeBan($_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
 		if ($result == 1)
 		{
 		?>

@@ -1,4 +1,5 @@
 <?php
+$mitsuba->admin->reqPermission("config.extras");
 if (isset($_GET['m']))
 {
 	$mitsuba->admin->ui->checkToken($_POST['token']);

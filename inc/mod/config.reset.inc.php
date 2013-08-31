@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("config.reset");
 $mitsuba->admin->ui->checkToken($_POST['token']);
 
 $config = array();

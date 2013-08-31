@@ -3,12 +3,13 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("embeds.view");
 		$name = "";
 		$code = "";
 		$regex = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
+		$mitsuba->admin->reqPermission("embeds.add");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; $continue = 1; }
@@ -29,6 +30,7 @@ $mitsuba->admin->reqPermission(3);
 				}
 			}
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['name2']))) {
+		$mitsuba->admin->reqPermission("embeds.edit");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $name = $_POST['name']; $continue = 1; }
@@ -53,6 +55,7 @@ $mitsuba->admin->reqPermission(3);
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
 		{
+			$mitsuba->admin->reqPermission("embeds.delete");
 			$n = $conn->real_escape_string($_GET['n']);
 			$conn->query("DELETE FROM embeds WHERE name='".$n."'");
 		}

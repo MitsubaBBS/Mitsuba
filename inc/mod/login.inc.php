@@ -7,9 +7,10 @@ if ((!empty($_POST['username'])) && (!empty($_POST['password'])))
 		{
 			$username = $conn->real_escape_string($_POST['username']);
 			
-			$result = $conn->query("SELECT * FROM users WHERE username='".$username."' AND type>=1");
+			$result = $conn->query("SELECT * FROM users WHERE username='".$username."'");
 			if ($result->num_rows == 1)
 			{
+				$mitsuba->admin->reqPermission("user.login", $result['id']);
 				$data = $result->fetch_assoc();
 				$password = hash("sha512", $_POST['password'].$data['salt']);
 				if ($data['password'] == $password)
@@ -17,7 +18,7 @@ if ((!empty($_POST['username'])) && (!empty($_POST['password'])))
 					$_SESSION['logged']=1;
 					$_SESSION['id']=$data['id'];
 					$_SESSION['username']=$username;
-					$_SESSION['type']=$data['type'];
+					$_SESSION['group']=$data['group'];
 					$_SESSION['boards']=$data['boards'];
 					$_SESSION['ip']=$_SERVER['REMOTE_ADDR'];
 					$_SESSION['cookie_set']=2;

@@ -3,12 +3,13 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("pages.view");
 if (!empty($_GET['m']))
 {
 	switch ($_GET['m'])
 	{
 		case "add":
+$mitsuba->admin->reqPermission("pages.add");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			if (!empty($_POST['name']))
 			{
@@ -24,6 +25,7 @@ if (!empty($_GET['m']))
 			}
 			break;
 		case "delete":
+$mitsuba->admin->reqPermission("pages.delete");
 			$conn->query("DELETE FROM pages WHERE name='".$conn->real_escape_string($_GET['b'])."'");
 			if (file_exists("./".$_GET['b'].".html"))
 			{

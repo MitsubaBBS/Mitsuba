@@ -3,6 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
+$mitsuba->admin->reqPermission("bans.view");
 if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	{
 	$mitsuba->admin->ui->startSection(sprintf($lang['mod/recent_bans'], $_GET['c']));

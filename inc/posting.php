@@ -17,13 +17,8 @@ class Posting {
 		return $new;
 	}
 
-	function deletePost($board, $postno, $password, $onlyimgdel = 0, $adm_type = -1)
+	function deletePost($board, $postno, $password, $onlyimgdel = 0, $withoutpassword = false)
 	{
-		if (!is_numeric($adm_type))
-		{
-			$adm_type = -1;
-		}
-		if ($adm_type == 0) { $adm_type = -1; }
 		if (is_numeric($postno))
 		{
 			$board = $this->conn->real_escape_string($board);
@@ -37,7 +32,7 @@ class Posting {
 			{
 				$config = $this->mitsuba->config;
 				$postdata = $result->fetch_assoc();
-				if ($adm_type <= 0)
+				if (!$withoutpassword)
 				{
 					if (time() <= ($postdata['date'] + $bdata['time_to_delete']))
 					{
@@ -205,7 +200,7 @@ class Posting {
 		}
 	}
 
-	function addPost($board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $mimetype = "", $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $nofile = 0, $fake_id = "", $cc_text = "", $cc_color = "", $redirect = 0)
+	function addPost($board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $mimetype = "", $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $nofile = 0, $fake_id = "", $cc_text = "", $cc_style = "", $cc_icon = "", $redirect = 0)
 	{
 		global $lang;
 		$config = $this->mitsuba->config;
@@ -217,10 +212,10 @@ class Posting {
 		{
 			$resto = 0;
 		}
-		
-		if (!is_numeric($adm_type))
+		$mod = 0;
+		if (!empty($_SESSION['group']))
 		{
-			$adm_type = -1;
+			$mod = 1;
 		}
 		
 		if (!is_numeric($t_w))
@@ -232,19 +227,15 @@ class Posting {
 			$t_h = 0;
 		}
 		
-		if ((!is_numeric($raw)) || ($adm_type <= 0))
+		if ((!is_numeric($raw)) || ($mod == 0) || (!$this->mitsuba->admin->checkPermission("post.raw")))
 		{
 			$raw = 0;
 		}
-		if ((!is_numeric($capcode)) || ($adm_type <= 0))
-		{
-			$capcode = 0;
-		}
-		if ((!is_numeric($sticky)) || ($adm_type <= 0))
+		if ((!is_numeric($sticky)) || ($mod == 0) || (!$this->mitsuba->admin->checkPermission("post.sticky")))
 		{
 			$sticky = 0;
 		}
-		if ((!is_numeric($locked)) || ($adm_type <= 0))
+		if ((!is_numeric($locked)) || ($mod == 0) || (!$this->mitsuba->admin->checkPermission("post.closed")))
 		{
 			$locked = 0;
 		}
@@ -330,10 +321,6 @@ class Posting {
 				$email = "";
 			}*/
 		}
-		//$board, $name, $email, $subject, $comment, $password, $filename, $orig_filename,
-		//$mimetype = "", $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0,
-		//$adm_type = -1, $capcode = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0,
-		//$nofile = 0, $fake_id = "", $cc_text = "", $cc_color = "", $redirect = 0
 		if ($raw == 0)
 		{
 			$comment = $this->escapeMitsubaSpecialCharacters($comment);
@@ -343,9 +330,9 @@ class Posting {
 			"password" => $password, "filename" => $filename, "orig_filename" => $orig_filename,
 			"mimetype" => $mimetype, "resto" => $resto, "md5" => $md5, "t_w" => $t_w,
 			"t_h" => $t_h, "spoiler" => $spoiler, "embed" => $embed, "adm_type" => $adm_type,
-			"capcode" => $capcode, "raw" => $raw, "sticky" => $sticky, "locked" => $locked, 
+			"raw" => $raw, "sticky" => $sticky, "locked" => $locked, 
 			"nolimit" => $nolimit, "nofile" => $nofile, "fake_id" => $fake_id,
-			"cc_text" => $cc_text, "cc_color" => $cc_color);
+			"cc_text" => $cc_text, "cc_style" => $cc_style, "cc_icon" => $cc_icon);
 		$this->mitsuba->triggerEvent("onPost", $pdata);
 		$name = $pdata['name'];
 		$trip = $pdata['trip'];
@@ -405,16 +392,18 @@ class Posting {
 				$fsize = $this->mitsuba->common->human_filesize($osize);
 			}
 		}
-		if ((empty($cc_text)) || (empty($cc_color)))
+		if (empty($cc_text))
 		{
 			$cc_text = "";
-			$cc_color = "";
+			$cc_style = "";
+			$cc_icon = "";
 		} else {
 			$cc_text = $this->conn->real_escape_string(htmlspecialchars($cc_text));
-			$cc_color = $this->conn->real_escape_string(htmlspecialchars($cc_color));
+			$cc_style = $this->conn->real_escape_string(htmlspecialchars($cc_style));
+			$cc_icon = $this->conn->real_escape_string(htmlspecialchars($cc_icon));
 		}
 		$this->conn->query("INSERT INTO posts (board, date, name, trip, strip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, mimetype, t_w, t_h, sticky, sage, locked, capcode, raw, cc_text, cc_color, deleted)".
-		"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$strip."', '".$this->conn->real_escape_string($poster_id)."', '".$this->mitsuba->common->processString($email)."', '".$this->mitsuba->common->processString($subject)."', '".$this->mitsuba->common->preprocessComment($comment)."', '".md5($password)."', '".$this->mitsuba->common->processString($orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', '".$mimetype."', ".$t_w.", ".$t_h.", ".$sticky.", 0, ".$locked.", ".$capcode.", ".$raw.", '".$cc_text."', '".$cc_color."', 0)");
+		"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$strip."', '".$this->conn->real_escape_string($poster_id)."', '".$this->mitsuba->common->processString($email)."', '".$this->mitsuba->common->processString($subject)."', '".$this->mitsuba->common->preprocessComment($comment)."', '".md5($password)."', '".$this->mitsuba->common->processString($orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', '".$mimetype."', ".$t_w.", ".$t_h.", ".$sticky.", 0, ".$locked.", ".$raw.", '".$cc_text."', '".$cc_style."', '".$cc_icon."', 0)");
 		$id = mysqli_insert_id($this->conn);
 		if (empty($fake_id))
 		{

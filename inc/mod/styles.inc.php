@@ -3,11 +3,12 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("styles.view");
 		$search = "";
 		$replace = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "upload"))
 		{
+$mitsuba->admin->reqPermission("styles.upload");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$shouldnt = 0;
 			if (empty($_POST['name'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; $shouldnt = 1; }
@@ -25,6 +26,7 @@ $mitsuba->admin->reqPermission(3);
 		
 		if ((!empty($_GET['def'])) && ($_GET['def'] == 1) && (!empty($_GET['n'])))
 		{
+$mitsuba->admin->reqPermission("styles.update");
 			$n = $conn->real_escape_string($_GET['n']);
 			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$conn->query("UPDATE styles SET `default`=0");
@@ -33,6 +35,7 @@ $mitsuba->admin->reqPermission(3);
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
 		{
+$mitsuba->admin->reqPermission("styles.delete");
 			$n = $conn->real_escape_string($_GET['n']);
 			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$conn->query("DELETE FROM styles WHERE id=".$n);
@@ -40,6 +43,7 @@ $mitsuba->admin->reqPermission(3);
 		
 		if ((!empty($_GET['f'])) && ($_GET['f'] == 1) && (!empty($_GET['n'])))
 		{
+$mitsuba->admin->reqPermission("styles.delete");
 			$n = $conn->real_escape_string($_GET['n']);
 			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 			$result = $conn->query("SELECT * FROM styles WHERE id=".$n);

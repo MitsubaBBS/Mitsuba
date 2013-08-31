@@ -3,9 +3,10 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
+$mitsuba->admin->reqPermission("warnings.view");
 if ((isset($_GET['del'])) && ($_GET['del']==1))
 	{
-		$mitsuba->admin->reqPermission(2);
+$mitsuba->admin->reqPermission("warnings.delete");
 		if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
 		{
 			$conn->query("DELETE FROM warnings WHERE id=".$_GET['b']);

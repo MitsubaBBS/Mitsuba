@@ -1,9 +1,9 @@
 <?php
-$mitsuba->admin->reqPermission(3);
 if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
+$mitsuba->admin->reqPermission("logs.view");
 ?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/action_log']); ?>
 

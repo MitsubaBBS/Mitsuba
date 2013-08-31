@@ -1,12 +1,12 @@
 <?php
-$mitsuba->admin->reqPermission(2);
+$mitsuba->admin->reqPermission("range.view");
 if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
 if ((isset($_GET['del'])) && ($_GET['del']==1))
 	{
-		$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("range.delete");
 		if ((!empty($_GET['b'])) && (is_numeric($_GET['b'])))
 		{
 			$conn->query("DELETE FROM rangebans WHERE id=".$_GET['b']);

@@ -4,6 +4,7 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 
+		$mitsuba->admin->reqPermission("inbox");
 		if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 			$conn->query("DELETE FROM pm WHERE id=".$_GET['id']." AND to_user=".$_SESSION['id']);

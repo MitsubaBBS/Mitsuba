@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(2);
+$mitsuba->admin->reqPermission("boards.rebuild");
 		if ((!empty($_GET['board'])) && ($mitsuba->common->isBoard($_GET['board'])))
 		{
 			$mitsuba->caching->rebuildBoardCache($_GET['board']);

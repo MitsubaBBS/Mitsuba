@@ -26,17 +26,17 @@ class Users {
 		}
 	}
 
-	function addUser($username, $password, $type, $boards)
+	function addUser($username, $password, $group, $boards)
 	{
 		$username = $this->conn->real_escape_string($username);
-		if (!is_numeric($type))
+		if (!$this->isGroup($group))
 		{
 			return -1;
 		}
 		$boards = $this->conn->real_escape_string($boards);
 		$salt = $this->conn->real_escape_string($this->mitsuba->common->randomSalt());
 		$password = hash("sha512", $password.$salt);
-		$result = $this->conn->query("INSERT INTO users (username, password, salt, type, boards) VALUES ('".$username."', '".$password."', '".$salt."', ".$type.", '".$boards."')");
+		$result = $this->conn->query("INSERT INTO users (`username`, `password`, `salt`, `group`, `boards`) VALUES ('".$username."', '".$password."', '".$salt."', ".$group.", '".$boards."')");
 		if ($result)
 		{
 			return 1;
@@ -55,13 +55,13 @@ class Users {
 		$this->conn->query("DELETE FROM notes WHERE mod_id=".$id);
 	}
 
-	function updateUser($id, $username, $password, $type, $boards)
+	function updateUser($id, $username, $password, $group, $boards)
 	{
 		if (!is_numeric($id))
 		{
 			return -1;
 		}
-		if (!is_numeric($type))
+		if (!$this->isGroup($group))
 		{
 			return -1;
 		}
@@ -75,10 +75,14 @@ class Users {
 			{
 				$password_db = ", password='".hash("sha512", $password.$userdata['salt'])."'";
 			}
-			$type = $this->conn->real_escape_string($type);
 			$boards = $this->conn->real_escape_string($boards);
-			$this->conn->query("UPDATE users SET username='".$username."'".$password_db.", type=".$type.", boards='".$boards."' WHERE id=".$id);
+			$this->conn->query("UPDATE users SET username='".$username."'".$password_db.", `group`=".$group.", boards='".$boards."' WHERE id=".$id);
 		}
+	}
+
+	function isGroup($id)
+	{
+		return true;
 	}
 
 	function isUser($id)

@@ -3,11 +3,12 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(3);
+$mitsuba->admin->reqPermission("wordfilter.view");
 		$search = "";
 		$replace = "";
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
+$mitsuba->admin->reqPermission("wordfilter.add");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; $continue = 1; }
@@ -37,6 +38,7 @@ $mitsuba->admin->reqPermission(3);
 			$search = "";
 			$replace = "";
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['id']))) {
+$mitsuba->admin->reqPermission("wordfilter.update");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
 			$continue = 0;
 			if (empty($_POST['search'])) { echo "<b style='color: red;'>".$lang['mod/fill_all_fields']."</b>"; } else { $search = $_POST['search']; $continue = 1; }
@@ -70,6 +72,7 @@ $mitsuba->admin->reqPermission(3);
 		}
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
+$mitsuba->admin->reqPermission("wordfilter.delete");
 		{
 			$n = $conn->real_escape_string($_GET['n']);
 			if (!is_numeric($n)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }

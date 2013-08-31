@@ -3,7 +3,6 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission(2);
 	if ((isset($_GET['b'])) && (is_numeric($_GET['b'])))
 	{
 	$result = $conn->query("SELECT * FROM announcements WHERE id=".$_GET['b']);
@@ -27,12 +26,7 @@ $mitsuba->admin->reqPermission(2);
 	<?php
 	} else {
 $mitsuba->admin->ui->checkToken($_POST['token']);
-		if ($_SESSION['type']==2)
-		{
 		updateEntry($conn, 0, $_GET['b'], $_POST['who'], $_POST['title'], $_POST['text']);
-		} else {
-		updateEntry($conn, 0, $_GET['b'], $_POST['who'], $_POST['title'], $_POST['text'], 1);
-		}
 		?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/post_updated']); ?>
 <a href="?/announcements"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>

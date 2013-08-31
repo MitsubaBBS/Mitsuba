@@ -116,7 +116,8 @@ switch ($mode)
 		</div>
 			<?php
 					} else {
-						$result = $conn->query("INSERT INTO users (username, password, type, boards) VALUES ('".$conn->real_escape_string($username)."', '".hash("sha512", $password)."', 3, '%')");
+						$salt = $conn->real_escape_string(randomSalt());
+						$result = $conn->query("INSERT INTO users (`username`, `password`, `salt`, `group`, `boards`) VALUES ('".$conn->real_escape_string($username)."', '".hash("sha512", $password.$salt)."', '".$salt."', 3, '%')");
 						if (!$result)
 						{
 						?>
@@ -133,6 +134,7 @@ switch ($mode)
 						$handle = fopen("./config.php", "w");
 						$file = '<?php'."\n";
 						$file .= 'date_default_timezone_set("UTC")'.";\n";
+						$file .= '$db_type = "mysqli";'."\n";
 						$file .= '$db_username = "'.$db_username.'"'.";\n";
 						$file .= '$db_password = "'.$db_password.'"'.";\n";
 						$file .= '$db_database = "'.$db_name.'"'.";\n";

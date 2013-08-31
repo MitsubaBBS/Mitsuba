@@ -10,7 +10,7 @@ session_start();
 
 if ((!empty($_SESSION['logged'])) && (!empty($_SESSION['cookie_set'])) && ($_SESSION['cookie_set']==2))
 {
-	setcookie('in_mod', $_SESSION['type'], 0);
+	setcookie('in_mod', $_SESSION['group'], 0);
 	$_SESSION['cookie_set']=1;
 }
 include("config.php");
@@ -20,7 +20,7 @@ include("inc/strings/mod.strings.php");
 include("inc/strings/imgboard.strings.php");
 include("inc/strings/log.strings.php");
 
-function deleteEntry($conn, $type, $id, $validate_id = 0)
+function deleteEntry($conn, $type, $id,)
 {
 	if (!is_numeric($id))
 	{
@@ -30,8 +30,10 @@ function deleteEntry($conn, $type, $id, $validate_id = 0)
 	if ($type == 0) { $table = "announcements"; }
 	if ($type == 1) { $table = "news"; }
 	
-	if ($validate_id == 1)
+	if ($mitsuba->admin->checkPermission($table.".delete", $_SESSION['group']))
 	{
+		$conn->query("DELETE FROM ".$table." WHERE id=".$id);
+	} elseif ($mitsuba->admin->checkPermission($table.".delete.own", $_SESSION['group'])) {
 		$result = $conn->query("SELECT * FROM ".$table." WHERE id=".$id);
 		$entry = $result->fetch_assoc();
 		if ($entry['mod_id'] == $_SESSION['id'])
@@ -39,13 +41,13 @@ function deleteEntry($conn, $type, $id, $validate_id = 0)
 			$conn->query("DELETE FROM ".$table." WHERE id=".$id);
 		}
 	} else {
-		$conn->query("DELETE FROM ".$table." WHERE id=".$id);
+		die("Insufficient permissions");
 	}
 
 	if ($type == 1) { $mitsuba->caching->generateNews(); }
 }
 
-function updateEntry($conn, $type, $id, $who, $title, $text, $validate_id = 0)
+function updateEntry($conn, $type, $id, $who, $title, $text)
 {
 	if (!is_numeric($id))
 	{
@@ -58,16 +60,16 @@ function updateEntry($conn, $type, $id, $who, $title, $text, $validate_id = 0)
 	if ($type == 0) { $table = "announcements"; }
 	if ($type == 1) { $table = "news"; }
 	
-	if ($validate_id == 1)
+	if ($mitsuba->admin->checkPermission($table.".update", $_SESSION['group']))
 	{
+		$conn->query("UPDATE ".$table." SET who='".$who."', title='".$title."', text='".$text."' WHERE id=".$id);
+	} elseif ($mitsuba->admin->checkPermission($table.".update.own", $_SESSION['group']))
 		$result = $conn->query("SELECT * FROM ".$table." WHERE id=".$id);
 		$entry = $result->fetch_assoc();
 		if ($entry['mod_id'] == $_SESSION['id'])
 		{
 			$conn->query("UPDATE ".$table." SET who='".$who."', title='".$title."', text='".$text."' WHERE id=".$id);
 		}
-	} else {
-		$conn->query("UPDATE ".$table." SET who='".$who."', title='".$title."', text='".$text."' WHERE id=".$id);
 	}
 	
 	if ($type == 1) { $mitsuba->caching->generateNews(); }

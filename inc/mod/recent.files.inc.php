@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-
+$mitsuba->admin->reqPermission("recent.files");
 		if ((!empty($_GET['max'])) && (is_numeric($_GET['max'])))
 		{
 			$max = $_GET['max'];
