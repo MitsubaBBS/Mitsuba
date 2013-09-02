@@ -8,11 +8,6 @@ define("IN_MOD", TRUE);
 
 session_start();
 
-if ((!empty($_SESSION['logged'])) && (!empty($_SESSION['cookie_set'])) && ($_SESSION['cookie_set']==2))
-{
-	setcookie('in_mod', $_SESSION['group'], 0);
-	$_SESSION['cookie_set']=1;
-}
 include("config.php");
 include("version.php");
 include("inc/mitsuba.php");
@@ -113,6 +108,28 @@ if ( ( (!isset($_SESSION['logged'])) || ($_SESSION['logged']==0) ) && (!( ($path
 }
 $conn = new mysqli($db_host, $db_username, $db_password, $db_database);
 $mitsuba = new Mitsuba($conn);
+if ((!empty($_SESSION['logged'])) && (!empty($_SESSION['cookie_set'])) && ($_SESSION['cookie_set']==2))
+{
+	$cookie = "";
+	$cookie .= $mitsuba->admin->checkPermission("post.ignorenoname")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.ignoresizelimit")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.raw")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.antibump")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.sticky")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.closed")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.nofile")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.fakeid")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.ignorecaptcha")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.capcode")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.customcapcode")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.viewip")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.delete.single")."|";
+	$cookie .= $mitsuba->admin->checkPermission("post.edit")."|";
+	$cookie .= $mitsuba->admin->checkPermission("bans.add")."|";
+	$cookie .= $mitsuba->admin->checkPermission("bans.add.request");
+	setcookie('in_mod', $cookie, 0);
+	$_SESSION['cookie_set']=1;
+}
 if (($path != "/nav") && ($path != "/board") && ($path != "/board/action") && (($path != "/") || ((!isset($_SESSION['logged'])) || ($_SESSION['logged']==0))) && (substr($path, 0, 5) != "/api/"))
 {
 ?>

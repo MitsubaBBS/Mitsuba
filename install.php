@@ -30,6 +30,16 @@ function randomSalt() {
 	}
 	return implode($pass);
 }
+function randompwSalt() {
+	$alphabet = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789+_-)(*&^%$#@!~|';
+	$pass = array();
+	$alphaLength = strlen($alphabet) - 1;
+	for ($i = 0; $i < 15; $i++) {
+		$n = mt_rand(0, $alphaLength);
+		$pass[] = $alphabet[$n];
+	}
+	return implode($pass);
+}
 switch ($mode)
 {
 	case "install":
@@ -116,7 +126,7 @@ switch ($mode)
 		</div>
 			<?php
 					} else {
-						$salt = randomSalt();
+						$salt = randompwSalt();
 						$salt2 = $conn->real_escape_string($salt);
 						$result = $conn->query("INSERT INTO users (`username`, `password`, `salt`, `group`, `boards`) VALUES ('".$conn->real_escape_string($username)."', '".hash("sha512", $password.$salt)."', '".$salt2."', 3, '%')");
 						if (!$result)

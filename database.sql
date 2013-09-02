@@ -493,7 +493,7 @@ INSERT INTO `permissions` (`id`, `name`, `description`, `category`) VALUES
 (50, 'news.delete.own', 'Delete own news', 12),
 (51, 'news.manage', 'Manage news', 12),
 (52, 'news.update', 'Update news', 12),
-(53, 'news.update.own', 'Update own nes', 12),
+(53, 'news.update.own', 'Update own news', 12),
 (54, 'news.view', 'View news', 12),
 (55, 'notes.add', 'Add notes', 13),
 (56, 'notes.delete', 'Delete notes', 13),
@@ -548,16 +548,18 @@ INSERT INTO `permissions` (`id`, `name`, `description`, `category`) VALUES
 (105, 'bans.add.request', 'Add ban requests', 3),
 (106, 'post.ignorespamfilter', 'Ignore spamfilter', 14),
 (107, 'post.ignorebumplimit', 'Ignore bumplimit', 14),
-(108, 'post.raw', 'Raw HTML', 14),
-(109, 'post.nofile', 'No file', 14),
-(110, 'post.fakeid', 'Fake ID', 14),
-(111, 'post.ignorespamlimits', 'Ignore spamlimits', 14),
-(112, 'post.ignorenoname', 'Ignore noname', 14),
-(113, 'post.ignorenodup', 'Ignore nodup', 14),
-(114, 'pages.view', 'Ignore nodup', 27),
-(115, 'pages.update', 'Ignore nodup', 27),
-(116, 'pages.delete', 'Ignore nodup', 27),
-(117, 'pages.add', 'Ignore nodup', 27);
+(108, 'post.ignoresizelimit', 'Ignore size limit', 14),
+(109, 'post.raw', 'Raw HTML', 14),
+(110, 'post.nofile', 'No file', 14),
+(111, 'post.fakeid', 'Fake ID', 14),
+(112, 'post.ignorespamlimits', 'Ignore spamlimits', 14),
+(113, 'post.ignorenoname', 'Ignore noname', 14),
+(114, 'post.ignorenodup', 'Ignore nodup', 14),
+(115, 'post.ignorecaptcha', 'Ignore CAPTCHA', 14),
+(116, 'pages.view', 'Ignore nodup', 27),
+(117, 'pages.update', 'Ignore nodup', 27),
+(118, 'pages.delete', 'Ignore nodup', 27),
+(119, 'pages.add', 'Ignore nodup', 27);
 
 INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (1, 10),
@@ -629,6 +631,8 @@ INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (2, 111),
 (2, 112),
 (2, 113),
+(2, 114),
+(2, 115),
 (3, 0),
 (3, 1),
 (3, 10),
@@ -745,7 +749,9 @@ INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (3, 114),
 (3, 115),
 (3, 116),
-(3, 117);
+(3, 117),
+(3, 118)
+(3, 119),;
 
 INSERT INTO `styles` (`name`, `path`, `relative`, `default`) VALUES 
 ('Mitsuba', './styles/mitsuba.css', 1, 1),

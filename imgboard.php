@@ -155,23 +155,23 @@ if (!empty($_POST['mode']))
 					$cc_text = $_POST['cc_text'];
 					$cc_style = $_POST['cc_style'];
 				}
-				if ((!empty($_POST['raw'])) && ($_POST['raw']==1) && ($mitsuba->admin->checkPermission("post.raw"))
+				if ((!empty($_POST['raw'])) && ($_POST['raw']==1) && ($mitsuba->admin->checkPermission("post.raw")))
 				{
 					$raw = 1;
 				}
-				if ((!empty($_POST['nofile'])) && ($_POST['nofile']==1) && ($mitsuba->admin->checkPermission("post.nofile"))
+				if ((!empty($_POST['nofile'])) && ($_POST['nofile']==1) && ($mitsuba->admin->checkPermission("post.nofile")))
 				{
 					$nofile = 1;
 				}
-				if ((!empty($_POST['sticky'])) && ($_POST['sticky']==1) && ($mitsuba->admin->checkPermission("post.sticky"))
+				if ((!empty($_POST['sticky'])) && ($_POST['sticky']==1) && ($mitsuba->admin->checkPermission("post.sticky")))
 				{
 					$sticky = 1;
 				}
-				if ((!empty($_POST['lock'])) && ($_POST['lock']==1) && ($mitsuba->admin->checkPermission("post.closed"))
+				if ((!empty($_POST['lock'])) && ($_POST['lock']==1) && ($mitsuba->admin->checkPermission("post.closed")))
 				{
 					$lock = 1;
 				}
-				if (!empty($_POST['fake_id']) && ($mitsuba->admin->checkPermission("post.fakeid"))
+				if (!empty($_POST['fake_id']) && ($mitsuba->admin->checkPermission("post.fakeid")))
 				{
 					$fake_id = $_POST['fake_id'];
 				}
@@ -356,13 +356,18 @@ if (!empty($_POST['mode']))
 					if (isset($_COOKIE['password'])) { $password = $_COOKIE['password']; }
 					if (!empty($_POST['pwd'])) { $password = $_POST['pwd']; }
 				}
+				$canDelete = false;
+				if ($mod >= 1)
+				{
+					$canDelete = $mitsuba->admin->checkPermission("post.delete.single");
+				}
 				if ((isset($_POST['onlyimgdel']) && ($_POST['onlyimgdel'] == "on"))) { $onlyimgdel = 1; }
 				foreach ($_POST as $key => $value)
 				{
 					if ($value == "delete")
 					{
 						$keys = explode("%", $key);
-						$done = $mitsuba->posting->deletePost($keys[1], $keys[2], $password, $onlyimgdel, $mitsuba->admin->checkPermission("post.delete"));
+						$done = $mitsuba->posting->deletePost($keys[1], $keys[2], $password, $onlyimgdel, $canDelete);
 						if ($done == -1) {
 							echo sprintf($lang["img/post_bad_password"],$keys[1]."/".$keys[2]).".<br />";
 						} elseif ($done == -2) {
