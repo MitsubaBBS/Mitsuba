@@ -106,7 +106,7 @@ if ($mitsuba->admin->checkPermission("reports.clear.all"))
 			echo "<td>".$row['reason']."</td>";
 			echo "<td class='nowrapIP'><center>".$row['reporter_ip']."</center></td>";
 			echo "<td><center>[ <a href='?/reports&cl=1&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> "; 
-			if ($mitsuba->admin->checkPermission("reports.clear.multiple"));
+			if ($mitsuba->admin->checkPermission("reports.clear.multiple"))
 			{
 				echo "/ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."&d=1'>&</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."'>D</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."&f=1'>F</a> ] "; 
 				echo "[ <a href='?/info&ip=".$pdata['ip']."'>N</a> ] <br />";

@@ -55,7 +55,6 @@ $mitsuba->admin->reqPermission("users.update");
 <?php echo $lang['mod/username']; ?>: <input type="text" name="username" value="<?php echo $data['username']; ?>"/><br />
 <?php echo $lang['mod/password_leave_blank']; ?>: <input type="password" name="password"/><br />
 <?php echo $lang['mod/type']; ?>: <select name="type">
-<select name="type">
 <?php 
 $groups = $conn->query("SELECT * FROM groups");
 while ($row = $groups->fetch_assoc())

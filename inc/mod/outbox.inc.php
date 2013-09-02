@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$mitsuba->admin->reqPermission("inbox");
+$mitsuba->admin->reqPermission("user.inbox");
 ?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/outbox']); ?>
 

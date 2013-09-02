@@ -3,7 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-		$mitsuba->admin->reqPermission("inbox");
+		$mitsuba->admin->reqPermission("user.inbox");
 if ((!empty($_GET['id'])) && (is_numeric($_GET['id'])))
 		{
 		$result = $conn->query("SELECT users.username, pm.* FROM pm LEFT JOIN users ON pm.from_user=users.id WHERE (pm.to_user=".$_SESSION['id']." OR pm.from_user=".$_SESSION['id'].") AND pm.id=".$_GET['id']);

@@ -3,6 +3,7 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
+		$mitsuba->admin->reqPermission("user.inbox");
 if ((!empty($_POST['to'])) && (!empty($_POST['title'])) && (!empty($_POST['text'])))
 		{
 			$mitsuba->admin->ui->checkToken($_POST['token']);
