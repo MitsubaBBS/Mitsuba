@@ -55,8 +55,12 @@ class Admin
 		}
 	}
 
-	function checkPermission($permission, $groupid)
+	function checkPermission($permission, $groupid = false)
 	{
+		if ($groupid == false)
+		{
+			$groupid = $_SESSION['group'];
+		}
 		$p = explode(".", $permission);
 		$permission = $this->conn->query("SELECT * FROM group_permissions INNER JOIN permissions ON group_permissions.pid=permissions.id AND permissions.name='".$this->conn->real_escape_string($permission)."' WHERE gid=".$groupid);
 		if ($permission->num_rows == 1)
