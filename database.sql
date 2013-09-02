@@ -750,8 +750,8 @@ INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (3, 115),
 (3, 116),
 (3, 117),
-(3, 118)
-(3, 119),;
+(3, 118),
+(3, 119);
 
 INSERT INTO `styles` (`name`, `path`, `relative`, `default`) VALUES 
 ('Mitsuba', './styles/mitsuba.css', 1, 1),
