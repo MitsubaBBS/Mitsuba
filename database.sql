@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `group_permissions` (
 );
 
 CREATE TABLE IF NOT EXISTS `groups` (
-  `id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(60) NOT NULL,
   `capcode` varchar(60) NOT NULL,
   `capcode_style` varchar(60) NOT NULL,
@@ -404,10 +404,10 @@ INSERT INTO `extensions` (`ext`, `name`, `mimetype`, `image`, `default`) VALUES
 ('mkv', 'Matroska Video File', 'video/x-matroska', 0, 0);
 
 INSERT INTO `groups` (`id`, `name`, `capcode`, `capcode_style`, `capcode_icon`) VALUES
-(0, 'Disabled', '', '', ''),
 (1, 'Janitor', '', '', ''),
 (2, 'Moderator', '## Mod', 'color:#800080', './img/mod.png'),
-(3, 'Administrator', '## Admin', 'color:#FF0000', './img/admin.png');
+(3, 'Administrator', '## Admin', 'color:#FF0000', './img/admin.png'),
+(4, 'Disabled', '', '', '');
 
 INSERT INTO `permissions_categories` (`id`, `name`, `description`) VALUES
 (0, 'ads', 'Advertisements'),
