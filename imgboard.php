@@ -236,7 +236,7 @@ if (!empty($_POST['mode']))
 					$filename = $fileid . $ext; 
 					$target_path .= $filename;
 					$md5 = md5_file($_FILES['upfile']['tmp_name']);
-					if (($bdata['nodup'] == 1) && (($mod == 0) || (!$mitsuba->admin->checkPermission("post.ignorenodup")))
+					if (($bdata['nodup'] == 1) && (($mod == 0) || (!$mitsuba->admin->checkPermission("post.ignorenodup"))))
 					{
 						$isit = $conn->query("SELECT * FROM posts WHERE filehash='".$md5."' AND board='".$_POST['board']."'");
 						if ($isit->num_rows >= 1)
