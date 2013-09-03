@@ -96,6 +96,9 @@ while ($row = $result->fetch_assoc())
 		case "bottom":
 			echo $lang['mod/pos_bottom'];
 			break;
+		case "rules":
+			echo $lang['mod/pos_rules'];
+			break;
 		default:
 			echo "<b>WRONG POSITION: ".$row['position']."</b>";
 			break;

@@ -502,6 +502,7 @@ class Caching
 			$location = "board";
 		}
 		$header = $this->getBoardHeader($board, $boarddata, $location);
+		$rules_ads = $this->getAds($boarddata['short'], "rules");
 		$underform_ads = $this->getAds($boarddata['short'], "underform");
 		$footer_ads = $this->getAds($boarddata['short'], "footer");
 		$bottom_ads = $this->getAds($boarddata['short'], "bottom");
@@ -683,7 +684,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				<li>'.sprintf($lang['img/max_filesize'], $boarddata['filesize']).'</li>
 				<li>'.$lang['img/thumbnail'].'</li>
 				<li>'.sprintf($lang['img/unique_user_posts'], $unique).'</li>
-				</ul>
+				'.$rules_ads.'</ul>
 				</td>
 				</tr>
 				</tbody>

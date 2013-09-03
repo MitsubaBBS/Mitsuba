@@ -309,7 +309,7 @@ $lang['mod/enable_api'] = "Enable API";
 $lang['mod/enable_meny'] = "Enable Meny";
 $lang['mod/wf_search'] = "Search"; //wordfilter
 $lang['mod/wf_replace'] = "Replace"; //wordfilter
-$lang['mod/wf_add'] = "Add wodrfilter";
+$lang['mod/wf_add'] = "Add wordfilter";
 $lang['mod/wf_edit'] = "Edit wordfilter";
 $lang['mod/show_file'] = "Show file";
 $lang['mod/user'] = "User";
@@ -357,6 +357,7 @@ $lang['mod/pos_aboveform'] = "Above posting form";
 $lang['mod/pos_underform'] = "Under posting form";
 $lang['mod/pos_footer'] = "Above style select/delete form";
 $lang['mod/pos_bottom'] = "Above &lt;/body&gt;";
+$lang['mod/pos_rules'] = "Posting form (rules)";
 $lang['mod/ad_not_found'] = "Ad not found";
 //$lang['mod/'] = "";
 ?>
