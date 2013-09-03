@@ -675,12 +675,14 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				}
 				$postform .= "</td></tr>";
 			}
+			$unique = $this->conn->query("SELECT DISTINCT ip FROM posts WHERE board='".$boarddata['short']."';")->fetch_assoc()->num_rows;
 			$postform .= '<tr class="rules">
 				<td colspan="2">
 				<ul class="rules">
 				<li>'.$lang['img/supported_types'].$boarddata['extensions'].'</li>
 				<li>'.sprintf($lang['img/max_filesize'], $boarddata['filesize']).'</li>
 				<li>'.$lang['img/thumbnail'].'</li>
+				<li>'.sprintf($lang['img/unique_user_posts'], $unique).'</li>
 				</ul>
 				</td>
 				</tr>

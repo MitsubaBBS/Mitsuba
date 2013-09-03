@@ -304,7 +304,7 @@ class Posting {
 		$lastbumped = time();
 		$trip = "";
 		$strip = "";
-		if (($bdata['noname'] == 0) || ($this->mitsuba->checkPermission("post.ignorenoname"))
+		if (($bdata['noname'] == 0) || ($this->mitsuba->checkPermission("post.ignorenoname")))
 		{
 			$arr = $this->mitsuba->common->processName($name);
 			$trip = $arr['trip'];

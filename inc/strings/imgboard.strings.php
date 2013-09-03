@@ -46,6 +46,7 @@ $lang['img/mod_nolimit'] = "Ignore bumplimit";
 $lang['img/mod_nofile'] = "No file";
 $lang['img/mod_nosizelimit'] = "Ignore filesize limit";
 $lang['img/supported_types'] = "Supported file types are: ";
+$lang['img/unique_user_posts'] = "Currently %1 unique user posts.";
 $lang['img/max_filesize'] = "Maximum file size allowed is %s bytes.";
 $lang['img/thumbnail'] = "Images greater than 250x250 pixels will be thumbnailed.";
 $lang['img/locked'] = "This thread is locked.";
