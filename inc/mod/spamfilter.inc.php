@@ -142,7 +142,7 @@ echo "</tr>";
 </table>
 <?php $mitsuba->admin->ui->endSection(); ?>
 <br /><br />
-<?php $mitsuba->admin->ui->startSection($lang['mod/wf_add']); ?>
+<?php $mitsuba->admin->ui->startSection($lang['mod/sf_add']); ?>
 
 <form action="?/spamfilter" method="POST">
 <?php $mitsuba->admin->ui->getToken($path); ?>

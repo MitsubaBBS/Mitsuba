@@ -11,7 +11,7 @@ $mitsuba->admin->reqPermission("spamfilter.update");
 		{
 		$info = $result->fetch_assoc();
 		?>
-<?php $mitsuba->admin->ui->startSection($lang['mod/wf_edit']); ?>
+<?php $mitsuba->admin->ui->startSection($lang['mod/sf_edit']); ?>
 
 <form action="?/spamfilter" method="POST">
 <?php $mitsuba->admin->ui->getToken($path); ?>
