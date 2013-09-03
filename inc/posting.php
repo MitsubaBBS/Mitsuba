@@ -294,7 +294,7 @@ class Posting {
 			}
 			
 			$tinfo = $thread->fetch_assoc();
-			if (($tinfo['locked'] == 1) && ($this->mitsuba->checkPermission("post.closed")))
+			if (($tinfo['locked'] == 1) && ($this->mitsuba->admin->checkPermission("post.closed")))
 			{
 				echo "<center><h1>".$lang['img/thread_locked']."</h1><br /><a href='./".$board."'>".$lang['img/return']."</a></center>";
 				return;
@@ -304,7 +304,7 @@ class Posting {
 		$lastbumped = time();
 		$trip = "";
 		$strip = "";
-		if (($bdata['noname'] == 0) || ($this->mitsuba->checkPermission("post.ignorenoname")))
+		if (($bdata['noname'] == 0) || ($this->mitsuba->admin->checkPermission("post.ignorenoname")))
 		{
 			$arr = $this->mitsuba->common->processName($name);
 			$trip = $arr['trip'];

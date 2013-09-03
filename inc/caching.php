@@ -676,7 +676,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				}
 				$postform .= "</td></tr>";
 			}
-			$unique = $this->conn->query("SELECT DISTINCT ip FROM posts WHERE board='".$boarddata['short']."';")->fetch_assoc()->num_rows;
+			$unique = $this->conn->query("SELECT DISTINCT ip FROM posts WHERE board='".$boarddata['short']."';")->num_rows;
 			$postform .= '<tr class="rules">
 				<td colspan="2">
 				<ul class="rules">
