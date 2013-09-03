@@ -294,7 +294,7 @@ class Posting {
 			}
 			
 			$tinfo = $thread->fetch_assoc();
-			if (($tinfo['locked'] == 1) && ($adm_type <= 0))
+			if (($tinfo['locked'] == 1) && ($this->mitsuba->checkPermission("post.closed")))
 			{
 				echo "<center><h1>".$lang['img/thread_locked']."</h1><br /><a href='./".$board."'>".$lang['img/return']."</a></center>";
 				return;
@@ -304,7 +304,7 @@ class Posting {
 		$lastbumped = time();
 		$trip = "";
 		$strip = "";
-		if (($bdata['noname'] == 0) || ($adm_type >= 1))
+		if (($bdata['noname'] == 0) || ($this->mitsuba->checkPermission("post.ignorenoname"))
 		{
 			$arr = $this->mitsuba->common->processName($name);
 			$trip = $arr['trip'];
@@ -329,7 +329,7 @@ class Posting {
 			"email" => $email, "subject" => $subject, "comment" => $comment,
 			"password" => $password, "filename" => $filename, "orig_filename" => $orig_filename,
 			"mimetype" => $mimetype, "resto" => $resto, "md5" => $md5, "t_w" => $t_w,
-			"t_h" => $t_h, "spoiler" => $spoiler, "embed" => $embed, "adm_type" => $adm_type,
+			"t_h" => $t_h, "spoiler" => $spoiler, "embed" => $embed,
 			"raw" => $raw, "sticky" => $sticky, "locked" => $locked, 
 			"nolimit" => $nolimit, "nofile" => $nofile, "fake_id" => $fake_id,
 			"cc_text" => $cc_text, "cc_style" => $cc_style, "cc_icon" => $cc_icon);
@@ -345,7 +345,7 @@ class Posting {
 		$embed = $pdata['embed'];
 		$raw = $pdata['raw'];
 		$old_email = $email;
-		if (($bdata['noname'] == 1) && (!empty($email)) && ($adm_type <= 0))
+		if (($bdata['noname'] == 1) && (!empty($email)) && ($this->mitsuba->checkPermission("post.ignorenoname")))
 		{
 			if (($email == "noko") || ($email == "nonoko"))
 			{

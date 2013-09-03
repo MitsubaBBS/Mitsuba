@@ -4,7 +4,7 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 $mitsuba->admin->reqPermission("bans.add.request");
-$canBan = $mitsuba->admin->reqPermission("bans.add");
+$canBan = $mitsuba->admin->checkPermission("bans.add");
 if (empty($_GET['r']))
 	{
 	if (empty($_POST['ip']))
