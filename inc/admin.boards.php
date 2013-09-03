@@ -152,7 +152,7 @@ class Boards {
 		{
 			$name = $this->conn->real_escape_string($name);
 			$des = $this->conn->real_escape_string($des);
-			$message = $this->conn->real_escape_string($message);
+			$msg = $this->conn->real_escape_string($msg);
 			$anonymous = $this->conn->real_escape_string($anonymous);
 			$overboard_boards = $this->conn->real_escape_string($overboard_boards);
 			$extensions = $this->conn->real_escape_string($extensions);

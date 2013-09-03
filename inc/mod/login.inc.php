@@ -17,17 +17,17 @@ if ((!empty($_POST['username'])) && (!empty($_POST['password'])))
 				{
 					$group = $conn->query("SELECT * FROM groups WHERE id=".$data['group']);
 					$gdata = $group->fetch_assoc();
-					$_SESSION['logged']=1;
-					$_SESSION['id']=$data['id'];
-					$_SESSION['username']=$username;
-					$_SESSION['group']=$data['group'];
-					$_SESSION['boards']=$data['boards'];
-					$_SESSION['ip']=$_SERVER['REMOTE_ADDR'];
+					$_SESSION['logged'] = 1;
+					$_SESSION['id'] = $data['id'];
+					$_SESSION['username'] = $username;
+					$_SESSION['group'] = $data['group'];
+					$_SESSION['boards'] = $data['boards'];
+					$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
 					$_SESSION['capcode_text'] = $gdata['capcode'];
 					$_SESSION['capcode_style'] = $gdata['capcode_style'];
 					$_SESSION['capcode_icon'] = $gdata['capcode_icon'];
 					$_SESSION['group_name'] = $gdata['name'];
-					$_SESSION['cookie_set']=2;
+					$_SESSION['cookie_set'] = 2;
 					$mitsuba->admin->logAction(sprintf($lang['log/logged_in'], $_SERVER['REMOTE_ADDR']));
 					header("Location: ./mod.php");
 				} else {
