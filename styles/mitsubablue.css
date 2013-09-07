@@ -1648,6 +1648,11 @@ div.navLinks:nth-child(6) > label:nth-child(4) {
 	display: inline;
 }
 
+div.navLinks:nth-child(7) > label:nth-child(5) {
+	float: inherit;
+	display: inline;
+}
+
 /* JAVASCRIPTS */
 
 .postnew {
