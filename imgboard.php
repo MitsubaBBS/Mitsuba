@@ -245,9 +245,9 @@ if (!empty($_POST['mode']))
 							$postlink = "";
 							if ($row6['resto']==0)
 							{
-								$postlink = "./".$_POST['board']."/".$row6['id'].".html#p".$row6['id'];
+								$postlink = "./".$_POST['board']."/res/".$row6['id'].".html#p".$row6['id'];
 							} else {
-								$postlink = "./".$_POST['board']."/".$row6['resto'].".html#p".$row6['id'];
+								$postlink = "./".$_POST['board']."/res/".$row6['resto'].".html#p".$row6['id'];
 							}
 							$mitsuba->common->showMsg($lang['img/error'], sprintf($lang['img/file_duplicate'], $postlink));
 							exit;
@@ -350,7 +350,7 @@ if (!empty($_POST['mode']))
 				$filename = "url:".$conn->real_escape_string($url);
 				$fname = $conn->real_escape_string($url_title);
 			}
-			$mitsuba->common->showMsg($lang['img/error'], $lang['img/updating_index']);
+			$mitsuba->common->showMsg($lang['img/updating_index'], $lang['img/updating_index']);
 			$is = $mitsuba->posting->addPost($_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_style, $cc_icon, $redirect);
 			if ($is == -16)
 			{
