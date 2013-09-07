@@ -1632,22 +1632,7 @@ fieldset label {
 	padding-right: 20px;
 }
 
-div.navLinks:nth-child(2) > label:nth-child(5) {
-	float: inherit;
-	display: inline;
-}
-
-div.navLinks:nth-child(8) > label:nth-child(5) {
-	float: inherit;
-	display: inline;
-}
-
-div.navLinks:nth-child(6) > label:nth-child(4) {
-	float: inherit;
-	display: inline;
-}
-
-div.navLinks:nth-child(7) > label:nth-child(5) {
+.updateLabel {
 	float: inherit;
 	display: inline;
 }
