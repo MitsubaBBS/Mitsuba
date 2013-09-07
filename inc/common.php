@@ -106,6 +106,7 @@ class Common {
 
 	function showMsg($title, $text)
 	{
+		global $lang;
 		?>
 		<html>
 		<head>

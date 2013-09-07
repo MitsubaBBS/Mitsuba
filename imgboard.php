@@ -194,26 +194,26 @@ if (!empty($_POST['mode']))
 				{
 					//TODO: Links
 				} else {
-					$this->mitsuba->showMsg($lang['img/error'], $lang['img/no_link']);
+					$mitsuba->common->showMsg($lang['img/error'], $lang['img/no_link']);
 					exit;
 				}
 			} elseif ((!empty($_POST['embed'])) && ($nofile == 0) && ($bdata['embed']==1))
 			{
 				if (($bdata['file_replies']==0) && ($_POST['resto']!=0))
 				{
-					$this->mitsuba->showMsg($lang['img/error'], $lang['img/file_replies_not_allowed']);
+					$mitsuba->common->showMsg($lang['img/error'], $lang['img/file_replies_not_allowed']);
 					exit;
 				}
 				$filename = $mitsuba->checkEmbed($bdata, $_POST['embeds'], $return_url);
 			} elseif (($nofile == 0) && ($bdata['type']!="textboard")) {
 				if (($bdata['file_replies']==0) && ($_POST['resto']!=0))
 				{
-					$this->mitsuba->showMsg($lang['img/error'], $lang['img/file_replies_not_allowed']);
+					$mitsuba->common->showMsg($lang['img/error'], $lang['img/file_replies_not_allowed']);
 					exit;
 				}
 				if ((empty($_FILES['upfile']['tmp_name'])) && (!empty($_FILES['upfile']['name'])))
 				{
-					$this->mitsuba->showMsg($lang['img/error'], $lang['img/file_too_big']);
+					$mitsuba->common->showMsg($lang['img/error'], $lang['img/file_too_big']);
 					exit;
 				}
 				if (!empty($_FILES['upfile']['tmp_name']))
@@ -222,12 +222,12 @@ if (!empty($_POST['mode']))
 					$file_size = $_FILES['upfile']['size'];
 					if (($file_size > $bdata['filesize']) && ($ignoresizelimit != 1))
 					{
-						$this->mitsuba->showMsg($lang['img/error'], $lang['img/file_too_big']);
+						$mitsuba->common->showMsg($lang['img/error'], $lang['img/file_too_big']);
 						exit;
 					}
 					if (!($nfo = $mitsuba->common->isFile($_FILES['upfile']['tmp_name'], $bdata['extensions'])))
 					{
-						$this->mitsuba->showMsg($lang['img/error'], $lang['img/file_too_big']);
+						$mitsuba->common->showMsg($lang['img/error'], $lang['img/file_too_big']);
 						exit;
 					}
 					$mime = $nfo['mimetype'];
@@ -240,8 +240,16 @@ if (!empty($_POST['mode']))
 					{
 						$isit = $conn->query("SELECT * FROM posts WHERE filehash='".$md5."' AND board='".$_POST['board']."'");
 						if ($isit->num_rows >= 1)
-						{			
-							$this->mitsuba->showMsg($lang['img/error'], $lang['img/file_duplicate']);
+						{		
+							$row6 = $isit->fetch_assoc();	
+							$postlink = "";
+							if ($row6['resto']==0)
+							{
+								$postlink = "./".$_POST['board']."/".$row6['id'].".html#p".$row6['id'];
+							} else {
+								$postlink = "./".$_POST['board']."/".$row6['resto'].".html#p".$row6['id'];
+							}
+							$mitsuba->common->showMsg($lang['img/error'], sprintf($lang['img/file_duplicate'], $postlink));
 							exit;
 						}
 					}
@@ -286,7 +294,7 @@ if (!empty($_POST['mode']))
 						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
 							unlink($target_path);
-							$this->mitsuba->showMsg($lang['img/error'], $lang['img/no_thumb']);
+							$mitsuba->common->showMsg($lang['img/error'], $lang['img/no_thumb']);
 							exit;
 						}
 						$thumb_w = $returned['width'];
@@ -296,7 +304,7 @@ if (!empty($_POST['mode']))
 						if ((empty($returned['width'])) || (empty($returned['height'])))
 						{
 							unlink($target_path);
-							$this->mitsuba->showMsg($lang['img/error'], $lang['img/no_thumb']);
+							$mitsuba->common->showMsg($lang['img/error'], $lang['img/no_thumb']);
 							exit;
 						}
 						$thumb_w = $returned['width'];
@@ -342,10 +350,11 @@ if (!empty($_POST['mode']))
 				$filename = "url:".$conn->real_escape_string($url);
 				$fname = $conn->real_escape_string($url_title);
 			}
+			$mitsuba->common->showMsg($lang['img/error'], $lang['img/updating_index']);
 			$is = $mitsuba->posting->addPost($_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_style, $cc_icon, $redirect);
 			if ($is == -16)
 			{
-				$this->mitsuba->showMsg($lang['img/error'], $lang['img/board_no_exists']);
+				$mitsuba->common->showMsg($lang['img/error'], $lang['img/board_no_exists']);
 				exit;
 			}
 			break;
@@ -434,5 +443,3 @@ if (!empty($_POST['mode']))
 
 }
 ?>
-</body>
-</html>

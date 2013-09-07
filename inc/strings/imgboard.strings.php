@@ -11,7 +11,7 @@ $lang['img/choose_one'] = "Choose one: image or embed! ;_;";
 $lang['img/embed_not_supported'] = "Embed not supported!";
 $lang['img/file_too_big'] = "File size is too big!";
 $lang['img/file_not_img'] = "File is not an image!";
-$lang['img/file_duplicate'] = "Duplicate file detected!";
+$lang['img/file_duplicate'] = "Duplicate file exists. <a href='%s'>here</a>.";
 $lang['img/file_uploaded'] = "The file %s has been uploaded";
 $lang['img/upload_error'] = "There was an error uploading the file, please try again!";
 $lang['img/no_thumb'] = "Could not create thumbnail!";
