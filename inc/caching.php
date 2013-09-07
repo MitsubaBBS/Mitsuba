@@ -1217,6 +1217,15 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 		{
 			return file_get_contents("./".$row['board']."/res/".$row['id']."_index.html");
 		}
+		if ($return == 1)
+		{
+			$location = "index";
+		} elseif ($threadno != 0)
+		{
+			$location = "thread";
+		} else {
+			$location = "board";
+		}
 		$file = "";
 		$file .= '<div class="thread" id="t'.$row['id'].'">';
 		$file .= '<div class="postContainer opContainer" id="pc'.$row['id'].'">';
@@ -1259,13 +1268,14 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			$email_b = '</a>';
 		}
 		$file .= "<td>";
+		$file .= '<span class="nameBlock">';
 		if (!empty($row['capcode_text']))
 		{
 			$file .= $email_a.'<span class="name"><span style="'.$row['capcode_style'].'">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="'.$row['capcode_style'].'">## '.$row['capcode_text'].'</span>'.$c_image.'</span>';
 		} else {
 			$file .= $email_a.'<span class="name">'.$row['name'].'</span>'.$email_b.$trip.' '.$poster_id;
 		}
-		
+		$file .= '</span>';
 		$opip = $row['ip'];
 		if (($adm_type >= 2) && ($return == 1))
 		{
@@ -1455,12 +1465,14 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				$email_b = '</a>';
 			}
 			$file .= "<td>";
+			$file .= '<span class="nameBlock">';
 			if (!empty($row2['capcode_text']))
 			{
 				$file .= $email_a.'<span class="name"><span style="'.$row2['capcode_style'].'">'.$row2['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="'.$row2['capcode_style'].'">## '.$row2['capcode_text'].'</span>'.$c_image.'</span>';
 			} else {
 				$file .= $email_a.'<span class="name">'.$row2['name'].'</span>'.$email_b.$trip.' '.$poster_id;
 			}
+			$file .= '</span>';
 			if (($adm_type >= 2) && ($return == 1))
 			{
 				$file .= ' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'.$row2['ip'].'" target="_blank">'.$row2['ip'].'</a>) [<a href="?/info&ip='.$row2['ip'].'">N</a>] '; 

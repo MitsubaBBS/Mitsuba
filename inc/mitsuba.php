@@ -59,6 +59,10 @@ class Admin
 	{
 		if ($groupid == false)
 		{
+			if (empty($_SESSION['group']))
+			{
+				return false;
+			}
 			$groupid = $_SESSION['group'];
 		}
 		$p = explode(".", $permission);

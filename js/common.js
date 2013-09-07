@@ -79,7 +79,7 @@ $(document).ready(function () {
 
 	addSettings();
 
-	if ((typeof $.cookie("in_mod") !== "undefined") && ($.cookie("in_mod")>=1))
+	if (typeof $.cookie("in_mod") !== "undefined")
 	{
 		adminStuff("body");
 	}
@@ -705,27 +705,26 @@ function addImgExpand(parent)
 }
 
 var api_url = "../mod.php?";
+	var permissions = [];
 function adminStuff(parent)
 {
-	var permissions_raw = $.cookie("in_mod").split("|");
-	var permissions = [];
-	permissions['post.ignorenoname'] = permissions_raw[0];
-	permissions['post.ignoresizelimit'] = permissions_raw[1];
-	permissions['post.raw'] = permissions_raw[2];
-	permissions['post.antibump'] = permissions_raw[3];
-	permissions['post.sticky'] = permissions_raw[4];
-	permissions['post.closed'] = permissions_raw[5];
-	permissions['post.nofile'] = permissions_raw[6];
-	permissions['post.fakeid'] = permissions_raw[7];
-	permissions['post.ignorecaptcha'] = permissions_raw[8];
-	permissions['post.capcode'] = permissions_raw[9];
-	permissions['post.customcapcode'] = permissions_raw[10];
-	permissions['post.viewip'] = permissions_raw[11];
-	permissions['post.delete.single'] = permissions_raw[12];
-	permissions['post.edit'] = permissions_raw[13];
-	permissions['bans.add'] = permissions_raw[14];
-	permissions['bans.add.request'] = permissions_raw[15];
-
+	var permissions_raw = $.cookie("in_mod");
+	permissions['post.ignorenoname'] = permissions_raw.charAt(0);
+	permissions['post.ignoresizelimit'] = permissions_raw.charAt(1);
+	permissions['post.raw'] = permissions_raw.charAt(2);
+	permissions['post.antibump'] = permissions_raw.charAt(3);
+	permissions['post.sticky'] = permissions_raw.charAt(4);
+	permissions['post.closed'] = permissions_raw.charAt(5);
+	permissions['post.nofile'] = permissions_raw.charAt(6);
+	permissions['post.fakeid'] = permissions_raw.charAt(7);
+	permissions['post.ignorecaptcha'] = permissions_raw.charAt(8);
+	permissions['post.capcode'] = permissions_raw.charAt(9);
+	permissions['post.customcapcode'] = permissions_raw.charAt(10);
+	permissions['post.viewip'] = permissions_raw.charAt(11);
+	permissions['post.delete.single'] = permissions_raw.charAt(12);
+	permissions['post.edit'] = permissions_raw.charAt(13);
+	permissions['bans.add'] = permissions_raw.charAt(14);
+	permissions['bans.add.request'] = permissions_raw.charAt(15);
 	/*
 		post.ignorenoname
 		post.ignoresizelimit
@@ -840,7 +839,7 @@ function adminStuff(parent)
 				if (permissions['bans.add']==1)
 				{
 					bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
-					if (permissions['post.delete']==1)
+					if (permissions['post.delete.single']==1)
 					{
 						bansdel += ' / <a href="'+api_url+'/bans/add&b='+board+'&p='+id+'&d=1">&</a>';
 					}
@@ -848,7 +847,7 @@ function adminStuff(parent)
 				{
 					bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
 				}
-				if (permissions['post.delete']==1)
+				if (permissions['post.delete.single']==1)
 				{
 					if (bansdel == "")
 					{
@@ -866,7 +865,7 @@ function adminStuff(parent)
 				}
 				if (permissions['post.edit']==1)
 				{
-					edit = ' [<a href="'+api_url+'/edit_post&b='+board+'&p='+id+'" class="edit">E</a>]';
+					edit = ' [<a href="'+api_url+'/edit_post&b='+board+'&p='+id+'" class="edit">E</a>] ';
 				}
 				if (permissions['post.sticky']==1)
 				{
@@ -929,7 +928,7 @@ function adminStuff(parent)
 				if (permissions['bans.add']==1)
 				{
 					bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
-					if (permissions['post.delete']==1)
+					if (permissions['post.delete.single']==1)
 					{
 						bansdel += ' / <a href="'+api_url+'/bans/add&b='+board+'&p='+id+'&d=1">&</a>';
 					}
@@ -937,7 +936,7 @@ function adminStuff(parent)
 				{
 					bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
 				}
-				if (permissions['post.delete']==1)
+				if (permissions['post.delete.single']==1)
 				{
 					if (bansdel == "")
 					{
@@ -957,7 +956,6 @@ function adminStuff(parent)
 				{
 					edit = ' [<a href="'+api_url+'/edit_post&b='+board+'&p='+id+'" class="edit">E</a>]';
 				}
-				threadcontrols += ']';
 				ac = bansdel+edit;
 				$(this).children(".postNum").after(' <span class="adminControls">'+ac+'</span>');
 				var el = this;

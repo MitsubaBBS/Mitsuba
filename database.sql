@@ -405,8 +405,8 @@ INSERT INTO `extensions` (`ext`, `name`, `mimetype`, `image`, `default`) VALUES
 
 INSERT INTO `groups` (`id`, `name`, `capcode`, `capcode_style`, `capcode_icon`) VALUES
 (1, 'Janitor', '', '', ''),
-(2, 'Moderator', '## Mod', 'color:#800080', './img/mod.png'),
-(3, 'Administrator', '## Admin', 'color:#FF0000', './img/admin.png'),
+(2, 'Moderator', 'Mod', 'color:#800080', './img/mod.png'),
+(3, 'Administrator', 'Admin', 'color:#FF0000', './img/admin.png'),
 (4, 'Disabled', '', '', '');
 
 INSERT INTO `permissions_categories` (`id`, `name`, `description`) VALUES

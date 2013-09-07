@@ -77,7 +77,7 @@ class Board
 			
 			if (($pdate + $bdata['time_between_threads']) > time())
 			{
-				$this->mitsuba->showMsg($lang['img/error'], $lang['img/wait_more_thread']);
+				$this->mitsuba->common->showMsg($lang['img/error'], $lang['img/wait_more_thread']);
 				exit;
 			}
 		}
@@ -94,7 +94,7 @@ class Board
 			
 			if (($pdate + $bdata['time_between_posts']) > time())
 			{
-				$this->mitsuba->showMsg($lang['img/error'], $lang['img/wait_more_post']);
+				$this->mitsuba->common->showMsg($lang['img/error'], $lang['img/wait_more_post']);
 				exit;
 			}
 		}
