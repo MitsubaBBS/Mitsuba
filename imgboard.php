@@ -315,19 +315,22 @@ if (!empty($_POST['mode']))
 			}
 			setcookie("password", $password, time() + 86400*256);
 			$embed = 0;
-			if (substr($filename, 0, 6) != "embed:")
+			if (!empty($filename))
 			{
-				$fname = $_FILES['upfile']['name'];
-				$filename = "";
-				if (empty($_FILES['upfile']['tmp_name']))
+				if (substr($filename, 0, 6) != "embed:")
 				{
-					$fname = "";
+					$fname = $_FILES['upfile']['name'];
+					$filename = "";
+					if (empty($_FILES['upfile']['tmp_name']))
+					{
+						$fname = "";
+					} else {
+						$filename = $fileid.$ext;
+					}
 				} else {
-					$filename = $fileid.$ext;
+					$embed = 1;
+					$fname = "embed";
 				}
-			} else {
-				$embed = 1;
-				$fname = "embed";
 			}
 			$redirect = 0;
 			if ($mod == 1)

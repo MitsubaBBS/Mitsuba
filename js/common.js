@@ -584,8 +584,8 @@ function showPostPreview( el )
 		off.left = off.left + $(el).width();
 		off.top = off.top - $("#quote-preview").height()/2
 		$("#quote-preview").css("display", "block");
-				$("#quote-preview").find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
-				$("#quote-preview").find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
+		$("#quote-preview").find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
+		$("#quote-preview").find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
 		$("#quote-preview").offset(off);
 	} else {
 		$.ajax({
