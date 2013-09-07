@@ -323,6 +323,7 @@ if (!empty($_POST['mode']))
 			}
 			setcookie("password", $password, time() + 86400*256);
 			$embed = 0;
+			$fname = "";
 			if (!empty($filename))
 			{
 				if (substr($filename, 0, 6) != "embed:")
