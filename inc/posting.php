@@ -402,7 +402,7 @@ class Posting {
 			$cc_style = $this->conn->real_escape_string(htmlspecialchars($cc_style));
 			$cc_icon = $this->conn->real_escape_string(htmlspecialchars($cc_icon));
 		}
-		$this->conn->query("INSERT INTO posts (board, `date`, name, trip, strip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, mimetype, t_w, t_h, sticky, sage, locked, raw, cc_text, cc_style, cc_icon, deleted)".
+		$this->conn->query("INSERT INTO posts (board, `date`, name, trip, strip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, mimetype, t_w, t_h, sticky, sage, locked, raw, capcode_text, capcode_style, capcode_icon, deleted)".
 		"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$strip."', '".$this->conn->real_escape_string($poster_id)."', '".$this->mitsuba->common->processString($email)."', '".$this->mitsuba->common->processString($subject)."', '".$this->mitsuba->common->preprocessComment($comment)."', '".md5($password)."', '".$this->mitsuba->common->processString($orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', '".$mimetype."', ".$t_w.", ".$t_h.", ".$sticky.", 0, ".$locked.", ".$raw.", '".$cc_text."', '".$cc_style."', '".$cc_icon."', 0)");
 		$id = mysqli_insert_id($this->conn);
 		if (empty($fake_id))
