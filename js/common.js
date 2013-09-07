@@ -341,7 +341,7 @@ function updateThread(isAuto)
 function addThreadUpdater()
 {
 	normaltitle = document.title;
-	$(".navLinks").append(" [<a href='#update' class='updateLink'>Update</a>] [<label><input type='checkbox' class='updateCheck'>Auto</label>] <span class='uinfo'></span> <span class='autocount'></span>");
+	$(".navLinks").append(" [<a href='#update' class='updateLink'>Update</a>] [<label class='updateLabel'><input type='checkbox' class='updateCheck'>Auto</label>] <span class='uinfo'></span> <span class='autocount'></span>");
 	lastRead = $(".post:last").attr("id").substr(1);
 	$(".updateLink").click(function () {
 		updateThread(false);
