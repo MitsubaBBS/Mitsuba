@@ -774,7 +774,7 @@ function adminStuff(parent)
 			{
 				customc = '<input type="radio" name="capcode" value=2 id="custom_cc" />Custom capcode \
 						<div style="display: none;" id="cc_fields" value="#FF0000">Text: <input type="text" name="cc_text" /><br /> \
-						Color: <input type="text" name="cc_color" /></div>';
+						Style: <input type="text" name="cc_style" value="color: "/></div>';
 			}
 			$("#postform #postPassword").parent().parent().after('<tr> \
 						<td>Capcode</td> \

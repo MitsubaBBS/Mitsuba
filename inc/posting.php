@@ -345,7 +345,7 @@ class Posting {
 		$embed = $pdata['embed'];
 		$raw = $pdata['raw'];
 		$old_email = $email;
-		if (($bdata['noname'] == 1) && (!empty($email)) && ($this->mitsuba->checkPermission("post.ignorenoname")))
+		if (($bdata['noname'] == 1) && (!empty($email)) && ($this->mitsuba->admin->checkPermission("post.ignorenoname")))
 		{
 			if (($email == "noko") || ($email == "nonoko"))
 			{
