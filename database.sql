@@ -503,7 +503,7 @@ INSERT INTO `permissions` (`id`, `name`, `description`, `category`) VALUES
 (60, 'post.customcapcode', 'Use custom capcode', 14),
 (61, 'post.closed', 'Close threads', 14),
 (62, 'post.delete.ip', 'Delete posts from IP', 14),
-(63, 'post.delete.signle', 'Delete single post', 14),
+(63, 'post.delete.single', 'Delete single post', 14),
 (64, 'post.edit', 'Edit posts', 14),
 (65, 'post.sticky', 'Sticky threads', 14),
 (66, 'post.viewip', 'View IP', 14),
