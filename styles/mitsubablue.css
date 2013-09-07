@@ -437,7 +437,6 @@ div.post div.postInfo span.subject {
 
 div.post blockquote.postMessage {
 	display: block;
-	overflow-y: hidden;
 }
 
 blockquote>span.quote {
