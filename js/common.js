@@ -100,13 +100,15 @@ function addLoader()
 	var nextPageEl = $(strong).parent().next();
 	if (nextPageEl.length >= 1)
 	{
+
+		var nocache = new Date().getTime();
 		$(window).scroll(function() {   
 			if($(window).scrollTop() + $(window).height() == $(document).height()) {
 				$(".pagelist").css("opacity", "0.5");
 				$(window).unbind('scroll');
 				$.ajax({
 				type: 'get',
-				url: "./"+$(nextPageEl).html()+".html",
+				url: "./"+$(nextPageEl).html()+".html?c="+nocache,
 				success: function(data, textStatus, xhr){
 					$(".pagelist").css("opacity", "");
 					var html = xhr.responseText;
@@ -1319,7 +1321,8 @@ function addToWatched(board, id)
 
 	function getPost(board, id)
 	{
-		return $.ajax({url: '../'+board+'/res/'+id+'.html'});
+		var nocache = new Date().getTime();
+		return $.ajax({url: '../'+board+'/res/'+id+'.html?c='+nocache});
 	}
 
 	var numberOfPosts = getPost(board, id);
