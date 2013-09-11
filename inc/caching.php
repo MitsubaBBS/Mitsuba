@@ -681,7 +681,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				<td colspan="2">
 				<ul class="rules">
 				<li>'.$lang['img/supported_types'].$boarddata['extensions'].'</li>
-				<li>'.sprintf($lang['img/max_filesize'], $boarddata['filesize']).'</li>
+				<li>'.sprintf($lang['img/max_filesize'], $this->mitsuba->common->human_filesize($boarddata['filesize'])).'</li>
 				<li>'.$lang['img/thumbnail'].'</li>
 				<li>'.sprintf($lang['img/unique_user_posts'], $unique).'</li>
 				'.$rules_ads.'</ul>
