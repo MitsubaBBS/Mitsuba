@@ -11,7 +11,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 
 			if (empty($type)) { $type = 0; }
 			$boards = "";
-			if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
+			if ((!empty($_POST['all'])) && ($_POST['all']==1))
 			{
 				$boards = "%";
 			} else {

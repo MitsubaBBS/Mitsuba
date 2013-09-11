@@ -15,7 +15,7 @@ $mitsuba->admin->reqPermission("users.update");
 					$type = $_POST['type'];
 					if (empty($type)) { $type = 0; }
 					$boards = "";
-					if (((!empty($_POST['all'])) && ($_POST['all']==1)) || ($type == 2))
+					if ((!empty($_POST['all'])) && ($_POST['all']==1))
 					{
 						$boards = "%";
 					} else {
