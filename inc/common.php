@@ -451,7 +451,7 @@ class Common {
 	function isBanned($ip, $board)
 	{
 		
-		$ipbans = $this->conn->query("SELECT * FROM bans WHERE ip='".$ip."' AND (expires>".time()." OR expires=0) ORDER BY expires DESC LIMIT 0, 1;");
+		$ipbans = $this->conn->query("SELECT * FROM bans WHERE ip='".$ip."' AND (expires>".time()." OR expires=0) ORDER BY expires DESC;");
 		$rangebans = $this->conn->query("SELECT * FROM rangebans ORDER BY expires DESC;");
 		$ipbandata = null;
 		$rangebandata = null;
@@ -604,25 +604,78 @@ class Common {
 		return 0;
 	}
 
+	function banInfo($bandata, $board)
+	{
+		if ($bandata['boards']=="%")
+		{
+		$boards = 1;
+		} else {
+		$boards = 0;
+		}
+		if ($bandata['expires'] != 0)
+		{
+		$left = floor(($bandata['expires'] - time())/(60*60*24));
+		$days = floor(($bandata['expires'] - $bandata['created'])/(60*60*24));
+		} else {
+		$left = -1;
+		$days = -1;
+		}
+		?>
+		<p>You have been <?php if ($left == -1) { echo "<b>permamently</b>"; } ?> <?php if (!empty($bandata['range'])) { echo "<b>range-</b>"; } ?>banned from <b><?php if ($boards == 1) { echo "all "; } else { echo "few "; } ?></b>boards for the following reason:</p>
+		<p><?php echo $bandata['reason']; ?></p>
+		<p>You were banned on <b><?php echo date("d/m/Y (D) H:i:s", $bandata['created']); ?></b> and your ban expires  
+		<b><?php if ($left != -1) { echo " on ".date("d/m/Y (D) H:i:s", $bandata['expires']).", which is <b>".$left."</b> days from now."; } else { echo " never"; }; ?></b>.</p>
+		<p>According to our server your IP is: <b><?php echo $_SERVER['REMOTE_ADDR']; ?></b></p>
+		<?php
+		$range = 0;
+		if (!empty($bandata['range_ip'])) { $range = 1; }
+		$appeals = $this->conn->query("SELECT * FROM appeals WHERE ban_id=".$bandata['id']." AND rangeban=".$range);
+			//Your appeal has been sent and is waiting until review, you can change it here.
+		$appeal = ($bandata['appeal'] - time())/(60*60*24);
+		if (($bandata['appeal'] != 0) && ($appeal < 0))
+		{
+			?>
+			<p>You may appeal your ban in the form below. Please explain why you deserve to be unbanned. Poorly writen, rude or offensive appeals may be declined. E-mail address is optional.</p>
+			<?php
+			$app_msg = "";
+			$app_mail = "";
+			if ($appeals->num_rows == 1)
+			{
+				$appealdata = $appeals->fetch_assoc();
+				$app_msg = $appealdata['msg'];
+				$app_mail = $appealdata['email'];
+				echo "<b>Your appeal has been sent and is waiting until review, you can change it here.</b>";
+			}
+			?>
+			<p><form action="./imgboard.php" method="POST">
+			<input type="hidden" name="mode" value="usrapp" />
+			<input type="hidden" name="banid" value="<?php echo $bandata['id']; ?>" />
+			<input type="hidden" name="banrange" value="<?php echo $range; ?>" />
+			<table class="postform">
+			<tbody>
+			<tr><td class="postBlock">E-mail</td><td><input type="text" name="email" value="<?php echo $app_mail; ?>"/><input type="submit" value="Submit"></td></tr>
+			<tr><td class="postBlock">Message</td><td><textarea style="width: 100%;" rows=6 name="msg"><?php echo $app_msg; ?></textarea></td></tr>
+			</tbody>
+			</table>
+			</form></p>
+			<?php
+		} elseif ($bandata['appeal'] != 0)
+		{
+			?>
+			<p>You'll be allowed to appeal your ban in <b><?php echo floor(($bandata['appeal'] - time())/(60*60*24)); ?></b> days.</p>
+			<?php
+		} else {
+			?>
+			<p>You may not appeal your ban.</p>
+			<?php
+		}
+	}
+
 	function banMessage($board = "%")
 	{
 		$bandata = $this->isBanned($_SERVER['REMOTE_ADDR'], $board);
 				if ($bandata != 0)
 				{
-				if ($bandata['boards']=="%")
-				{
-				$boards = 1;
-				} else {
-				$boards = 0;
-				}
-				if ($bandata['expires'] != 0)
-				{
-				$left = floor(($bandata['expires'] - time())/(60*60*24));
-				$days = floor(($bandata['expires'] - $bandata['created'])/(60*60*24));
-				} else {
-				$left = -1;
-				$days = -1;
-				}
 				?>
 				<html>
 	<head>
@@ -660,81 +713,16 @@ while ($row = $styles->fetch_assoc())
 			$file .= '<img style="float: right;" src="'.$randomImage.'" alt="Mitsuba" />';
 		}
 	}
-	?>
-	<p>You have been <?php if ($left == -1) { echo "<b>permamently</b>"; } ?> <?php if (!empty($bandata['range'])) { echo "<b>range-</b>"; } ?>banned from <b><?php if ($boards == 1) { echo "all "; } else { echo "few "; } ?></b>boards for the following reason:</p>
-	<p><?php echo $bandata['reason']; ?></p>
-	<p>You were banned on <b><?php echo date("d/m/Y (D) H:i:s", $bandata['created']); ?></b> and your ban expires  
-	<b><?php if ($left != -1) { echo " on ".date("d/m/Y (D) H:i:s", $bandata['expires']).", which is <b>".$left."</b> days from now."; } else { echo " never"; }; ?></b>.</p>
-	<p>According to our server your IP is: <b><?php echo $_SERVER['REMOTE_ADDR']; ?></b></p>
-	<?php
-	$range = 0;
-	if (!empty($bandata['range_ip'])) { $range = 1; }
-	$appeals = $this->conn->query("SELECT * FROM appeals WHERE ban_id=".$bandata['id']." AND rangeban=".$range);
-		//Your appeal has been sent and is waiting until review, you can change it here.
-	?>
-	<?php
-	$appeal = ($bandata['appeal'] - time())/(60*60*24);
-	if (($bandata['appeal'] != 0) && ($appeal < 0))
-	{
-		?>
-		<p>You may appeal your ban in the form below. Please explain why you deserve to be unbanned. Poorly writen, rude or offensive appeals may be declined. E-mail address is optional.</p>
-		<p><form action="./imgboard.php" method="POST">
-		<input type="hidden" name="mode" value="usrapp" />
-		<input type="hidden" name="board" value="<?php echo $board; ?>" />
-		<table class="postform">
-		<tbody>
-		<tr><td class="postBlock">E-mail</td><td><input type="text" name="email" /><input type="submit" value="Submit"></td></tr>
-		<tr><td class="postBlock">Message</td><td><textarea style="width: 100%;" rows=6 name="msg"></textarea></td></tr>
-		</tbody>
-		</table>
-		</form></p>
-		<?php
-	} elseif ($bandata['appeal'] != 0)
-	{
-		?>
-		<p>You'll be allowed to appeal your ban in <b><?php echo ceil(($bandata['appeal'] - time())/(60*60*24)); ?></b> days.</p>
-		<?php
-	} else {
-		?>
-		<p>You may not appeal your ban.</p>
-		<?php
-	}
-	
+	$this->banInfo($bandata, $board);
 	if ((!empty($bandata['more'])) && (count($bandata['more']) > 1))
 	{
 		?>
-		<p>There are more than one bans placed on your IP. For more information, see the table below:</p>
-		<table>
-		<thead>
-		<tr>
-		<td>Reason</td>
-		<td>Placed on</td>
-		<td>Expires on</td>
-		<td>Boards</td>
-		</tr>
-		</thead>
-		<tbody>
+		<p><b>There are more than one bans placed on your IP.</b></p>
 		<?php
 		foreach ($bandata['more'] as $ban) {
-			echo "<td>".$ban['reason']."</td>";
-			echo "<td><center>".date("d/m/Y @ H:i", $ban['created'])."</center></td>";
-			if ($ban['expires'] != 0)
-			{
-			echo "<td><center>".date("d/m/Y @ H:i", $ban['expires'])."</center></td>";
-			} else {
-			echo "<td><b>never</b></td>";
-			}
-			if ($ban['boards'] == "%")
-			{
-			echo "<td><b>all boards</b></td>";
-			} else {
-			echo "<td><b>few boards</b></td>";
-			}
+			echo "<hr />";
+			$this->banInfo($ban, $board);
 		}
-		?>
-		</tbody>
-		</table>
-		<?php
 	}
 	?>
 	</div>
@@ -745,6 +733,47 @@ while ($row = $styles->fetch_assoc())
 	<?php
 	die();
 	}
+	}
+
+	function verifyBan($ip, $ban_id, $range)
+	{
+		if ((!is_numeric($ban_id)) || (!is_numeric($range)))
+		{
+			return false;
+		}
+		if ($range == 0)
+		{
+			$ban = $this->conn->query("SELECT * FROM bans WHERE id=".$ban_id);
+			if ($ban->num_rows == 1)
+			{
+				$binfo = $ban->fetch_assoc();
+				if ($binfo['ip']==$ip)
+				{
+					return true;
+				}
+			}
+		} else {
+			$ban = $this->conn->query("SELECT * FROM rangebans WHERE id=".$ban_id);
+			if ($ban->num_rows == 1)
+			{
+				$binfo = $ban->fetch_assoc();
+				$range = str_replace('*','(.*)', $binfo['ip']);
+				if ($this->startsWith($range, "."))
+				{
+					if ((strpos($ip, $range) !== FALSE))
+					{
+						return true;
+					}
+				} elseif ($this->startsWith($ip, $range))
+				{
+					return true;
+				} elseif (preg_match('/'.$range.'/', $ip))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	function warningMessage()

@@ -430,12 +430,13 @@ if (!empty($_POST['mode']))
 				$msg = $conn->real_escape_string(htmlspecialchars($_POST['msg']));
 				$email = $conn->real_escape_string(htmlspecialchars($_POST['email']));
 				$ip = $_SERVER['REMOTE_ADDR'];
-				$ban = $mitsuba->common->isBanned($ip, $_POST['board']);
-				$ban_id = $ban['id'];
-				$range = 0;
-				if (!empty($bandata['start_ip'])) { $range = 1; }
-				$conn->query("INSERT INTO appeals (created, ban_id, ip, msg, email, rangeban) VALUES (".time().", ".$ban_id.", '".$ip."', '".$msg."', '".$email."', ".$range.")");
-				echo $lang['img/appeal_sent'];
+				if ($mitsuba->common->verifyBan($ip, $_POST['banid'], $_POST['banrange']))
+				{
+					$ban_id = $_POST['banid'];
+					$range = $_POST['banrange'];
+					$conn->query("INSERT INTO appeals (created, ban_id, ip, msg, email, rangeban) VALUES (".time().", ".$ban_id.", '".$ip."', '".$msg."', '".$email."', ".$range.") ON DUPLICATE KEY UPDATE msg='".$msg."', email='".$email."'");
+					echo $lang['img/appeal_sent'];
+				}
 			}
 			break;
 	}

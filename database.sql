@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS `appeals` (
   `msg` text NOT NULL,
   `email` varchar(70) NOT NULL,
   `rangeban` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ban` (`ban_id`, `rangeban`)
 );
 
 CREATE TABLE IF NOT EXISTS `bans` (

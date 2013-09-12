@@ -42,7 +42,7 @@ if (!defined("IN_MOD"))
 			}
 		}
 		if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
-		$result = addRangeBan($_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
+		$result = $mitsuba->admin->bans->addRangeBan($_POST['ip'], $_POST['reason'], $_POST['note'], $_POST['expires'], $boards);
 		if ($result == 1)
 		{
 		?>
