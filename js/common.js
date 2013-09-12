@@ -448,8 +448,8 @@ function addFastReply(parent, thread)
 function addPostpreview(parent)
 {
 	$(parent).find(".quotelink").off();
-	$(parent).find(".quotelink").mouseenter(function () { showPostPreview(this); });
-	$(parent).find(".quotelink").mouseleave(function () { hidePostPreview(this); });
+	$(parent).find(".quotelink").mouseenter(function () { $(this).data("chuj",1);showPostPreview(this);	});
+	$(parent).find(".quotelink").mouseleave(function () { $(this).data("chuj",0);hidePostPreview(this); });
 }
 
 function addBacklinks(parent)
@@ -594,20 +594,23 @@ function showPostPreview( el )
 			type: 'get',
 			url: href,
 			success: function(data, textStatus, xhr){
-				var html = xhr.responseText;
-				var nodes = $.parseHTML( html );
-				var hr = $(el).attr("href");
-				var postid = hr.substr(hr.indexOf('#'));
-				$("#quote-preview").html($(postid, nodes).html());
-				var off = $( el ).offset();
-				off.left = off.left + $(el).width();
-				off.top = off.top - $("#quote-preview").height()/2
-				$("#quote-preview").css("display", "block");
-				$("#quote-preview").find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
-				$("#quote-preview").find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
-				$("#quote-preview").offset(off);
+				if($(el).data("chuj")) {
+					var html = xhr.responseText;
+					var nodes = $.parseHTML( html );
+					var hr = $(el).attr("href");
+					var postid = hr.substr(hr.indexOf('#'));
+					$("#quote-preview").html($(postid, nodes).html());
+					var off = $( el ).offset();
+					off.left = off.left + $(el).width();
+					off.top = off.top - $("#quote-preview").height()/2
+					$("#quote-preview").css("display", "block");
+					$("#quote-preview").find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
+					$("#quote-preview").find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
+					$("#quote-preview").offset(off);
+				}
 			}
 		});
+		
 	}
 }
 
