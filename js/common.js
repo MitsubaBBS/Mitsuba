@@ -552,6 +552,11 @@ function addThreadExpander(parent)
 				{
 					addFastReply(tid, 1);
 				}
+				if (typeof $.cookie("in_mod") !== "undefined")
+				{
+					adminStuff(tid);
+					console.log(tid);
+				}
 				}
 			});
 		});
@@ -750,244 +755,244 @@ function adminStuff(parent)
 	*/
 	if ($("body").hasClass("modPanel") != true)
 	{
-		var old_action = $("#postform").attr("action");
-		$("#postform").attr("action", old_action+"?mod=2");
-		var old_actiondel = $("#delform").attr("action");
-		$("#delform").attr("action", old_actiondel+"?mod=2");
-		if ((permissions['post.ignorenoname']==1) && ($("#postform input[name='name']").length == 0))
-		{
-			$("#postform input[name='email']").parent().parent().before('<tr> \
-					<td>Name</td> \
-					<td><input name="name" type="text" /></td> \
+		if(parent == "body") {
+			var old_action = $("#postform").attr("action");
+			$("#postform").attr("action", old_action+"?mod=2");
+			var old_actiondel = $("#delform").attr("action");
+			$("#delform").attr("action", old_actiondel+"?mod=2");
+			if ((permissions['post.ignorenoname']==1) && ($("#postform input[name='name']").length == 0))
+			{
+				$("#postform input[name='email']").parent().parent().before('<tr> \
+						<td>Name</td> \
+						<td><input name="name" type="text" /></td> \
+						</tr>');
+			}
+			if (permissions['post.fakeid']==1)
+			{
+				$("#postform input[name='email']").parent().parent().before('<tr> \
+					<td>Fake ID</td> \
+					<td><input name="fake_id" type="text" /></td> \
 					</tr>');
-		}
-		if (permissions['post.fakeid']==1)
-		{
-			$("#postform input[name='email']").parent().parent().before('<tr> \
-				<td>Fake ID</td> \
-				<td><input name="fake_id" type="text" /></td> \
-				</tr>');
-		}
-		if (permissions['post.ignorecaptcha']==1)
-		{
-			$("#captcha").css("display", "none");
-		}
-		if ((permissions['post.customcapcode']==1) || (permissions['post.capcode']==1))
-		{
-			var customc = "";
-			if (permissions['post.customcapcode']==1)
-			{
-				customc = '<input type="radio" name="capcode" value=2 id="custom_cc" />Custom capcode \
-						<div style="display: none;" id="cc_fields" value="#FF0000">Text: <input type="text" name="cc_text" /><br /> \
-						Style: <input type="text" name="cc_style" value="color: "/></div>';
 			}
-			$("#postform #postPassword").parent().parent().after('<tr> \
-						<td>Capcode</td> \
-						<td id="capcode_td"><input type="radio" name="capcode" value=0 checked />No capcode<input type="radio" name="capcode" value=1 />Capcode'+customc+' \
-					</td></tr>');
-			
-			if (permissions['post.customcapcode']==1)
+			if (permissions['post.ignorecaptcha']==1)
 			{
-				$("input[name='capcode']").change(function() {
-					if ($("#custom_cc").prop("checked"))
-					{
-						$("#cc_fields").css("display", "");
-					} else {
-						$("#cc_fields").css("display", "none");
-						$("#cc_fields input").val("");
-					}
-					});
+				$("#captcha").css("display", "none");
 			}
-
-		}
-		var mod = '<tr> \
-						<td>Mod</td> \
-						<td>';
-		if (permissions['post.raw']==1)
-		{
-			mod += '<input type="checkbox" name="raw" value=1 />Raw HTML';
-		}
-		if (permissions['post.sticky']==1)
-		{
-			mod += '<input type="checkbox" name="sticky" value=1 />Sticky';
-		}
-		if (permissions['post.closed']==1)
-		{
-			mod += '<input type="checkbox" name="lock" value=1 />Locked<br />';
-		}
-		if (permissions['post.ignorebumplimit']==1)
-		{
-			mod += '<input type="checkbox" name="nolimit" value=1 selected/>Ignore bump limit';
-		}
-		if (permissions['post.ignoresizelimit']==1)
-		{
-			mod += '<input type="checkbox" name="ignoresizelimit" value=1 />Ignore filesizelimit';
-		}
-		if (permissions['post.nofile']==1)
-		{
-			mod += '<input type="checkbox" name="nofile" value=1 />No file';
-		}
-		$("#postform #postPassword").parent().parent().after(mod+'</td></tr>');
-		if ($(".postingMode").length != 0)
-		{
-			api_url = "../../mod.php?";
-		}
-		$(".thread").each(function () {
-			var opIp = "";
-			$(this).find(".opContainer .postInfo").each(function () {
-				var id = $(this).attr("id").substr(2);
-				var board = $('meta[property="og:boardname"]').attr('content');
-				var ac = "";
-				var bansdel = "";
-				var edit = "";
-				var threadcontrols = "";
-				if (permissions['bans.add']==1)
+			if ((permissions['post.customcapcode']==1) || (permissions['post.capcode']==1))
+			{
+				var customc = "";
+				if (permissions['post.customcapcode']==1)
 				{
-					bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
-					if (permissions['post.delete.single']==1)
-					{
-						bansdel += ' / <a href="'+api_url+'/bans/add&b='+board+'&p='+id+'&d=1">&</a>';
-					}
-				} else if (permissions['bans.add.request']==1)
-				{
-					bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
+					customc = '<input type="radio" name="capcode" value=2 id="custom_cc" />Custom capcode \
+							<div style="display: none;" id="cc_fields" value="#FF0000">Text: <input type="text" name="cc_text" /><br /> \
+							Style: <input type="text" name="cc_style" value="color: "/></div>';
 				}
+				$("#postform #postPassword").parent().parent().after('<tr> \
+							<td>Capcode</td> \
+							<td id="capcode_td"><input type="radio" name="capcode" value=0 checked />No capcode<input type="radio" name="capcode" value=1 />Capcode'+customc+' \
+						</td></tr>');
+				
+				if (permissions['post.customcapcode']==1)
+				{
+					$("input[name='capcode']").change(function() {
+						if ($("#custom_cc").prop("checked"))
+						{
+							$("#cc_fields").css("display", "");
+						} else {
+							$("#cc_fields").css("display", "none");
+							$("#cc_fields input").val("");
+						}
+						});
+				}
+
+			}
+			var mod = '<tr> \
+							<td>Mod</td> \
+							<td>';
+			if (permissions['post.raw']==1)
+			{
+				mod += '<input type="checkbox" name="raw" value=1 />Raw HTML';
+			}
+			if (permissions['post.sticky']==1)
+			{
+				mod += '<input type="checkbox" name="sticky" value=1 />Sticky';
+			}
+			if (permissions['post.closed']==1)
+			{
+				mod += '<input type="checkbox" name="lock" value=1 />Locked<br />';
+			}
+			if (permissions['post.ignorebumplimit']==1)
+			{
+				mod += '<input type="checkbox" name="nolimit" value=1 selected/>Ignore bump limit';
+			}
+			if (permissions['post.ignoresizelimit']==1)
+			{
+				mod += '<input type="checkbox" name="ignoresizelimit" value=1 />Ignore filesizelimit';
+			}
+			if (permissions['post.nofile']==1)
+			{
+				mod += '<input type="checkbox" name="nofile" value=1 />No file';
+			}
+			$("#postform #postPassword").parent().parent().after(mod+'</td></tr>');
+			if ($(".postingMode").length != 0)
+			{
+				api_url = "../../mod.php?";
+			}
+		}
+		var opIp = "";
+		$(parent).find(".opContainer .postInfo").each(function () {
+			var id = $(this).attr("id").substr(2);
+			var board = $('meta[property="og:boardname"]').attr('content');
+			var ac = "";
+			var bansdel = "";
+			var edit = "";
+			var threadcontrols = "";
+			if (permissions['bans.add']==1)
+			{
+				bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
 				if (permissions['post.delete.single']==1)
 				{
-					if (bansdel == "")
-					{
-						bansdel = "[";
-					} else {
-						bansdel += " / ";
-					}
-					bansdel += '<a href="'+api_url+'/delete_post&b='+board+'&p='+id+'">D</a>';
-					if ($(this).siblings(".file").length >= 1)
-					{
-						bansdel += ' / <a href="'+api_url+'/delete_post&b='+board+'&p='+id+'&f=1">F</a>]';
-					} else {
-						bansdel += ']';
-					}
+					bansdel += ' / <a href="'+api_url+'/bans/add&b='+board+'&p='+id+'&d=1">&</a>';
 				}
-				if (permissions['post.edit']==1)
+			} else if (permissions['bans.add.request']==1)
+			{
+				bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
+			}
+			if (permissions['post.delete.single']==1)
+			{
+				if (bansdel == "")
 				{
-					edit = ' [<a href="'+api_url+'/edit_post&b='+board+'&p='+id+'" class="edit">E</a>] ';
+					bansdel = "[";
+				} else {
+					bansdel += " / ";
 				}
-				if (permissions['post.sticky']==1)
+				bansdel += '<a href="'+api_url+'/delete_post&b='+board+'&p='+id+'">D</a>';
+				if ($(this).siblings(".file").length >= 1)
 				{
-					if (threadcontrols == "")
-					{
-						threadcontrols = '[<a href="'+api_url+'/sticky/toggle&b='+board+'&t='+id+'">S</a>';
-					} else {
-						threadcontrols += ' / <a href="'+api_url+'/sticky/toggle&b='+board+'&t='+id+'">S</a>';
-					}
+					bansdel += ' / <a href="'+api_url+'/delete_post&b='+board+'&p='+id+'&f=1">F</a>]';
+				} else {
+					bansdel += ']';
 				}
-				if (permissions['post.closed']==1)
+			}
+			if (permissions['post.edit']==1)
+			{
+				edit = ' [<a href="'+api_url+'/edit_post&b='+board+'&p='+id+'" class="edit">E</a>] ';
+			}
+			if (permissions['post.sticky']==1)
+			{
+				if (threadcontrols == "")
 				{
-					if (threadcontrols == "")
-					{
-						threadcontrols = '[<a href="'+api_url+'/locked/toggle&b='+board+'&t='+id+'">L</a>';
-					} else {
-						threadcontrols += ' / <a href="'+api_url+'/locked/toggle&b='+board+'&t='+id+'">L</a>';
-					}
+					threadcontrols = '[<a href="'+api_url+'/sticky/toggle&b='+board+'&t='+id+'">S</a>';
+				} else {
+					threadcontrols += ' / <a href="'+api_url+'/sticky/toggle&b='+board+'&t='+id+'">S</a>';
 				}
-				if (permissions['post.antibump']==1)
+			}
+			if (permissions['post.closed']==1)
+			{
+				if (threadcontrols == "")
 				{
-					if (threadcontrols == "")
-					{
-						threadcontrols = '[<a href="'+api_url+'/antibump/toggle&b='+board+'&t='+id+'">A</a>';
-					} else {
-						threadcontrols += ' / <a href="'+api_url+'/antibump/toggle&b='+board+'&t='+id+'">A</a>';
-					}
+					threadcontrols = '[<a href="'+api_url+'/locked/toggle&b='+board+'&t='+id+'">L</a>';
+				} else {
+					threadcontrols += ' / <a href="'+api_url+'/locked/toggle&b='+board+'&t='+id+'">L</a>';
 				}
-				threadcontrols += ']';
-				ac = bansdel+edit+threadcontrols;
-				$(this).children(".postNum").after(' <span class="adminControls">'+ac+'</span>');
-				var el = this;
-				if (permissions['post.viewip']==1)
+			}
+			if (permissions['post.antibump']==1)
+			{
+				if (threadcontrols == "")
 				{
-					$.ajax({
-						type: 'get',
-						url: api_url+"/api/admin_stuff&b="+board+"&p="+id,
-						success: function(data, textStatus, xhr){
-							var json = $.parseJSON(xhr.responseText);
-							if (json.error != 404)
+					threadcontrols = '[<a href="'+api_url+'/antibump/toggle&b='+board+'&t='+id+'">A</a>';
+				} else {
+					threadcontrols += ' / <a href="'+api_url+'/antibump/toggle&b='+board+'&t='+id+'">A</a>';
+				}
+			}
+			threadcontrols += ']';
+			ac = bansdel+edit+threadcontrols;
+			$(this).children(".postNum").after(' <span class="adminControls">'+ac+'</span>');
+			var el = this;
+			if (permissions['post.viewip']==1)
+			{
+				$.ajax({
+					type: 'get',
+					url: api_url+"/api/admin_stuff&b="+board+"&p="+id,
+					success: function(data, textStatus, xhr){
+						var json = $.parseJSON(xhr.responseText);
+						if (json.error != 404)
+						{
+							opIp = json.ip;
+							if (json.sage == 1)
 							{
-								opIp = json.ip;
-								if (json.sage == 1)
-								{
-									$(el).children(".postNum").after(' <span style="color: red;">[A]</span> ');
-								}
-								$(el).children(".nameBlock").after(' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'+json.ip+'" target="_blank">'+json.ip+'</a>)</span> [<a href="'+api_url+'/info&ip='+json.ip+'">N</a>] <b style="color: red;">[ OP ]</b>');
+								$(el).children(".postNum").after(' <span style="color: red;">[A]</span> ');
 							}
+							$(el).children(".nameBlock").after(' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'+json.ip+'" target="_blank">'+json.ip+'</a>)</span> [<a href="'+api_url+'/info&ip='+json.ip+'">N</a>] <b style="color: red;">[ OP ]</b>');
 						}
-					});
-				}
-			});
-
-			$(this).find(".replyContainer .postInfo").each(function () {
-				var id = $(this).attr("id").substr(2);
-				var board = $('meta[property="og:boardname"]').attr('content');
-				var ac = "";
-				var bansdel = "";
-				var edit = "";
-				if (permissions['bans.add']==1)
-				{
-					bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
-					if (permissions['post.delete.single']==1)
-					{
-						bansdel += ' / <a href="'+api_url+'/bans/add&b='+board+'&p='+id+'&d=1">&</a>';
 					}
-				} else if (permissions['bans.add.request']==1)
-				{
-					bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
-				}
+				});
+			}
+		});
+
+		$(parent).find(".replyContainer .postInfo").each(function () {
+			var id = $(this).attr("id").substr(2);
+			var board = $('meta[property="og:boardname"]').attr('content');
+			var ac = "";
+			var bansdel = "";
+			var edit = "";
+			if (permissions['bans.add']==1)
+			{
+				bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
 				if (permissions['post.delete.single']==1)
 				{
-					if (bansdel == "")
-					{
-						bansdel = "[";
-					} else {
-						bansdel += " / ";
-					}
-					bansdel += '<a href="'+api_url+'/delete_post&b='+board+'&p='+id+'">D</a>';
-					if ($(this).siblings(".file").length >= 1)
-					{
-						bansdel += ' / <a href="'+api_url+'/delete_post&b='+board+'&p='+id+'&f=1">F</a>]';
-					} else {
-						bansdel += ']';
-					}
+					bansdel += ' / <a href="'+api_url+'/bans/add&b='+board+'&p='+id+'&d=1">&</a>';
 				}
-				if (permissions['post.edit']==1)
+			} else if (permissions['bans.add.request']==1)
+			{
+				bansdel = '[<a href="'+api_url+'/bans/add&b='+board+'&p='+id+'">B</a>';
+			}
+			if (permissions['post.delete.single']==1)
+			{
+				if (bansdel == "")
 				{
-					edit = ' [<a href="'+api_url+'/edit_post&b='+board+'&p='+id+'" class="edit">E</a>]';
+					bansdel = "[";
+				} else {
+					bansdel += " / ";
 				}
-				ac = bansdel+edit;
-				$(this).children(".postNum").after(' <span class="adminControls">'+ac+'</span>');
-				var el = this;
-				if (permissions['post.viewip']==1)
+				bansdel += '<a href="'+api_url+'/delete_post&b='+board+'&p='+id+'">D</a>';
+				if ($(this).siblings(".file").length >= 1)
 				{
-					$.ajax({
-						type: 'get',
-						url: api_url+"/api/admin_stuff&b="+board+"&p="+id,
-						success: function(data, textStatus, xhr){
-							var json = $.parseJSON(xhr.responseText);
-							if (json.error != 404)
+					bansdel += ' / <a href="'+api_url+'/delete_post&b='+board+'&p='+id+'&f=1">F</a>]';
+				} else {
+					bansdel += ']';
+				}
+			}
+			if (permissions['post.edit']==1)
+			{
+				edit = ' [<a href="'+api_url+'/edit_post&b='+board+'&p='+id+'" class="edit">E</a>]';
+			}
+			ac = bansdel+edit;
+			$(this).children(".postNum").after(' <span class="adminControls">'+ac+'</span>');
+			var el = this;
+			if (permissions['post.viewip']==1)
+			{
+				$.ajax({
+					type: 'get',
+					url: api_url+"/api/admin_stuff&b="+board+"&p="+id,
+					success: function(data, textStatus, xhr){
+						var json = $.parseJSON(xhr.responseText);
+						if (json.error != 404)
+						{
+							var op = "";
+							if (json.sage == 1)
 							{
-								var op = "";
-								if (json.sage == 1)
-								{
-									$(el).children(".postNum").after(' <span style="color: red;">[A]</span> ');
-								}
-								if (json.ip == opIp)
-								{
-									op = ' <b style="color: red;">[ OP ]</b>';
-								}
-								$(el).children(".nameBlock").after(' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'+json.ip+'" target="_blank">'+json.ip+'</a>)</span> [<a href="'+api_url+'/info&ip='+json.ip+'">N</a>]'+op);
+								$(el).children(".postNum").after(' <span style="color: red;">[A]</span> ');
 							}
+							if (json.ip == opIp)
+							{
+								op = ' <b style="color: red;">[ OP ]</b>';
+							}
+							$(el).children(".nameBlock").after(' <span class="posterIp">(<a href="http://whatismyipaddress.com/ip/'+json.ip+'" target="_blank">'+json.ip+'</a>)</span> [<a href="'+api_url+'/info&ip='+json.ip+'">N</a>]'+op);
 						}
-					});
-				}
-			});
+					}
+				});
+			}
 		});
 		$("a").each( function () {
 			if ($(this).attr("href") != null)
