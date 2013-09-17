@@ -58,19 +58,13 @@ while ($row = $appeals->fetch_assoc())
 		} else {
 			echo "<td>".$ban['start_ip']." - ".$ban['end_ip']." ( ".$row['ip']." )</td>";
 		}
-		if ($ban['expires'] != 0)
-		{
-			$left = floor($ban['expires'] - time()/(60*60*24));
-		} else {
-			$left = -1;
-		}
 		echo "<td>".$ban['reason']."</td>";
 		echo "<td>".$ban['note']."</td>";
-		if ($left = -1)
+		if ($row['expires'] != 0)
 		{
-			echo "<td><center><b>".$lang['mod/permaban']."</b></center></td>";
+		echo "<td><center>".date("d/m/Y @ H:i", $row['expires'])."</center></td>";
 		} else {
-			echo "<td><center>".$left." days</center></td>";
+		echo "<td><b>never</b></td>";
 		}
 		echo "<td><center>".$row['email']."</center></td>";
 		echo "<td>".$row['msg']."</td>";
