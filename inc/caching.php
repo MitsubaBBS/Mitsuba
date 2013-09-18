@@ -142,7 +142,7 @@ class Caching
 			{
 				if ((substr($match[0], 0, 5) == "http:") || (substr($match[0], 0, 6) == "https:"))
 				{
-					return "<a href='".$match[0]."'>".$match[0]."</a>";
+					return "<a class='postlink' href='".$match[0]."'>".$match[0]."</a>";
 				} else {
 					return $match[0];
 				}
