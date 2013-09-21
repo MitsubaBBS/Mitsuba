@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `bans` (
   `expires` int(30) NOT NULL,
   `appeal` int(30) NOT NULL,
   `boards` text NOT NULL,
+  `seen` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -336,7 +337,7 @@ CREATE TABLE IF NOT EXISTS `warnings` (
   `reason` text NOT NULL,
   `note` text NOT NULL,
   `created` int(30) NOT NULL,
-  `shown` int(1) NOT NULL,
+  `seen` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 );
 

@@ -592,7 +592,7 @@ class Common {
 	function isWarned($ip)
 	{
 		
-		$warns = $this->conn->query("SELECT * FROM warnings WHERE ip='".$ip."' AND shown=0 ORDER BY created ASC LIMIT 0, 1;");
+		$warns = $this->conn->query("SELECT * FROM warnings WHERE ip='".$ip."' AND seen=0 ORDER BY created ASC LIMIT 0, 1;");
 		
 		if ($warns->num_rows == 1)
 		{
@@ -606,6 +606,10 @@ class Common {
 
 	function banInfo($bandata, $board)
 	{
+		if ((empty($bandata['range'])) && ($bandata['seen']==0))
+		{
+			$this->conn->query("UPDATE bans SET seen=1 WHERE id=".$bandata['id']);
+		}
 		if ($bandata['boards']=="%")
 		{
 		$boards = 1;
@@ -829,7 +833,7 @@ while ($row = $styles->fetch_assoc())
 	</body>
 	</html>
 	<?php
-	$this->conn->query("UPDATE warnings SET shown=1 WHERE id=".$warndata['id']);
+	$this->conn->query("UPDATE warnings SET seen=1 WHERE id=".$warndata['id']);
 	die();
 	}
 	}

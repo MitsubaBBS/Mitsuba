@@ -26,6 +26,7 @@ $mitsuba->admin->reqPermission("bans.delete");
 	<td><?php echo $lang['mod/created']; ?></td>
 	<td><?php echo $lang['mod/expires']; ?></td>
 	<td><?php echo $lang['mod/boards']; ?></td>
+	<td><?php echo $lang['mod/seen']; ?></td>
 	<td><?php echo $lang['mod/delete']; ?></td>
 	<?php
 		if ($logs) { echo "<td>".$lang['mod/staff_member']."</td>"; }
@@ -57,6 +58,12 @@ $mitsuba->admin->reqPermission("bans.delete");
 		echo "<td><center>All boards</center></td>";
 	} else {
 		echo "<td><center>".$row['boards']."</center></td>";
+	}
+	if ($row['seen']==1)
+	{
+		echo "<td>YES</td>";
+	} else {
+		echo "<td><b>NO</b></td>";
 	}
 	if ($delete)
 	{

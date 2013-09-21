@@ -44,7 +44,7 @@ class Bans {
 			{
 				return -2;
 			}
-			$this->conn->query("INSERT INTO bans (ip, mod_id, reason, note, created, expires, appeal, boards) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", ".$expires.", ".$appeal.", '".$boards."');");
+			$this->conn->query("INSERT INTO bans (ip, mod_id, reason, note, created, expires, appeal, boards, seen) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", ".$expires.", ".$appeal.", '".$boards."', 0);");
 			return 1;
 		}
 	}
@@ -83,7 +83,7 @@ class Bans {
 			$reason = $this->conn->real_escape_string($reason);
 			$note = $this->conn->real_escape_string($note);
 			$created = time();
-			$this->conn->query("INSERT INTO warnings (ip, mod_id, reason, note, created, shown) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", 0);");
+			$this->conn->query("INSERT INTO warnings (ip, mod_id, reason, note, created, seen) VALUES ('".$ip."', ".$_SESSION['id'].", '".$reason."', '".$note."', ".$created.", 0);");
 			return 1;
 		}
 	}
