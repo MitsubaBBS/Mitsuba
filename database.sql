@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `bbcodes` (
 CREATE TABLE IF NOT EXISTS `boards` (
   `short` varchar(10) NOT NULL,
   `type` varchar(60) NOT NULL,
-  `name` varchar(40) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `des` varchar(100) NOT NULL,
   `message` text NOT NULL,
   `bumplimit` int(9) NOT NULL,
