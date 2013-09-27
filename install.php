@@ -192,18 +192,21 @@ switch ($mode)
 			
 		}
 		break;
+	case "chmod":
+		//TODO: chmod fixer
+		break;
 	default:
 		$tests = array();
 		$tests[] = array(
 			'category' => 'Environment',
-			'name' => 'PHP version check >= 5.3',
+			'name' => 'Is PHP version >= 5.3?',
 			'test' => PHP_VERSION_ID >= 50300,
 			'on_fail' => 'fatal_error',
 			'fail_message' => 'Mitsuba requires at least PHP version 5.3 to run.'
 		);
 		$tests[] = array(
 			'category' => 'Environment',
-			'name' => 'PHP version check >= 5.4',
+			'name' => 'Is PHP version >= 5.4?',
 			'test' => PHP_VERSION_ID >= 50400,
 			'on_fail' => 'warning',
 			'fail_message' => 'In future Mitsuba will require PHP version 5.4, so you should get ready for it.'
@@ -217,52 +220,52 @@ switch ($mode)
 		);
 		$tests[] = array(
 			'category' => 'Environment',
-			'name' => 'Safe mode is disabled',
+			'name' => 'Is safe mode disabled?',
 			'test' => !ini_get('safe_mode'),
 			'on_fail' => 'warning',
 			'fail_message' => 'PHP safe mode may cause problems in future.'
 		);
 		$tests[] = array(
-			'category' => 'Environment',
-			'name' => 'mime_content_type supported',
+			'category' => 'Features',
+			'name' => 'Is mime_content_type supported?',
 			'test' => function_exists("mime_content_type"),
 			'on_fail' => 'fatal_error',
 			'fail_message' => 'Mitsuba needs mime_content_type to detect filetypes of uploaded files'
 		);
 		$tests[] = array(
-			'category' => 'Environment',
-			'name' => 'Fileinfo installed',
+			'category' => 'Features',
+			'name' => 'Is fileinfo installed?',
 			'test' => extension_loaded("fileinfo"),
 			'on_fail' => 'warning',
 			'fail_message' => 'Fileinfo is a better way to detect mimetypes than mime_content_type'
 		);
 		$tests[] = array(
-			'category' => 'Imaging',
-			'name' => 'GD extension available and JPG, GIF and PNG supported',
-			'test' => (extension_loaded("gd")) && (function_exists('imagecreatefromjpeg')) && (function_exists('imagecreatefromgif')) && (function_exists('imagecreatefrompng')),
-			'on_fail' => 'fatal_error',
-			'fail_message' => 'Mitsuba requires GD to thumbnail images.'
-		);
-		$tests[] = array(
-			'category' => 'Imaging',
-			'name' => 'Imagick extension available',
-			'test' => extension_loaded("imagick"),
-			'on_fail' => 'warning',
-			'fail_message' => 'Mitsuba uses imagick to make animated thumbnails from GIFs.'
-		);
-		$tests[] = array(
 			'category' => 'File system',
-			'name' => getcwd().'/',
+			'name' => 'Is '.getcwd().'/ writable?',
 			'test' => is_writable("./"),
 			'on_fail' => 'fatal_error',
 			'fail_message' => 'You have to set up 755 permissions for '.getcwd().'/ or you won\'t be able to create new boards'
 		);
 		$tests[] = array(
 			'category' => 'File system',
-			'name' => getcwd().'/styles/',
+			'name' => 'Is '.getcwd().'/styles/ writable?',
 			'test' => is_writable("./styles/"),
 			'on_fail' => 'fatal_error',
 			'fail_message' => 'You have to set up 755 permissions for '.getcwd().'/styles/ or you won\'t be able to upload new stylesheets'
+		);
+		$tests[] = array(
+			'category' => 'Imaging',
+			'name' => 'Is GD extension available and JPG, GIF and PNG supported?',
+			'test' => (extension_loaded("gd")) && (function_exists('imagecreatefromjpeg')) && (function_exists('imagecreatefromgif')) && (function_exists('imagecreatefrompng')),
+			'on_fail' => 'fatal_error',
+			'fail_message' => 'Mitsuba requires GD to thumbnail images.'
+		);
+		$tests[] = array(
+			'category' => 'Imaging',
+			'name' => 'Is imagick PHP extension available?',
+			'test' => extension_loaded("imagick"),
+			'on_fail' => 'warning',
+			'fail_message' => 'Mitsuba uses imagick to make animated thumbnails from GIFs.'
 		);
 		?>
 		<div class="box-outer top-box">
