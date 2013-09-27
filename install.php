@@ -18,7 +18,7 @@ tbody td {
 	color: #000000;
 }
 .tfailed {
-	background-color: #FF7D7D !important;
+	background-color: #FF4D69 !important;
 }
 .tpassed {
 	background-color: #7DFF8C !important;
