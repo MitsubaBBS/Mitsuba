@@ -294,7 +294,7 @@ switch ($mode)
 				switch ($test['on_fail'])
 				{
 					case "fatal_error":
-						echo '<tr class="tfatal">';
+						echo '<tr class="tfailed">';
 						echo '<td>'.$test['category'].'</td>';
 						echo '<td>'.$test['name'].'</td>';
 						echo '</tr>';
