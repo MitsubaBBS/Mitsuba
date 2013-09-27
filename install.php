@@ -3,12 +3,30 @@ if (file_exists("./config.php"))
 {
 die("Y U R TRYIN TO HACK THIS WONDERFUL SCRIPT?");
 }
+if (!defined('PHP_VERSION_ID')) {
+    $version = explode('.', PHP_VERSION);
+    define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Mitsuba</title>
 <link rel="stylesheet" href="./styles/mitsuba.css" />
+<style type="text/css">
+tbody td {
+	color: #000000;
+}
+.tfailed {
+	background-color: #FF7D7D !important;
+}
+.tpassed {
+	background-color: #7DFF8C !important;
+}
+.twarning {
+	background-color: #FBFF7D !important;
+}
+</style>
 <script type="text/javascript" src="./js/jquery.js"></script>
 </head>
 <body>
@@ -175,43 +193,136 @@ switch ($mode)
 		}
 		break;
 	default:
-		$graphics = "<b style='color: red;'>None</b>";
-		if (extension_loaded("imagick"))
-		{
-			$graphics = "<b style='color: green;'>imagick</b>";
-		} elseif (extension_loaded("gd"))
-		{
-			$graphics = "<b style='color: yellow;'>gd</b>";
-		}
-
-		$database = "<b style='color: red;'>None</b>";
-		if (extension_loaded("mysqli"))
-		{
-			$database = "<b style='color: green;'>mysqli</b>";
-		}
-
-		$fileinfo = "<b style='color: red;'>None</b>";
-		if (extension_loaded("fileinfo"))
-		{
-			$fileinfo = "<b style='color: green;'>fileinfo extension</b>";
-		} elseif (function_exists("mime_content_type")) {
-			$fileinfo = "<b style='color: yellow;'>mime_content_type</b>";
-		}
+		$tests = array();
+		$tests[] = array(
+			'category' => 'Environment',
+			'name' => 'PHP version check >= 5.3',
+			'test' => PHP_VERSION_ID >= 50300,
+			'on_fail' => 'fatal_error',
+			'fail_message' => 'Mitsuba requires at least PHP version 5.3 to run.'
+		);
+		$tests[] = array(
+			'category' => 'Environment',
+			'name' => 'PHP version check >= 5.4',
+			'test' => PHP_VERSION_ID >= 50400,
+			'on_fail' => 'warning',
+			'fail_message' => 'In future Mitsuba will require PHP version 5.4, so you should get ready for it.'
+		);
+		$tests[] = array(
+			'category' => 'Environment',
+			'name' => 'Is MySQLi extension installed?',
+			'test' => extension_loaded("mysqli"),
+			'on_fail' => 'fatal_error',
+			'fail_message' => 'Mitsuba requires MySQLi to store boards, posts and stuff.'
+		);
+		$tests[] = array(
+			'category' => 'Environment',
+			'name' => 'Safe mode is disabled',
+			'test' => !ini_get('safe_mode'),
+			'on_fail' => 'warning',
+			'fail_message' => 'PHP safe mode may cause problems in future.'
+		);
+		$tests[] = array(
+			'category' => 'Environment',
+			'name' => 'mime_content_type supported',
+			'test' => function_exists("mime_content_type"),
+			'on_fail' => 'fatal_error',
+			'fail_message' => 'Mitsuba needs mime_content_type to detect filetypes of uploaded files'
+		);
+		$tests[] = array(
+			'category' => 'Environment',
+			'name' => 'Fileinfo installed',
+			'test' => extension_loaded("fileinfo"),
+			'on_fail' => 'warning',
+			'fail_message' => 'Fileinfo is a better way to detect mimetypes than mime_content_type'
+		);
+		$tests[] = array(
+			'category' => 'Imaging',
+			'name' => 'GD extension available and JPG, GIF and PNG supported',
+			'test' => (extension_loaded("gd")) && (function_exists('imagecreatefromjpeg')) && (function_exists('imagecreatefromgif')) && (function_exists('imagecreatefrompng')),
+			'on_fail' => 'fatal_error',
+			'fail_message' => 'Mitsuba requires GD to thumbnail images.'
+		);
+		$tests[] = array(
+			'category' => 'Imaging',
+			'name' => 'Imagick extension available',
+			'test' => extension_loaded("imagick"),
+			'on_fail' => 'warning',
+			'fail_message' => 'Mitsuba uses imagick to make animated thumbnails from GIFs.'
+		);
+		$tests[] = array(
+			'category' => 'File system',
+			'name' => getcwd().'/',
+			'test' => is_writable("./"),
+			'on_fail' => 'fatal_error',
+			'fail_message' => 'You have to set up 755 permissions for '.getcwd().'/ or you won\'t be able to create new boards'
+		);
+		$tests[] = array(
+			'category' => 'File system',
+			'name' => getcwd().'/styles/',
+			'test' => is_writable("./styles/"),
+			'on_fail' => 'fatal_error',
+			'fail_message' => 'You have to set up 755 permissions for '.getcwd().'/styles/ or you won\'t be able to upload new stylesheets'
+		);
 		?>
 		<div class="box-outer top-box">
 		<div class="box-inner">
 		<div class="boxbar"><h2>Mitsuba installer</h2></div>
 		<div class="boxcontent">
-		Image library: <?php echo $graphics; ?><br />
-		Database: <?php echo $database; ?><br />
-		Fileinfo: <?php echo $fileinfo; ?><br />
+		<table>
+		<thead>
+		<tr>
+		<td>Category</td>
+		<td>Name</td>
+		</tr>
+		</thead>
+		<tbody>
 		<?php
-			if (($fileinfo != "<b style='color: red;'>None</b>") && ($database != "<b style='color: red;'>None</b>") && ($graphics != "<b style='color: red;'>None</b>"))
+		$fatals = array();
+		$warnings = array();
+		foreach ($tests as $test) {
+			if ($test['test'])
 			{
-				echo '[ <a href="?mode=install">Install</a> ] [ <a href="?mode=convert">Convert</a> ]';
+				echo '<tr class="tpassed">';
+				echo '<td>'.$test['category'].'</td>';
+				echo '<td>'.$test['name'].'</td>';
+				echo '</tr>';
 			} else {
-				echo '<b>Installation can not continue, because of missing dependencies</b>';
+				switch ($test['on_fail'])
+				{
+					case "fatal_error":
+						echo '<tr class="tfatal">';
+						echo '<td>'.$test['category'].'</td>';
+						echo '<td>'.$test['name'].'</td>';
+						echo '</tr>';
+						$fatals[] = $test['fail_message'];
+						break;
+					case "warning":
+						echo '<tr class="twarning">';
+						echo '<td>'.$test['category'].'</td>';
+						echo '<td>'.$test['name'].'</td>';
+						echo '</tr>';
+						$warnings[] = $test['fail_message'];
+						break;
+				}
 			}
+		}
+		?>
+		</tbody>
+		</table>
+		<?php
+		foreach ($fatals as $msg) {
+			echo "<p><b>Fatal: </b>".$msg."</p>";
+		}
+		foreach ($warnings as $msg) {
+			echo "<p><b>Warning: </b>".$msg."</p>";
+		}
+		if (count($fatals) >= 1)
+		{
+			echo "<b>Mitsuba installation can not continue because of unsolved errors</b>";
+		} else {
+			echo '[ <a href="?mode=install">Install</a> ] [ <a href="?mode=convert">Convert</a> ]';
+		}
 		?>
 		</div>
 		</div>
