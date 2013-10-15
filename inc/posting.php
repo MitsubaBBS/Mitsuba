@@ -347,10 +347,10 @@ class Posting {
 		$old_email = $email;
 		if (($bdata['noname'] == 1) && (!empty($email)) && ($this->mitsuba->admin->checkPermission("post.ignorenoname")))
 		{
-			if (($email == "noko") || ($email == "nonoko"))
+			if (($email == strtolower("noko")) || ($email == strtolower("nonoko")))
 			{
 				$email = "";
-			} elseif (($email == "nokosage") || ($email == "nonokosage") || ($email == "sage"))
+			} elseif (($email == strtolower("nokosage")) || ($email == strtolower("nonokosage")) || ($email == strtolower("sage")))
 			{
 				$email = "sage";
 			} else {
@@ -423,7 +423,7 @@ class Posting {
 		}
 		if ($resto != 0)
 		{
-			if (($email == "sage") || ($tinfo['sage'] == 1) || ($replies > $bdata['bumplimit']))
+			if (($email == strtolower("sage")) || ($tinfo['sage'] == 1) || ($replies > $bdata['bumplimit']))
 			{
 			
 			} else {
