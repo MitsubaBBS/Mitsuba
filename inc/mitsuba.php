@@ -83,10 +83,12 @@ class Admin
 			if (!empty($groupid[$permission]))
 			{
 				return true;
-			} else {
+			} elseif (count($p) > 1) {
 				$p = explode(".", $permission);
 				array_pop($p);
 				return $this->checkPermission(implode(".", $p), $groupid);
+			} else {
+				return false;
 			}
 		}
 		if ($groupid == false)
