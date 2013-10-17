@@ -29,7 +29,7 @@ class Users {
 	function addUser($username, $password, $group, $boards)
 	{
 		$username = $this->conn->real_escape_string($username);
-		if (!$this->isGroup($group))
+		if (!$this->mitsuba->groups->isGroup($group))
 		{
 			return -1;
 		}
@@ -61,7 +61,7 @@ class Users {
 		{
 			return -1;
 		}
-		if (!$this->isGroup($group))
+		if (!$this->mitsuba->groups->isGroup($group))
 		{
 			return -1;
 		}
@@ -78,11 +78,6 @@ class Users {
 			$boards = $this->conn->real_escape_string($boards);
 			$this->conn->query("UPDATE users SET username='".$username."'".$password_db.", `group`=".$group.", boards='".$boards."' WHERE id=".$id);
 		}
-	}
-
-	function isGroup($id)
-	{
-		return true;
 	}
 
 	function isUser($id)

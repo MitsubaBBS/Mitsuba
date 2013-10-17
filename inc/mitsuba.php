@@ -22,6 +22,8 @@ class Admin
 		$this->bans = new \Mitsuba\Admin\Bans($this->conn, $this->mitsuba);
 		include("admin.boards.php");
 		$this->boards = new \Mitsuba\Admin\Boards($this->conn, $this->mitsuba);
+		include("admin.groups.php");
+		$this->groups = new \Mitsuba\Admin\Groups($this->conn, $this->mitsuba);
 		include("admin.links.php");
 		$this->links = new \Mitsuba\Admin\Links($this->conn, $this->mitsuba);
 		include("admin.ui.php");
@@ -55,8 +57,38 @@ class Admin
 		}
 	}
 
+	function listPermissions($groupid = false)
+	{
+		if ($groupid == false)
+		{
+			if (empty($_SESSION['group']))
+			{
+				return false;
+			}
+			$groupid = $_SESSION['group'];
+		}
+		$permissions = $this->conn->query("SELECT * FROM group_permissions INNER JOIN permissions ON group_permissions.pid=permissions.id WHERE gid=".$groupid);
+		$list = array();
+		while ($row = $permissions->fetch_assoc())
+		{
+			$list[$row['name']] = 1;
+		}
+		return $list;
+	}
+
 	function checkPermission($permission, $groupid = false)
 	{
+		if (is_array($groupid))
+		{
+			if (!empty($groupid[$permission]))
+			{
+				return true;
+			} else {
+				$p = explode(".", $permission);
+				array_pop($p);
+				return $this->checkPermission(implode(".", $p), $groupid);
+			}
+		}
 		if ($groupid == false)
 		{
 			if (empty($_SESSION['group']))
