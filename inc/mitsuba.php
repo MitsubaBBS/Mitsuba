@@ -80,11 +80,11 @@ class Admin
 	{
 		if (is_array($groupid))
 		{
+			$p = explode(".", $permission);
 			if (!empty($groupid[$permission]))
 			{
 				return true;
 			} elseif (count($p) > 1) {
-				$p = explode(".", $permission);
 				array_pop($p);
 				return $this->checkPermission(implode(".", $p), $groupid);
 			} else {

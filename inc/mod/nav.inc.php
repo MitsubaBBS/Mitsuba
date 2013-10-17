@@ -308,11 +308,11 @@ function toggle(button,area) {
 <?php
 foreach ($menu as $category) {
 	?>
-<h2><span class="coll" onclick="toggle(this,'<?php echo $category['short']; ?>');" title="Toggle Category">&minus;</span><?php echo $menu['name']; ?></h2>
+<h2><span class="coll" onclick="toggle(this,'<?php echo $category['short']; ?>');" title="Toggle Category">&minus;</span><?php echo $category['name']; ?></h2>
 <div id="<?php echo $category['short']; ?>">
 <ul>
 	<?php
-		foreach ($menu['children'] as $item)
+		foreach ($category['children'] as $item)
 		{
 			if ($item['show'])
 			{
