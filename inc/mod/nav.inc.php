@@ -3,14 +3,268 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
-$reports = $conn->query("SELECT * FROM reports;");
-	$reports = $reports->num_rows;
-	$appeals = $conn->query("SELECT * FROM appeals;");
-	$appeals = $appeals->num_rows;
-	$breqs = $conn->query("SELECT * FROM ban_requests;");
-	$breqs = $breqs->num_rows;
-	$pms = $conn->query("SELECT * FROM pm WHERE to_user=".$_SESSION['id']." AND read_msg=0");
-	$pms = $pms->num_rows;
+$permissions = $mitsuba->admin->listPermissions();
+$menu_categories = array();
+$menu_items = array();
+$reports = $conn->query("SELECT * FROM reports;")->num_rows;
+$appeals = $conn->query("SELECT * FROM appeals;")->num_rows;
+$breqs = $conn->query("SELECT * FROM ban_requests;")->num_rows;
+$pms = $conn->query("SELECT * FROM pm WHERE to_user=".$_SESSION['id']." AND read_msg=0")->num_rows;
+
+$menu[] = array(
+	'name' => $lang['mod/general'],
+	'short' => 'gen',
+	'children' => array()
+);
+$menu[] = array(
+	'name' => $lang['mod/account'],
+	'short' => 'acc',
+	'children' => array()
+);
+$menu[] = array(
+	'name' => $lang['mod/administration'],
+	'short' => 'adm',
+	'children' => array()
+);
+$menu[] = array(
+	'name' => $lang['mod/boards'],
+	'short' => 'brd',
+	'children' => array()
+);
+
+$menu['gen']['children'][] = array(
+	'name' => '?/announcements',
+	'url' => $lang['mod/announcements'],
+	'show' => $mitsuba->admin->checkPermission("announcements.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/news',
+	'url' => $lang['mod/news'],
+	'show' => $mitsuba->admin->checkPermission("news.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/notes',
+	'url' => $lang['mod/notes'],
+	'show' => $mitsuba->admin->checkPermission("notes.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/ipnotes',
+	'url' => $lang['mod/ip_notes'],
+	'show' => $mitsuba->admin->checkPermission("ipnotes.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/recent/posts',
+	'url' => $lang['mod/recent_posts'],
+	'show' => $mitsuba->admin->checkPermission("recent.posts", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/recent/files',
+	'url' => $lang['mod/recent_images'],
+	'show' => $mitsuba->admin->checkPermission("recent.files", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/reports',
+	'url' => $lang['mod/report_queue'].' ('.$reports.')',
+	'show' => $mitsuba->admin->checkPermission("reports.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/bans',
+	'url' => $lang['mod/banlist'],
+	'show' => $mitsuba->admin->checkPermission("bans.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/warnings',
+	'url' => $lang['mod/warnings'],
+	'show' => $mitsuba->admin->checkPermission("warnings.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/whitelist',
+	'url' => $lang['mod/manage_whitelist'],
+	'show' => $mitsuba->admin->checkPermission("whitelist.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/bans/add',
+	'url' => $lang['mod/add_ban'],
+	'show' => $mitsuba->admin->checkPermission("bans.add", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/warnings/add',
+	'url' => $lang['mod/add_warning'],
+	'show' => $mitsuba->admin->checkPermission("warnings.add", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/ban_requests',
+	'url' => $lang['mod/ban_requests'].' ('.$breqs.')',
+	'show' => $mitsuba->admin->checkPermission("requests.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/appeals',
+	'url' => $lang['mod/appeals'].' ('.$appeals.')',
+	'show' => $mitsuba->admin->checkPermission("appeals.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/rangebans',
+	'url' => $lang['mod/manage_range_bans'],
+	'show' => $mitsuba->admin->checkPermission("rangebans.view", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/rangebans/add',
+	'url' => $lang['mod/add_range_ban'],
+	'show' => $mitsuba->admin->checkPermission("rangebans.add", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/announcements/add',
+	'url' => $lang['mod/new_announcement'],
+	'show' => $mitsuba->admin->checkPermission("announcements.add", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/news/add',
+	'url' => $lang['mod/add_news'],
+	'show' => $mitsuba->admin->checkPermission("news.add", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/locked',
+	'url' => $lang['mod/locked'],
+	'show' => $mitsuba->admin->checkPermission("post.closed", $permissions)
+);
+$menu['gen']['children'][] = array(
+	'name' => '?/sticky',
+	'url' => $lang['mod/sticky'],
+	'show' => $mitsuba->admin->checkPermission("post.sticky", $permissions)
+);
+$menu['acc']['children'][] = array(
+	'name' => '?/inbox',
+	'url' => $lang['mod/inbox'].' ('.$pms.')',
+	'show' => $mitsuba->admin->checkPermission("user.inbox", $permissions)
+);
+$menu['acc']['children'][] = array(
+	'name' => '?/outbox',
+	'url' => $lang['mod/outbox'],
+	'show' => $mitsuba->admin->checkPermission("user.inbox", $permissions)
+);
+$menu['acc']['children'][] = array(
+	'name' => '?/inbox/new',
+	'url' => $lang['mod/send_message'],
+	'show' => $mitsuba->admin->checkPermission("user.inbox", $permissions)
+);
+$menu['acc']['children'][] = array(
+	'name' => '?/password',
+	'url' => $lang['mod/change_password'],
+	'show' => $mitsuba->admin->checkPermission("user.change_password", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/config',
+	'url' => $lang['mod/configuration'],
+	'show' => $mitsuba->admin->checkPermission("config.view", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/boards',
+	'url' => $lang['mod/manage_boards'],
+	'show' => $mitsuba->admin->checkPermission("boards.view", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/ads',
+	'url' => $lang['mod/manage_ads'],
+	'show' => $mitsuba->admin->checkPermission("ads.list", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/pages',
+	'url' => $lang['mod/manage_pages'],
+	'show' => $mitsuba->admin->checkPermission("pages.view", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/links',
+	'url' => $lang['mod/manage_board_links'],
+	'show' => $mitsuba->admin->checkPermission("links.view", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/users',
+	'url' => $lang['mod/manage_users'],
+	'show' => $mitsuba->admin->checkPermission("users.view", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/news/manage',
+	'url' => $lang['mod/manage_news_entries'],
+	'show' => $mitsuba->admin->checkPermission("news.manage", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/announcements/manage',
+	'url' => $lang['mod/manage_announcements'],
+	'show' => $mitsuba->admin->checkPermission("announcements.manage", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/bbcodes',
+	'url' => $lang['mod/manage_bbcodes'],
+	'show' => $mitsuba->admin->checkPermission("bbcodes.view", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/embeds',
+	'url' => $lang['mod/manage_embeds'],
+	'show' => $mitsuba->admin->checkPermission("embeds.view", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/styles',
+	'url' => $lang['mod/manage_styles'],
+	'show' => $mitsuba->admin->checkPermission("styles.view", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/wordfilter',
+	'url' => $lang['mod/manage_wordfilter'],
+	'show' => $mitsuba->admin->checkPermission("wordfilter.view", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/spamfilter',
+	'url' => $lang['mod/manage_spamfilter'],
+	'show' => $mitsuba->admin->checkPermission("spamfilter.view", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/message',
+	'url' => $lang['mod/global_message'],
+	'show' => $mitsuba->admin->checkPermission("config.global_message", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/rebuild',
+	'url' => $lang['mod/rebuild_cache'],
+	'show' => $mitsuba->admin->checkPermission("config.rebuild", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/cleaner',
+	'url' => $lang['mod/cleaner'],
+	'show' => $mitsuba->admin->checkPermission("config.cleaner", $permissions)
+);
+$menu['adm']['children'][] = array(
+	'name' => '?/log',
+	'url' => $lang['mod/action_log'],
+	'show' => $mitsuba->admin->checkPermission("logs.view", $permissions)
+);
+
+$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
+if ($_SESSION['boards'] != "%")
+{
+	$boards = explode(",", $_SESSION['boards']);
+} else {
+	$boards = "%";
+}
+while ($row = $result->fetch_assoc())
+{
+	if (($boards == "%") || (in_array($row['short'], $boards)))
+	{
+		if ($row['hidden']==1)
+		{
+			$menu['brd']['children'][] = array(
+				'name' => '/'.$row['short'].'/ - '.$row['name'],
+				'url' => '?/board&b='.$row['short'],
+				'show' => true
+			);
+		} else {
+			$menu['brd']['children'][] = array(
+				'name' => '/'.$row['short'].'/ - '.$row['name'],
+				'url' => './'.$row['short'].'/',
+				'show' => true
+			);
+		}
+	}
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -51,83 +305,24 @@ function toggle(button,area) {
 <li><?php echo $lang['mod/privileges']; ?><b><?php echo $_SESSION['group_name'] ?></b></li>
 <li><a href="?/logout" target="_top"><?php echo $lang['mod/logout']; ?></a></li>
 </ul>
-<h2><span class="coll" onclick="toggle(this,'gen');" title="Toggle Category">&minus;</span><?php echo $lang['mod/general']; ?></h2>
-<div id="gen" style="">
-<ul>
-<li><a href="?/announcements" target="main"><?php echo $lang['mod/announcements']; ?></a></li>
-<li><a href="?/news" target="main"><?php echo $lang['mod/news']; ?></a></li>
-<li><a href="?/notes" target="main"><?php echo $lang['mod/notes']; ?></a></li>
-<li><a href="?/ipnotes" target="main"><?php echo $lang['mod/ip_notes']; ?></a></li>
-<li><a href="?/recent/posts" target="main"><?php echo $lang['mod/recent_posts']; ?></a></li>
-<li><a href="?/recent/files" target="main"><?php echo $lang['mod/recent_images']; ?></a></li>
-<li><a href="?/reports" target="main"><?php echo $lang['mod/report_queue']; ?> (<?php echo $reports; ?>)</a></li>
-<li><a href="?/bans" target="main"><?php echo $lang['mod/banlist']; ?></a></li>
-<li><a href="?/warnings" target="main"><?php echo $lang['mod/warnings']; ?></a></li>
-<li><a href="?/whitelist" target="main"><?php echo $lang['mod/manage_whitelist']; ?></a></li>
-<li><a href="?/bans/add" target="main"><?php echo $lang['mod/add_ban']; ?></a></li>
-<li><a href="?/warnings/add" target="main"><?php echo $lang['mod/add_warning']; ?></a></li>
-<li><a href="?/ban_requests" target="main"><?php echo $lang['mod/ban_requests']; ?> (<?php echo $breqs; ?>)</a></li>
-<li><a href="?/appeals" target="main"><?php echo $lang['mod/appeals']; ?> (<?php echo $appeals; ?>)</a></li>
-<li><a href="?/rangebans" target="main"><?php echo $lang['mod/manage_range_bans']; ?></a></li>
-<li><a href="?/rangebans/add" target="main"><?php echo $lang['mod/add_range_ban']; ?></a></li>
-<li><a href="?/announcements/add" target="main"><?php echo $lang['mod/new_announcement']; ?></a></li>
-<li><a href="?/news/add" target="main"><?php echo $lang['mod/add_news']; ?></a></li>
-<li><a href="?/locked" target="main"><?php echo $lang['mod/locked']; ?></a></li>
-<li><a href="?/sticky" target="main"><?php echo $lang['mod/sticky']; ?></a></li>
-</ul></div>
-<h2><span class="coll" onclick="toggle(this,'acc');" title="Toggle Category">&minus;</span><?php echo $lang['mod/account']; ?></h2>
-<div id="acc" style="">
-<ul>
-<li><a href="?/inbox" target="main"><?php echo $lang['mod/inbox']; ?> (<?php echo $pms; ?>)</a></li>
-<li><a href="?/outbox" target="main"><?php echo $lang['mod/outbox']; ?></a></li>
-<li><a href="?/inbox/new" target="main"><?php echo $lang['mod/send_message']; ?></a></li>
-<li><a href="?/password" target="main"><?php echo $lang['mod/change_password']; ?></a></li>
-</ul></div>
-<h2><span class="coll" onclick="toggle(this,'adm');" title="Toggle Category">&minus;</span><?php echo $lang['mod/administration']; ?></h2>
-<div id="adm" style="">
-<ul>
-<li><a href="?/config" target="main"><?php echo $lang['mod/configuration']; ?></a></li>
-<li><a href="?/boards" target="main"><?php echo $lang['mod/manage_boards']; ?></a></li>
-<li><a href="?/ads" target="main"><?php echo $lang['mod/manage_ads']; ?></a></li>
-<li><a href="?/pages" target="main"><?php echo $lang['mod/manage_pages']; ?></a></li>
-<li><a href="?/links" target="main"><?php echo $lang['mod/manage_board_links']; ?></a></li>
-<li><a href="?/users" target="main"><?php echo $lang['mod/manage_users']; ?></a></li>
-<li><a href="?/news/manage" target="main"><?php echo $lang['mod/manage_news_entries']; ?></a></li>
-<li><a href="?/announcements/manage" target="main"><?php echo $lang['mod/manage_announcements']; ?></a></li>
-<li><a href="?/bbcodes" target="main"><?php echo $lang['mod/manage_bbcodes']; ?></a></li>
-<li><a href="?/embeds" target="main"><?php echo $lang['mod/manage_embeds']; ?></a></li>
-<li><a href="?/styles" target="main"><?php echo $lang['mod/manage_styles']; ?></a></li>
-<li><a href="?/wordfilter" target="main"><?php echo $lang['mod/manage_wordfilter']; ?></a></li>
-<li><a href="?/spamfilter" target="main"><?php echo $lang['mod/manage_spamfilter']; ?></a></li>
-<li><a href="?/message" target="main"><?php echo $lang['mod/global_message']; ?></a></li>
-<li><a href="?/rebuild" target="main"><?php echo $lang['mod/rebuild_cache']; ?></a></li>
-<li><a href="?/cleaner" target="main"><?php echo $lang['mod/cleaner']; ?></a></li>
-<li><a href="?/log" target="main"><?php echo $lang['mod/action_log']; ?></a></li>
-</ul></div>
-<h2><span class="coll" onclick="toggle(this,'brd');" title="Toggle Category">&minus;</span><?php echo $lang['mod/boards']; ?></h2>
-<div id="brd" style="">
-<ul>
 <?php
-$result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
-if ($_SESSION['boards'] != "%")
-{
-$boards = explode(",", $_SESSION['boards']);
-} else {
-$boards = "%";
-}
-while ($row = $result->fetch_assoc())
-{
-if (($boards == "%") || (in_array($row['short'], $boards)))
-{
-if ($row['hidden']==1)
-{
-	echo '<li><a href="?/board&b='.$row['short'].'" target="main">/'.$row['short'].'/ - '.$row['name'].'</a></li>';
-} else {
-	echo '<li><a href="./'.$row['short'].'/" target="main">/'.$row['short'].'/ - '.$row['name'].'</a></li>';
-}
-}
+foreach ($menu as $category) {
+	?>
+<h2><span class="coll" onclick="toggle(this,'<?php echo $category['short']; ?>');" title="Toggle Category">&minus;</span><?php echo $menu['name']; ?></h2>
+<div id="<?php echo $category['short']; ?>">
+<ul>
+	<?php
+		foreach ($menu['children'] as $item)
+		{
+			if ($item['show'])
+			{
+				echo '<li><a href="'.$item['short'].'" target="main">'.$item['name'].'</a></li>';
+			}
+		}
+	?>
+</ul></div>
+<?php
 }
 ?>
-</ul></div>
 </body>
 </html>

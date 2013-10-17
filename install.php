@@ -240,6 +240,20 @@ switch ($mode)
 			'fail_message' => 'Fileinfo is a better way to detect mimetypes than mime_content_type'
 		);
 		$tests[] = array(
+			'category' => 'Features',
+			'name' => 'Is JSON supported?',
+			'test' => function_exists("json_encode"),
+			'on_fail' => 'fatal_error',
+			'fail_message' => 'JSON is required to view posters\' IPs and edit posts'
+		);
+		$tests[] = array(
+			'category' => 'Features',
+			'name' => 'Is ZipArchive installed?',
+			'test' => extension_loaded("ZipArchive"),
+			'on_fail' => 'warning',
+			'fail_message' => 'You won\'t be able to upload modules via mod panel because of no ZipArchive extension'
+		);
+		$tests[] = array(
 			'category' => 'File system',
 			'name' => 'Is '.getcwd().'/ writable?',
 			'test' => is_writable("./"),
