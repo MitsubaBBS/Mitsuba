@@ -29,208 +29,208 @@ $menu['brd'] = array(
 );
 
 $menu['gen']['children'][] = array(
-	'name' => '?/announcements',
-	'url' => $lang['mod/announcements'],
+	'url' => '?/announcements',
+	'name' => $lang['mod/announcements'],
 	'show' => $mitsuba->admin->checkPermission("announcements.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/news',
-	'url' => $lang['mod/news'],
+	'url' => '?/news',
+	'name' => $lang['mod/news'],
 	'show' => $mitsuba->admin->checkPermission("news.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/notes',
-	'url' => $lang['mod/notes'],
+	'url' => '?/notes',
+	'name' => $lang['mod/notes'],
 	'show' => $mitsuba->admin->checkPermission("notes.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/ipnotes',
-	'url' => $lang['mod/ip_notes'],
+	'url' => '?/ipnotes',
+	'name' => $lang['mod/ip_notes'],
 	'show' => $mitsuba->admin->checkPermission("ipnotes.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/recent/posts',
-	'url' => $lang['mod/recent_posts'],
+	'url' => '?/recent/posts',
+	'name' => $lang['mod/recent_posts'],
 	'show' => $mitsuba->admin->checkPermission("recent.posts", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/recent/files',
-	'url' => $lang['mod/recent_images'],
+	'url' => '?/recent/files',
+	'name' => $lang['mod/recent_images'],
 	'show' => $mitsuba->admin->checkPermission("recent.files", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/reports',
-	'url' => $lang['mod/report_queue'].' ('.$reports.')',
+	'url' => '?/reports',
+	'name' => $lang['mod/report_queue'].' ('.$reports.')',
 	'show' => $mitsuba->admin->checkPermission("reports.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/bans',
-	'url' => $lang['mod/banlist'],
+	'url' => '?/bans',
+	'name' => $lang['mod/banlist'],
 	'show' => $mitsuba->admin->checkPermission("bans.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/warnings',
-	'url' => $lang['mod/warnings'],
+	'url' => '?/warnings',
+	'name' => $lang['mod/warnings'],
 	'show' => $mitsuba->admin->checkPermission("warnings.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/whitelist',
-	'url' => $lang['mod/manage_whitelist'],
+	'url' => '?/whitelist',
+	'name' => $lang['mod/manage_whitelist'],
 	'show' => $mitsuba->admin->checkPermission("whitelist.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/bans/add',
-	'url' => $lang['mod/add_ban'],
+	'url' => '?/bans/add',
+	'name' => $lang['mod/add_ban'],
 	'show' => $mitsuba->admin->checkPermission("bans.add", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/warnings/add',
-	'url' => $lang['mod/add_warning'],
+	'url' => '?/warnings/add',
+	'name' => $lang['mod/add_warning'],
 	'show' => $mitsuba->admin->checkPermission("warnings.add", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/ban_requests',
-	'url' => $lang['mod/ban_requests'].' ('.$breqs.')',
+	'url' => '?/ban_requests',
+	'name' => $lang['mod/ban_requests'].' ('.$breqs.')',
 	'show' => $mitsuba->admin->checkPermission("requests.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/appeals',
-	'url' => $lang['mod/appeals'].' ('.$appeals.')',
+	'url' => '?/appeals',
+	'name' => $lang['mod/appeals'].' ('.$appeals.')',
 	'show' => $mitsuba->admin->checkPermission("appeals.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/rangebans',
-	'url' => $lang['mod/manage_range_bans'],
+	'url' => '?/rangebans',
+	'name' => $lang['mod/manage_range_bans'],
 	'show' => $mitsuba->admin->checkPermission("rangebans.view", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/rangebans/add',
-	'url' => $lang['mod/add_range_ban'],
+	'url' => '?/rangebans/add',
+	'name' => $lang['mod/add_range_ban'],
 	'show' => $mitsuba->admin->checkPermission("rangebans.add", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/announcements/add',
-	'url' => $lang['mod/new_announcement'],
+	'url' => '?/announcements/add',
+	'name' => $lang['mod/new_announcement'],
 	'show' => $mitsuba->admin->checkPermission("announcements.add", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/news/add',
-	'url' => $lang['mod/add_news'],
+	'url' => '?/news/add',
+	'name' => $lang['mod/add_news'],
 	'show' => $mitsuba->admin->checkPermission("news.add", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/locked',
-	'url' => $lang['mod/locked'],
+	'url' => '?/locked',
+	'name' => $lang['mod/locked'],
 	'show' => $mitsuba->admin->checkPermission("post.closed", $permissions)
 );
 $menu['gen']['children'][] = array(
-	'name' => '?/sticky',
-	'url' => $lang['mod/sticky'],
+	'url' => '?/sticky',
+	'name' => $lang['mod/sticky'],
 	'show' => $mitsuba->admin->checkPermission("post.sticky", $permissions)
 );
 $menu['acc']['children'][] = array(
-	'name' => '?/inbox',
-	'url' => $lang['mod/inbox'].' ('.$pms.')',
+	'url' => '?/inbox',
+	'name' => $lang['mod/inbox'].' ('.$pms.')',
 	'show' => $mitsuba->admin->checkPermission("user.inbox", $permissions)
 );
 $menu['acc']['children'][] = array(
-	'name' => '?/outbox',
-	'url' => $lang['mod/outbox'],
+	'url' => '?/outbox',
+	'name' => $lang['mod/outbox'],
 	'show' => $mitsuba->admin->checkPermission("user.inbox", $permissions)
 );
 $menu['acc']['children'][] = array(
-	'name' => '?/inbox/new',
-	'url' => $lang['mod/send_message'],
+	'url' => '?/inbox/new',
+	'name' => $lang['mod/send_message'],
 	'show' => $mitsuba->admin->checkPermission("user.inbox", $permissions)
 );
 $menu['acc']['children'][] = array(
-	'name' => '?/password',
-	'url' => $lang['mod/change_password'],
+	'url' => '?/password',
+	'name' => $lang['mod/change_password'],
 	'show' => $mitsuba->admin->checkPermission("user.change_password", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/config',
-	'url' => $lang['mod/configuration'],
+	'url' => '?/config',
+	'name' => $lang['mod/configuration'],
 	'show' => $mitsuba->admin->checkPermission("config.view", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/boards',
-	'url' => $lang['mod/manage_boards'],
+	'url' => '?/boards',
+	'name' => $lang['mod/manage_boards'],
 	'show' => $mitsuba->admin->checkPermission("boards.view", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/ads',
-	'url' => $lang['mod/manage_ads'],
+	'url' => '?/ads',
+	'name' => $lang['mod/manage_ads'],
 	'show' => $mitsuba->admin->checkPermission("ads.list", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/pages',
-	'url' => $lang['mod/manage_pages'],
+	'url' => '?/pages',
+	'name' => $lang['mod/manage_pages'],
 	'show' => $mitsuba->admin->checkPermission("pages.view", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/links',
-	'url' => $lang['mod/manage_board_links'],
+	'url' => '?/links',
+	'name' => $lang['mod/manage_board_links'],
 	'show' => $mitsuba->admin->checkPermission("links.view", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/users',
-	'url' => $lang['mod/manage_users'],
+	'url' => '?/users',
+	'name' => $lang['mod/manage_users'],
 	'show' => $mitsuba->admin->checkPermission("users.view", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/news/manage',
-	'url' => $lang['mod/manage_news_entries'],
+	'url' => '?/news/manage',
+	'name' => $lang['mod/manage_news_entries'],
 	'show' => $mitsuba->admin->checkPermission("news.manage", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/announcements/manage',
-	'url' => $lang['mod/manage_announcements'],
+	'url' => '?/announcements/manage',
+	'name' => $lang['mod/manage_announcements'],
 	'show' => $mitsuba->admin->checkPermission("announcements.manage", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/bbcodes',
-	'url' => $lang['mod/manage_bbcodes'],
+	'url' => '?/bbcodes',
+	'name' => $lang['mod/manage_bbcodes'],
 	'show' => $mitsuba->admin->checkPermission("bbcodes.view", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/embeds',
-	'url' => $lang['mod/manage_embeds'],
+	'url' => '?/embeds',
+	'name' => $lang['mod/manage_embeds'],
 	'show' => $mitsuba->admin->checkPermission("embeds.view", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/styles',
-	'url' => $lang['mod/manage_styles'],
+	'url' => '?/styles',
+	'name' => $lang['mod/manage_styles'],
 	'show' => $mitsuba->admin->checkPermission("styles.view", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/wordfilter',
-	'url' => $lang['mod/manage_wordfilter'],
+	'url' => '?/wordfilter',
+	'name' => $lang['mod/manage_wordfilter'],
 	'show' => $mitsuba->admin->checkPermission("wordfilter.view", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/spamfilter',
-	'url' => $lang['mod/manage_spamfilter'],
+	'url' => '?/spamfilter',
+	'name' => $lang['mod/manage_spamfilter'],
 	'show' => $mitsuba->admin->checkPermission("spamfilter.view", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/message',
-	'url' => $lang['mod/global_message'],
+	'url' => '?/message',
+	'name' => $lang['mod/global_message'],
 	'show' => $mitsuba->admin->checkPermission("config.global_message", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/rebuild',
-	'url' => $lang['mod/rebuild_cache'],
+	'url' => '?/rebuild',
+	'name' => $lang['mod/rebuild_cache'],
 	'show' => $mitsuba->admin->checkPermission("config.rebuild", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/cleaner',
-	'url' => $lang['mod/cleaner'],
+	'url' => '?/cleaner',
+	'name' => $lang['mod/cleaner'],
 	'show' => $mitsuba->admin->checkPermission("config.cleaner", $permissions)
 );
 $menu['adm']['children'][] = array(
-	'name' => '?/log',
-	'url' => $lang['mod/action_log'],
+	'url' => '?/log',
+	'name' => $lang['mod/action_log'],
 	'show' => $mitsuba->admin->checkPermission("logs.view", $permissions)
 );
 
@@ -248,14 +248,14 @@ while ($row = $result->fetch_assoc())
 		if ($row['hidden']==1)
 		{
 			$menu['brd']['children'][] = array(
-				'name' => '/'.$row['short'].'/ - '.$row['name'],
 				'url' => '?/board&b='.$row['short'],
+				'name' => '/'.$row['short'].'/ - '.$row['name'],
 				'show' => true
 			);
 		} else {
 			$menu['brd']['children'][] = array(
-				'name' => '/'.$row['short'].'/ - '.$row['name'],
 				'url' => './'.$row['short'].'/',
+				'name' => '/'.$row['short'].'/ - '.$row['name'],
 				'show' => true
 			);
 		}
