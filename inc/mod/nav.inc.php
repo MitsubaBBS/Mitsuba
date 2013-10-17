@@ -11,24 +11,20 @@ $appeals = $conn->query("SELECT * FROM appeals;")->num_rows;
 $breqs = $conn->query("SELECT * FROM ban_requests;")->num_rows;
 $pms = $conn->query("SELECT * FROM pm WHERE to_user=".$_SESSION['id']." AND read_msg=0")->num_rows;
 
-$menu[] = array(
+$menu['gen'] = array(
 	'name' => $lang['mod/general'],
-	'short' => 'gen',
 	'children' => array()
 );
-$menu[] = array(
+$menu['acc'] = array(
 	'name' => $lang['mod/account'],
-	'short' => 'acc',
 	'children' => array()
 );
-$menu[] = array(
+$menu['adm'] = array(
 	'name' => $lang['mod/administration'],
-	'short' => 'adm',
 	'children' => array()
 );
-$menu[] = array(
+$menu['brd'] = array(
 	'name' => $lang['mod/boards'],
-	'short' => 'brd',
 	'children' => array()
 );
 
@@ -306,17 +302,17 @@ function toggle(button,area) {
 <li><a href="?/logout" target="_top"><?php echo $lang['mod/logout']; ?></a></li>
 </ul>
 <?php
-foreach ($menu as $category) {
+foreach ($menu as $key => $category) {
 	?>
-<h2><span class="coll" onclick="toggle(this,'<?php echo $category['short']; ?>');" title="Toggle Category">&minus;</span><?php echo $category['name']; ?></h2>
-<div id="<?php echo $category['short']; ?>">
+<h2><span class="coll" onclick="toggle(this,'<?php echo $key; ?>');" title="Toggle Category">&minus;</span><?php echo $category['name']; ?></h2>
+<div id="<?php echo $key; ?>">
 <ul>
 	<?php
 		foreach ($category['children'] as $item)
 		{
 			if ($item['show'])
 			{
-				echo '<li><a href="'.$item['short'].'" target="main">'.$item['name'].'</a></li>';
+				echo '<li><a href="'.$item['url'].'" target="main">'.$item['name'].'</a></li>';
 			}
 		}
 	?>
