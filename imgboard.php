@@ -111,8 +111,22 @@ if (!empty($_POST['mode']))
 				exit;
 			}
 			$_SESSION['captcha'] = "";
-
-			if (strlen($_POST['com']) > $bdata['maxchars'])
+			$wfresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
+			$replace_array = array();
+			while ($row = $wfresult->fetch_assoc())
+			{
+				if ($row['boards'] != "%")
+				{
+					$boards = explode(",", $row['boards']);
+					if (in_array($bdata['short'], $boards))
+					{
+						$replace_array[$row['search']] = $row['replace'];
+					}
+				} else {
+					$replace_array[$row['search']] = $row['replace'];
+				}
+			}
+			if (strlen(strtr($_POST['com'], $replace_array)) > $bdata['maxchars'])
 			{
 				$mitsuba->common->showMsg($lang['img/error'], sprintf($lang['img/comment_too_long'],strlen($_POST['com']),$bdata['maxchars']));
 				exit;
