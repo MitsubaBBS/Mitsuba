@@ -29,7 +29,7 @@ class Users {
 	function addUser($username, $password, $group, $boards)
 	{
 		$username = $this->conn->real_escape_string($username);
-		if (!$this->mitsuba->groups->isGroup($group))
+		if (!$this->mitsuba->admin->groups->isGroup($group))
 		{
 			return -1;
 		}
@@ -61,7 +61,7 @@ class Users {
 		{
 			return -1;
 		}
-		if (!$this->mitsuba->groups->isGroup($group))
+		if (!$this->mitsuba->admin->groups->isGroup($group))
 		{
 			return -1;
 		}

@@ -9,8 +9,10 @@ class Admin
 {
 	private $conn;
 	private $mitsuba;
+	private $user_permissions;
 	public $bans;
 	public $boards;
+	public $groups;
 	public $links;
 	public $ui;
 	public $users;
@@ -78,6 +80,18 @@ class Admin
 
 	function checkPermission($permission, $groupid = false)
 	{
+		if ($groupid == false)
+		{
+			if (!empty($this->user_permissions))
+			{
+				$groupid = $this->user_permissions;
+			} else {
+				$groupid = $this->listPermissions();
+				if ($groupid == false) {
+					return false;
+				}
+			}
+		}
 		if (is_array($groupid))
 		{
 			$p = explode(".", $permission);
@@ -90,14 +104,6 @@ class Admin
 			} else {
 				return false;
 			}
-		}
-		if ($groupid == false)
-		{
-			if (empty($_SESSION['group']))
-			{
-				return false;
-			}
-			$groupid = $_SESSION['group'];
 		}
 		$p = explode(".", $permission);
 		$permission = $this->conn->query("SELECT * FROM group_permissions INNER JOIN permissions ON group_permissions.pid=permissions.id AND permissions.name='".$this->conn->real_escape_string($permission)."' WHERE gid=".$groupid);
