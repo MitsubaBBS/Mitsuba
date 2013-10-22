@@ -84,6 +84,8 @@ class Posting {
 						{
 							$this->mitsuba->caching->generateCatalog($board);
 						}
+						$e = array("postno" => $postno, "onlyimgdel" => $onlyimgdel);
+						$this->mitsuba->emitEvent("posting.delete", $e);
 						$this->mitsuba->caching->generateFrontpage("onPostDeleted");
 						return 1; //done-image
 					} else {
@@ -150,6 +152,8 @@ class Posting {
 							$this->mitsuba->caching->generateCatalog($board);
 						}
 						$this->mitsuba->caching->generateView($board);
+						$e = array("postno" => $postno, "onlyimgdel" => $onlyimgdel);
+						$this->mitsuba->emitEvent("posting.delete", $e);
 						$this->mitsuba->caching->generateFrontpage("onPostDeleted");
 						return 2; //done post
 					} else {
@@ -183,13 +187,15 @@ class Posting {
 							$this->mitsuba->caching->generateCatalog($board);
 						}
 						$this->mitsuba->caching->generateView($board);
+						$e = array("postno" => $postno, "onlyimgdel" => $onlyimgdel);
+						$this->mitsuba->emitEvent("posting.delete", $e);
 						$this->mitsuba->caching->generateFrontpage("onPostDeleted");
 						return 2;
 					}
 				}
 				if ($config['enable_api']==1)
 				{
-					$mitsuba->caching->serializeBoard($_GET['b']);
+					$this->mitsuba->caching->serializeBoard($_GET['b']);
 				}
 					
 			} else {
@@ -200,7 +206,7 @@ class Posting {
 		}
 	}
 
-	function addPost($board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $mimetype = "", $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $nofile = 0, $fake_id = "", $cc_text = "", $cc_style = "", $cc_icon = "", $redirect = 0)
+	function addPost($board, $name, $email, $subject, $comment, $password, $filename, $orig_filename, $mimetype = "", $resto = null, $md5 = "", $t_w = 0, $t_h = 0, $spoiler = 0, $embed = 0, $raw = 0, $sticky = 0, $locked = 0, $nolimit = 0, $nofile = 0, $fake_id = "", $cc_text = "", $cc_style = "", $cc_icon = "", $redirect = 0, $custom_fields = array())
 	{
 		global $lang;
 		$config = $this->mitsuba->config;
@@ -217,7 +223,6 @@ class Posting {
 		{
 			$mod = 1;
 		}
-		
 		if (!is_numeric($t_w))
 		{
 			$t_w = 0;
@@ -325,25 +330,16 @@ class Posting {
 		{
 			$comment = $this->escapeMitsubaSpecialCharacters($comment);
 		}
-		$pdata = array("board" => $board, "name" => $name, "trip" => $trip, "strip" => $strip,
-			"email" => $email, "subject" => $subject, "comment" => $comment,
-			"password" => $password, "filename" => $filename, "orig_filename" => $orig_filename,
-			"mimetype" => $mimetype, "resto" => $resto, "md5" => $md5, "t_w" => $t_w,
-			"t_h" => $t_h, "spoiler" => $spoiler, "embed" => $embed,
-			"raw" => $raw, "sticky" => $sticky, "locked" => $locked, 
-			"nolimit" => $nolimit, "nofile" => $nofile, "fake_id" => $fake_id,
-			"cc_text" => $cc_text, "cc_style" => $cc_style, "cc_icon" => $cc_icon);
-		$this->mitsuba->triggerEvent("onPost", $pdata);
-		$name = $pdata['name'];
-		$trip = $pdata['trip'];
-		$strip = $pdata['strip'];
-		$email = $pdata['email'];
-		$subject = $pdata['subject'];
-		$comment = $pdata['comment'];
-		$password = $pdata['password'];
-		$spoiler = $pdata['spoiler'];
-		$embed = $pdata['embed'];
-		$raw = $pdata['raw'];
+		$pdata = array("board" => &$board, "name" => &$name, "trip" => &$trip, "strip" => &$strip,
+			"email" => &$email, "subject" => &$subject, "comment" => &$comment,
+			"password" => &$password, "filename" => &$filename, "orig_filename" => &$orig_filename,
+			"mimetype" => &$mimetype, "resto" => &$resto, "md5" => &$md5, "t_w" => &$t_w,
+			"t_h" => &$t_h, "spoiler" => &$spoiler, "embed" => &$embed,
+			"raw" => &$raw, "sticky" => &$sticky, "locked" => &$locked, 
+			"nolimit" => &$nolimit, "nofile" => &$nofile, "fake_id" => &$fake_id,
+			"cc_text" => &$cc_text, "cc_style" => &$cc_style, "cc_icon" => &$cc_icon, "custom_fields" => &$custom_fields);
+		$e = array("postdata" => &$pdata, "requestdata" => &$_POST);
+		$this->mitsuba->emitEvent("posting.post", $e);
 		$old_email = $email;
 		if (($bdata['noname'] == 1) && (!empty($email)) && ($this->mitsuba->admin->checkPermission("post.ignorenoname")))
 		{
@@ -402,8 +398,23 @@ class Posting {
 			$cc_style = $this->conn->real_escape_string(htmlspecialchars($cc_style));
 			$cc_icon = $this->conn->real_escape_string(htmlspecialchars($cc_icon));
 		}
-		$this->conn->query("INSERT INTO posts (board, `date`, name, trip, strip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, mimetype, t_w, t_h, sticky, sage, locked, raw, capcode_text, capcode_style, capcode_icon, deleted)".
-		"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$strip."', '".$this->conn->real_escape_string($poster_id)."', '".$this->mitsuba->common->processString($email)."', '".$this->mitsuba->common->processString($subject)."', '".$this->mitsuba->common->preprocessComment($comment)."', '".md5($password)."', '".$this->mitsuba->common->processString($orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', '".$mimetype."', ".$t_w.", ".$t_h.", ".$sticky.", 0, ".$locked.", ".$raw.", '".$cc_text."', '".$cc_style."', '".$cc_icon."', 0)");
+		$custom_fields_names = "";
+		$custom_fields_values = "";
+		$all_fields = $this->conn->query("SELECT * FROM module_fields WHERE type='postfield';");
+		$fields = array();
+		while ($row = $all_fields->fetch_assoc())
+		{
+			$fields[$row['name']] = 1;
+		}
+		foreach ($custom_fields as $key => $value) {
+			if (!empty($fields[$key]))
+			{
+				$custom_fields_names .= ", ".$this->conn->real_escape_string($key);
+				$custom_fields_values .= ", '".$this->conn->real_escape_string($value)."'";
+			}
+		}
+		$this->conn->query("INSERT INTO posts (board, `date`, name, trip, strip, poster_id, email, subject, comment, password, orig_filename, filename, resto, ip, lastbumped, filehash, orig_filesize, filesize, imagesize, mimetype, t_w, t_h, sticky, sage, locked, raw, capcode_text, capcode_style, capcode_icon, deleted".$custom_fields_names.")".
+		"VALUES ('".$board."', ".time().", '".$name."', '".$trip."', '".$strip."', '".$this->conn->real_escape_string($poster_id)."', '".$this->mitsuba->common->processString($email)."', '".$this->mitsuba->common->processString($subject)."', '".$this->mitsuba->common->preprocessComment($comment)."', '".md5($password)."', '".$this->mitsuba->common->processString($orig_filename)."', '".$filename."', ".$resto.", '".$_SERVER['REMOTE_ADDR']."', ".$lastbumped.", '".$md5."', ".$osize.", '".$fsize."', '".$isize."', '".$mimetype."', ".$t_w.", ".$t_h.", ".$sticky.", 0, ".$locked.", ".$raw.", '".$cc_text."', '".$cc_style."', '".$cc_icon."', 0".$custom_fields_values.")");
 		$id = mysqli_insert_id($this->conn);
 		if (empty($fake_id))
 		{
@@ -502,7 +513,7 @@ class Posting {
 
 		if ($config['enable_api']==1)
 		{
-			$mitsuba->caching->serializeBoard($_GET['b']);
+			$this->mitsuba->caching->serializeBoard($_GET['b']);
 		}
 	}
 

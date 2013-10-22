@@ -268,6 +268,13 @@ switch ($mode)
 			'fail_message' => 'You have to set up 755 permissions for '.getcwd().'/styles/ or you won\'t be able to upload new stylesheets'
 		);
 		$tests[] = array(
+			'category' => 'File system',
+			'name' => 'Is '.getcwd().'/modules/ writable?',
+			'test' => is_writable("./modules/"),
+			'on_fail' => 'fatal_error',
+			'fail_message' => 'You have to set up 755 permissions for '.getcwd().'/modules/ or you won\'t be able to upload new modules'
+		);
+		$tests[] = array(
 			'category' => 'Imaging',
 			'name' => 'Is GD extension available and JPG, GIF and PNG supported?',
 			'test' => (extension_loaded("gd")) && (function_exists('imagecreatefromjpeg')) && (function_exists('imagecreatefromgif')) && (function_exists('imagecreatefrompng')),

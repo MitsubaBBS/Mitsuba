@@ -177,6 +177,66 @@ CREATE TABLE IF NOT EXISTS `log` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `module_boardconfig` (
+  `namespace` varchar(100) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `description` text NOT NULL,
+  `default_value` text NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY `name` (`namespace`, `name`)
+);
+
+CREATE TABLE IF NOT EXISTS `module_classes` (
+  `namespace` varchar(200) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `file` varchar(200) NOT NULL,
+  `class` varchar(200) NOT NULL,
+  PRIMARY KEY `name` (`name`)
+);
+
+CREATE TABLE IF NOT EXISTS `module_config` (
+  `namespace` varchar(100) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `description` text NOT NULL,
+  `default_value` text NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY `name` (`namespace`, `name`)
+);
+
+CREATE TABLE IF NOT EXISTS `module_events` (
+  `namespace` varchar(100) NOT NULL,
+  `event` varchar(200) NOT NULL,
+  `file` varchar(200) NOT NULL,
+  `class` varchar(200) NOT NULL,
+  `method` varchar(200) NOT NULL,
+  PRIMARY KEY `namespace` (`namespace`, `event`)
+);
+
+CREATE TABLE IF NOT EXISTS `module_fields` (
+  `namespace` varchar(100) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `type` varchar(200) NOT NULL,
+  PRIMARY KEY `namespace` (`namespace`, `name`, `type`)
+);
+
+CREATE TABLE IF NOT EXISTS `module_pages` (
+  `namespace` varchar(100) NOT NULL,
+  `url` varchar(200) NOT NULL,
+  `file` varchar(200) NOT NULL,
+  `class` varchar(200) NOT NULL,
+  `method` varchar(200) NOT NULL,
+  PRIMARY KEY `url` (`url`)
+);
+
+CREATE TABLE IF NOT EXISTS `modules` (
+  `namespace` varchar(100) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `description` text NOT NULL,
+  `author` varchar(100) NOT NULL,
+  `version` varchar(50) NOT NULL,
+  PRIMARY KEY `namespace` (`namespace`)
+);
+
 CREATE TABLE IF NOT EXISTS `news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` int(30) NOT NULL,
@@ -439,7 +499,9 @@ INSERT INTO `permissions_categories` (`id`, `name`, `description`) VALUES
 (24, 'warnings', 'Warnings'),
 (25, 'whitelist', 'Whitelist'),
 (26, 'wordfilter', 'Wordfilter'),
-(27, 'pages', 'Pages');
+(27, 'pages', 'Pages'),
+(28, 'modules', 'Modules'),
+(29, 'module', 'Module permissions');
 
 INSERT INTO `permissions` (`id`, `name`, `description`, `category`) VALUES
 (0, 'ads.add', 'Create advertisements', 0),
@@ -558,10 +620,15 @@ INSERT INTO `permissions` (`id`, `name`, `description`, `category`) VALUES
 (113, 'post.ignorenoname', 'Ignore noname', 14),
 (114, 'post.ignorenodup', 'Ignore nodup', 14),
 (115, 'post.ignorecaptcha', 'Ignore CAPTCHA', 14),
-(116, 'pages.view', 'Ignore nodup', 27),
-(117, 'pages.update', 'Ignore nodup', 27),
-(118, 'pages.delete', 'Ignore nodup', 27),
-(119, 'pages.add', 'Ignore nodup', 27);
+(116, 'pages.view', 'View pages', 27),
+(117, 'pages.update', 'Update pages', 27),
+(118, 'pages.delete', 'Delete pages', 27),
+(119, 'pages.add', 'Add pages', 27),
+(120, 'modules.view', 'View modules', 28),
+(121, 'modules.upload', 'Upload modules', 28),
+(122, 'modules.install', 'Install modules', 28),
+(123, 'modules.uninstall', 'Uninstall modules', 28),
+(124, 'modules.delete', 'Delete modules', 28);
 
 INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (1, 10),
@@ -753,7 +820,12 @@ INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (3, 116),
 (3, 117),
 (3, 118),
-(3, 119);
+(3, 119),
+(3, 120),
+(3, 121),
+(3, 122),
+(3, 123),
+(3, 124);
 
 INSERT INTO `styles` (`name`, `path`, `relative`, `default`) VALUES 
 ('Mitsuba', './styles/mitsuba.css', 1, 1),

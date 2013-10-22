@@ -12,6 +12,7 @@ if ((empty($_POST['board'])) && (empty($_POST['delete'])) && (empty($_POST['repo
 if (!file_exists("./config.php"))
 {
 header("Location: ./install.php");
+die();
 }
 
 include("config.php");
@@ -27,6 +28,8 @@ if (!empty($_POST['mode']))
 	}
 	$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
 	$mitsuba = new Mitsuba($conn);
+	$e = array("requestdata" => &$_POST);
+	$mitsuba->emitEvent("imgboard.begin", $e);
 	$mod = 0;
 	if ((!empty($_GET['mod'])) && ($_GET['mod']>=1))
 	{
@@ -111,6 +114,7 @@ if (!empty($_POST['mode']))
 				exit;
 			}
 			$_SESSION['captcha'] = "";
+
 			$wfresult = $conn->query("SELECT * FROM wordfilter WHERE active=1");
 			$replace_array = array();
 			while ($row = $wfresult->fetch_assoc())
@@ -366,7 +370,9 @@ if (!empty($_POST['mode']))
 				$fname = $conn->real_escape_string($url_title);
 			}
 			$mitsuba->common->showMsg($lang['img/updating_index'], $lang['img/updating_index']);
-			$is = $mitsuba->posting->addPost($_POST['board'], $name, $_POST['email'], $_POST['sub'], $_POST['com'], $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_style, $cc_icon, $redirect);
+			//We'll remove here all "non-printable" characters
+			$com = $_POST['com'];
+			$is = $mitsuba->posting->addPost($_POST['board'], $name, $_POST['email'], $_POST['sub'], $com, $password, $filename, $fname, $mime, $resto, $md5, $thumb_w, $thumb_h, $spoiler, $embed, $raw, $sticky, $lock, $nolimit, $nofile, $fake_id, $cc_text, $cc_style, $cc_icon, $redirect, $_POST);
 			if ($is == -16)
 			{
 				$mitsuba->common->showMsg($lang['img/error'], $lang['img/board_no_exists']);
@@ -453,6 +459,9 @@ if (!empty($_POST['mode']))
 				}
 			}
 			break;
+		default:
+			$e = array("mode" => $mode, "requestdata" => &$_POST);
+			$mitsuba->emitEvent("imgboard.mode", $e);
 	}
 	$conn->close();
 } else {

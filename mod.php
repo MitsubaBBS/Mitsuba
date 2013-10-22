@@ -2,6 +2,7 @@
 if (!file_exists("./config.php"))
 {
 header("Location: ./install.php");
+die();
 }
 
 define("IN_MOD", TRUE);
@@ -181,6 +182,14 @@ switch ($path)
 		if (file_exists($file))
 		{
 			include($file);
+		} else {
+			$modules = $conn->query("SELECT * FROM module_pages WHERE url='/".$conn->real_escape_string(str_replace(array("/", "\\", "/"), ".", trim($path, " \t\n\r\0\x0B/\\")))."'");
+			while ($module = $modules->fetch_assoc())
+			{
+				include("./".$module['namespace']."/".$module['file']);
+				$pageclass = new $module['class']($conn, $mitsuba);
+				$pageclass->$module['method']();
+			}
 		}
 		break;
 }

@@ -6,6 +6,8 @@ Project Mitsuba is an opensource (AGPLv3 licensed) image board software written 
 Installation
 ------------
 
+**Warning: ** Mitsuba needs ZipArchive for module uploads!
+
 To install Mitsuba you'll have to:
 * Run ./install.php
 

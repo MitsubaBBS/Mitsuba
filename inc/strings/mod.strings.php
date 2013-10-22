@@ -362,5 +362,33 @@ $lang['mod/pos_footer'] = "Above style select/delete form";
 $lang['mod/pos_bottom'] = "Above &lt;/body&gt;";
 $lang['mod/pos_rules'] = "Posting form (rules)";
 $lang['mod/ad_not_found'] = "Ad not found";
+
+$lang['mod/manage_modules'] = "Manage modules";
+$lang['mod/uninstalled_modules'] = "Uninstalled modules";
+$lang['mod/upload_module'] = "Upload module";
+$lang['mod/module_uploaded'] = "Module uploaded";
+$lang['mod/install'] = "Install";
+$lang['mod/uninstall'] = "Uninstall";
+$lang['mod/author'] = "Author";
+$lang['mod/version'] = "Version";
+$lang['mod/invalid_module'] = "Invalid module file";
+$lang['mod/module_dir_exists'] = "Directory ./modules/%s/ exists!";
+$lang['mod/module_dir_does_not_exist'] = "Directory ./modules/%s/ does not exist!";
+$lang['mod/module_no_file'] = "Module's directory is lacking at least one file!";
+$lang['mod/invalid_module_json'] = "Invalid module.json file";
+$lang['mod/module_installed'] = "Module installed";
+$lang['mod/module_uninstalled'] = "Module uninstalled";
+$lang['mod/module_deleted'] = "Module deleted";
+$lang['mod/module_already_installed'] = "Module already installed";
+$lang['mod/module_not_installed'] = "Module not installed";
+$lang['mod/module_install_error'] = "Error when installing module: ";
+$lang['mod/module_uninstall_error'] = "Error when uninstalling module: ";
+$lang['mod/module_post_field_conflict'] = "Post field %s already exists!";
+$lang['mod/module_board_field_conflict'] = "Board field %s already exists!";
+$lang['mod/module_permission_conflict'] = "Permission %s already exists!";
+$lang['mod/module_config_conflict'] = "Field %s already exists!";
+$lang['mod/module_table_conflict'] = "Table %s already exists!";
+$lang['mod/module_installed_delete'] = "Before deleting module you have to uninstall it!";
+
 //$lang['mod/'] = "";
 ?>
