@@ -99,12 +99,12 @@ $menu['gen']['children'][] = array(
 $menu['gen']['children'][] = array(
 	'url' => '?/rangebans',
 	'name' => $lang['mod/manage_range_bans'],
-	'show' => $mitsuba->admin->checkPermission("rangebans.view")
+	'show' => $mitsuba->admin->checkPermission("range.view")
 );
 $menu['gen']['children'][] = array(
 	'url' => '?/rangebans/add',
 	'name' => $lang['mod/add_range_ban'],
-	'show' => $mitsuba->admin->checkPermission("rangebans.add")
+	'show' => $mitsuba->admin->checkPermission("range.add")
 );
 $menu['gen']['children'][] = array(
 	'url' => '?/announcements/add',
@@ -210,6 +210,11 @@ $menu['adm']['children'][] = array(
 	'url' => '?/spamfilter',
 	'name' => $lang['mod/manage_spamfilter'],
 	'show' => $mitsuba->admin->checkPermission("spamfilter.view")
+);
+$menu['adm']['children'][] = array(
+	'url' => '?/modules',
+	'name' => $lang['mod/manage_modules'],
+	'show' => $mitsuba->admin->checkPermission("modules.view")
 );
 $menu['adm']['children'][] = array(
 	'url' => '?/message',
