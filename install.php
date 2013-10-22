@@ -249,7 +249,7 @@ switch ($mode)
 		$tests[] = array(
 			'category' => 'Features',
 			'name' => 'Is ZipArchive installed?',
-			'test' => extension_loaded("ZipArchive"),
+			'test' => extension_loaded("zip"),
 			'on_fail' => 'warning',
 			'fail_message' => 'You won\'t be able to upload modules via mod panel because of no ZipArchive extension'
 		);
