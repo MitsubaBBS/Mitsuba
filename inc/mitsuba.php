@@ -265,6 +265,14 @@ class Mitsuba
 		$this->conn->query("UPDATE config SET value='".$value."' WHERE name='".$name."';");
 	}
 
+	function updateModuleConfigValue($namespace, $name, $value)
+	{
+		$namespace = $this->conn->real_escape_string($namespace);
+		$name = $this->conn->real_escape_string($name);
+		$value = $this->conn->real_escape_string($value);
+		$this->conn->query("UPDATE module_config SET value='".$value."' WHERE name='".$name."' AND namespace='".$namespace."';");
+	}
+
 	function emitEvent($name, &$data)
 	{
 		$modules = $this->conn->query("SELECT * FROM module_events WHERE event='".$this->conn->real_escape_string($name)."'");

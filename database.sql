@@ -628,7 +628,8 @@ INSERT INTO `permissions` (`id`, `name`, `description`, `category`) VALUES
 (121, 'modules.upload', 'Upload modules', 28),
 (122, 'modules.install', 'Install modules', 28),
 (123, 'modules.uninstall', 'Uninstall modules', 28),
-(124, 'modules.delete', 'Delete modules', 28);
+(124, 'modules.delete', 'Delete modules', 28),
+(125, 'modules.config', 'Configure modules', 28);
 
 INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (1, 10),
@@ -825,7 +826,8 @@ INSERT INTO `group_permissions` (`gid`, `pid`) VALUES
 (3, 121),
 (3, 122),
 (3, 123),
-(3, 124);
+(3, 124),
+(3, 125);
 
 INSERT INTO `styles` (`name`, `path`, `relative`, `default`) VALUES 
 ('Mitsuba', './styles/mitsuba.css', 1, 1),

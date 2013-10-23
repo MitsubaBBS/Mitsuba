@@ -6,6 +6,24 @@ if (!defined("IN_MOD"))
 $mitsuba->admin->reqPermission("modules.view");
 		$search = "";
 		$replace = "";
+
+		if ((!empty($_GET['cfg'])) && ($_GET['cfg'] == 1) && (!empty($_GET['n'])))
+		{
+			$mitsuba->admin->reqPermission("modules.config");
+
+			$result = $conn->query("SELECT * FROM modules WHERE namespace='".$conn->real_escape_string($_GET['n'])."';");
+			if ($result->num_rows != 1)
+			{
+				echo "<b style='color: red;'>".$lang['mod/module_not_installed']."</b>";
+			} else {
+				$dir = "./modules/".$_GET['n'];
+				include($dir."/install.php");
+				$installer = new $json->install_class($conn, $mitsuba);
+				$installer->uninstall();
+				exit;
+			}
+		}
+
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "upload"))
 		{
 			$mitsuba->admin->reqPermission("modules.upload");
