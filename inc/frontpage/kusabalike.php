@@ -25,7 +25,7 @@ class Frontpage
 			<title>'.$this->config['sitename'].'</title>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 			</head>
-			<frameset cols="200px,*" frameborder="1" border="1" bordercolor="#800">
+			<frameset cols="200px,*" frameborder="1" border="1">
 			<frame src="'.$this->config['frontpage_menu_url'].'" id="nav">
 			<frame src="'.$this->config['news_url'].'" name="main" id="main">
 			<noframes>

@@ -8,7 +8,7 @@ if ((isset($_SESSION['logged'])) && ($_SESSION['logged']==1))
 <title>Mitsuba</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
-<frameset cols="200px,*" frameborder="1" border="1" bordercolor="#800">
+<frameset cols="200px,*" frameborder="1" border="1">
 <frame src="./mod.php?/nav" id="nav">
 <frame src="./mod.php?/announcements" name="main" id="main">
 <noframes>
