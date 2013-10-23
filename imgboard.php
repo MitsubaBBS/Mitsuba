@@ -422,6 +422,7 @@ if (!empty($_POST['mode']))
 				}
 				echo '<meta http-equiv="refresh" content="2;URL='."'".$return_url."index.html'".'">';
 			} elseif (!empty($_POST['report'])) {
+				$board = $conn->real_escape_string($_POST['board']);
 				$mitsuba->common->banMessage($board);
 				foreach ($_POST as $key => $value)
 				{
@@ -435,16 +436,11 @@ if (!empty($_POST['mode']))
 						}
 					}
 				}
-				if ($mod == 1)
-				{
-					echo '<meta http-equiv="refresh" content="2;URL='."'./mod.php?/board&b=".$_POST['board']."'".'">';
-				} else {
-					echo '<meta http-equiv="refresh" content="1;URL='."'".$return_url."index.html'".'">';
-				}
+				echo '<meta http-equiv="refresh" content="2;URL='."'./".$board."/index.html'".'">';
 			}
 			break;
 		case "usrapp":
-			//$_POST['email']; $_POST['msg'];
+				$board = $conn->real_escape_string($_POST['board']);
 			if (!empty($_POST['msg']))
 			{
 				$msg = $conn->real_escape_string(htmlspecialchars($_POST['msg']));
