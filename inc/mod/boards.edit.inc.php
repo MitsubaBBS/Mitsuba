@@ -63,9 +63,9 @@ switch ($data['type'])
 <?php echo $lang['mod/board_files']; ?>: <input type="text" name="files" maxlength=4 value="<?php echo $data['files']; ?>" /><br />
 <?php } ?>
 <?php echo $lang['mod/board_options']; ?>:
-<?php if (($data['type'] == "imageboard") || ($data['type'] == "textboard") || ($data['type'] == "fileboard") || ($data['type'] == "linkboard")) { ?>
+<?php if (($data['type'] == "imageboard") || ($data['type'] == "textboard") || ($data['type'] == "fileboard") || ($data['type'] == "linkboard")) { ?><br />
 <input type="checkbox" name="noname" value="1" <?php if ($data['noname'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_no_name']; ?><br />
-<input type="checkbox" name="ids" value="1" <?php if ($data['ids'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_ids']; ?><br /><br />
+<input type="checkbox" name="ids" value="1" <?php if ($data['ids'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_ids']; ?><br />
 <input type="checkbox" name="bbcode" value="1" <?php if ($data['bbcode'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_bbcode']; ?><br />
 <input type="checkbox" name="hidden" value="1" <?php if ($data['hidden'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_hidden']; ?><br />
 <input type="checkbox" name="unlisted" value="1" <?php if ($data['unlisted'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_unlisted']; ?><br />
@@ -74,7 +74,7 @@ switch ($data['type'])
 <?php if (($data['type'] == "imageboard") || ($data['type'] == "fileboard") || ($data['type'] == "linkboard")) { ?>
 <input type="checkbox" name="spoilers" value="1" <?php if ($data['spoilers'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_spoilers']; ?><br />
 <input type="checkbox" name="nodup" value="1" <?php if ($data['nodup'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_nodup']; ?>
-<?php } ?>
+<?php } ?><br />
 <?php if ($data['type'] == "imageboard") { ?>
 <input type="checkbox" name="embeds" value="1" <?php if ($data['embeds'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_embeds']; ?><br />
 <input type="checkbox" name="nofile" value="1" <?php if ($data['nofile'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_nofile']; ?><br />

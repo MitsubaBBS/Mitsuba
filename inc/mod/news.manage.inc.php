@@ -22,10 +22,10 @@ $result = $conn->query("SELECT * FROM news ORDER BY date DESC;");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td><center>".$row['title']."</center></td>";
-echo "<td><center>".date("d/m/Y @ H:i", $row['date'])."</center></td>";
-echo "<td><center><a href='?/news/edit&b=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
-echo "<td><center><a href='?/news/delete&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
+echo "<td class='text-center'>".$row['title']."</td>";
+echo "<td class='text-center text-nowrap'>".date("d/m/Y @ H:i", $row['date'])."</td>";
+echo "<td class='text-center'><a href='?/news/edit&b=".$row['id']."'>".$lang['mod/edit']."</a></td>";
+echo "<td class='text-center'><a href='?/news/delete&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 echo "</tr>";
 }
 ?>

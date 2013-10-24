@@ -21,9 +21,9 @@ $mitsuba->admin->reqPermission("logs.view");
 		while ($row = $log->fetch_assoc())
 		{
 			echo "<tr>";
-			echo "<td><center>".$row['username']."</center></td>";
+			echo "<td class='text-center'>".$row['username']."</td>";
 			echo "<td>".$row['event']."</td>";
-			echo "<td><center>".date("d/m/Y(D)H:i:s", $row['date'])."</center></td>";
+			echo "<td class='text-center'>".date("d/m/Y(D)H:i:s", $row['date'])."</td>";
 			echo "</tr>";
 		}
 		?>

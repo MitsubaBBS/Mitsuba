@@ -49,20 +49,20 @@ $usern = $result->num_rows;
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td><center>".$row['username']."</center></td>";
-echo "<td><center>";
+echo "<td class='text-center'>".$row['username']."</td>";
+echo "<td class='text-center'>";
 echo $row['gname'];
-echo "<center></td>";
+echo "</td>";
 if ($row['boards']=="%")
 {
-	echo "<td><center>All boards</center></td>";
+	echo "<td class='text-center'>All boards</td>";
 } else {
-	echo "<td><center>".$row['boards']."</center></td>";
+	echo "<td class='text-center'>".$row['boards']."</td>";
 }
-echo "<td><center><a href='?/users/edit&id=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
+echo "<td class='text-center'><a href='?/users/edit&id=".$row['id']."'>".$lang['mod/edit']."</a></td>";
 if ($usern != 1)
 {
-echo "<td><center><a href='?/users/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
+echo "<td class='text-center'><a href='?/users/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 } else {
 echo "<td></td>";
 }

@@ -78,18 +78,18 @@ if ($mitsuba->admin->checkPermission("reports.clear.all"))
 				$resto = $pdata['resto'];
 			}
 			echo "<tr>";
-			echo "<td><center><a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['reported_post']."'>/".$row['board']."/".$row['reported_post']."</a></center></td>";
+			echo "<td class='text-center text-nowrap'><a href='?/board&b=".$row['board']."&t=".$resto."#p".$row['reported_post']."'>/".$row['board']."/".$row['reported_post']."</a></td>";
 			if (!empty($pdata['filename']))
 			{
 				if ($pdata['filename'] == "deleted")
 				{
 					echo "<td><img src='./img/deleted.gif' /></td>";
 				} elseif (substr($pdata['filename'], 0, 8) == "spoiler:") {
-					echo "<td><center><a href='./".$row['board']."/src/".substr($pdata['filename'], 8)."' target='_blank'><img src='./".$row['board']."/src/thumb/".substr($pdata['filename'], 8)."' /></a></center></td>";
+					echo "<td class='text-center'><a href='./".$row['board']."/src/".substr($pdata['filename'], 8)."' target='_blank'><img src='./".$row['board']."/src/thumb/".substr($pdata['filename'], 8)."' /></a></td>";
 				} elseif (substr($pdata['filename'], 0, 6) == "embed:") {
 					echo "<td><a href='".substr($pdata['filename'], 6)."'>Embed</a></td>";
 				} else {
-					echo "<td><center><a href='./".$row['board']."/src/".$pdata['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$pdata['filename']."' /></a></center></td>";
+					echo "<td class='text-center'><a href='./".$row['board']."/src/".$pdata['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$pdata['filename']."' /></a></td>";
 				}
 			} else {
 				echo "<td></td>";
@@ -104,14 +104,14 @@ if ($mitsuba->admin->checkPermission("reports.clear.all"))
 				echo "<td>".$pdata['comment']."</td>";
 			}
 			echo "<td>".$row['reason']."</td>";
-			echo "<td class='nowrapIP'><center>".$row['reporter_ip']."</center></td>";
-			echo "<td><center>[ <a href='?/reports&cl=1&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> "; 
+			echo "<td class='text-center text-nowrap'>".$row['reporter_ip']."</td>";
+			echo "<td class='text-center text-nowrap'>[ <a href='?/reports&cl=1&id=".$row['id']."'>C</a> ] [ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."'>B</a> "; 
 			if ($mitsuba->admin->checkPermission("reports.clear.multiple"))
 			{
 				echo "/ <a href='?/bans/add&b=".$row['board']."&p=".$row['reported_post']."&d=1'>&</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."'>D</a> / <a href='?/delete_post&b=".$row['board']."&p=".$row['reported_post']."&f=1'>F</a> ] <br />"; 
 				echo "[ <a href='?/info&ip=".$pdata['ip']."'>N</a> ] <br />";
 				echo "[ <a href='?/reports&m=wtr&i=".$row['id']."'>D_WTR</a> / <a href='?/reports&m=ip&i=".$row['id']."'>D_WTIP</a> ]";
-				echo "</center></td>";
+				echo "</td>";
 			} else {
 				echo "]</td>";
 			}

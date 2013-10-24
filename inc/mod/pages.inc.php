@@ -52,10 +52,10 @@ $result = $conn->query("SELECT * FROM pages ORDER BY name ASC;");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td><center>".$row['title']."</td>";
-echo "<td><center>".$row['name']."</center></td>";
-echo "<td><center><a href='?/pages/edit&b=".$row['name']."'>".$lang['mod/edit']."</a></center></td>";
-echo "<td><center><a href='?/pages&m=delete&b=".$row['name']."'>".$lang['mod/delete']."</a></center></td>";
+echo "<td class='text-center'>".$row['title']."</td>";
+echo "<td class='text-center'>".$row['name']."</td>";
+echo "<td class='text-center'><a href='?/pages/edit&b=".$row['name']."'>".$lang['mod/edit']."</a></td>";
+echo "<td class='text-center'><a href='?/pages&m=delete&b=".$row['name']."'>".$lang['mod/delete']."</a></td>";
 echo "</tr>";
 }
 ?>

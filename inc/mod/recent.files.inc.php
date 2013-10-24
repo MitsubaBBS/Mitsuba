@@ -42,17 +42,17 @@ $mitsuba->admin->reqPermission("recent.files");
 			$posts = $conn->query("SELECT * FROM posts WHERE filename != '' ORDER BY date DESC LIMIT 0, ".$max);
 			while ($row = $posts->fetch_assoc())
 			{
-				echo "<tr><td>";
+				echo "<tr><td class='text-center text-nowrap'>";
 				$resto = $row['resto'];
 				$op = 0;
 				if ($row['resto'] == 0) { $resto = $row['id']; $op = 1; }
-				echo "<center><a href='?/board&b=".$row['board']."&t=".$resto."'>/".$row['board']."/".$row['id']."</a></center> ";
-				if ($op == 1) { echo "<center><b>OP</b></center>"; }
-				echo "</td><td>";
+				echo "<a href='?/board&b=".$row['board']."&t=".$resto."'>/".$row['board']."/".$row['id']."</a> ";
+				if ($op == 1) { echo "<b>OP</b>"; }
+				echo "</td><td class='text-center text-nowrap'>";
 				$trip = "";
 				if (!empty($row['trip']))
 				{
-					$trip = "<center><span class='postertrip'>!".$row['trip']."</span></center>";
+					$trip = "<span class='postertrip'>!".$row['trip']."</span>";
 				}
 				if (!empty($row['capcode_text']))
 				{
@@ -62,8 +62,8 @@ $mitsuba->admin->reqPermission("recent.files");
 				}
 			
 				echo "</td>";
-				echo "<td><center>".$row['email']."</center></td>";
-				echo "<td><center>".date("d/m/Y @ H:i", $row['date'])."</center></td>";
+				echo "<td class='text-center text-nowrap'>".$row['email']."</td>";
+				echo "<td class='text-center text-nowrap'>".date("d/m/Y @ H:i", $row['date'])."</td>";
 				if ($row['raw'] != 1)
 				{
 					if ($row['raw'] == 2)
@@ -87,12 +87,12 @@ $mitsuba->admin->reqPermission("recent.files");
 					} elseif (substr($row['filename'], 0, 6) == "embed:") {
 						echo "<td><a href='".substr($row['filename'], 6)."'>Embed</a></td>";
 					} else {
-						echo "<td><center><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></a></center></td>";
+						echo "<td class='text-center'><a href='./".$row['board']."/src/".$row['filename']."' target='_blank'><img src='./".$row['board']."/src/thumb/".$row['filename']."' /></a></td>";
 					}
 				} else {
 					echo "<td></td>";
 				}
-				echo '<td><center>[<a href="?/delete_post&b='.$row['board'].'&p='.$row['id'].'">D</a>] [<a href="?/delete_post&b='.$row['board'].'&p='.$row['id'].'&f=1">F</a>] [<a href="?/bans/add&b='.$row['board'].'&p='.$row['id'].'">B</a>]</center></td>';
+				echo '<td class="text-center">[<a href="?/delete_post&b='.$row['board'].'&p='.$row['id'].'">D</a>] [<a href="?/delete_post&b='.$row['board'].'&p='.$row['id'].'&f=1">F</a>] [<a href="?/bans/add&b='.$row['board'].'&p='.$row['id'].'">B</a>]</td>';
 			}
 			?>
 			</tbody>

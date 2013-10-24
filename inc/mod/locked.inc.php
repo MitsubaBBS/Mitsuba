@@ -29,7 +29,7 @@ $mitsuba->admin->reqPermission("post.closed");
 	while ($thread = $threads->fetch_assoc())
 	{
 		echo "<tr>";
-		echo "<td><center><a href='?/board&b=".$thread['board']."&t=".$thread['id']."#p".$thread['id']."'>/".$thread['board']."/".$thread['id']."</a></center></td>";
+		echo "<td class='text-center'><a href='?/board&b=".$thread['board']."&t=".$thread['id']."#p".$thread['id']."'>/".$thread['board']."/".$thread['id']."</a></td>";
 		if ($thread['raw'] == 0)
 		{
 			echo "<td>".$mitsuba->caching->processComment($thread['board'], $thread['comment'], $parser, 2)."</td>";
@@ -39,7 +39,7 @@ $mitsuba->admin->reqPermission("post.closed");
 		} else {
 			echo "<td>".$thread['comment']."</td>";
 		}
-		echo "<td><center><a href='?/locked/toggle&b=".$thread['board']."&t=".$thread['id']."'>".$lang['mod/unlock']."</a></center></td>";
+		echo "<td class='text-center'><a href='?/locked/toggle&b=".$thread['board']."&t=".$thread['id']."'>".$lang['mod/unlock']."</a></td>";
 		echo "</tr>";
 	}
 	?>

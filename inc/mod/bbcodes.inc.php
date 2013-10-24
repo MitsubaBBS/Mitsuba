@@ -70,9 +70,9 @@ $result = $conn->query("SELECT * FROM bbcodes ORDER BY name ASC");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td><center>".$row['name']."</center></td>";
-echo "<td><center>".htmlspecialchars($row['code'])."</center></td>";
-echo "<td><center><a href='?/bbcodes/edit&n=".$row['name']."'>".$lang['mod/edit']."</a> <a href='?/bbcodes&d=1&n=".$row['name']."'>".$lang['mod/delete']."</a></center></td>";
+echo "<td class='text-center'>".$row['name']."</td>";
+echo "<td class='text-center'>".htmlspecialchars($row['code'])."</td>";
+echo "<td class='text-center'><a href='?/bbcodes/edit&n=".$row['name']."'>".$lang['mod/edit']."</a> <a href='?/bbcodes&d=1&n=".$row['name']."'>".$lang['mod/delete']."</a></td>";
 echo "</tr>";
 }
 ?>

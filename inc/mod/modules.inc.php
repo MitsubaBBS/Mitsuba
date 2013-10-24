@@ -6,7 +6,7 @@ if (!defined("IN_MOD"))
 $mitsuba->admin->reqPermission("modules.view");
 		$search = "";
 		$replace = "";
-
+		
 		if ((!empty($_GET['cfg'])) && ($_GET['cfg'] == 1) && (!empty($_GET['n'])))
 		{
 			$mitsuba->admin->reqPermission("modules.config");
@@ -710,11 +710,11 @@ while ($row = $result->fetch_assoc())
 {
 $installed[$row['namespace']] = 1;
 echo "<tr>";
-echo "<td>".htmlspecialchars($row['name'])."</td>";
+echo "<td class='text-center'>".htmlspecialchars($row['name'])."</td>";
 echo "<td>".htmlspecialchars($row['description'])."</td>";
-echo "<td>".htmlspecialchars($row['author'])."</td>";
-echo "<td>".htmlspecialchars($row['version'])."</td>";
-echo "<td><a href='?/modules&unins=1&n=".$row['namespace']."'>".$lang['mod/uninstall']."</a></td>";
+echo "<td class='text-center'>".htmlspecialchars($row['author'])."</td>";
+echo "<td class='text-center'>".htmlspecialchars($row['version'])."</td>";
+echo "<td class='text-center'><a href='?/modules&unins=1&n=".$row['namespace']."'>".$lang['mod/uninstall']."</a></td>";
 echo "</tr>";
 }
 ?>
@@ -726,11 +726,11 @@ echo "</tr>";
 <table>
 <thead>
 <tr>
-<td><?php echo $lang['mod/name']; ?></td>
+<td class='text-center'><?php echo $lang['mod/name']; ?></td>
 <td><?php echo $lang['mod/description']; ?></td>
-<td><?php echo $lang['mod/author']; ?></td>
-<td><?php echo $lang['mod/version']; ?></td>
-<td><?php echo $lang['mod/actions']; ?></td>
+<td class='text-center'><?php echo $lang['mod/author']; ?></td>
+<td class='text-center'><?php echo $lang['mod/version']; ?></td>
+<td class='text-center'><?php echo $lang['mod/actions']; ?></td>
 </tr>
 </thead>
 <tbody>
@@ -747,11 +747,11 @@ foreach ($dirs as $dir) {
 				continue;
 			}
 			echo "<tr>";
-			echo "<td>".$json->name."</td>";
+			echo "<td class='text-center'>".$json->name."</td>";
 			echo "<td>".$json->description."</td>";
-			echo "<td>".$json->author."</td>";
-			echo "<td>".$json->version."</td>";
-			echo "<td><a href='?/modules&ins=1&n=".$json->namespace."'>".$lang['mod/install']."</a> <a href='?/modules&del=1&n=".$json->namespace."'>".$lang['mod/delete']."</a></td>";
+			echo "<td class='text-center'>".$json->author."</td>";
+			echo "<td class='text-center'>".$json->version."</td>";
+			echo "<td class='text-center'><a href='?/modules&ins=1&n=".$json->namespace."'>".$lang['mod/install']."</a> <a href='?/modules&del=1&n=".$json->namespace."'>".$lang['mod/delete']."</a></td>";
 			echo "</tr>";
 		}
 	}

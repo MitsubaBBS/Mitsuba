@@ -125,16 +125,16 @@ $result = $conn->query("SELECT * FROM spamfilter ORDER BY search ASC");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td><center>".htmlspecialchars($row['search'])."</center></td>";
-echo "<td><center>".htmlspecialchars($row['reason'])."</center></td>";
+echo "<td class='text-center'>".htmlspecialchars($row['search'])."</td>";
+echo "<td class='text-center'>".htmlspecialchars($row['reason'])."</td>";
 if ($row['boards']=="%")
 {
-	echo "<td><center>All boards</center></td>";
+	echo "<td class='text-center'>All boards</td>";
 } else {
-	echo "<td><center>".$row['boards']."</center></td>";
+	echo "<td class='text-center'>".$row['boards']."</td>";
 }
-echo "<td><center>".$row['expires']."</center></td>";
-echo "<td><center><a href='?/spamfilter&d=1&n=".$row['id']."'>".$lang['mod/delete']."</a> <a href='?/spamfilter/edit&n=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
+echo "<td class='text-center'>".$row['expires']."</td>";
+echo "<td class='text-center'><a href='?/spamfilter&d=1&n=".$row['id']."'>".$lang['mod/delete']."</a> <a href='?/spamfilter/edit&n=".$row['id']."'>".$lang['mod/edit']."</a></td>";
 echo "</tr>";
 }
 ?>

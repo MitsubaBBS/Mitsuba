@@ -97,15 +97,15 @@ $result = $conn->query("SELECT * FROM wordfilter ORDER BY search ASC");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td><center>".htmlspecialchars($row['search'])."</center></td>";
-echo "<td><center>".htmlspecialchars($row['replace'])."</center></td>";
+echo "<td class='text-center'>".htmlspecialchars($row['search'])."</td>";
+echo "<td class='text-center'>".htmlspecialchars($row['replace'])."</td>";
 if ($row['boards']=="%")
 {
-	echo "<td><center>All boards</center></td>";
+	echo "<td class='text-center'>All boards</td>";
 } else {
-	echo "<td><center>".$row['boards']."</center></td>";
+	echo "<td class='text-center'>".$row['boards']."</td>";
 }
-echo "<td><center><a href='?/wordfilter&d=1&n=".$row['id']."'>".$lang['mod/delete']."</a> <a href='?/wordfilter/edit&n=".$row['id']."'>".$lang['mod/edit']."</a></center></td>";
+echo "<td class='text-center'><a href='?/wordfilter&d=1&n=".$row['id']."'>".$lang['mod/delete']."</a> <a href='?/wordfilter/edit&n=".$row['id']."'>".$lang['mod/edit']."</a></td>";
 echo "</tr>";
 }
 ?>

@@ -145,8 +145,8 @@ class Links {
 				$table .= "<td>".$row['short']."</td>";
 				$table .= "<td>".$row['title']."</td>";
 			}
-			$table .= "<td><center><a href='?/links/edit&i=".$row['id']."'>Edit</a></center></td>";
-			$table .= "<td><center><a href='?/links&m=del&i=".$row['id']."'>Delete</a></center></td>";
+			$table .= "<td class='text-center'><a href='?/links/edit&i=".$row['id']."'>Edit</a></td>";
+			$table .= "<td class='text-center'><a href='?/links&m=del&i=".$row['id']."'>Delete</a></td>";
 			$table .= "</tr>";
 			$t2 = $this->getLinkTable($row['id']);
 			if (!empty($t2))

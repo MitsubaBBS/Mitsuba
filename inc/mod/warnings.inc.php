@@ -32,19 +32,19 @@ $result = $conn->query("SELECT * FROM warnings ORDER BY created LIMIT 0, 15;");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td class='nowrapIP'><center>".$row['ip']."</center></td>";
+echo "<td class='text-center text-nowrap'>".$row['ip']."</td>";
 echo "<td>".$row['reason']."</td>";
 echo "<td>".$row['note']."</td>";
-echo "<td><center>".date("d/m/Y @ H:i", $row['created'])."</center></td>";
+echo "<td class='text-center text-nowrap'>".date("d/m/Y @ H:i", $row['created'])."</td>";
 if ($row['seen']==1)
 {
-	echo "<td><center>YES</center></td>";
+	echo "<td class='text-center'>YES</td>";
 } else {
-	echo "<td><center><b>NO</b></center></td>";
+	echo "<td class='text-center'><b>NO</b></td>";
 }
 if ($_SESSION['type']>=2)
 {
-echo "<td><center><a href='?/warnings&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
+echo "<td class='text-center'><a href='?/warnings&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 } else {
 echo "<td></td>";
 }

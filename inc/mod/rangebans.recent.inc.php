@@ -35,31 +35,31 @@ if ((!empty($_GET['c'])) && (is_numeric($_GET['c'])))
 	while ($row = $result->fetch_assoc())
 	{
 	echo "<tr>";
-	echo "<td class='nowrapIP'><center>".$row['ip']."</center></td>";
+	echo "<td class='text-center text-nowrap'>".$row['ip']."</td>";
 	echo "<td>".$row['reason']."</td>";
 	echo "<td>".$row['note']."</td>";
-	echo "<td><center>".date("d/m/Y @ H:i", $row['created'])."</center></td>";
+	echo "<td class='text-center text-nowrap'>".date("d/m/Y @ H:i", $row['created'])."</td>";
 	if ($row['expires'] != 0)
 	{
-	echo "<td><center>".date("d/m/Y @ H:i", $row['expires'])."</center></td>";
+	echo "<td class='text-center text-nowrap'>".date("d/m/Y @ H:i", $row['expires'])."</td>";
 	} else {
 	echo "<td><b>never</b></td>";
 	}
 	if ($row['boards']=="%")
 	{
-		echo "<td><center>All boards</center></td>";
+		echo "<td class='text-center'>All boards</td>";
 	} else {
-		echo "<td><center>".$row['boards']."</center></td>";
+		echo "<td class='text-center'>".$row['boards']."</td>";
 	}
 	if ($delete)
 	{
-	echo "<td><center><a href='?/rangebans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
+	echo "<td class='text-center'><a href='?/rangebans&del=1&b=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 	} else {
 	echo "<td></td>";
 	}
 	if ($logs)
 	{
-		echo "<td>".$row['username']."</td>";
+		echo "<td class='text-center text-nowrap'>".$row['username']."</td>";
 	}
 	echo "</tr>";
 	}

@@ -73,9 +73,9 @@ while ($row = $result->fetch_assoc())
 	echo "<tr>";
 	if ($row['board']=="%")
 	{
-		echo "<td><center>All boards</center></td>";
+		echo "<td class='text-center'>All boards</td>";
 	} else {
-		echo "<td><center>/".$row['board']."/</center></td>";
+		echo "<td class='text-center'>/".$row['board']."/</td>";
 	}
 
 	echo "<td>";
@@ -107,9 +107,9 @@ while ($row = $result->fetch_assoc())
 	echo "<td>".htmlspecialchars($row['text'])."</td>";
 	if ($row['show']==1)
 	{
-		echo "<td><center>YES</center></td>";
+		echo "<td class='text-center'>YES</td>";
 	} else {
-		echo "<td><center>NO</center></td>";
+		echo "<td class='text-center'>NO</td>";
 	}
 	echo "<td><a href='?/ads/edit&i=".$row['id']."'>Edit</a> / <a href='?/ads&mode=delete&i=".$row['id']."'>Delete</a></td>";
 	echo "</tr>";

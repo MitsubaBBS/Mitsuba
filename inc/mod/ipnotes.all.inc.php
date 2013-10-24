@@ -19,11 +19,11 @@ $result = $conn->query("SELECT * FROM ip_notes;");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
-echo "<td><center>".date("d/m/Y(D)H:i:s", $row['created'])."</center></td>";
+echo "<td class='text-center text-nowrap'>".date("d/m/Y(D)H:i:s", $row['created'])."</td>";
 echo "<td>".$row['text']."</td>";
 if ($_SESSION['type']>=2)
 {
-echo "<td><center><a href='?/ipnotes/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></center></td>";
+echo "<td class='text-center'><a href='?/ipnotes/delete&id=".$row['id']."'>".$lang['mod/delete']."</a></td>";
 } else {
 echo "<td></td>";
 }

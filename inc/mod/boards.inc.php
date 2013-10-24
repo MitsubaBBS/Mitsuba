@@ -111,39 +111,39 @@ $result = $conn->query("SELECT * FROM boards ORDER BY short ASC;");
 while ($row = $result->fetch_assoc())
 {
 echo '<tr>';
-echo "<td><center><a href='./".$row['short']."/'>/".$row['short']."/</a></center></td>";
-echo "<td><center>".$row['name']."</center></td>";
+echo "<td class='text-center'><a href='./".$row['short']."/'>/".$row['short']."/</a></td>";
+echo "<td class='text-center'>".$row['name']."</td>";
 echo "<td>".$row['des']."</td>";
 switch ($row['type'])
 {
 	case "imageboard":
-		echo "<td>".$lang['mod/imageboard']."</td>";
+		echo "<td class='text-center'>".$lang['mod/imageboard']."</td>";
 		break;
 	case "textboard":
-		echo "<td>".$lang['mod/textboard']."</td>";
+		echo "<td class='text-center'>".$lang['mod/textboard']."</td>";
 		break;
 	case "overboard":
-		echo "<td>".$lang['mod/overboard']."</td>";
+		echo "<td class='text-center'>".$lang['mod/overboard']."</td>";
 		break;
 	case "fileboard":
-		echo "<td>".$lang['mod/fileboard']."</td>";
+		echo "<td class='text-center'>".$lang['mod/fileboard']."</td>";
 		break;
 	case "linkboard":
-		echo "<td>".$lang['mod/linkboard']."</td>";
+		echo "<td class='text-center'>".$lang['mod/linkboard']."</td>";
 		break;
 	case "archive":
-		echo "<td>".$lang['mod/archive']."</td>";
+		echo "<td class='text-center'>".$lang['mod/archive']."</td>";
 		break;
 	default:
-		echo "<td>".$lang['mod/fool']."</td>";
+		echo "<td class='text-center'>".$lang['mod/fool']."</td>";
 		break;
 }
-echo "<td><center>".$row['bumplimit']."</center></td>";
+echo "<td class='text-center'>".$row['bumplimit']."</td>";
 if (!empty($row['message']))
 {
-echo "<td><center>".$lang['mod/yes']."</center></td>";
+echo "<td class='text-center'>".$lang['mod/yes']."</td>";
 } else {
-echo "<td><center>".$lang['mod/no']."</center></td>";
+echo "<td class='text-center'>".$lang['mod/no']."</td>";
 }
 echo "<td>";
 if ($row['spoilers']==1) { echo "<b>".$lang['mod/spoilers']."</b><br />"; }
@@ -157,9 +157,9 @@ if ($row['catalog']==1) { echo "<b>".$lang['mod/board_catalog']."</b><br />"; }
 if ($row['captcha']==1) { echo "<b>".$lang['mod/board_captcha']."</b><br />"; }
 if ($row['nofile']==1) { echo "<b>".$lang['mod/board_nofile']."</b><br />"; }
 echo "</td>";
-echo "<td><center><a href='?/boards/edit&board=".$row['short']."'>".$lang['mod/edit']."</a></center></td>";
-echo "<td><center><a href='?/boards/delete&board=".$row['short']."'>".$lang['mod/delete']."</a></center></td>";
-echo "<td><center><a href='?/boards/rebuild&board=".$row['short']."'>".$lang['mod/rebuild_cache']."</a></center></td>";
+echo "<td class='text-center'><a href='?/boards/edit&board=".$row['short']."'>".$lang['mod/edit']."</a></td>";
+echo "<td class='text-center'><a href='?/boards/delete&board=".$row['short']."'>".$lang['mod/delete']."</a></td>";
+echo "<td class='text-center'><a href='?/boards/rebuild&board=".$row['short']."'>".$lang['mod/rebuild_cache']."</a></td>";
 echo '</tr>';
 }
 ?>
