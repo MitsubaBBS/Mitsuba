@@ -78,7 +78,7 @@ while ($row = $result->fetch_assoc())
 		echo "<td class='text-center'>/".$row['board']."/</td>";
 	}
 
-	echo "<td>";
+	echo "<td class='text-center'>";
 	switch ($row['position'])
 	{
 		case "head":
@@ -111,7 +111,7 @@ while ($row = $result->fetch_assoc())
 	} else {
 		echo "<td class='text-center'>NO</td>";
 	}
-	echo "<td><a href='?/ads/edit&i=".$row['id']."'>Edit</a> / <a href='?/ads&mode=delete&i=".$row['id']."'>Delete</a></td>";
+	echo "<td class='text-center'><a href='?/ads/edit&i=".$row['id']."'>Edit</a> / <a href='?/ads&mode=delete&i=".$row['id']."'>Delete</a></td>";
 	echo "</tr>";
 }
 ?>
