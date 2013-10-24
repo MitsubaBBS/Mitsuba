@@ -41,7 +41,7 @@ $logs = $mitsuba->admin->checkPermission("logs.view");
 	echo "<td class='text-center text-nowrap'>".date("d/m/Y <br />@ H:i", $row['created'])."</td>";
 	if ($row['expires'] != 0)
 	{
-	echo "<td class='text-center'>".date("d/m/Y <br />@ H:i", $row['expires'])."</td>";
+	echo "<td class='text-center text-nowrap'>".date("d/m/Y <br />@ H:i", $row['expires'])."</td>";
 	} else {
 	echo "<td><b>never</b></td>";
 	}
@@ -53,9 +53,9 @@ $logs = $mitsuba->admin->checkPermission("logs.view");
 	}
 	if ($row['seen']==1)
 	{
-		echo "<td>YES</td>";
+		echo "<td class='text-center'>YES</td>";
 	} else {
-		echo "<td><b>NO</b></td>";
+		echo "<td class='text-center'><b>NO</b></td>";
 	}
 	if ($delete)
 	{
