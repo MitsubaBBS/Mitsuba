@@ -16,8 +16,31 @@ include("inc/strings/mod.strings.php");
 include("inc/strings/imgboard.strings.php");
 include("inc/strings/log.strings.php");
 
+if (count($_GET) == 0)
+{
+	$path = "/";
+} else {
+$pkey = array_keys($_GET);
+if (substr($pkey[0], 0, 1) == "/")
+{
+	$path = $pkey[0];
+} else {
+	$path = "/";
+}
+}
+if ($path != "/")
+{
+$path = rtrim($path, "/ ");
+}
+if ( ( (!isset($_SESSION['logged'])) || ($_SESSION['logged']==0) ) && (!( ($path == "/") || ($path == "/login") )) )
+{
+	die($lang['mod/not_logged_in']);
+}
+$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
+$mitsuba = new Mitsuba($conn);
 function deleteEntry($conn, $type, $id)
 {
+	global $mitsuba;
 	if (!is_numeric($id))
 	{
 		return -1;
@@ -45,6 +68,7 @@ function deleteEntry($conn, $type, $id)
 
 function updateEntry($conn, $type, $id, $who, $title, $text)
 {
+	global $mitsuba;
 	if (!is_numeric($id))
 	{
 		return -1;
@@ -87,28 +111,6 @@ function processEntry($conn, $string)
 	}
 	return $new;
 }
-if (count($_GET) == 0)
-{
-	$path = "/";
-} else {
-$pkey = array_keys($_GET);
-if (substr($pkey[0], 0, 1) == "/")
-{
-	$path = $pkey[0];
-} else {
-	$path = "/";
-}
-}
-if ($path != "/")
-{
-$path = rtrim($path, "/ ");
-}
-if ( ( (!isset($_SESSION['logged'])) || ($_SESSION['logged']==0) ) && (!( ($path == "/") || ($path == "/login") )) )
-{
-	die($lang['mod/not_logged_in']);
-}
-$conn = new mysqli($db_host, $db_username, $db_password, $db_database);
-$mitsuba = new Mitsuba($conn);
 if ((!empty($_SESSION['logged'])) && (!empty($_SESSION['cookie_set'])) && ($_SESSION['cookie_set']==2))
 {
 	$cookie = "";

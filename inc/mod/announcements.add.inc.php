@@ -51,7 +51,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 		$text = processEntry($conn, $_POST['text']);
 		$who = $_SESSION['username'];
 		if (!empty($_POST['who'])) { $who = $_POST['who']; }
-		$conn->query("INSERT INTO announcements (date, who, title, text, mod_id) VALUES (".time().", '".$who."', '".$conn->real_escape_string(htmlspecialchars($_POST['title']))."', '".$text."', ".$_SESSION['id'].");");
+		$conn->query("INSERT INTO announcements (`date`, `who`, `title`, `text`, `mod_id`) VALUES (".time().", '".$who."', '".$conn->real_escape_string(htmlspecialchars($_POST['title']))."', '".$text."', ".$_SESSION['id'].");");
 		?>
 <?php $mitsuba->admin->ui->startSection($lang['mod/post_added']); ?>
 <a href="?/announcements"><?php echo $lang['mod/back']; ?></a><?php $mitsuba->admin->ui->endSection(); ?>
