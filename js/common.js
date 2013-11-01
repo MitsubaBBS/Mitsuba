@@ -267,7 +267,7 @@ function updateThread(isAuto)
 	var url = window.location.href.split(/#/)[0];
 	updateRequest = $.ajax({
 	type: 'get',
-	url: window.location.href,
+	url: window.location.href+"?random="+Math.floor(Math.random() * 900000),
 	success: function(data, textStatus, xhr){
 		var html = xhr.responseText;
 		var nodes = $.parseHTML( html );
