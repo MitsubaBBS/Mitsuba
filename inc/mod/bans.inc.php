@@ -38,7 +38,7 @@ $mitsuba->admin->reqPermission("bans.delete");
 	if ($logs) {
 		$result = $conn->query("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.mod_id=users.id ORDER BY created DESC LIMIT 0, 15;");
 	} else {
-		$result = $conn->query("SELECT * FROM bans ORDER BY created ORDER BY created DESC LIMIT 0, 15;");
+		$result = $conn->query("SELECT * FROM bans ORDER BY created DESC LIMIT 0, 15;");
 	}
 	while ($row = $result->fetch_assoc())
 	{
