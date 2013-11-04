@@ -250,7 +250,7 @@ if (!empty($_POST['mode']))
 					}
 					$mime = $nfo['mimetype'];
 					$ext = ".".$nfo['extension'];
-					$fileid = time() . mt_rand(10000000, 999999999);
+					$fileid = time() . rand(10000000, 999999999);
 					$filename = $fileid . $ext; 
 					$target_path .= $filename;
 					$md5 = md5_file($_FILES['upfile']['tmp_name']);

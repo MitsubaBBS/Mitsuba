@@ -267,7 +267,7 @@ class Common {
 		$pass = array();
 		$alphaLength = strlen($alphabet) - 1;
 		for ($i = 0; $i < 8; $i++) {
-			$n = mt_rand(0, $alphaLength);
+			$n = rand(0, $alphaLength);
 			$pass[] = $alphabet[$n];
 		}
 		return implode($pass);
@@ -278,7 +278,7 @@ class Common {
 		$pass = array();
 		$alphaLength = strlen($alphabet) - 1;
 		for ($i = 0; $i < 15; $i++) {
-			$n = mt_rand(0, $alphaLength);
+			$n = rand(0, $alphaLength);
 			$pass[] = $alphabet[$n];
 		}
 		return implode($pass);
@@ -437,7 +437,7 @@ class Common {
 			$poststring .= $key."!".$value;
 		}
 		$poststring=strtr($poststring,':;<=>?@[\]^_`','ABCDEFGabcdef');
-		$randomstring=md5($poststring).time().mt_rand(90, 1681018501).$junk;
+		$randomstring=md5($poststring).time().rand(90, 1681018501).$junk;
 
 		$salt=substr($pw.'H!'.$randomstring,1,2);
 		$salt=preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
