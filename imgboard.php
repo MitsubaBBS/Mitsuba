@@ -215,14 +215,14 @@ if (!empty($_POST['mode']))
 					$mitsuba->common->showMsg($lang['img/error'], $lang['img/no_link']);
 					exit;
 				}
-			} elseif ((!empty($_POST['embed'])) && ($nofile == 0) && ($bdata['embed']==1))
+			} elseif ((!empty($_POST['embed'])) && ($nofile == 0) && ($bdata['embeds']==1))
 			{
 				if (($bdata['file_replies']==0) && ($_POST['resto']!=0))
 				{
 					$mitsuba->common->showMsg($lang['img/error'], $lang['img/file_replies_not_allowed']);
 					exit;
 				}
-				$filename = $mitsuba->checkEmbed($bdata, $_POST['embeds'], $return_url);
+				$filename = $mitsuba->board->checkEmbed($bdata, $_POST['embed'], $return_url);
 			} elseif (($nofile == 0) && ($bdata['type']!="textboard")) {
 				if (($bdata['file_replies']==0) && ($_POST['resto']!=0))
 				{
