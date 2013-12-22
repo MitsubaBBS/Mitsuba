@@ -7,6 +7,7 @@ $mitsuba->admin->reqPermission("spamfilter.view");
 		$search = "";
 		$reason = "";
 		$expires = "";
+		$regex = 0;
 		if ((!empty($_POST['mode'])) && ($_POST['mode'] == "add"))
 		{
 $mitsuba->admin->reqPermission("spamfilter.add");
@@ -19,6 +20,8 @@ $mitsuba->admin->reqPermission("spamfilter.add");
 				$search = $conn->real_escape_string($_POST['search']);
 				$reason = $conn->real_escape_string($_POST['reason']);
 				$boards = "";
+				$regex = isset($_POST['regex']);
+				
 				if ((!empty($_POST['all'])) && ($_POST['all']==1))
 				{
 					$boards = "%";
@@ -46,11 +49,13 @@ $mitsuba->admin->reqPermission("spamfilter.add");
 						echo "<b style='color: red;'>".$lang['mod/fool']."</b>";
 					}
 				}
-				$conn->query("INSERT INTO spamfilter (`search`, `reason`, `boards`, `expires`, `active`, `regex`) VALUES ('".$search."', '".$reason."', '".$boards."', '".$expires."', 1, 0);");
+				$conn->query("INSERT INTO spamfilter (`search`, `reason`, `boards`, `expires`, `active`, `regex`) VALUES ('".$search."', '".$reason."', '".$boards."', '".$expires."', 1, '".$regex."');");
+				
 			}
 			$search = "";
 			$reason = "";
 			$expires = "";
+			$regex = 0;
 		} elseif ((!empty($_POST['mode'])) && ($_POST['mode'] == "edit") && (!empty($_POST['id']))) {
 $mitsuba->admin->reqPermission("spamfilter.update");
 			$mitsuba->admin->ui->checkToken($_POST['token']);
@@ -63,6 +68,7 @@ $mitsuba->admin->reqPermission("spamfilter.update");
 				$id = $_POST['id'];
 				if (!is_numeric($id)) { echo "<b style='color: red;'>".$lang['mod/fool']."</b>"; }
 				$reason = $conn->real_escape_string($_POST['reason']);
+				$regex = isset($_POST['regex']);
 				$boards = "";
 				if ((!empty($_POST['all'])) && ($_POST['all']==1))
 				{
@@ -91,11 +97,12 @@ $mitsuba->admin->reqPermission("spamfilter.update");
 						echo "<b style='color: red;'>".$lang['mod/fool']."</b>";
 					}
 				}
-				$conn->query("UPDATE spamfilter SET `search`='".$search."', `reason`='".$reason."', `boards`='".$boards."', `expires`='".$expires."' WHERE id=".$id);
+				$conn->query("UPDATE spamfilter SET `search`='".$search."', `reason`='".$reason."', `boards`='".$boards."', `expires`='".$expires."', `active`= 1, `regex`='".$regex."' WHERE id=".$id);
 			}
 			$search = "";
 			$reason = "";
 			$expires = "";
+			$regex = "";
 		}
 
 		if ((!empty($_GET['d'])) && ($_GET['d'] == 1) && (!empty($_GET['n'])))
@@ -116,6 +123,7 @@ $mitsuba->admin->reqPermission("spamfilter.delete");
 <td><?php echo $lang['mod/reason']; ?></td>
 <td><?php echo $lang['mod/boards']; ?></td>
 <td><?php echo $lang['mod/expires']; ?></td>
+<td><?php echo $lang['mod/regex']; ?></td>
 <td><?php echo $lang['mod/actions']; ?></td>
 </tr>
 </thead>
@@ -134,6 +142,7 @@ if ($row['boards']=="%")
 	echo "<td class='text-center'>".$row['boards']."</td>";
 }
 echo "<td class='text-center'>".$row['expires']."</td>";
+echo "<td class='text-center'>"; if ($row['regex'] == 1) { echo($lang['mod/yes']);} else {echo($lang['mod/no']);} echo "</td>";
 echo "<td class='text-center'><a href='?/spamfilter&d=1&n=".$row['id']."'>".$lang['mod/delete']."</a> <a href='?/spamfilter/edit&n=".$row['id']."'>".$lang['mod/edit']."</a></td>";
 echo "</tr>";
 }
@@ -150,6 +159,7 @@ echo "</tr>";
 <?php echo $lang['mod/wf_search']; ?>: <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"/><br />
 <?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($reason); ?>"/><br />
 <?php echo $lang['mod/expires']; ?>: <input type="text" name="expires" value="<?php echo htmlspecialchars($expires); ?>"/><br />
+<?php echo $lang['mod/regex'] ?>: <input type="checkbox" name="regex" <?php if($regex == 1) { echo "checked"; }?>"/><br />
 <br /><br />
 <?php
 $mitsuba->admin->ui->getBoardList();
