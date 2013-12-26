@@ -37,6 +37,7 @@ $mitsuba->admin->reqPermission("boards.view");
 <span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="hidden" value="1"/><?php echo $lang['mod/board_hidden']; ?></span>
 <span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="unlisted" value="1"/><?php echo $lang['mod/board_unlisted']; ?></span>
 <span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="captcha" value="1"/><?php echo $lang['mod/board_captcha']; ?></span>
+<span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="allsites" value="1"/><?php echo $lang['mod/board_all_links']; ?></span>
 <span class="opt t-ib t-fb t-lb"><br /><input type="checkbox" name="spoilers" value="1" /><?php echo $lang['mod/board_spoilers']; ?></span>
 <span class="opt t-ib t-fb t-lb"><br /><input type="checkbox" name="nodup" value="1"/><?php echo $lang['mod/board_nodup']; ?></span>
 <span class="opt t-ib"><br /><input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?></span>

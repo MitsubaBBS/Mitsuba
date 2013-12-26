@@ -210,9 +210,57 @@ if (!empty($_POST['mode']))
 			{
 				if (!empty($_POST['url']))
 				{
-					//TODO: Links
+					//Links 
+					$postUrl = $mitsuba->linkshare->prepareUrl($_POST['url']);
+					
+						if ($postUrl) {
+							$check = $mitsuba->linkshare->getStatus($postUrl);
+							
+							if ($bdata['allow_all_sites'] == 0) {
+								$parser = $mitsuba->linkshare->checkUrl($postUrl);
+							} else {
+								$parser = 'defaultParser.php'; //this file doesn't have to exist
+							}
+							
+						} else {
+							$check = false;
+							$parser = false;
+						}
+					
+					if ( ($check) && ($parser) ) {
+					
+						$linksize = "";
+						$serviceName = "Other";
+					
+						$parserOpened = $mitsuba->linkshare->openLinkParser($parser);
+						
+						$name = $mitsuba->linkshare->getTitle($postUrl, $parserOpened);
+						$linksize = $mitsuba->linkshare->getSize($postUrl, $parserOpened);
+						$serviceName = $mitsuba->linkshare->getServiceName($postUrl, $parserOpened);
+						
+						$url = htmlspecialchars(stripslashes($postUrl));
+						
+						if ($linksize) {
+							$url_title = htmlspecialchars( stripslashes( "{$name} - [{$linksize} - {$serviceName}]" ) );
+						} else {
+							$url_title = htmlspecialchars( stripslashes( "{$name} [{$serviceName}]" ) );
+						}
+						
+					} else {
+					
+						if ((!$parser) && ($check)) {
+							$mitsuba->common->showMsg($lang['img/error'], $lang['img/badhostlink']);
+							exit;
+						}
+						
+						if (!$check) {
+							$mitsuba->common->showMsg($lang['img/error'], $lang['img/badlink']);
+							exit;
+						}
+					}
+					
 				} else {
-					$mitsuba->common->showMsg($lang['img/error'], $lang['img/no_link']);
+					$mitsuba->common->showMsg($lang['img/error'], $lang['img/nolink']);
 					exit;
 				}
 			} elseif ((!empty($_POST['embed'])) && ($nofile == 0) && ($bdata['embeds']==1))
@@ -342,6 +390,7 @@ if (!empty($_POST['mode']))
 			setcookie("password", $password, time() + 86400*256);
 			$embed = 0;
 			$fname = "";
+			
 			if (!empty($filename))
 			{
 				if (substr($filename, 0, 6) != "embed:")

@@ -80,6 +80,9 @@ switch ($data['type'])
 <input type="checkbox" name="nofile" value="1" <?php if ($data['nofile'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_nofile']; ?><br />
 <input type="checkbox" name="catalog" value="1" <?php if ($data['catalog'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_catalog']; ?><br />
 <?php } ?>
+<?php if ($data['type'] == "linkboard") { ?>
+<input type="checkbox" name="allsites" value="1" <?php if ($data['allow_all_sites'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_all_links']; ?><br />
+<?php } ?>
 <?php if (($data['type'] == "fileboard") || ($data['type'] == "linkboard")) { ?>
 <input type="checkbox" name="replies" value="1" <?php if ($data['allow_replies'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_allow_replies']; ?><br />
 <?php } ?>

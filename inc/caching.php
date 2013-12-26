@@ -883,7 +883,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					} else {
 						if ($boarddata['type']=="linkboard")
 						{
-							$file .= '<td>[<a href="'.substr($row['filename'], 0, 4).'">'.htmlspecialchars($row['orig_filename']).'</a>]</td>';
+							$file .= '<td>[<a href="'.substr($row['filename'], 4).'">'.htmlspecialchars($row['orig_filename']).'</a>]</td>';
 						} else {
 							$file .= '<td>';
 							if ($return == 1)

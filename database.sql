@@ -94,7 +94,8 @@ CREATE TABLE IF NOT EXISTS `boards` (
   `file_replies` int(1) NOT NULL,
   `links` text NOT NULL,
   `files` int(4) NOT NULL,
-  PRIMARY KEY (`short`)
+  PRIMARY KEY (`short`),
+  `allow_all_sites` int(1) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `bruteforce_tries` (
