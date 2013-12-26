@@ -33,6 +33,8 @@ hardkurahen - javascripts
 
 JanPavulon - javascripts
 
+sebagaua - some PHPs
+
 License
 --------
 See [LICENSE](https://github.com/MitsubaBBS/Mitsuba/blob/master/LICENSE).
