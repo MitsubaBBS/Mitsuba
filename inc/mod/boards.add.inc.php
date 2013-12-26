@@ -123,7 +123,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 				$anonymous = $_POST['anonymous'];
 			}
 			if ((!empty($_POST['allsites'])) && ($_POST['allsites'] == 1)) {
-				$allsites = $_POST['allsites'];
+				$allsites = 1;
 			}
 			
 			switch ($_POST['type'])

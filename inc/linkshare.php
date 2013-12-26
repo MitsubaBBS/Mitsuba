@@ -63,8 +63,9 @@ class Linkshare {
 	function openLinkParser($parser) {
 	
 		if ( file_exists("inc/links/".$parser) ) {
+		//parser isn't working at this time
 			include("links/".$parser);
-			echo('dbg: exist');
+			//echo('dbg: exist');
 			return true;
 		} else {
 			return false;
