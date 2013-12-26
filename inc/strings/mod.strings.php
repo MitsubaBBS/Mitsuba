@@ -175,6 +175,7 @@ $lang['mod/staff_note'] = "Staff note";
 $lang['mod/staff_member'] = "Staff member";
 $lang['mod/created'] = "Created";
 $lang['mod/expires'] = "Expires";
+$lang['mod/regex'] = "Regex";
 $lang['mod/showing_bans'] = "Showing recent %s bans.";
 $lang['mod/show_all'] = "Show all";
 $lang['mod/show_recent'] = "Show recent %s";
