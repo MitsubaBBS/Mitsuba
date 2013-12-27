@@ -4,7 +4,8 @@ if (!defined("IN_MOD"))
 	die("Nah, I won't serve that file to you.");
 }
 $mitsuba->admin->reqPermission("boards.delete");
-$mitsuba->admin->ui->checkToken();
+$mitsuba->admin->ui->checkToken($_POST['token']);
+
 		if (!empty($_GET['board']))
 		{
 			$board = $conn->real_escape_string($_GET['board']);
