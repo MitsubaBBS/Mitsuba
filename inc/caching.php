@@ -938,6 +938,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			$file .= '<input type="submit" name="delete" value="'.$lang['img/delete'].'" /><br />';
 			if ($adm_type <= 1)
 			{
+			$file .= '<input type="hidden" name="board" value="'.$boarddata['short'].'" /> ';
 			$file .= $lang['img/reason'].' <input type="text" name="reason" /><input type="submit" name="report" value="'.$lang['img/report'].'" />';
 			}
 			$file .= '<div class="stylechanger" id="stylechangerDiv" style="display:none;">'.$lang['img/style'].' <select id="stylechanger"></select></div>
