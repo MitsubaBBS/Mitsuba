@@ -134,6 +134,10 @@ class Common {
 	function thumb($board,$filename,$s=250){
 		$extension = $this->getGraphicsExtension();
 		
+		if (!(strpos($filename,"url:") === false)) { //dont make thumbnails of links xD
+			return 0;	
+		}
+		
 		if ($extension == "imagick")
 		{
 			$fname='./'.$board.'/src/'.$filename;
