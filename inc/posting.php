@@ -122,7 +122,7 @@ class Posting {
 							{
 								$filename = substr($filename, 8);
 							}
-							if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
+							if ((substr($filename, 0, 6) != "embed:") && (substr($filename, 0, 4) != "url:") && ($filename != "deleted"))
 							{
 								unlink("./".$board."/src/".$filename);
 								if (file_exists("./".$board."/src/thumb/".$filename))

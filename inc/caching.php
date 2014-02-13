@@ -734,6 +734,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					$sql_boardlist = ")";
 				}
 		}
+		
 		for ($pg = $page; $pg <= $pages; $pg++)
 		{
 			$file = $header;
@@ -787,6 +788,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 							</tr>
 							</thead>
 							<tbody>';
+							
 				} elseif ($boarddata['type']=="linkboard")
 				{
 					$file .= '<table class="linkListing">
@@ -943,9 +945,10 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 			}
 			$file .= '<div class="stylechanger" id="stylechangerDiv" style="display:none;">'.$lang['img/style'].' <select id="stylechanger"></select></div>
 				</div>';
-			$file .= "</form>";
+			$file .= "</form><br/>";
 			$file .= $footer_ads;
-			if (($boarddata['type']=="imageboard") || ($boarddata['type']=="textboard") || ($boarddata['type']=="overboard"))
+			
+			if (($boarddata['type']=="imageboard") || ($boarddata['type']=="textboard") || ($boarddata['type']=="overboard") || ($boarddata['type']=="linkboard") )
 			{
 				if (($return == 1) && ($threadno == 0))
 				{

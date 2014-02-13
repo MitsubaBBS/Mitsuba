@@ -56,7 +56,7 @@ switch ($data['type'])
 <?php if (($data['type'] == "imageboard") || ($data['type'] == "fileboard")) { ?>
 <?php echo $lang['mod/board_filesize']; ?>: <input type="text" name="filesize" maxlength=20 value="<?php echo $data['filesize']; ?>" /><br />
 <?php } ?>
-<?php if (($data['type'] == "imageboard") || ($data['type'] == "textboard") || ($data['type'] == "overboard")) { ?>
+<?php if (($data['type'] == "imageboard") || ($data['type'] == "textboard") || ($data['type'] == "overboard") || ($data['type'] == "linkboard")) { ?>
 <?php echo $lang['mod/board_pages']; ?>: <input type="text" name="pages" maxlength=4 value="<?php echo $data['pages']; ?>" /><br />
 <?php } ?>
 <?php if ($data['type'] == "fileboard") { ?>

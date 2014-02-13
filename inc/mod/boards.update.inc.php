@@ -118,7 +118,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 				}
 				if ((!empty($_POST['files'])) && (is_numeric($_POST['files'])))
 				{
-					$pages = $_POST['files'];
+					$files = $_POST['files'];
 				}
 				if (!empty($_POST['anonymous']))
 				{
@@ -160,7 +160,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 						break;
 					case "linkboard":
 						$filesize = 0;
-						$pages = 0;
+						//$pages = 0;
 						$files = 0;
 						$embeds = 0;
 						$nofile = 0;
