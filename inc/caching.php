@@ -823,7 +823,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				if (($threadno == 0) && (($boarddata['type']=="linkboard") || ($boarddata['type']=="fileboard")))
 				{
 					$file .= '<tr>';
-					$file .= "<td>".$row['id']."</td>";
+					$file .= "<td class='text-center'>".$row['id']."</td>";
 					$trip = "";
 					if (!empty($row['trip']))
 					{
@@ -835,12 +835,12 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					}
 					if ((!empty($row['trip'])) || (!empty($row['strip'])))
 					{
-						$trip = "<span class='postertrip'>".$trip."</span>";
+						$trip = "<span class='postertrip text-center'>".$trip."</span>";
 					}
 					$poster_id = "";
 					if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && (empty($row['capcode_text'])))
 					{
-						$poster_id = '<span class="posteruid">(ID: '.$row['poster_id'].')</span>';
+						$poster_id = '<span class="posteruid text-center">(ID: '.$row['poster_id'].')</span>';
 					}
 					$c_image = "";
 					if (!empty($row['capcode_icon']))
@@ -855,10 +855,10 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					$email_a = "";
 					$email_b = "";
 					if (!empty($row['email'])) {
-						$email_a = '<a href="mailto:'.$row['email'].'" class="useremail">';
+						$email_a = '<a href="mailto:'.$row['email'].'" class="useremail text-center">';
 						$email_b = '</a>';
 					}
-					$file .= "<td>";
+					$file .= "<td class='text-center'>";
 					if (!empty($row['capcode_text']))
 					{
 						$file .= $email_a.'<span class="name"><span style="'.$row['capcode_style'].'">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="'.$row['capcode_style'].'">## '.$row['capcode_text'].'</span>'.$c_image.'</span>';
@@ -885,7 +885,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					} else {
 						if ($boarddata['type']=="linkboard")
 						{
-							$file .= '<td>[ <a href="'.substr(strip_tags($row['filename']), 4).'">'.htmlspecialchars($row['orig_filename']).'</a> ]</td>';
+							$file .= '<td class="text-center">[ <a href="'.substr(strip_tags($row['filename']), 4).'">'.htmlspecialchars($row['orig_filename']).'</a> ]</td>';
 						} else {
 							$file .= '<td>';
 							if ($return == 1)
@@ -902,8 +902,8 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 						}
 					}
 					$file .= '<td><span class="subject">'.htmlspecialchars($row['subject']).'</span></td>';
-					$file .= '<td>'.date("d/m/Y(D)H:i:s", $row['date']).'</td>';
-					$file .= '<td>[<a href="../'.$row['board'].'/res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</td>';
+					$file .= '<td class="text-center">'.date("d/m/Y(D)H:i:s", $row['date']).'</td>';
+					$file .= '<td class="text-center">[<a href="../'.$row['board'].'/res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</td>';
 					$file .= '</tr>';
 					
 				} else {
