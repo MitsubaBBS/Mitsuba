@@ -406,6 +406,14 @@ function addFastReply(parent, thread)
 	} else {
 		var jq = $(parent).find(".thread");
 	}
+	
+	if ($('#captchaField').length!==0) {
+		var captchaCode = '<iframe src="../captcha.php" style="overflow: hidden; width: 300px; height: 70px; border: 1px solid #000000; display: block;"/> \
+			<input type="text" id="captchaField" name="captcha" style="width: 300px;" placeholder="Captcha"> <br />';
+	} else {
+		var captchaCode = '';
+	}
+	
 	$(jq).each(function () {
 		$(this).append('<div class="postContainer replyContainer"> \
 		<div class="sideArrows">&gt;&gt;</div> \
@@ -424,6 +432,7 @@ function addFastReply(parent, thread)
 		<input type="text" placeholder="E-mail" name="email" /> <br /> \
 		<input type="text" placeholder="Subject" name="sub" /> <br /> \
 		<input type="password" placeholder="Password" name="pwd" maxlength="8"> \
+		'+captchaCode+' \
 		<input type="submit" value="Submit" /> \
 		</div> \
 		</form> \
