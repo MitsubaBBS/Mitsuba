@@ -408,8 +408,8 @@ function addFastReply(parent, thread)
 	}
 	
 	if ($('#captchaField').length!==0) {
-		var captchaCode = '<iframe src="../captcha.php" style="overflow: hidden; width: 300px; height: 70px; border: 1px solid #000000; display: block;"/> \
-			<input type="text" id="captchaField" name="captcha" style="width: 300px;" placeholder="Captcha"> <br />';
+		var captchaCode = '<iframe class="FScaptcha" src="../captcha.php" style="overflow: hidden; width: 300px; height: 70px; border: 1px solid #000000; display: block;"/> \
+			<input type="text" id="captchaField" name="captcha" style="width: 253;" placeholder="Captcha"> <br />';
 	} else {
 		var captchaCode = '';
 	}
@@ -427,7 +427,7 @@ function addFastReply(parent, thread)
 		<input name="upfile" type="file" style="display: none;"> \
 		</blockquote> \
 		</div> \
-		<div style="display: inline-block;" class="leftFields"> \
+		<div style="display: inline-block; vertical-align: top;" class="leftFields"> \
 		<input type="text" placeholder="Name" name="name" /> <br /> \
 		<input type="text" placeholder="E-mail" name="email" /> <br /> \
 		<input type="text" placeholder="Subject" name="sub" /> <br /> \

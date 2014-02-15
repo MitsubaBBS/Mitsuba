@@ -132,6 +132,12 @@ input,textarea,select {
 	margin-bottom: 0px!important;
 }
 
+#postFile {
+	margin-left: 0px!important;
+	border: none;
+	background-color: inherit;
+}
+
 #captchaField {
 	margin-top: 1px!important;
 }
@@ -1056,11 +1062,12 @@ input[type="password"] {
 .hider {
 	margin-left: 5px!important;
 }
+
 a.expander {
 	margin-left: 5px;
-	}
+}
 	
-	#quote-preview iframe,#quote-preview .filter-preview {
+#quote-preview iframe,#quote-preview .filter-preview {
 	display: none;
 }
 
@@ -1081,6 +1088,7 @@ a.expander {
 #quote-preview .dateTime {
 	white-space: nowrap;
 }
+
 .post-hidden:not(#quote-preview) input,
 .post-hidden:not(#quote-preview) .replyContainer,
 .post-hidden:not(#quote-preview) .summary,
@@ -1092,6 +1100,53 @@ a.expander {
 div.post-hidden:not(#quote-preview) div.file,
 div.post-hidden:not(#quote-preview) blockquote.postMessage {
   display: none;
+}
+
+#captcha > td:nth-child(2) > div:nth-child(2) {
+	width: 251px!important;
+	height: 70px!important;
+	background-color: inherit!important;
+	border: 1px solid rgb(170, 170, 170)!important;
+}
+
+#captchaClickHere {
+	display: block;
+	padding-top: 18px;
+	text-align: center;
+	text-decoration: none;
+	color: #FFF;
+	font-size: 30px;
+	text-shadow: -1px 0px #000, 0px 1px #000, 1px 0px #000, 0px -1px #000;
+	width: 100%;
+	height: 100%;
+}
+	
+#captchaImage {
+	width: 251px!important;
+	height: 70px!important;
+}
+
+#reloadCaptcha {
+	width: 251px!important;
+	height: 70px!important;
+	border: 1px solid rgb(170, 170, 170)!important;
+}
+
+.FScaptcha {
+	width: 249px!important;
+	height: 70px!important;
+	background-color: inherit!important;
+	border: 1px solid rgb(170, 170, 170)!important;
+}
+
+div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > blockquote:nth-child(5) > input:nth-child(3) {
+	margin-top: 1px;
+	border: none;
+}
+
+div.postContainer:nth-child(3) > form:nth-child(2) > div:nth-child(1) > blockquote:nth-child(5) > input:nth-child(3) {
+	margin-top: 1px;
+	border: none;
 }
 
 /* MENU */
@@ -1540,7 +1595,6 @@ div p {
 textarea {
 	white-space: pre-wrap;
 }
-
 
 .commentpostername {
 	font-weight: bold;
