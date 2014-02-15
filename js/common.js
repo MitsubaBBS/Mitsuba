@@ -424,7 +424,7 @@ function addFastReply(parent, thread)
 		<input name="resto" type="hidden" value="'+$(this).attr('id').substr(1)+'" /> \
 		<blockquote> \
 		<textarea name="com" class="fastReply" cols=35 rows=5 ></textarea><br /> \
-		<input name="upfile" type="file" style="display: none;"> \
+		<input id="FLupfile" name="upfile" type="file" style="display: none;"> \
 		</blockquote> \
 		</div> \
 		<div style="display: inline-block; vertical-align: top;" class="leftFields"> \

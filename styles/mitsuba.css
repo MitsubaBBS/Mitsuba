@@ -971,14 +971,10 @@ a.expander {
 	border: 1px solid rgb(170, 170, 170)!important;
 }
 
-div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > blockquote:nth-child(5) > input:nth-child(3) {
+#FLupfile {
 	margin-top: 1px;
 	border: none;
-}
-
-div.postContainer:nth-child(3) > form:nth-child(2) > div:nth-child(1) > blockquote:nth-child(5) > input:nth-child(3) {
-	margin-top: 1px;
-	border: none;
+	background-color: inherit;
 }
 
 /* MENU */
