@@ -602,7 +602,7 @@ class Caching
 					<td>'.$lang['img/captcha'].'</td>
 					<td>
 					<noscript><iframe src="'.$captchaUrl.'" style="overflow: hidden; width: 300px; height: 70px; border: 1px solid #000000; display: block;"></iframe></noscript>
-					<input id="captchaField" name="captcha" style="width: 300px;" type="text" placeholder="Type the word from the image"/>
+					<input id="captchaField" name="captcha" style="width: 249px;" type="text" placeholder="Type the word from the image"/>
 					</td>
 					</tr>';
 			}
