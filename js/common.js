@@ -415,6 +415,7 @@ function addFastReply(parent, thread)
 	}
 	
 	$(jq).each(function () {
+		var self = $(this);
 		$(this).append('<div class="postContainer replyContainer"> \
 		<div class="sideArrows">&gt;&gt;</div> \
 		<form action="../imgboard.php" method="post" enctype="multipart/form-data"> \
@@ -432,8 +433,7 @@ function addFastReply(parent, thread)
 		<input type="text" placeholder="E-mail" name="email" /> <br /> \
 		<input type="text" placeholder="Subject" name="sub" /> <br /> \
 		<input type="password" placeholder="Password" name="pwd" maxlength="8"> \
-		'+captchaCode+' \
-		<input type="submit" value="Submit" /> \
+		<input class="submit" type="submit" value="Submit" /> \
 		</div> \
 		</form> \
 		</div>');
@@ -441,6 +441,7 @@ function addFastReply(parent, thread)
 		var fields = $(this).find(".leftFields")[0];
 		$(fields).css("display", "none");
 		$(this).find(".fastReply").click(function () {
+			self.find(".submit").before(captchaCode);
 			$(fields).css({
 				opacity: 0,
 				display: 'inline-block'     
