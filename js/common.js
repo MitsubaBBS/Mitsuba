@@ -1027,7 +1027,7 @@ function adminInlineEdit(event)
 				$(block).html(old_html);
 			});
 			
-			$("#s_"+json.id).click(function () {
+			$("#s_"+json.id).click(function (event) {
 				event.preventDefault();
 				$(this).attr("disabled", "disabled");
 				var raw_n = 0;
