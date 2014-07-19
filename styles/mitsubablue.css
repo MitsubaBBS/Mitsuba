@@ -1064,11 +1064,12 @@ input[type="password"] {
 .hider {
 	margin-left: 5px!important;
 }
+
 a.expander {
 	margin-left: 5px;
-	}
+}
 	
-	#quote-preview iframe,#quote-preview .filter-preview {
+#quote-preview iframe,#quote-preview .filter-preview {
 	display: none;
 }
 
@@ -1089,6 +1090,7 @@ a.expander {
 #quote-preview .dateTime {
 	white-space: nowrap;
 }
+
 .post-hidden:not(#quote-preview) input,
 .post-hidden:not(#quote-preview) .replyContainer,
 .post-hidden:not(#quote-preview) .summary,
@@ -1138,6 +1140,8 @@ div.post-hidden:not(#quote-preview) blockquote.postMessage {
 #FLupfile {
 	margin-top: 1px;
 	border: none;
+	background-color: inherit;
+
 }
 
 /* MENU */
@@ -1620,7 +1624,6 @@ div p {
 textarea {
 	white-space: pre-wrap;
 }
-
 
 .commentpostername {
 	font-weight: bold;

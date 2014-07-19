@@ -930,6 +930,7 @@ div.backlink hr {
 	margin-left: 5px!important;
 }
 
+
 a.expander {
 	margin-left: 5px;
 }
@@ -959,6 +960,20 @@ a.expander {
 	height: 70px!important;
 	border: 1px solid rgb(170, 170, 170)!important;
 }
+
+.FScaptcha {
+	width: 249px!important;
+	height: 70px!important;
+	background-color: inherit!important;
+	border: 1px solid rgb(170, 170, 170)!important;
+}
+
+#FLupfile {
+	margin-top: 1px;
+	border: none;
+	background-color: inherit;
+}
+
 
 .FScaptcha {
 	width: 249px!important;

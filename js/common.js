@@ -497,8 +497,10 @@ function addFastReply(parent, thread)
 		var fields = $(this).find(".leftFields")[0];
 		$(fields).css("display", "none");
 		$(this).find(".fastReply").click(function () {
+
 			if(!self.find(".FScaptcha").length)
 				self.find(".submit").before(captchaCode);
+
 			$(fields).css({
 				opacity: 0,
 				display: 'inline-block'     
