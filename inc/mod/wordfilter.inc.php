@@ -93,7 +93,7 @@ $mitsuba->admin->reqPermission("wordfilter.update");
 </thead>
 <tbody>
 <?php
-$result = $conn->query("SELECT * FROM wordfilter ORDER BY search ASC");
+$result = $conn->query("SELECT * FROM wordfilter ORDER BY boards,search ASC");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";

@@ -28,7 +28,7 @@ $mitsuba->admin->reqPermission("boards.view");
 <span class="opt t-ib t-tb t-fb t-lb"><?php echo $lang['mod/board_maxchars']; ?>: <input type="text" name="maxchars" maxlength=8 value="2000" /><br /></span>
 <span class="opt t-ib t-tb t-fb t-lb"><?php echo $lang['mod/board_default_name']; ?>: <input type="text" name="anonymous" maxlength=60 value="<?php echo $lang['img/anonymous']; ?>" /><br /></span>
 <span class="opt t-ib t-fb"><?php echo $lang['mod/board_filesize']; ?>: <input type="text" name="filesize" maxlength=20 value="2097152" /><br /></span>
-<span class="opt t-ib t-tb t-ob t-lb"><?php echo $lang['mod/board_pages']; ?>: <input type="text" name="pages" maxlength=4 value="15" /><br /></span>
+<span class="opt t-ib t-tb t-ob"><?php echo $lang['mod/board_pages']; ?>: <input type="text" name="pages" maxlength=4 value="15" /><br /></span>
 <span class="opt t-fb"><?php echo $lang['mod/board_files']; ?>: <input type="text" name="files" maxlength=4 value="15" /><br /></span>
 <?php echo $lang['mod/board_options']; ?>: 
 <span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="noname" value="1" /><?php echo $lang['mod/board_no_name']; ?></span>
@@ -37,7 +37,6 @@ $mitsuba->admin->reqPermission("boards.view");
 <span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="hidden" value="1"/><?php echo $lang['mod/board_hidden']; ?></span>
 <span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="unlisted" value="1"/><?php echo $lang['mod/board_unlisted']; ?></span>
 <span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="captcha" value="1"/><?php echo $lang['mod/board_captcha']; ?></span>
-<span class="opt t-ib t-tb t-fb t-lb"><br /><input type="checkbox" name="allsites" value="1"/><?php echo $lang['mod/board_all_links']; ?></span>
 <span class="opt t-ib t-fb t-lb"><br /><input type="checkbox" name="spoilers" value="1" /><?php echo $lang['mod/board_spoilers']; ?></span>
 <span class="opt t-ib t-fb t-lb"><br /><input type="checkbox" name="nodup" value="1"/><?php echo $lang['mod/board_nodup']; ?></span>
 <span class="opt t-ib"><br /><input type="checkbox" name="embeds" value="1" /><?php echo $lang['mod/board_embeds']; ?></span>

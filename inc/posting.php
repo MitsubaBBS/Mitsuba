@@ -122,7 +122,7 @@ class Posting {
 							{
 								$filename = substr($filename, 8);
 							}
-							if ((substr($filename, 0, 6) != "embed:") && (substr($filename, 0, 4) != "url:") && ($filename != "deleted"))
+							if ((substr($filename, 0, 6) != "embed:") && ($filename != "deleted"))
 							{
 								unlink("./".$board."/src/".$filename);
 								if (file_exists("./".$board."/src/thumb/".$filename))
@@ -299,7 +299,7 @@ class Posting {
 			}
 			
 			$tinfo = $thread->fetch_assoc();
-			if (($tinfo['locked'] == 1) && (!$this->mitsuba->admin->checkPermission("post.closed")))
+			if (($tinfo['locked'] == 1) && ($this->mitsuba->admin->checkPermission("post.closed")))
 			{
 				echo "<center><h1>".$lang['img/thread_locked']."</h1><br /><a href='./".$board."'>".$lang['img/return']."</a></center>";
 				return;

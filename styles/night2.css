@@ -1,0 +1,54 @@
+@media only screen and (min-width:721px) {
+div.thread {
+display: none;
+}
+
+.postForm {
+display: none;
+}
+
+div#przadlak
+{
+z-index: 5000;
+width:600px;
+height:600px;
+background-image: url(http://i.imgur.com/WFP8QTe.png);
+position:absolute;
+/* Chrome, Safari, Opera */
+-webkit-animation-name:przadlak;
+-webkit-animation-duration:5s;
+-webkit-animation-timing-function:linear;
+-webkit-animation-delay:2s;
+-webkit-animation-iteration-count:infinite;
+-webkit-animation-direction:alternate;
+-webkit-animation-play-state:running;
+/* Standard syntax */
+animation-name:przadlak;
+animation-duration:5s;
+animation-timing-function:linear;
+animation-delay:2s;
+animation-iteration-count:infinite;
+animation-direction:alternate;
+animation-play-state:running;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes przadlak
+{
+0%   {background-image: url(http://i.imgur.com/WFP8QTe.png); left:0%; top:0%;}
+25%  {background-image: url(http://i.imgur.com/WFP8QTe.png); left:25%; top:0%;}
+50%  {background-image: url(http://i.imgur.com/WFP8QTe.png); left:50%; top:50%;}
+75%  {background-image: url(http://i.imgur.com/WFP8QTe.png); left:0%; top:75%;}
+100% {background-image: url(http://i.imgur.com/WFP8QTe.png); left:0%; top:0%;}
+}
+
+/* Standard syntax */
+@keyframes przadlak
+{
+0%   {background-image: url(http://i.imgur.com/WFP8QTe.png); left:0%; top:0%;}
+25%  {background-image: url(http://i.imgur.com/WFP8QTe.png); left:25%; top:0%;}
+50%  {background-image: url(http://i.imgur.com/WFP8QTe.png); left:50%; top:50%;}
+75%  {background-image: url(http://i.imgur.com/WFP8QTe.png); left:0%; top:75%;}
+100% {background-image: url(http://i.imgur.com/WFP8QTe.png); left:0%; top:0%;}
+}
+}

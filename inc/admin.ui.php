@@ -35,33 +35,27 @@ class UI {
 	function getBoardList($boards = "")
 	{
 		global $lang;
-		if ($boards == "%")
-		{
-		?>
-		<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1 checked/> <?php echo $lang['mod/all']; ?><br/>
-		<?php
-		} else {
-		?>
-		<?php echo $lang['mod/boards']; ?>: <input type="checkbox" name="all" id="all" onClick="$('#boardSelect').toggle()" value=1/> <?php echo $lang['mod/all']; ?><br/>
-		<?php
-		}
+
+		if ($boards == "%") $all = " checked"; else $all = '';
+		echo $lang['mod/boards'].': <input type="checkbox" name="all" id="all" value=1'.$all.'/> ';
+		echo "<label style='float:none;display:inline' for='all'>".$lang['mod/all']."</label>";
+
 		?>
 		<fieldset id="boardSelect">
 		<?php
 		if (($boards != "%") && ($boards != "")) { $boards = explode(",", $boards); }
 		$result = $this->conn->query("SELECT * FROM boards ORDER BY short ASC;");
-		while ($row = $result->fetch_assoc())
-		{
-		$checked = "";
-		if (($boards !== "%") && ($boards !== ""))
-		{
-			if (in_array($boards, $row['short']))
-			{
-				$checked = " checked ";
+		while ($row = $result->fetch_assoc()) {
+			$checked = "";
+			if (($boards !== "%") && ($boards !== "")) {
+				if (in_array($boards, $row['short'])) {
+					$checked = " checked ";
+				}
 			}
-		}
-		echo "<label for='boards'>/".$row['short']."/ - ".$row['name']."</label>";
-		echo "<input type='checkbox' onClick='document.getElementById(\"all\").checked=false;' name='boards[]' value='".$row['short']."'".$checked."/>";
+			echo "<div style='float:left'>";
+			echo "<label for='{$row['short']}'>/".$row['short']."/ - ".$row['name']."</label>";
+			echo "<input id='{$row['short']}' type='checkbox' name='boards[]' value='".$row['short']."'".$checked."/>";
+			echo "</div>";
 		}
 		?>
 		</fieldset>

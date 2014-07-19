@@ -14,10 +14,49 @@ class Caching
 
 	function generateBoardLinks($location = "board")
 	{
-		$links = '<div id="boardLinks">';
-		$links .= $this->generateLinks(-1, $location);
-		$links .= '</div>';
-		return $links;
+		$settings = [
+			'o_pinned' => 'Pin board menu',
+			'o_preview' => 'Enable post preview',
+			'o_loader' => 'Enable page loader',
+			'o_watched' => 'Enable watched threads',
+			'o_updater' => 'Enable updater',
+			'o_imgexpand' => 'Enable image expander (RES)',
+			'o_fastreply' => 'Enable fast reply',
+			'o_alt_mobile' => 'Mobile menu on the right'
+		];
+
+		$out = '<a href="#" class="ico" id="open"></a>
+		 <div id="menu-wrapper" class="pinned">
+				<div id="menu">
+					<a href="#" class="ico" id="menu-close"></a>
+					<a href="#" class="tab ico boards" id="active"></a>
+					<div class="sub-menu clear">'.
+					$this->generateLinks($location)
+					.'<div class="group-options">
+							<a href="#" class="ico settings"></a>
+						</div>
+					</div>
+
+					<a href="#" class="tab ico settings"></a>
+					<div class="sub-menu clear"><div class="modal-bg"><div class="modal-cont">
+						<h2>Settings</h2>';
+						$no = 0;
+						foreach ($settings as $name => $desc) {
+							$out .= '<input type="checkbox" name="'.$name.'" id="opt_'.$no.'"/><label for="opt_'.$no.'">'.$desc.'</label>';
+							$no++;
+						}
+				$out .= '
+				<br><h2>Custom board links</h2>
+				<input type="text" value="" name="o_custom_links">
+				<div class="btn-wrap">
+					<input type="button" value="Reset" id="settingsReset"/>
+					<input type="button" value="Save" id="settingsSave"/>
+				</div>
+				</div></div></div>
+				<div id="just-a-menu-bg"></div>
+				</div>
+			</div>';
+		return $out;
 	}
 
 	function rebuildBoardLinks()
@@ -27,45 +66,39 @@ class Caching
 		$this->mitsuba->updateConfigValue("boardLinks_board", $this->generateBoardLinks("board"));
 	}
 
-	function generateLinks($id, $location = "board")
+	function generateLinks($location = 'board')
 	{
-		// MAGIC IS HAPPENING HERE, DO NOT EDIT
-		// MAGIC IS HAPPENING HERE, DO NOT EDIT
-		// MAGIC IS HAPPENING HERE, DO NOT EDIT
-		// MAGIC IS HAPPENING HERE, DO NOT EDIT
-		// MAGIC IS HAPPENING HERE, DO NOT EDIT
-		// MAGIC IS HAPPENING HERE, DO NOT EDIT
-		$result = $this->conn->query("SELECT * FROM links WHERE parent=".$id." ORDER BY short ASC, title ASC, id DESC;");
-		if ($result->num_rows == 0)
-		{
-			return "";
+		$categories = [];
+		$data = [];
+		$out = '';
+
+		$result = $this->conn->query("SELECT * FROM links");
+		while ($row = $result->fetch_assoc()) {
+			$id = $row['id'];
+			if ($row['parent'] < 0) {
+				$categories[$id] = $row['title'];
+				$data[$categories[$id]] = [];
+			} else
+				array_push($data[$categories[$row['parent']]], $row);
 		}
-		$links = "";
-		$no = 0;
-		while ($row = $result->fetch_assoc())
-		{	
-			if (!empty($row['url']))
-			{
-				if ($no > 0) { $links .= ' / '; }
-				if ($row['relative'] == 1)
+
+		foreach ($data as $category => $links) {
+			$out .= '<div class="group">';
+			$out .= '<h2>'.$category.'</h2>';
+			foreach ($links as $boardLink) {
+				if ($boardLink['relative'] == 1)
 				{
-					$links .= '<a href="'.$this->mitsuba->getPath($row['url'], $location, 1).'" title="'.$row['title'].'">'.$row['short'].'</a>';
-				} elseif ($row['relative'] == 2)
+					$out .= '<a href="'.$this->mitsuba->getPath($boardLink['url'], $location, 1).'" title="'.$boardLink['title'].'">'.$boardLink['short'].'</a>';
+				} elseif ($boardLink['relative'] == 2)
 				{
-					$links .= '<a href="'.$this->mitsuba->getPath("./".$row['url']."/", $location, 1).'" title="'.$row['title'].'">'.$row['short'].'</a>';
+					$out .= '<a href="'.$this->mitsuba->getPath("./".$boardLink['url']."/", $location, 1).'" title="'.$boardLink['title'].'">'.$boardLink['short'].'</a>';
 				} else {
-					$links .= '<a href="'.$row['url'].'" title="'.$row['title'].'">'.$row['short'].'</a>';
+					$out .= '<a href="'.$boardLink['url'].'" title="'.$boardLink['title'].'">'.$boardLink['short'].'</a>';
 				}
-				
 			}
-			$l2 = $this->generateLinks($row['id'], $location);
-			if (!empty($l2))
-			{
-				$links .= "[".$l2."] ";
-			}
-			$no = 1;
+			$out .= '</div>';
 		}
-		return $links;
+		return $out;
 	}
 
 	function getBoardLinks($location = "board")
@@ -89,42 +122,52 @@ class Caching
 		$lines = explode("\n", $new);
 		$new = "";
 		$c_lines = 0;
+		
+ 		while ( (count($lines) > 1) && (end($lines) == "") ) { array_pop($lines); }
+
 		foreach ($lines as $line)
 		{
-			if ($line == "")
-			{
-				$new .= "<br />";
-				continue;
-			}
-			if (substr($line, 0, 2) == ">>")
-			{
-				$newline = "";
-				$space = explode(" ", $line);
-				foreach ($space as $word)
-				{
-					$newline .= $this->getQuotelink($board, $word, $specialchars, $thread)." ";
-				}
-				$new .= $newline."<br />";
-			} elseif (substr($line, 0, 1) == ">")
-			{
-				if ($specialchars == 1) { $line = htmlspecialchars($line); }
-				$new .= "<span class='quote'>".$line."</span><br />";
-			} else {
-				$newline = "";
-				$space = explode(" ", $line);
-				foreach ($space as $word)
-				{
-					$newline .= $this->getQuotelink($board, $word, $specialchars, $thread)." ";
-				}
-				$new .= $newline."<br />";
-				
-			}
-			$c_lines++;
-			if (($c_lines > 15) && ($thread == 0) && (is_numeric($id)) && ($id > 0))
-			{
-				break;
-			}
+		
+		        $c_lines++;
+		
+		        if ($line == "")
+		        {
+		                $new .= "<br />";
+		                if (($c_lines > 15) && ($thread == 0) && (is_numeric($id)) && ($id > 0)) break;
+		               
+		                continue;
+		        }
+		        if (substr($line, 0, 2) == ">>")
+		        {
+		                $newline = "";
+		                $space = explode(" ", $line);
+		                foreach ($space as $word)
+		                {
+		                        $newline .= $this->getQuotelink($board, $word, $specialchars, $thread)." ";
+		                }
+		                $new .= $newline."<br />";
+		        } elseif (substr($line, 0, 1) == ">")
+		        {
+		                if ($specialchars == 1) { $line = htmlspecialchars($line); }
+		                $new .= "<span class='quote'>".$line."</span><br />";
+		        } else {
+		                $newline = "";
+		                $space = explode(" ", $line);
+		                foreach ($space as $word)
+		                {
+		                        $newline .= $this->getQuotelink($board, $word, $specialchars, $thread)." ";
+		                }
+		                $new .= $newline."<br />";
+		               
+		        }
+		       
+		        if (($c_lines > 15) && ($thread == 0) && (is_numeric($id)) && ($id > 0))
+		        {
+		                break;
+		        }
 		}
+
+
 		$rexProtocol = '(https?://)?';
 		$rexDomain   = '((?:[-a-zA-Z0-9]{1,63}\.)+[-a-zA-Z0-9]{2,63}|(?:[0-9]{1,3}\.){3}[0-9]{1,3})';
 		$rexPort     = '(:[0-9]{1,5})?';
@@ -142,7 +185,7 @@ class Caching
 			{
 				if ((substr($match[0], 0, 5) == "http:") || (substr($match[0], 0, 6) == "https:"))
 				{
-					return "<a class='postlink' href='".$match[0]."'>".$match[0]."</a>";
+					return "<a class='postlink' href='https://href.li/?".$match[0]."'>".$match[0]."</a>";
 				} else {
 					return $match[0];
 				}
@@ -299,6 +342,13 @@ class Caching
 		$file .= "<head><title>/".$boarddata['short']."/ - ".$boarddata['name']."</title>";
 		$first_default = 1;
 		$styles = $this->conn->query("SELECT * FROM styles ORDER BY `default` DESC");
+
+		// --------------------------------------------
+
+		$file .= '<link title="Mobile" rel="stylesheet" href="'.$this->mitsuba->getPath('./styles/mobile.css', $location, 1).'" type="text/css"/>';
+
+		// --------------------------------------------
+
 		while ($row = $styles->fetch_assoc())
 		{
 			if ($first_default == 1)
@@ -602,7 +652,7 @@ class Caching
 					<td>'.$lang['img/captcha'].'</td>
 					<td>
 					<noscript><iframe src="'.$captchaUrl.'" style="overflow: hidden; width: 300px; height: 70px; border: 1px solid #000000; display: block;"></iframe></noscript>
-					<input id="captchaField" name="captcha" style="width: 300px;" type="text" placeholder="Type the word from the image"/>
+					<input id="captchaField" name="captcha" style="width: 249px;" type="text" placeholder="Type the word from the image"/>
 					</td>
 					</tr>';
 			}
@@ -823,7 +873,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				if (($threadno == 0) && (($boarddata['type']=="linkboard") || ($boarddata['type']=="fileboard")))
 				{
 					$file .= '<tr>';
-					$file .= "<td>".$row['id']."</td>";
+					$file .= "<td class='text-center'>".$row['id']."</td>";
 					$trip = "";
 					if (!empty($row['trip']))
 					{
@@ -835,12 +885,12 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					}
 					if ((!empty($row['trip'])) || (!empty($row['strip'])))
 					{
-						$trip = "<span class='postertrip'>".$trip."</span>";
+						$trip = "<span class='postertrip text-center'>".$trip."</span>";
 					}
 					$poster_id = "";
 					if ((!empty($row['poster_id'])) && ($boarddata['ids']==1) && (empty($row['capcode_text'])))
 					{
-						$poster_id = '<span class="posteruid">(ID: '.$row['poster_id'].')</span>';
+						$poster_id = '<span class="posteruid text-center">(ID: '.$row['poster_id'].')</span>';
 					}
 					$c_image = "";
 					if (!empty($row['capcode_icon']))
@@ -855,10 +905,10 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					$email_a = "";
 					$email_b = "";
 					if (!empty($row['email'])) {
-						$email_a = '<a href="mailto:'.$row['email'].'" class="useremail">';
+						$email_a = '<a href="mailto:'.$row['email'].'" class="useremail text-center">';
 						$email_b = '</a>';
 					}
-					$file .= "<td>";
+					$file .= "<td class='text-center'>";
 					if (!empty($row['capcode_text']))
 					{
 						$file .= $email_a.'<span class="name"><span style="'.$row['capcode_style'].'">'.$row['name'].'</span></span>'.$email_b.$trip.' <span class="commentpostername"><span style="'.$row['capcode_style'].'">## '.$row['capcode_text'].'</span>'.$c_image.'</span>';
@@ -885,7 +935,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					} else {
 						if ($boarddata['type']=="linkboard")
 						{
-							$file .= '<td>[ <a href="'.substr(strip_tags($row['filename']), 4).'">'.htmlspecialchars($row['orig_filename']).'</a> ]</td>';
+							$file .= '<td class="text-center">[ <a href="'.substr(strip_tags($row['filename']), 4).'">'.htmlspecialchars($row['orig_filename']).'</a> ]</td>';
 						} else {
 							$file .= '<td>';
 							if ($return == 1)
@@ -902,8 +952,8 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 						}
 					}
 					$file .= '<td><span class="subject">'.htmlspecialchars($row['subject']).'</span></td>';
-					$file .= '<td>'.date("d/m/Y(D)H:i:s", $row['date']).'</td>';
-					$file .= '<td>[<a href="../'.$row['board'].'/res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</td>';
+					$file .= '<td class="text-center">'.date("d/m/Y(D)H:i:s", $row['date']).'</td>';
+					$file .= '<td class="text-center">[<a href="../'.$row['board'].'/res/'.$row['id'].'.html" class="replylink">'.$lang['img/reply'].'</a>]</td>';
 					$file .= '</tr>';
 					
 				} else {
@@ -1121,6 +1171,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				<head>
 				<title>'.$title.'</title>';
 			$first_default = 1;
+
 			$styles = $this->conn->query("SELECT * FROM styles ORDER BY `default` DESC");
 			while ($row = $styles->fetch_assoc())
 			{
@@ -1210,6 +1261,10 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 
 				$file = $this->getThread($trow['board'], 0, 0, 0, $parser, $boarddata, $replace_array, $embed_table, $trow, $extensions, 1);
 			
+				$this->_parser = $parser;
+				$this->_replace_array = $replace_array;
+
+
 			}
 		}
 	}
@@ -1601,7 +1656,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 		$file = $this->getBoardHeader($board, $boarddata, "board", 1);
 		$file .= $this->getAds($boarddata['short'], "underform");
 		$location = "board";
-		$threads = $this->conn->query("SELECT *, (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.deleted=0) as 'replies', (SELECT COUNT(*) FROM posts AS replies WHERE replies.resto=posts.id AND replies.filename != \"\" AND replies.deleted=0) AS 'img_replies' FROM posts WHERE resto=0 AND board='".$this->conn->real_escape_string($board)."' AND deleted=0 ORDER BY sticky DESC, lastbumped DESC");
+		$threads = $this->conn->query("SELECT *, id as thread_id, (SELECT COUNT(*) FROM posts WHERE board='$board' AND resto = thread_id AND deleted = 0) as replies FROM posts  WHERE resto=0 AND board='$board' AND deleted=0  ORDER BY sticky DESC, lastbumped DESC");
 		$file .= '<div class="navLinks">[<a href="./" accesskey="a">'.$lang['img/return_c'].'</a>] [<a href="#bottom">'.$lang['img/bottom'].'</a>]</div>';
 		$file .= '<div id="content">';
 		$file .= '<div id="threads" class="extended-small">';
@@ -1609,7 +1664,8 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 		while ($row = $threads->fetch_assoc())
 		{
 			$bumporder++;
-			$file .= '<div id="thread-'.$row['id'].'" data-bumporder="'.$bumporder.'" data-lastbumped="'.$row['lastbumped'].'" data-started="'.$row['date'].'" data-replycount="'.$row['replies'].'" class="thread">';
+			$sticky = $row['sticky'] ? ' sticky' : '';
+			$file .= '<div id="thread-'.$row['id'].'" data-bumporder="'.$bumporder.'" data-lastbumped="'.$row['lastbumped'].'" data-started="'.$row['date'].'" data-replycount="'.$row['replies'].'" class="thread'.$sticky.'">';
 			if (!empty($row['filename']))
 			{
 				$files = array();
@@ -1662,6 +1718,34 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 						$file .= '<a href="./res/'.$row['id'].'.html">';
 						$file .= '<b>Embed</b>';
 						$file .= '</a>';
+					} elseif (substr($fileinfo['filename'],-4) == "webm") {
+
+						$fileinfo['filename'] = substr($fileinfo['filename'],0,-4);
+						$thumbpath = './src/thumb/'.$fileinfo['filename'].'gif';
+
+						$w = $fileinfo['t_w'];
+						$h = $fileinfo['t_h'];
+						$new_w = 0;
+						$new_h = 0;
+						if (($w > 150) || ($h > 150))
+						{
+							if ($w > $h)
+							{
+								$new_w = 150;
+								$new_h = ($new_w/$w)*$h;
+							} elseif ($w < $h) {
+								$new_h = 150;
+								$new_w = ($new_h/$h)*$w;
+							} elseif ($w == $h) {
+								$new_h = 150;
+								$new_w = 150;
+							}
+						}
+						$file .= '<a href="./res/'.$row['id'].'.html">';
+						$file .= '<img alt="" id="thumb-'.$row['id'].'-'.$filenum.'" class="thumb" width="'.$new_w.'" height="'.$new_h.'" src="'.$thumbpath.'">';
+						$file .= '</a>';
+
+
 					} else {
 						$imgsize = "";
 						if ((isset($extensions[$fileinfo['mimetype']]['image'])) && ($extensions[$fileinfo['mimetype']]['image']==1))
@@ -1711,13 +1795,20 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				$file .= '</a>';
 			}
 			
-			$file .= '<div title="(R)eplies / (I)mages" id="meta-'.$row['id'].'" class="meta">R: <b>'.$row['replies'].'</b> / I: <b>'.$row['img_replies'].'</b></div>';
+			//$file .= '<div title="(R)eplies / (I)mages" id="meta-'.$row['id'].'" class="meta">R: <b>'.$row['replies'].'</b> / I: <b>'.$row['img_replies'].'</b></div>';
+			$file .= '<div title="(R)eplies" id="meta-'.$row['id'].'" class="meta">R: <b>'.$row['replies'].'</b></div>';
 			$subject = "";
 			if (!empty($row['subject']))
 			{
 				$subject = "<b>".$row['subject']."</b>: ";
 			}
-			$file .= '<div class="teaser">'.$subject.htmlspecialchars(strtr($row['comment'], $replace_array)).'&nbsp;</div>';
+
+			//processComment($board, $string, $parser, $thread = 0, $specialchars = 1, $bbcode = 1, $id = 0, $resto = 0, $wordfilter = 1, $wf_table = array())
+			//$file .= $this->processComment($row['board'], $row['comment'], $parser, 2, 0, $boarddata['bbcode'], $row['id'], $row['resto'], $wf, $replace_array);
+
+			$file .= '<div class="teaser">'.$this->processComment($board, $row['comment'], $this->_parser, 2, 0, $boarddata['bbcode'], $row['id'], $row['resto'], 1, $this->_replace_array).'&nbsp;</div>';
+
+			//$file .= '<div class="teaser">'.$subject.htmlspecialchars(strtr($row['comment'], $replace_array)).'&nbsp;</div>';
 			$file .= '</div>';
 		}
 		$file .= '</div>';
@@ -1845,17 +1936,21 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 		{
 			if ((!empty($row['filename'])) && ($row['filename'] != "deleted"))
 			{
+				$ext = explode('.', $row['filename']);
+				$row['filename'] = $ext[0];
+				$ext = '.'.$ext[1];
+
 				if (substr($row['filename'], 0, 8) == "spoiler:")
 				{
 					if ($row['resto'] != 0)
 					{
-						$info = $this->mitsuba->common->thumb($board, substr($row['filename'], 8), 125);
+						$info = $this->mitsuba->common->thumb($board, substr($row['filename'], 8), $ext, 125);
 						if (!empty($info['width']))
 						{
 							$this->conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
 						}
 					} else {
-						$info = $this->mitsuba->common->thumb($board, substr($row['filename'], 8));
+						$info = $this->mitsuba->common->thumb($board, substr($row['filename'], $ext, 8));
 						if (!empty($info['width']))
 						{
 							$this->conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
@@ -1864,13 +1959,13 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 				} elseif (substr($row['filename'], 0, 6) != "embed:") {
 					if ($row['resto'] != 0)
 					{
-						$info = $this->mitsuba->common->thumb($board, $row['filename'], 125);
+						$info = $this->mitsuba->common->thumb($board, $row['filename'], $ext, 125);
 						if (!empty($info['width']))
 						{
 							$this->conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
 						}
 					} else {
-						$info = $this->mitsuba->common->thumb($board, $row['filename']);
+						$info = $this->mitsuba->common->thumb($board, $row['filename'], $ext);
 						if (!empty($info['width']))
 						{
 							$this->conn->query("UPDATE posts SET t_w=".$info['width'].", t_h=".$info['height']." WHERE id=".$row['id']." AND board='".$board."'");
@@ -2029,7 +2124,7 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 						$thumbpath = './../'.$board.'/src/thumb/'.substr($fileinfo['filename'],8);
 					}
 
-					$file .= '<a class="fileThumb" href="'.$filepath.'" target="_blank"><img src="'.$this->mitsuba->getPath("./img/spoiler.png", $location, 1).'" alt="Spoiler image" style="width: 100px; height: 100px"/></a>';
+					$file .= '<a class="fileThumb" href="'.$filepath.'" target="_blank"><img src="'.$this->mitsuba->getPath("./img/spoiler.png", $location, 1).'" alt="Spoiler image" style="width: 170px"/></a>';
 					$file .= '</div>';
 				} elseif (substr($fileinfo['filename'], 0, 6) == "embed:")
 				{
@@ -2041,6 +2136,39 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 					$file .= '<a class="fileThumb">'.$this->mitsuba->common->getEmbed(substr($fileinfo['filename'], 6), $embed_table).'</a>';
 					
 					$file .= '</div>';
+				} elseif (substr($fileinfo['filename'],-4) == "webm") {
+
+					$fileinfo['filename'] = substr($fileinfo['filename'],0,-4);
+					
+					if ($return == 1)
+					{
+						$filepath = './'.$board.'/src/'.$fileinfo['filename'];
+						$thumbpath = './'.$board.'/src/thumb/'.$fileinfo['filename'];
+					} elseif ($threadno != 0)
+					{
+						$filepath = '../../'.$board.'/src/'.$fileinfo['filename'];
+						$thumbpath = '../../'.$board.'/src/thumb/'.$fileinfo['filename'];
+					} else {
+						$filepath = './../'.$board.'/src/'.$fileinfo['filename'];
+						$thumbpath = './../'.$board.'/src/thumb/'.$fileinfo['filename'];
+					}
+
+					$filepath .= "webm";
+					$thumbpath .= "gif";
+
+					$file .= '
+					<div class="file" id="f'.$row['id'].'">
+					<div class="fileInfo">
+						<span class="fileText" id="fT'.$row['id']."_".$filenum.'"><a href="'.$filepath.'">File</a>: ('.$fileinfo['filesize'].', <span title="'.$fileinfo['orig_filename'].'">'.$fileinfo['orig_filename'].'</span>)</span>
+					</div>
+					<a class="fileThumb webm" href="'.$filepath.'">
+					<img src="'.$thumbpath.'"/>
+					</a>
+
+					</div>
+					';
+
+
 				} else {
 					$file .= '<div class="file" id="f'.$row['id']."_".$filenum.'">';
 					$file .= '<div class="fileInfo">';
@@ -2079,6 +2207,13 @@ if ($(\"#custom_cc\").prop(\"checked\"))
 						if ($extensions[$fileinfo['mimetype']]['image']==1)
 						{
 							$file .= '<a class="fileThumb" href="'.$filepath.'" target="_blank"><img src="'.$thumbpath.'" alt="Thumbnail" style="width: '.$fileinfo['t_w'].'px; height: '.$fileinfo['t_h'].'px"/></a>';
+							/*
+							$file .= '<a class="fileThumb" href="'.$filepath.'" target="_blank">';
+							if($fileinfo['t_w'] <= 250 && $fileinfo['t_h'] <= 250) {
+								$file .= '<img src="'.$filepath.'" alt="Thumbnail kurwa" style="width: '.$fileinfo['t_w'].'px;"/></a>';
+							} else {
+								$file .= '<img src="'.$thumbpath.'" alt="Thumbnail xD" style="width: '.$fileinfo['t_w'].'px;"/></a>';
+							}*/
 						} elseif ($extensions[$fileinfo['mimetype']]['image']!=0)
 						{
 							$file .= sprintf($extensions[$fileinfo['mimetype']]['image'], $filepath);

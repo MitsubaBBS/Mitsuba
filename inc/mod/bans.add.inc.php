@@ -3,6 +3,8 @@ if (!defined("IN_MOD"))
 {
 	die("Nah, I won't serve that file to you.");
 }
+ini_set("display_errors", 1);
+
 $mitsuba->admin->reqPermission("bans.add.request");
 $canBan = $mitsuba->admin->checkPermission("bans.add");
 if (empty($_GET['r']))
@@ -95,6 +97,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 		if ((!empty($_POST['post'])) && (!empty($_POST['board'])) && (is_numeric($_POST['post'])) && ($mitsuba->common->isBoard($_POST['board'])))
 		{
 			$board = $conn->real_escape_string($_POST['board']);
+
 			$post = $_POST['post'];
 			//<b style="color:red;">(USER WAS BANNED FOR THIS POST)</b>
 			$postdata = $conn->query("SELECT * FROM posts WHERE id=".$post." AND board='".$board."'");
@@ -110,16 +113,11 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 			$boards = "%";
 		} else {
 			if (!empty($_POST['boards']))
-			{
-				foreach ($_POST['boards'] as $board)
-				{
-					$boards .= $board.",";
-				}
-			} else {
+				$boards = implode(',', $_POST['boards']);
+			else
 				$boards = "%";
-			}
 		}
-		if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
+		//if ($boards != "%") { $boards = substr($boards, 0, strlen($boards) - 1); }
 		$result = 0;
 		$what = 1;
 		if (!$canBan)
@@ -146,6 +144,7 @@ if ((!empty($_GET['d'])) && ($_GET['d'] == 1))
 				} else {
 					if ((!empty($post)) && (!empty($_POST['append'])) && ($_POST['append'] == 1))
 					{
+						//echo "append: $board, $post, {$_POST['append_text']}";
 						$mitsuba->admin->appendToPost($board, $post, $_POST['append_text']);
 					}
 				}

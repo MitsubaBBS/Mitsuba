@@ -120,29 +120,38 @@ $mitsuba->admin->reqPermission("spamfilter.delete");
 <thead>
 <tr>
 <td><?php echo $lang['mod/wf_search']; ?></td>
+<td><?php echo $lang['mod/regex']; ?></td>
 <td><?php echo $lang['mod/reason']; ?></td>
 <td><?php echo $lang['mod/boards']; ?></td>
 <td><?php echo $lang['mod/expires']; ?></td>
-<td><?php echo $lang['mod/regex']; ?></td>
 <td><?php echo $lang['mod/actions']; ?></td>
 </tr>
 </thead>
 <tbody>
 <?php
+
+	$_data = $conn->query("SELECT short FROM boards");
+	$_boards = array();
+	while ($row = $_data->fetch_assoc()) $_boards[] = $row['short'];
+
 $result = $conn->query("SELECT * FROM spamfilter ORDER BY search ASC");
 while ($row = $result->fetch_assoc())
 {
 echo "<tr>";
 echo "<td class='text-center'>".htmlspecialchars($row['search'])."</td>";
+echo "<td class='text-center'>"; if ($row['regex'] == 1) { echo($lang['mod/yes']);} else {echo($lang['mod/no']);} echo "</td>";
 echo "<td class='text-center'>".htmlspecialchars($row['reason'])."</td>";
 if ($row['boards']=="%")
 {
 	echo "<td class='text-center'>All boards</td>";
 } else {
-	echo "<td class='text-center'>".$row['boards']."</td>";
+	$banBoards = explode(',', $row['boards']);
+	if (0.6 * sizeof($_boards) < sizeof($banBoards))
+		echo "<td class='text-center'>All boards <b>excluding</b>: ".implode(', ', array_diff($_boards, $banBoards))."</td>";
+	else
+		echo "<td class='text-center'>".implode(', ', $banBoards)."</td>";
 }
 echo "<td class='text-center'>".$row['expires']."</td>";
-echo "<td class='text-center'>"; if ($row['regex'] == 1) { echo($lang['mod/yes']);} else {echo($lang['mod/no']);} echo "</td>";
 echo "<td class='text-center'><a href='?/spamfilter&d=1&n=".$row['id']."'>".$lang['mod/delete']."</a> <a href='?/spamfilter/edit&n=".$row['id']."'>".$lang['mod/edit']."</a></td>";
 echo "</tr>";
 }

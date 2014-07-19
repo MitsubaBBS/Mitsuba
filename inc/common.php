@@ -131,9 +131,27 @@ class Common {
 		<?php
 	}
 
-	function thumb($board,$filename,$s=250){
+	function thumb($board, $filename, $ext, $s=250){
 		$extension = $this->getGraphicsExtension();
 		
+		if ($ext == ".webm") {
+
+			$fname = './'.$board.'/src/'.$filename.$ext;
+			$thumb_dir = './'.$board.'/src/thumb/';
+			require_once dirname(__FILE__) . '/webm.class.php';
+
+
+			$movie = new \webm($fname);
+
+			if ($movie->thumbnail($thumb_dir.$filename.'.gif', $s, $s))
+				return array("width" => $s, "height" => $s);
+			else
+				echo "Problem with creating thumbnail\n";
+
+		}
+
+		$filename = $filename.$ext;
+
 		if (!(strpos($filename,"url:") === false)) { //dont make thumbnails of links xD
 			return 0;	
 		}
@@ -689,6 +707,7 @@ class Common {
 				<html>
 	<head>
 	<title>Banned</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <?php
 $first_default = 1;
 $styles = $this->conn->query("SELECT * FROM styles ORDER BY `default` DESC");

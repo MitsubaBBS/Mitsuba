@@ -34,8 +34,6 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 				$file_replies = 0;
 				$links = "";
 				$files = 15;
-				$allsites = 0;
-				
 				if ((empty($_POST['limit'])) || (!is_numeric($_POST['limit'])))
 				{
 					$limit = 0;
@@ -118,16 +116,12 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 				}
 				if ((!empty($_POST['files'])) && (is_numeric($_POST['files'])))
 				{
-					$files = $_POST['files'];
+					$pages = $_POST['files'];
 				}
 				if (!empty($_POST['anonymous']))
 				{
 					$anonymous = $_POST['anonymous'];
 				}
-				if ((!empty($_POST['allsites'])) && ($_POST['allsites'] == 1)) {
-					$allsites = 1;
-				}
-				
 				switch ($bdata['type'])
 				{
 					case "imageboard":
@@ -160,7 +154,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 						break;
 					case "linkboard":
 						$filesize = 0;
-						//$pages = 0;
+						$pages = 0;
 						$files = 0;
 						$embeds = 0;
 						$nofile = 0;
@@ -201,8 +195,7 @@ $mitsuba->admin->ui->checkToken($_POST['token']);
 						die("Wrong type ;___;");
 						break;
 				}
-				
-				if ($mitsuba->admin->boards->updateBoard($_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $unlisted, $nodup, $nofile, $maxchars, $anonymous, $extensions, $catalog, $captcha, $boards, $allow_replies, $file_replies, $links, $files, $allsites))
+				if ($mitsuba->admin->boards->updateBoard($_GET['board'], $_POST['name'], $_POST['des'], $_POST['msg'], $_POST['limit'], $spoilers, $noname, $ids, $embeds, $bbcode, $time_between_posts, $time_between_threads, $time_to_delete, $filesize, $pages, $hidden, $unlisted, $nodup, $nofile, $maxchars, $anonymous, $extensions, $catalog, $captcha, $boards, $allow_replies, $file_replies, $links, $files))
 				{
 				$mitsuba->admin->logAction(sprintf($lang['log/updated_board'], $conn->real_escape_string($_GET['board'])));
 				?>

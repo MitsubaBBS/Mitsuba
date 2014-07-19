@@ -4,13 +4,6 @@ function strStartsWith(str, prefix) {
     return str.indexOf(prefix) === 0;
 }
 
-function currentLocationIsOneOf(arr) {
-	for (adr in arr) 
-		if (window.location.href.indexOf(arr[adr]) != -1)
-			return true;
-
-	return false;
-}
 
 $(document).ready(function () {
 	$("a").each( function () {
@@ -42,28 +35,11 @@ $(document).ready(function () {
 	$("<a href='#' class='lnkSmall'>5d</a> ").insertAfter(appeal).before(" ").click(function (event) { event.preventDefault(); appeal.val("5d"); });
 	$("<a href='#' class='lnkSmall'>9d</a> ").insertAfter(appeal).before(" ").click(function (event) { event.preventDefault(); appeal.val("9d"); });
 	
-	if (currentLocationIsOneOf(["bans/add", "spamfilter", "wordfilter"])) {
-
+	if (window.location.href.indexOf("bans/add") != -1)
+	{
 		var reason = $("input[name=reason]");
 		$("<a href='#' class='lnkSmall'>Proxy</a> ").insertAfter(reason).before(" ").click(function (event) { event.preventDefault(); reason.val("Proxy"); });
-		$("<a href='#' class='lnkSmall'>Emotki</a> ").insertAfter(reason).before(" ").click(function (event) { event.preventDefault(); reason.val("Twoje emotki lądują gdzie?"); });
-		$("<a href='#' class='lnkSmall'>Spam</a> ").insertAfter(reason).before(" ").click(function (event) { event.preventDefault(); reason.val("Spam"); });
-		$("<a href='#' class='lnkSmall'>Flood</a> ").insertAfter(reason).before(" ").click(function (event) { event.preventDefault(); reason.val("Flood"); });
-		$("<a href='#' class='lnkSmall'>Forsowanie</a> ").insertAfter(reason).before(" ").click(function (event) { event.preventDefault(); reason.val("Forsowanie"); });
-		$("<a href='#' class='lnkSmall'>Wykop</a> ").insertAfter(reason).before(" ").click(function (event) { event.preventDefault(); reason.val("Wykop ->"); });
-		$("<a href='#' class='lnkSmall'>Kwejk</a> ").insertAfter(reason).before(" ").click(function (event) { event.preventDefault(); reason.val("Kwejk ->"); });
-
-		$("<a href='#' class='lnkSmall'>Wszystkie poza 4/ i kara/</a>").insertBefore("#boardSelect div:first").after("<br>").click(function (e) {
-			e.preventDefault();
-			$("#boardSelect input[type=checkbox]").prop("checked", false);
-			$("#boardSelect input[type=checkbox]:not([id=4]):not([id=kara])").prop("checked", true); 
-		});
-
-		$("<a href='#' class='lnkSmall'>Toggle all</a>").insertBefore("#boardSelect div:first").after("<br>").click(function (e) {e.preventDefault(); $('#boardSelect input[type=checkbox]').prop('checked', function (i, value) { return !value;}) });
-		$("input#all[type=checkbox]").click(function() {$('#boardSelect').toggle()});
-	
 	}
-
 	if (window.location.href.indexOf("/board") != -1)
 	{
 		$("a.edit").click(inlineEdit);

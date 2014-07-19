@@ -18,9 +18,8 @@ $mitsuba->admin->reqPermission("spamfilter.update");
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="id" value="<?php echo $_GET['n']; ?>">
 <?php echo $lang['mod/wf_search']; ?>: <input type="text" name="search" value="<?php echo htmlspecialchars($info['search']); ?>"/><br />
-<?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($info['reason']); ?>"/><br />
+<?php echo $lang['mod/reason']; ?>: <input type="text" name="reason" value="<?php echo htmlspecialchars($info['replace']); ?>"/><br />
 <?php echo $lang['mod/expires']; ?>: <input type="text" name="expires" value="<?php echo htmlspecialchars($info['expires']); ?>"/><br />
-<?php echo $lang['mod/regex'] ?>: <input type="checkbox" name="regex" <?php if($info['regex'] == 1) { echo "checked = '1'"; } ?>"/><br />
 <br /><br />
 <?php $mitsuba->admin->ui->getBoardList($info['boards']); ?>
 <input type="submit" value="<?php echo $lang['mod/submit']; ?>" />

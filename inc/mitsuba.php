@@ -1,4 +1,5 @@
 <?php
+
 class Admin
 {
 	private $conn;
@@ -202,7 +203,6 @@ class Mitsuba
 	public $module_config;
 	public $posting;
 	public $admin;
-	public $linkboard;
 
 	function __construct($connection) {
 		$this->conn = $connection;
@@ -216,9 +216,6 @@ class Mitsuba
 		$this->common = new \Mitsuba\Common($this->conn, $this);
 		include("posting.php");
 		$this->posting = new \Mitsuba\Posting($this->conn, $this);
-		include ("linkshare.php");
-		$this->linkshare = new \Mitsuba\Linkshare($this->conn, $this);
-		
 		$this->admin = new Admin($this->conn, $this);
 		$modules = $this->conn->query("SELECT * FROM module_classes");
 		while ($module = $modules->fetch_assoc())

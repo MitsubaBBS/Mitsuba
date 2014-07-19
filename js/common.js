@@ -2,17 +2,19 @@ localStorage.setItem("meow", 1);
 if (localStorage.getItem("firsttime") != 1)
 {
 	localStorage.setItem("firsttime", 1);
-	localStorage.setItem("o_hider", 1);
-	localStorage.setItem("o_expander", 1);
-	localStorage.setItem("o_backlinks", 1);
+	localStorage.setItem("o_pinned", 1);
 	localStorage.setItem("o_preview", 1);
-
 	localStorage.setItem("o_loader", 0);
 	localStorage.setItem("o_watched", 0);
 	localStorage.setItem("o_updater", 0);
 	localStorage.setItem("o_imgexpand", 0);
 	localStorage.setItem("o_fastreply", 0);
+	localStorage.setItem("o_alt_mobile", 0);
+	localStorage.setItem("o_custom_links", '');
 }
+
+!localStorage.o_pin && (localStorage.o_pin = 1);  // tymczasowo
+!localStorage.o_custom_links && (localStorage.o_custom_links = '');
 
 String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
 
@@ -22,12 +24,36 @@ function strStartsWith(str, prefix) {
 
 $(document).ready(function () {
 	fillFields("body");
+
+	(localStorage.o_alt_mobile == 1) && $("a#open, #menu").addClass("alt");
+	(localStorage.o_pinned == 0) && $("div#menu-wrapper").removeClass("pinned");
+
+
+	//$('link[title="mystyle"]').prop('disabled', true);
+
 	addStylechanger();
-	
-	if (localStorage.getItem("o_backlinks") == 1)
-	{
-		addBacklinks("body");
+	addBacklinks("body");
+	addThreadExpander("body");
+	addThreadHider("body");
+	hideThreads();
+
+	if (localStorage.getItem('o_custom_links') != '') {
+		//var customLinks = ["b", "h", "kara", "oc"];
+		var customLinks = localStorage.getItem('o_custom_links').split(' ');
+
+		var links = {};
+		var wrapper = $("#menu");
+		var linkGroups = wrapper.find('.group');
+
+		linkGroups.find("a").each(function() {
+			links[$(this).text()] = $(this);
+		});
+		linkGroups.empty().not(":eq(0)").remove();
+		$.each(customLinks, function() {
+			linkGroups.append(links[this]);
+		});
 	}
+
 	if (localStorage.getItem("o_preview") == 1)
 	{
 		$("body").append('<div id="quote-preview" class="post preview" style="display: none; position: absolute; z-index:999;"></div>');
@@ -36,6 +62,7 @@ $(document).ready(function () {
 	if (localStorage.getItem("o_imgexpand") == 1)
 	{
 		addImgExpand("body");
+		addWebmExpand("body");
 	}
 	if ($(".postingMode").length == 0) //outside thread
 	{
@@ -43,15 +70,7 @@ $(document).ready(function () {
 		{
 			addFastReply("body", 0);
 		}
-		if (localStorage.getItem("o_expander") == 1)
-		{
-			addThreadExpander("body");
-		}
-		if (localStorage.getItem("o_hider") == 1)
-		{
-			addThreadHider("body");
-			hideThreads();
-		}
+		
 		if (localStorage.getItem("o_watched") == 1)
 		{
 			handleWatched("body");
@@ -88,6 +107,60 @@ $(document).ready(function () {
 		var textVal = $(textarea).val();
 		$(textarea).focus().val("").val(textVal+'>>'+hash[1].match(/q([0-9]+)$/)[1]+'\n'); 
 	}
+
+	function openTab(toggleButton) {
+		if (!toggleButton.hasClass("tab-opened")) {
+				$("a.tab.tab-opened").removeClass("tab-opened");
+				toggleButton.addClass("tab-opened");
+
+				$(".sub-menu.opened").removeClass("opened");
+				toggleButton.next().addClass("opened");
+		}  
+	}
+
+	$("#open, #menu-wrapper, #menu-close").click(function() {
+		var guwno = $("#menu-wrapper");
+		if (guwno.hasClass("opened")) {
+			guwno.fadeOut(250);
+			guwno.removeClass("opened");
+		} else {
+			guwno.fadeIn(250);
+			guwno.addClass("opened");
+			openTab($("a.tab.boards"));
+		}
+		return false;
+	});
+
+
+	$("a.tab").click(function() {
+		openTab($(this));
+		return false;
+	});
+
+
+	$("#menu, .modal-cont").click(function(e) {
+		e.stopPropagation();
+	});
+	
+	$(".group-options a.settings, .modal-bg").click(function() {
+		var guwno = $("a.tab.settings + div");
+		if (guwno.hasClass("settings-opened"))
+			guwno.fadeOut(250, function() {
+				guwno.removeAttr("style");
+				guwno.removeClass("settings-opened");
+			});
+		else {
+			guwno.fadeIn(250, function() {
+				guwno.removeAttr("style");
+				guwno.addClass("settings-opened");
+			});
+		}
+		return false;
+	});
+
+
+
+
 });
 
 var currentPage = 0;
@@ -117,10 +190,8 @@ function addLoader()
 					$(".prev").html($(".prev", nodes).html());
 					$(".pages").html($(".pages", nodes).html());
 					$(".next").html($(".next", nodes).html());
-					if (localStorage.getItem("o_backlinks") == 1)
-					{
-						addBacklinks("#b"+currentPage);
-					}
+
+					addBacklinks("#b"+currentPage);
 					if (localStorage.getItem("o_preview") == 1)
 					{
 						addPostpreview("#b"+currentPage);
@@ -156,60 +227,46 @@ var settingsShown = 0;
 
 function addSettings()
 {
-	$("body").prepend("<div id='settingsDivWrap'><div id='settingsDiv'> \
-		<span id='settingsTitle'>Settings</span> \
-		<hr /> \
-		<input type='checkbox' name='o_hider' /> Enable thread hider<br />\
-		<input type='checkbox' name='o_expander' /> Enable thread expander<br />\
-		<input type='checkbox' name='o_backlinks' /> Enable backlinks<br />\
-		<input type='checkbox' name='o_preview' /> Enable post preview<br />\
-		<input type='checkbox' name='o_loader' /> Enable page loader<br />\
-		<input type='checkbox' name='o_watched' /> Enable watched threads<br />\
-		<input type='checkbox' name='o_updater' /> Enable updater<br />\
-		<input type='checkbox' name='o_imgexpand' /> Enable image expander (RES)<br />\
-		<input type='checkbox' name='o_fastreply' /> Enable fast reply<br />\
-		<hr /> \
-		<input type='button' value='Save' id='settingsSave'/> <input type='button' value='Reset' id='settingsReset'/>\
-		</div></div><span style='float:right;'>[<a id='settingsbutton' href='#'>Settings</a>]</span>");
-	
+	var linksInput = $('input[name="o_custom_links"]');
+
 	$("#settingsSave").click(function (e) {
-		$("input[name^='o_']").each(function ()
+		
+		if(linksInput.val() != '' && !linksInput.val().match(/^[a-z0-9$ ]+$/)) {
+			alert('Custom boardlinks field contains illegal characters');
+			return;
+		} else {
+			localStorage.setItem(linksInput.attr("name"), linksInput.val());
+		}
+
+
+		$("input[type='checkbox'][name^='o_']").each(function ()
 		{
 			if ($(this).prop("checked"))
-			{
 				localStorage.setItem($(this).attr("name"), 1);
-			} else {
+			else
 				localStorage.setItem($(this).attr("name"), 0);
-			}
 		});
 		window.location.reload();
 	});
+
+	$(".group-options a.settings, a.tab.settings").click(function() {
+		linksInput.val(localStorage.getItem("o_custom_links"));
+
+		for (var key in localStorage) {
+			if (key.substring(0, 2) == "o_" ) {
+				if (localStorage[key] == 1)
+					$("input[name='"+key+"']").attr("checked", true);
+				else
+					$("input[name='"+key+"']").attr("checked", false);
+			}
+		}
+	});
+
 	$("#settingsReset").click(function (e) {
 		localStorage.setItem("firsttime", 0);
 		window.location.reload();
 	});
-	$("#settingsDivWrap").click(function (e) {
-		if( e.target !== this ) 
-			return;
-		$(this).css("display", "none");
-		e.preventDefault();
-	});
-	$("#settingsbutton").click(function (e) {
-		$("#settingsDivWrap").css("display","block");
-		for (var key in localStorage)
-		{
-			if (key.substring(0, 2) == "o_")
-			{
-				if (localStorage[key] == 1)
-				{
-					$("input[name='"+key+"']").attr("checked", true);
-				} else {
-					$("input[name='"+key+"']").attr("checked", false);
-				}
-			}
-		}
-		e.preventDefault();
-	});
+
 }
 
 function fillFields(parent)
@@ -286,10 +343,9 @@ function updateThread(isAuto)
 			$("#p"+pid).removeClass("postdeleted");
 		});
 		addQuotelinks();
-		if (localStorage.getItem("o_backlinks") == 1)
-		{
-			addBacklinks(tid);
-		}
+
+		addBacklinks(tid);
+
 		if (localStorage.getItem("o_preview") == 1)
 		{
 			addPostpreview(tid);
@@ -406,7 +462,16 @@ function addFastReply(parent, thread)
 	} else {
 		var jq = $(parent).find(".thread");
 	}
+	
+	if ($('#captchaField').length!==0) {
+		var captchaCode = '<iframe class="FScaptcha" src="../captcha.php" style="overflow: hidden; width: 300px; height: 70px; border: 1px solid #000000; display: block;"/> \
+			<input type="text" id="captchaField" name="captcha" style="width: 253;" placeholder="Captcha"> <br />';
+	} else {
+		var captchaCode = '';
+	}
+	
 	$(jq).each(function () {
+		var self = $(this);
 		$(this).append('<div class="postContainer replyContainer"> \
 		<div class="sideArrows">&gt;&gt;</div> \
 		<form action="../imgboard.php" method="post" enctype="multipart/form-data"> \
@@ -416,15 +481,15 @@ function addFastReply(parent, thread)
 		<input name="resto" type="hidden" value="'+$(this).attr('id').substr(1)+'" /> \
 		<blockquote> \
 		<textarea name="com" class="fastReply" cols=35 rows=5 ></textarea><br /> \
-		<input name="upfile" type="file" style="display: none;"> \
+		<input id="FLupfile" name="upfile" type="file" style="display: none;"> \
 		</blockquote> \
 		</div> \
-		<div style="display: inline-block;" class="leftFields"> \
+		<div style="display: inline-block; vertical-align: top;" class="leftFields"> \
 		<input type="text" placeholder="Name" name="name" /> <br /> \
 		<input type="text" placeholder="E-mail" name="email" /> <br /> \
 		<input type="text" placeholder="Subject" name="sub" /> <br /> \
 		<input type="password" placeholder="Password" name="pwd" maxlength="8"> \
-		<input type="submit" value="Submit" /> \
+		<input class="submit" type="submit" value="Submit" /> \
 		</div> \
 		</form> \
 		</div>');
@@ -432,6 +497,8 @@ function addFastReply(parent, thread)
 		var fields = $(this).find(".leftFields")[0];
 		$(fields).css("display", "none");
 		$(this).find(".fastReply").click(function () {
+			if(!self.find(".FScaptcha").length)
+				self.find(".submit").before(captchaCode);
 			$(fields).css({
 				opacity: 0,
 				display: 'inline-block'     
@@ -509,10 +576,9 @@ function addThreadExpander(parent)
 				$(tid).find("a").each( function () { if ($(this).attr("href") !== null) { $(this).attr("href", absolutizeURI(href, $(this).attr("href"))); } } );
 				$(tid).find("img").each( function () { $(this).attr("src", absolutizeURI(href, $(this).attr("src")));  } );
 				
-				if (localStorage.getItem("o_backlinks") == 1)
-				{
-					addBacklinks(tid);
-				}
+
+				addBacklinks(tid);
+
 				if (localStorage.getItem("o_preview") == 1)
 				{
 					addPostpreview(tid);
@@ -685,11 +751,19 @@ function thread_toggle(id)
 
 function addImgExpand(parent)
 {
-	$(parent).find(".fileThumb").click(function (e) {
+	$(parent).find(".fileThumb:not(.webm)").click(function (e) {
 		imgExpand($(this).parent());
 		e.preventDefault();
 	});
 }
+
+function addWebmExpand(parent) {
+	$(parent).on("click", ".fileThumb.webm, .file .close", function (e) {
+		webmToggle($(this));
+		e.preventDefault();
+	});
+}
+
 
 var api_url = "../mod.php?";
 	var permissions = [];
@@ -1017,7 +1091,7 @@ function adminInlineEdit(event)
 				$(block).html(old_html);
 			});
 			
-			$("#s_"+json.id).click(function () {
+			$("#s_"+json.id).click(function (event) {
 				event.preventDefault();
 				$(this).attr("disabled", "disabled");
 				var raw_n = 0;
@@ -1061,6 +1135,21 @@ function imgExpand(element)
 		$(this).remove();
 	});
 }
+
+function webmToggle(element) {
+	if (element.hasClass('close')) {
+		element.parent().find('.full-view').remove();
+		element.parent().find('.fileThumb.webm').show();
+		element.remove();
+	} else {
+		var filePath = element.attr('href'), thumbPath = element.find('video').attr('src');
+
+		element.hide().after('<video src="'+filePath+'" class="full-view" type=\'"video/webm;codecs="vp8, vorbis"\' autoplay loop controls></video>');
+//		element.hide().after(element.find('video').clone().attr({src: filePath, controls: "enabled",autoplay:"true",loop:"true"}).addClass('full-view'));
+		element.after('<a href="#" class="close"></a>');
+	}
+}
+
 
 function imgThumbnail(element)
 {

@@ -44,7 +44,7 @@ $mitsuba->admin->ui->getBoardList();
 </thead>
 <tbody>
 <?php
-$result = $conn->query("SELECT users.*, groups.name AS gname FROM users LEFT JOIN groups ON users.group=groups.id;");
+$result = $conn->query("SELECT users.*, groups.name AS gname FROM users LEFT JOIN groups ON users.group=groups.id ORDER BY FIELD(gname, 'Administrator', 'Moderator', 'Janitor', 'Disabled'), users.username;");
 $usern = $result->num_rows;
 while ($row = $result->fetch_assoc())
 {

@@ -56,7 +56,7 @@ switch ($data['type'])
 <?php if (($data['type'] == "imageboard") || ($data['type'] == "fileboard")) { ?>
 <?php echo $lang['mod/board_filesize']; ?>: <input type="text" name="filesize" maxlength=20 value="<?php echo $data['filesize']; ?>" /><br />
 <?php } ?>
-<?php if (($data['type'] == "imageboard") || ($data['type'] == "textboard") || ($data['type'] == "overboard") || ($data['type'] == "linkboard")) { ?>
+<?php if (($data['type'] == "imageboard") || ($data['type'] == "textboard") || ($data['type'] == "overboard")) { ?>
 <?php echo $lang['mod/board_pages']; ?>: <input type="text" name="pages" maxlength=4 value="<?php echo $data['pages']; ?>" /><br />
 <?php } ?>
 <?php if ($data['type'] == "fileboard") { ?>
@@ -79,9 +79,6 @@ switch ($data['type'])
 <input type="checkbox" name="embeds" value="1" <?php if ($data['embeds'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_embeds']; ?><br />
 <input type="checkbox" name="nofile" value="1" <?php if ($data['nofile'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_nofile']; ?><br />
 <input type="checkbox" name="catalog" value="1" <?php if ($data['catalog'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_catalog']; ?><br />
-<?php } ?>
-<?php if ($data['type'] == "linkboard") { ?>
-<input type="checkbox" name="allsites" value="1" <?php if ($data['allow_all_sites'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_all_links']; ?><br />
 <?php } ?>
 <?php if (($data['type'] == "fileboard") || ($data['type'] == "linkboard")) { ?>
 <input type="checkbox" name="replies" value="1" <?php if ($data['allow_replies'] == 1) { echo "checked "; } ?> /><?php echo $lang['mod/board_allow_replies']; ?><br />

@@ -25,8 +25,8 @@ class Board
 					if ($row['regex'] == 1)
 					{
 						try {
-							if (preg_match($row['search'], $comment) !== false) {
-								$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "%");
+							if (preg_match($row['search'], $comment)) {
+								$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], $row['boards']);
 								echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 								die();
 							}
@@ -36,7 +36,7 @@ class Board
 						}
 					} else {
 						if (stripos($comment, $row['search']) !== false) {
-							$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "%");
+							$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], $row['boards']);
 							echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 							die();
 						}
@@ -46,7 +46,7 @@ class Board
 				if ($row['regex'] == 1)
 				{
 					try {
-						if (preg_match($row['search'], $comment) !== false) {
+						if (preg_match($row['search'], $comment)) {
 							$this->mitsuba->common->addSystemBan($_SERVER['REMOTE_ADDR'], $row['reason'], htmlspecialchars($_POST['com']), $row['expires'], "%");
 							echo '<meta http-equiv="refresh" content="2;URL='."'./banned.php'".'">';
 							die();

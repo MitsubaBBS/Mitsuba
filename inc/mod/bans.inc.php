@@ -35,6 +35,11 @@ $mitsuba->admin->reqPermission("bans.delete");
 	</thead>
 	<tbody>
 	<?php
+	
+	$_data = $conn->query("SELECT short FROM boards");
+	$_boards = array();
+	while ($row = $_data->fetch_assoc()) $_boards[] = $row['short'];
+
 	if ($logs) {
 		$result = $conn->query("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.mod_id=users.id ORDER BY created DESC LIMIT 0, 15;");
 	} else {
@@ -57,7 +62,11 @@ $mitsuba->admin->reqPermission("bans.delete");
 	{
 		echo "<td class='text-center'>All boards</td>";
 	} else {
-		echo "<td class='text-center'>".$row['boards']."</td>";
+		$banBoards = explode(',', $row['boards']);
+		if (0.6 * sizeof($_boards) < sizeof($banBoards))
+			echo "<td class='text-center'>All boards <b>excluding</b>: ".implode(', ', array_diff($_boards, $banBoards))."</td>";
+		else
+			echo "<td class='text-center'>".implode(', ', $banBoards)."</td>";
 	}
 	if ($row['seen']==1)
 	{

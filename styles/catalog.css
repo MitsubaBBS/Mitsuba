@@ -612,7 +612,7 @@ div#absbot {
     border-width: 3px;
 }
 
-.pinned {
+.thread.sticky {
     border: 3px dashed #34345C;
 }
 

@@ -1,0 +1,406 @@
+@media screen and (-webkit-min-device-pixel-ratio:0) { /* add antialiasing to fonts loaded via @font-face on chrome */
+	@font-face {
+	font-family: 'FontAwesome';
+	src: url('http://netdna.bootstrapcdn.com/font-awesome/4.0.3/fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular') format('svg');
+	}
+}
+
+* {-webkit-tap-highlight-color:rgba(0,0,0,0)!important}
+
+/* nie chciało mi sie tego wsadzać do każdego ze styli xD */
+
+.file .close:after {
+	background: none repeat scroll 0 0 black;
+	border-radius: 14px;
+	color: #fff;
+	content: '\f00d';
+	font-family: FontAwesome;
+	font-size: 21px;
+	height: 30px;
+	left: 735px;
+	line-height: 30px;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 30px;
+}
+
+video.full-view {width: 750px!important;}
+
+.file {position: relative;}
+
+ /*--------------------- */
+
+.modal-cont input[type="button"], .modal-cont button {
+	border-radius: 3px;
+	color: #FFFFFF;
+	font-size: 16px;
+	padding: 7px 18px;
+	background: #B3B3B3;
+}
+
+.modal-cont input[type="button"]:hover, .modal-cont button:hover {
+	cursor: pointer;
+}
+
+.clear:after {
+		clear: both;
+		content: " ";
+		display: block;
+}
+
+#menu {
+	color:#888;
+	font-size:12px;
+}
+
+#menu-wrapper {
+	top:0;
+	width:100%;
+	height:30px;
+	background:#fff;
+	z-index:50;
+}
+
+#menu-wrapper.pinned {
+	position:fixed;
+}
+
+#menu-wrapper.pinned + div {
+	margin-top:30px;
+}
+
+.sub-menu h2 {
+	font-size: 18px;
+	margin: 10px 0 15px;
+}
+
+.sub-menu label:after {content:"";display:block}
+
+.fa {font-size:25px}
+
+#menu input[type="checkbox"] {display:none}
+#menu input[type="checkbox"] + label {cursor:pointer;}
+
+#menu input[type="checkbox"] + label:before {
+  content:"\f096";font-family: FontAwesome;font-size:20px;display:inline-block;width:25px;position:relative;top:3px}
+
+
+#menu input[type="checkbox"]:checked + label:before {content:"\f046";}
+
+
+
+
+.group-options a, .group a {
+	color:#888;
+	padding:0 2px;
+	text-decoration:none;
+	font-size:12px;
+	display:inline-block;
+	line-height:30px;
+}
+
+.group-options a:hover, .group a:hover {
+	background:#777;
+	color:#fff;
+}
+
+.group a:after {
+	content:"/";
+	display:inline;
+}
+
+
+@media only screen and (min-width:1280px) {
+	.group-options a, .group a {
+		padding:0 4px;
+	}
+}
+
+@media only screen and (min-width:1025px) {
+
+	.btn-wrap {
+		bottom: 25px;
+		left: 50%;
+		margin-left: -83px;
+		position: absolute;
+	}
+
+	.group-options a.settings:after {
+		content:"\f013";
+		font-family:'FontAwesome';
+		font-size: 18px;
+	}
+
+	.group-options, .group {display:inline-block;}
+
+	.group-options {float:right;margin-right:5px}
+
+	.group h2 {display:none;}
+
+	.modal-bg {
+		position:fixed;
+		top:0;
+		bottom:0;
+		width:100%;
+		background:rgba(0,0,0,0.3);
+	}
+
+	.modal-cont {
+		position:fixed;
+		top:50%;
+		left:50%;
+		width:300px;
+		height:400px;
+		margin:-220px 0 0 -170px;
+		background:#fff;
+		padding:20px;
+	}
+
+	.modal-cont p {
+		padding:20px
+	}
+
+	.group {
+		margin-right:5px;
+	}
+
+	#menu-wrapper {
+		display:block!important;
+	}
+
+	.group:first-of-type {
+		margin-left:5px;
+	}
+
+	.sub-menu:first-of-type {
+		display:block!important;
+	}
+
+	.sub-menu:nth-of-type(n+2) {
+		display:none;
+	}
+
+	.settings-opened {display:block!important;}
+}
+
+@media only screen and (max-width:1024px) {
+	
+	.btn-wrap {
+		margin-top: 20px;
+		text-align: center;
+	}
+
+	.modal-cont input[type="button"], .modal-cont button {
+		background: #333333;
+	}
+
+	.ico:after {
+		font-family:FontAwesome;
+		display:block;
+	}
+
+	.ico {
+		text-decoration:none;
+	}
+
+	#open {
+		position:fixed;
+		top:13px;
+		margin-left:13px;
+		width:40px;
+		height:40px;
+		z-index:100;
+		padding:7px;
+	}
+
+	#open.alt {
+		right:20px
+	}
+
+	#open:after {
+		font-size: 46px;
+		line-height: 40px;
+		content:"\f0c9";
+	}
+
+	#menu-wrapper {
+		padding:30px 0;
+		height:auto;
+	}
+
+	#menu {
+		position:absolute;
+		height:100%;
+		width:400px;
+		top:0;
+		z-index:100;
+		background:#232323;
+		overflow-y: scroll;
+	}
+
+	#menu.alt {
+		right:0;
+	}
+
+	#just-a-menu-bg {
+		background:#1a1a1a;
+		position:absolute;
+		top:0;
+		width:100%;
+		height:65px;
+		z-index:-1; /*temporary*/
+	}
+
+	a.tab {
+		float:left;
+		margin:10px 0 0 10px;
+		transition:all 0.2s;
+		padding:15px;
+		opacity:0.2;
+		color:#fff;
+	}
+
+	a.tab:hover, a.tab-opened {
+		opacity:1;
+		background:#232323;
+	}
+
+	a.tab:after {
+		font-size:30px;
+		line-height:25px;
+	}
+
+	a.tab:first-of-type {
+		margin-top:10px;
+	}
+
+	a.tab.boards:after {
+		content:"\f07c";
+	}
+
+	a.tab.watched:after {
+		content:"\f06e";
+	}
+
+	a.tab.settings:after {
+		content:"\f013";
+	}
+	
+	#menu-close {
+		opacity:1;
+		float:right;
+		margin:10px 10px 0 0;
+		padding:10px;
+		transition:all 0.2s;
+		color:#fff;
+	}
+
+	#menu-close:after {
+		content:"\f00d";
+		font-size:39px;
+		line-height:35px;
+	}
+
+	.menu p {margin:20px;color:#fff}
+
+	#menu-wrapper {
+		position:fixed;
+		width:100%;
+		top:0;
+		bottom:0;
+		background:rgba(0,0,0,0.3);
+		left:0;
+		z-index:100;
+		display:none;
+	}
+
+	.sub-menu {
+		padding:20px;
+		display:none;
+		position:absolute;
+		top:65px;
+		color:#fff; /*mockup*/
+		width:360px;
+	}
+
+	.opened {display:block;}
+
+	.group-options {display:none;}
+
+	.group a {
+		line-height:62px;
+		width:62px;
+		height:62px;
+		text-align:center;
+		padding:0!important;
+		margin:0 10px 10px 0;
+		float:left;
+		color:#fff;
+		text-decoration:none;
+		background:#333;
+	}
+
+	.group a:hover {
+		color:#fff;
+	}
+
+	.group a:after {
+		display:none;
+	}
+
+	.sub-menu h2 {
+		display:block;
+		color:#fff;
+		color: #FFFFFF;
+		font-size: 18px;
+		margin: 10px 0 15px;
+	}
+
+	.group:first-of-type h2 {margin-top:0;}
+
+	.group:after {
+		content:" ";
+		display:block;
+		clear:both;
+	}
+
+
+}
+
+
+@media only screen and (max-width:640px) {
+	#menu {width:300px}
+
+	#menu li a {font-size:15px;padding:15px;font-weight:600}
+
+	a.tab.boards:after, a.tab.watched:after, a.tab.settings:after {
+		font-size:25px;
+		line-height:20px;
+	}
+
+	#menu-close:after {
+		line-height:25px;
+		font-size:34px;
+	}
+
+	.group {
+		display:inline;
+	}
+
+	.group:after {display:none;}
+
+	.group a {
+		line-height:51px;
+		width:51px;
+		height:51px;
+		font-size:12px;
+		margin:0 5px 5px 0;
+	}
+
+	.group h2 {display:none;}
+
+	.sub-menu {padding:10px;top:60px;width:280px}
+
+	#just-a-menu-bg {height:60px;}
+}
